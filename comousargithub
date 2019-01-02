@@ -7,7 +7,7 @@ Como usar GitHub
 4o rodar: git clone https://github.com/lcmeyer37/openstock.git
 
 - Adicionando novo arquivo ao repository
-1o git add novoarquivo.html [arquivo foi adicionado ao seu git local]
+1o git add novoarquivo.html [arquivo foi adicionado ao seu git local] / git add -A (para tudo)
 2o git commit -m "descricao alteracao"
 3o git push [arquivo foi adicionado ao github repository remoto]
 
