@@ -1,0 +1,18 @@
+Como usar GitHub
+
+- Criando novo repository
+1o criar repositorio no GitHub pelo site
+2o pegar endereco do repository, ex: https://github.com/lcmeyer37/openstock.git
+3o ir para a pasta desejada para baixar o conteudo deste repositorio
+4o rodar: git clone https://github.com/lcmeyer37/openstock.git
+
+- Adicionando novo arquivo ao repository
+1o git add novoarquivo.html [arquivo foi adicionado ao seu git local]
+2o git commit -m "descricao alteracao"
+3o git push [arquivo foi adicionado ao github repository remoto]
+
+- Baixando ultima instancia do repository
+1o git pull
+
+- Verificando diferencas entre git local e git remoto
+1o git status
