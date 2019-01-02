@@ -1,4 +1,4 @@
-# openstock
+# OpenStock
 Open Source Technical Analysis Software made in Java
 
 ![1.0a](https://github.com/lcmeyer37/openstock/blob/master/openstock02012019.jpg)
