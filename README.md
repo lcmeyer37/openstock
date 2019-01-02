@@ -1,9 +1,6 @@
 # OpenStock
-
-![1.0a](https://github.com/lcmeyer37/openstock/blob/master/version1alpha.jpg)
-
 OpenStock is a project licensed under GNU GPLv3. The project is being created making use of NetBeans and Java. And some of it's features include:
-
+![1.0a](https://github.com/lcmeyer37/openstock/blob/master/version1alpha.jpg)
 * Real-time stocks data (provided by Alpha Vantage)
 * Possibility to analyze multiple charts at the same time
 * Use of Annotations and Indicators for Technical Analysis
