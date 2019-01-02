@@ -1,0 +1,13 @@
+var candlesinput = candles;
+
+var valoresopen = [];
+var valorestimestamp = [];
+for (i = 0; i < candlesinput.length; i++)
+{
+    valoresopen.push(candlesinput[i].opend);
+    valorestimestamp.push(candlesinput[i].timestampdate);
+}
+
+var scriptdescription = "Open;timestamp;drawoncandles;line";
+var yvalues = Java.to(valoresopen,"double[]");
+var xvalues = Java.to(valorestimestamp,"java.util.Date[]");
