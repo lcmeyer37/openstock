@@ -1,9 +1,7 @@
 # OpenStock
-Open Source Technical Analysis Software made in Java
 
 ![1.0a](https://github.com/lcmeyer37/openstock/blob/master/version1alpha.jpg)
 
-## About
 OpenStock is a project licensed under GNU GPLv3. The project is being created making use of NetBeans and Java. And some of it's features include:
 
 * Real-time stocks data (provided by Alpha Vantage)
