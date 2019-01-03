@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<OpenstockAssetSave>
+
+    <MainInfo>
+        <Name></Name>
+        <ID>graficoidtest</ID>
+        <Symbol></Symbol>
+        <Period></Period>
+    </MainInfo>
+
+    <IndicatorsInfo>
+        <Indicator>
+            <Name>Closes</Name>
+            <ID>indicadoridtest01</ID>
+            <BearCodeID>close</BearCodeID>
+            <Parameters></Parameters>
+        </Indicator>
+        <Indicator>
+            <Name>SMA (12)</Name>
+            <ID>indicadoridtest02</ID>
+            <BearCodeID>smaclose</BearCodeID>
+            <Parameters>period=12;</Parameters>
+        </Indicator>
+    </IndicatorsInfo>
+
+    <AnnotationsInfo>
+        <Annotation>
+            <Name>Support Line</Name>
+            <ID>anotacaoidtest</ID>
+            <Type>line</Type>
+            <Parameters>xxxx</Parameters>
+        </Annotation>
+    </AnnotationsInfo>
+
+</OpenstockAssetSave>

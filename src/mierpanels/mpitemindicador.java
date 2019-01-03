@@ -37,14 +37,12 @@ public class mpitemindicador extends javax.swing.JPanel
     {
         initComponents();
         
-        id = "indicador"+java.util.UUID.randomUUID().toString();
+        id = "indicator"+java.util.UUID.randomUUID().toString();
         
         submodulografico = mpsmg;
         
-        adicionaritemindicador(idbearcode,parametrosbearcode);
-        rodarscriptindicador();
-        desenhargraficoindicador();
-        
+        criarcodeengine(idbearcode,parametrosbearcode);
+
     }
     
      public void renomearitem(String novonome)
@@ -52,36 +50,27 @@ public class mpitemindicador extends javax.swing.JPanel
         jLabelNomeItemIndicador.setText(novonome);
     }
      
-    void rodarscriptindicador()
+    public String rodarscriptindicadoredesenhar()
     {
         //funcao para rodar script relacionado a este item indicador
-        mbcodeinterpreter.rodarscript();
-    }
-    
-    void desenhargraficoindicador()
-    {
-        /*
-        public void adicionargraficoindicador
-        (
-            Object xvalues,
-            Object yvalues,
-            String tituloscript,
-            String descricaoeixoy,
-            String localgrafico,
-            String tipografico
-        )*/
-        submodulografico.mcg.adicionarplotohlc_indicador
+        String statusrun = mbcodeinterpreter.rodarscript();      
+        
+        if (statusrun.equals("ok"))
+        {
+                submodulografico.mcg.adicionarplotohlc_indicador
                 (
-                        id,
                         mbcodeinterpreter.pontosx_lastrun,
                         mbcodeinterpreter.pontosy_lastrun,
                         mbcodeinterpreter.tituloscript_lastrun,
                         mbcodeinterpreter.tipoeixoy_lastrun,
                         mbcodeinterpreter.tipodesenho_lastrun
                 );
+        }
+        
+        return statusrun;
     }
-     
-    void adicionaritemindicador(String idbearcode, String parametrosbearcode)
+
+    void criarcodeengine(String idbearcode, String parametrosbearcode)
     {
         //public mcbearcodeinterpreter(String tipo, String id, String nome, String codbcjs, String paramsbcjs)
         //funcao para criar um novo mcbearcodeinterpreter, que sera utilizado para

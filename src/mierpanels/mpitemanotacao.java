@@ -15,25 +15,27 @@ public class mpitemanotacao extends javax.swing.JPanel
     
     //submodulo grafico ao qual este item anotacao pertence
     public mierpanels.mpsubmodulografico submodulografico;
-    //xyannotation relacionado a este item
-    public org.jfree.chart.annotations.XYAnnotation xyannotation;
     
-    //id desta anotacao
-    String id;
+    //variavel que diz que tipo de anotacao eh esta, ex: linha, fibonacci, etc.
+    public String tipoanotacao;
+    
+    //id desta anotacao (utilizado para delecao)
+    public String id;
     
     
     /**
      * Creates new form mpsimbolo
      */
-    public mpitemanotacao(mierpanels.mpsubmodulografico smg, org.jfree.chart.annotations.XYAnnotation anot)
+    public mpitemanotacao(mierpanels.mpsubmodulografico smg, String tipo)
     {
         initComponents();
         
-        id = "anotacao"+java.util.UUID.randomUUID().toString();
+        id = "annotation"+java.util.UUID.randomUUID().toString();
         
         submodulografico = smg;
-        xyannotation = anot;
+        tipoanotacao = tipo;
     }
+   
     
     public void renomearitem(String novonome)
     {

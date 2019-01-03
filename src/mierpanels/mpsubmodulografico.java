@@ -108,6 +108,28 @@ public class mpsubmodulografico extends javax.swing.JPanel
         this.validate();
     }
     
+    public void salvarconfiguracaoasset()
+    {
+        //funcao para salvar as configuracoes de
+        //simbolo, periodo
+        //indicadores
+        //anotacoes
+        
+        //IMPLEMENTAR!
+        
+    }
+    
+    public void carregarconfiguracaoasset()
+    {
+        //funcao para salvar as configuracoes de
+        //simbolo, periodo
+        //indicadores
+        //anotacoes
+        
+        //IMPLEMENTAR!
+        
+    }
+    
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Indicators Section">
@@ -118,14 +140,24 @@ public class mpsubmodulografico extends javax.swing.JPanel
         
         //public mpitemindicador(mierpanels.mpsubmodulografico mpsmg, String idbearcode, String parametrosbearcode)
         mierpanels.mpitemindicador novoindicador = new mierpanels.mpitemindicador(this, idbc, paramsbc);
-        jPanelIndicadores.add(novoindicador);
-        this.validate();
-        this.repaint();
+        String statusrunindicador = novoindicador.rodarscriptindicadoredesenhar();
+        if (statusrunindicador.equals("ok"))
+        {
+            mcg.adicionarplotohlc_indicadorid(novoindicador.id);
+            jPanelIndicadores.add(novoindicador);
+            this.validate();
+            this.repaint(); 
+        }
+        else
+        {
+            mierclasses.mcfuncoeshelper.mostrarmensagem("Algum problema ocorreu e o indicador não pôde ser utilizado:\n\n" + statusrunindicador);
+        }
+
     }
     
-        public void removerIndicador(mierpanels.mpitemindicador mpiiremover)
+    public void removerIndicador(mierpanels.mpitemindicador mpiiremover)
     {
-        mcg.removerplot_indicador(mpiiremover.id);
+        mcg.removerplotohlc_indicador(mpiiremover.id);
         jPanelIndicadores.remove(mpiiremover);
         this.validate();
         this.repaint();
@@ -135,43 +167,26 @@ public class mpsubmodulografico extends javax.swing.JPanel
     
     // <editor-fold defaultstate="collapsed" desc="Annotations Section">
     
-    public void removerAnotacao(mierpanels.mpitemanotacao mpiaremover)
-    {
-
-        mcg.removerplotohlc_annotation(mpiaremover.xyannotation);
-        jPanelAnotacoes.remove(mpiaremover);
-        this.validate();
-        this.repaint();
-    }
-        
     void atualizarlistaannotationsgrafico()
     {
-        //funcao para atualizar lista de anotacoes do submodulografico
         java.util.List<org.jfree.chart.annotations.XYAnnotation> lan = mcg.retornarlistaanotacoesatuais();
-        //mierfuncoeshelper.mostrarmensagem("numero de anotacoes atual: " + lan.size());
-
-        //verificar se existem anotacoes novas para serem adicionadas
-        for (int j = 0; j < lan.size(); j++)
+        int tamanhoanotacoesgraficas = lan.size();
+        
+        int tamanhoidsatual = mcg.idanotacoesatual.size();
+        
+        if (tamanhoanotacoesgraficas > tamanhoidsatual)
         {
-            boolean novaannotation = true;
-            org.jfree.chart.annotations.XYAnnotation annotationverificarsenovo = lan.get(j);
+            //considerando que temos mais anotacoes graficas que ids na lista de ids do chartgenerator,
+            //conclui-se que uma nova anotacao acabou de ser criada graficamente, 
+            //entao um novo id deve ser adicionado a lista de anotacoes
+            //e um novo item de anotacao deve ser criado
             
-            for (int i = 0; i < jPanelAnotacoes.getComponentCount(); i++)
+            //eh necessario saber qual a ferramenta atual em uso para saber qual tipo
+            //de anotacao esta sendo adicionada
+            if (mcg.ferramentaatualgrafico.equals("reta"))
             {
-                mierpanels.mpitemanotacao iaatual = (mierpanels.mpitemanotacao)jPanelAnotacoes.getComponent(i);
-                org.jfree.chart.annotations.XYAnnotation xyannotationatual = iaatual.xyannotation;
-                
-                if (annotationverificarsenovo == xyannotationatual)
-                {
-                    novaannotation = false;
-                }
-            }
-            
-            if (novaannotation == true)
-            {
-                //mierfuncoeshelper.mostrarmensagem("nova anotacao true, adicionando");
-                //considerando que existe uma anotacao nova, criar entao um novo item anotacao para ser adicionado
-                mierpanels.mpitemanotacao novompia = new mierpanels.mpitemanotacao(this,annotationverificarsenovo);
+                mierpanels.mpitemanotacao novompia = new mierpanels.mpitemanotacao(this,"line");
+                mcg.adicionarplotohlc_annotationid(novompia.id);
                 jPanelAnotacoes.add(novompia);
             }
         }
@@ -179,6 +194,16 @@ public class mpsubmodulografico extends javax.swing.JPanel
         this.validate();
         this.repaint();
     }
+    
+    public void removerAnotacao(mierpanels.mpitemanotacao mpiaremover)
+    {
+
+        mcg.removerplotohlc_annotation(mpiaremover.id);
+        jPanelAnotacoes.remove(mpiaremover);
+        this.validate();
+        this.repaint();
+    }
+        
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Tools and OHLC Section">

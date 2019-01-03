@@ -20,7 +20,7 @@ public class mpitemgrafico extends javax.swing.JPanel
     public mierpanels.mpsubmodulografico mpsubgrafico; 
     
     //id deste grafico
-    String id;
+    public String id;
     
     /**
      * Creates new form mpsimbolo
@@ -29,7 +29,7 @@ public class mpitemgrafico extends javax.swing.JPanel
     {
         initComponents();
 
-        id = "grafico"+java.util.UUID.randomUUID().toString();
+        id = "asset"+java.util.UUID.randomUUID().toString();
         
         //associar a tela principal a este mpitemgrafico
         tprincipalpai = tppai;

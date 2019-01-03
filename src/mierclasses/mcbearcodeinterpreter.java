@@ -67,103 +67,104 @@ public class mcbearcodeinterpreter
 
     }
     
-    public void rodarscript()
+    public String rodarscript()
     {
+        try{
+            
         //funcao para rodar script associado a este bearcodeinterpreter
-        try 
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = manager.getEngineByName("JavaScript");
+
+        //adicionar parametros ao script, inputados pelo usuario
+        if (parametrosbcodejs.toLowerCase().contains(";".toLowerCase()))
         {
-            ScriptEngineManager manager = new ScriptEngineManager();
-            ScriptEngine engine = manager.getEngineByName("JavaScript");
-            
-            //adicionar parametros ao script, inputados pelo usuario
-            if (parametrosbcodejs.toLowerCase().contains(";".toLowerCase()))
-            {
-               String[] paramskeyvalue = parametrosbcodejs.split(";");
-               for (int i = 0; i < paramskeyvalue.length; i++)
-               {
-                    String key = paramskeyvalue[i].split("=")[0];
-                    String value = paramskeyvalue[i].split("=")[1];
-                    engine.put(key, value);
-               } 
-            }
-            
-            //adicionar candles do submodulo grafico ao script, e informacao de versao atual do bearcode
-            candles_lastrun = mpiindicadorpai.submodulografico.mcg.candlesatual;
-            //reordenar a lista de candles por timestampdate
-            java.util.Collections.sort(candles_lastrun, new java.util.Comparator<mierclasses.mccandle>() 
-            {
-                public int compare(mierclasses.mccandle candleone, mierclasses.mccandle candletwo) 
-                {
-                    return candleone.timestampdate.compareTo(candletwo.timestampdate);
-                }
-            });
-            engine.put("candles", candles_lastrun);
-            String bcversion = "1.0a";
-            engine.put("bearcodeversion", bcversion);
-            //adicionar uma variavel out especial, para debug de scripts
-            engine.put("debugoutput",System.out);
-            
-            //rodar script
-            //mierclasses.mcfuncoeshelper.mostrarmensagem("codigo para rodar: " + codigobcodejs);
-            engine.eval(codigobcodejs);
-            
-            //receber valores de x (pode ter ateh 5 valores em x para um y) e y calculados pelo script
-            try
-            {
-                pontosx_lastrun = engine.get("xvalues");  
-            }
-            catch (Exception e)
-            {
-                //ignorar caso null etc
-            }
-            
-            try
-            {
-                pontosy_lastrun = engine.get("yvalues");
-            }
-            catch (Exception e)
-            {
-                //ignorar caso null etc
-            }
-            
-            try
-            {
-                outro_lastrun = engine.get("other");
-            }
-            catch (Exception e)
-            {
-                //ignorar caso null etc
-            }
-            
-            try
-            {
-                descricaoscript_lastrun = engine.get("scriptdescription");
-            }
-            catch (Exception e)
-            {
-                //ignorar caso null etc
-            }
-            
-            ////print para teste
-            //mierclasses.mcfuncoeshelper.mostrarmensagem("pontosx1: " + pontosx_lastrun.toString());
-            //mierclasses.mcfuncoeshelper.mostrarmensagem("pontosy: " + pontosy_lastrun.toString());
-            ////mierclasses.mcfuncoeshelper.mostrarmensagem("outro: " + outro_lastrun.toString());
-            //mierclasses.mcfuncoeshelper.mostrarmensagem("scriptdescription: " + descricaoscript_lastrun.toString());
-            
-            tituloscript_lastrun = ((String)descricaoscript_lastrun).split(";")[0];
-            localdesenho_lastrun = ((String)descricaoscript_lastrun).split(";")[2];
-            //diz aonde desenhar os resultados x e y, em cima do grafico ohlc, ou desenhar separadamente (a implementar)
-            
-            tipoeixoy_lastrun = ((String)descricaoscript_lastrun).split(";")[1];
-            //diz qual o tipo de dado no eixo y, timestamp ou genericodouble
-            tipodesenho_lastrun = ((String)descricaoscript_lastrun).split(";")[3];
-            //diz qual o tipo de desenho do grafico: line, bars, etc
-        } 
-        catch (Exception e) 
-        {
-            e.printStackTrace();
-            mierclasses.mcfuncoeshelper.mostrarmensagem(e.getMessage());
+           String[] paramskeyvalue = parametrosbcodejs.split(";");
+           for (int i = 0; i < paramskeyvalue.length; i++)
+           {
+                String key = paramskeyvalue[i].split("=")[0];
+                String value = paramskeyvalue[i].split("=")[1];
+                engine.put(key, value);
+           } 
         }
+
+        //adicionar candles do submodulo grafico ao script, e informacao de versao atual do bearcode
+        candles_lastrun = mpiindicadorpai.submodulografico.mcg.candlesatual;
+        //reordenar a lista de candles por timestampdate
+        java.util.Collections.sort(candles_lastrun, new java.util.Comparator<mierclasses.mccandle>() 
+        {
+            public int compare(mierclasses.mccandle candleone, mierclasses.mccandle candletwo) 
+            {
+                return candleone.timestampdate.compareTo(candletwo.timestampdate);
+            }
+        });
+        engine.put("candles", candles_lastrun);
+        String bcversion = "1.0a";
+        engine.put("bearcodeversion", bcversion);
+        //adicionar uma variavel out especial, para debug de scripts
+        engine.put("debugoutput",System.out);
+
+        //rodar script
+        //mierclasses.mcfuncoeshelper.mostrarmensagem("codigo para rodar: " + codigobcodejs)
+        engine.eval(codigobcodejs);
+
+        //receber valores de x (pode ter ateh 5 valores em x para um y) e y calculados pelo script
+        try
+        {
+            pontosx_lastrun = engine.get("xvalues");  
+        }
+        catch (Exception e)
+        {
+            //ignorar caso null etc
+        }
+
+        try
+        {
+            pontosy_lastrun = engine.get("yvalues");
+        }
+        catch (Exception e)
+        {
+            //ignorar caso null etc
+        }
+
+        try
+        {
+            outro_lastrun = engine.get("other");
+        }
+        catch (Exception e)
+        {
+            //ignorar caso null etc
+        }
+
+        try
+        {
+            descricaoscript_lastrun = engine.get("scriptdescription");
+        }
+        catch (Exception e)
+        {
+            //ignorar caso null etc
+        }
+
+        ////print para teste
+        //mierclasses.mcfuncoeshelper.mostrarmensagem("pontosx1: " + pontosx_lastrun.toString());
+        //mierclasses.mcfuncoeshelper.mostrarmensagem("pontosy: " + pontosy_lastrun.toString());
+        ////mierclasses.mcfuncoeshelper.mostrarmensagem("outro: " + outro_lastrun.toString());
+        //mierclasses.mcfuncoeshelper.mostrarmensagem("scriptdescription: " + descricaoscript_lastrun.toString());
+
+        tituloscript_lastrun = ((String)descricaoscript_lastrun).split(";")[0];
+        localdesenho_lastrun = ((String)descricaoscript_lastrun).split(";")[2];
+        //diz aonde desenhar os resultados x e y, em cima do grafico ohlc, ou desenhar separadamente (a implementar)
+
+        tipoeixoy_lastrun = ((String)descricaoscript_lastrun).split(";")[1];
+        //diz qual o tipo de dado no eixo y, timestamp ou genericodouble
+        tipodesenho_lastrun = ((String)descricaoscript_lastrun).split(";")[3];
+        //diz qual o tipo de desenho do grafico: line, bars, etc
+        }
+        catch (Exception ex)
+        {
+            return ex.getMessage();
+        }
+        
+        return "ok";
     }
 
 }

@@ -23,6 +23,7 @@ public class mcchartgenerator
     public org.jfree.chart.ChartPanel chartpanelatual; //chart panel atual
     public java.util.List<mierclasses.mccandle> candlesatual; //lista de candles atual utilizadas por este mcg
     public java.util.List<String> idindicadoresatual; //lista com ids dos indicadores atuais 
+    public java.util.List<String> idanotacoesatual; //lista com ids das anotacoes atuais
     
     //informacoes sobre a ultima posicao do mouse no chart
     public double valormouseatualgraficox; //contem o ultimo valor em x que o mouse tocou
@@ -38,6 +39,7 @@ public class mcchartgenerator
     void inicializarmcchartgenerator()
     {
         idindicadoresatual = new java.util.ArrayList<>();
+        idanotacoesatual = new java.util.ArrayList<>();
     }
     
     // <editor-fold defaultstate="collapsed" desc="Funcoes para funcionamento de ferramentas no chart OHLC">
@@ -112,8 +114,6 @@ public class mcchartgenerator
     double reta_y1 = 0;
     void ferramentareta_mclick(org.jfree.chart.ChartMouseEvent cmevent)
     {
-
-        
         if (ja_tem_ponto_1 == false)
         {
             reta_x1 = valormouseatualgraficox;
@@ -140,7 +140,15 @@ public class mcchartgenerator
         }
         else if (ja_tem_ponto_1 == true)
         {
-            removerplotohlc_annotation(xylineannotation_preview);
+            //remover annotation
+            try
+            {
+                org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot)chartatual.getPlot();
+                plotatual.removeAnnotation(xylineannotation_preview);
+            }
+            catch (Exception ex)
+            {}
+
             
             //ja tendo o o primeiro ponto, pode desenhar o preview
             double reta_x2_preview = valormouseatualgraficox;
@@ -153,33 +161,6 @@ public class mcchartgenerator
     }
     // </editor-fold>
     
-    // <editor-fold defaultstate="collapsed" desc="Ferramenta - Deletar">
-    void ferramentadeletar_mclick(org.jfree.chart.ChartMouseEvent cmevent)
-    {
-        
-        org.jfree.chart.entity.ChartEntity centity = cmevent.getEntity();
-        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getPlot();
-        mcfuncoeshelper.mostrarmensagem(centity.getClass().toString());
-    
-		/*ChartEntity chartentity = chartmouseevent.getEntity();
-		XYPlot plot = (XYPlot) myChart.getChart().getPlot();
-		System.out.println(chartentity.getClass());
-		if (chartentity instanceof XYAnnotationEntity){
-			XYAnnotationEntity xyEntity = (XYAnnotationEntity) chartentity;
-			String tip = xyEntity.getToolTipText();
-			System.out.println("tooltip selected: " + tip);
-			List<AbstractXYAnnotation> lista = plot.getAnnotations();
-			for (AbstractXYAnnotation anot : lista) {
-				System.out.println("cada: " + anot.getToolTipText());
-				if ((anot.getToolTipText()).equals(tip)) {
-					System.out.println("removeu: " +anot.getToolTipText());
-					plot.removeAnnotation(anot);
-					break;
-				}
-			}*/
-    }
-
-    // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Funcionalidades Core das Ferramentas">
     void atualizarinformacoesatuaismousegrafico(org.jfree.chart.ChartMouseEvent cmevent)
@@ -205,6 +186,12 @@ public class mcchartgenerator
         reta_y1 = 0;
     }
     
+    public void adicionarplotohlc_annotationid(String idadicionar)
+    {
+        //esta funcao eh necessaria para adicionar o novo id a lista de anotacoes atuais
+        //essa adicao deve ser feita manualmente pela logica do core de ferramentas, que funcionam com o mouse
+        idanotacoesatual.add(idadicionar);
+    }
 
     public org.jfree.chart.annotations.XYLineAnnotation adicionarplotohlc_annotationreta(double x1, double y1, double x2, double y2)
     { 
@@ -238,16 +225,24 @@ public class mcchartgenerator
         //funcao retorna a annotation adicionada
     }
     
-    public void removerplotohlc_annotation(org.jfree.chart.annotations.XYAnnotation xyannotationremover)
+    public void removerplotohlc_annotation(String idanotacao)
     {
-        try
+        //encontra o dataset para deletar utilizando o idindicador
+        for (int i = 0; i < idanotacoesatual.size(); i++)
         {
-            org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getXYPlot();
-            plot.removeAnnotation(xyannotationremover); 
-        }
-        catch(java.lang.IllegalArgumentException ex)
-        {
-            //ignorar caso a annotation seja null
+            String idanotacaoatual = (String)idanotacoesatual.get(i);
+
+            if (idanotacaoatual.equals(idanotacao))
+            {
+                java.util.List<org.jfree.chart.annotations.XYAnnotation> lan = retornarlistaanotacoesatuais();
+                org.jfree.chart.annotations.XYAnnotation annotationremover = lan.get(i);
+                
+                org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot)chartatual.getPlot();
+                plotatual.removeAnnotation(annotationremover);
+                
+                idanotacoesatual.remove(i); //necessario para logica atual
+                break;
+            }
         }
     }
     
@@ -268,7 +263,6 @@ public class mcchartgenerator
     // <editor-fold defaultstate="collapsed" desc="Funcoes para funcionamento de indicadores">
     public void adicionarplotohlc_indicador
         (
-            String idindicador,
             Object xvalues,
             Object yvalues,
             String tituloscript,
@@ -312,12 +306,15 @@ public class mcchartgenerator
             int numerodatasetsatual = plotatual.getDatasetCount();
             plotatual.setDataset(numerodatasetsatual,datasetadd);
             plotatual.setRenderer(numerodatasetsatual, rendereradd);
-
-            idindicadoresatual.add(idindicador);
         }
     }
+        
+    public void adicionarplotohlc_indicadorid(String idindicador)
+    {
+        idindicadoresatual.add(idindicador);
+    }
     
-    public void removerplot_indicador(String idindicador)
+    public void removerplotohlc_indicador(String idindicador)
     {
         //encontra o dataset para deletar utilizando o idindicador
         for (int i = 0; i < idindicadoresatual.size(); i++)
@@ -329,6 +326,8 @@ public class mcchartgenerator
                 org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot)chartatual.getPlot();
                 org.jfree.data.time.TimeSeriesCollection datasetatual = (org.jfree.data.time.TimeSeriesCollection) plotatual.getDataset(i+1); //i+1 porque o 0 eh o proprio ohlc
                 datasetatual.removeAllSeries();
+                
+                //idindicadoresatual.remove(i); //nao fazer!
             }
         }
     }
@@ -341,6 +340,7 @@ public class mcchartgenerator
         //limpar lista de id de indicadores considerando que todos os indicadores
         //e anotacoes serao deletados e um novo OLHC chart sera criado
         idindicadoresatual = new java.util.ArrayList<>();
+        idanotacoesatual = new java.util.ArrayList<>();
         
         // <editor-fold defaultstate="collapsed" desc="Recriar Grafico OHLC">
         //grafico ohlc
