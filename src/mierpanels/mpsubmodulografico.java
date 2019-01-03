@@ -23,9 +23,9 @@ public class mpsubmodulografico extends javax.swing.JPanel
     public mierclasses.mcavsearchresultcandle mbmsimboloatual; //variavel que contem o simbolo atual em uso
     
     
-    /**
-     * Creates new form mpgrafico
-     */
+    // <editor-fold defaultstate="collapsed" desc="Construtores Submodulo Grafico">
+    
+    //construtor novo submodulo grafico
     public mpsubmodulografico(mierpanels.mpitemgrafico mtgpai)
     {
         initComponents();
@@ -35,6 +35,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
         inicializarsubmodulografico();
     }
     
+    //inicializacao de novo submodulo grafico
     void inicializarsubmodulografico()
     {
         //popular objeto utilizado para desenho de graficos
@@ -44,6 +45,9 @@ public class mpsubmodulografico extends javax.swing.JPanel
         jPanelIndicadores.setLayout(new java.awt.GridLayout(20,1));
     }
     
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Main Section">
     
     public void adicionarsimboloaotextboxsubmodulo(mierclasses.mcavsearchresultcandle simboloadicionar)
     {
@@ -77,7 +81,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
         else if (periodoescolhido.equals("Monthly"))
             candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesmonthly(simboloescolhido, "");
         
-        //recriar grafico OHLC com informacoes
+        //recriar grafico OHLC resetando anotacoes e indicadores atuais
         mcg.recriarohlc(candles, mbmsimboloatual);
         //receber cpanel OHLC pos-atualizacao para adicionar ao panel
         org.jfree.chart.ChartPanel chartpanel = mcg.retornarcpanelohlc();
@@ -95,6 +99,8 @@ public class mpsubmodulografico extends javax.swing.JPanel
         });
         
         //mostrar cpanel OHLC (deletar qualquer outro panel antes presente)
+        jPanelIndicadores.removeAll();
+        jPanelAnotacoes.removeAll();
         jPanelChartpanelholder.removeAll();
         jPanelChartpanelholder.setLayout(new java.awt.BorderLayout());
         jPanelChartpanelholder.add(chartpanel);
@@ -102,6 +108,10 @@ public class mpsubmodulografico extends javax.swing.JPanel
         this.validate();
     }
     
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Indicators Section">
+        
     public void adicionarIndicador(String idbc, String paramsbc)
     {
         //funcao para adicionar novo item indicador a este submodulo grafico
@@ -113,6 +123,18 @@ public class mpsubmodulografico extends javax.swing.JPanel
         this.repaint();
     }
     
+        public void removerIndicador(mierpanels.mpitemindicador mpiiremover)
+    {
+        mcg.removerplot_indicador(mpiiremover.id);
+        jPanelIndicadores.remove(mpiiremover);
+        this.validate();
+        this.repaint();
+    }
+    
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Annotations Section">
+    
     public void removerAnotacao(mierpanels.mpitemanotacao mpiaremover)
     {
 
@@ -121,35 +143,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
         this.validate();
         this.repaint();
     }
-    
-    public void removerIndicador(mierpanels.mpitemindicador mpiiremover)
-    {
-        mcg.removerplot_indicador(mpiiremover.id);
-        jPanelIndicadores.remove(mpiiremover);
-        this.validate();
-        this.repaint();
-    }
-    
-    void resetarcorbotoesferramentas()
-    {
-        jButtonAtivarSelecao.setForeground(Color.black);
-        jButtonAtivarReta.setForeground(Color.black);
-    }
-    
-    
-    // <editor-fold defaultstate="collapsed" desc="Funcoes de interpretacao de mouse events do jfreechart">
-    void interpretarmouseclickchart(org.jfree.chart.ChartMouseEvent e)
-    {
-        atualizarlistaannotationsgrafico();
-    }
-    
-    void interpretarmousemovechart(org.jfree.chart.ChartMouseEvent e)
-    {       
-        String valoryatualohlc = String.format( "%.4f", mcg.valormouseatualgraficoy);
-        java.util.Date dataatualohlc = new java.util.Date((long)mcg.valormouseatualgraficox);
-        jLabelInfo.setText("Price: " + valoryatualohlc + " Date: " + dataatualohlc.toString());
-    }
-
+        
     void atualizarlistaannotationsgrafico()
     {
         //funcao para atualizar lista de anotacoes do submodulografico
@@ -185,8 +179,35 @@ public class mpsubmodulografico extends javax.swing.JPanel
         this.validate();
         this.repaint();
     }
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Tools and OHLC Section">
+    
+    // <editor-fold defaultstate="collapsed" desc="Funcoes de interpretacao de mouse events do jfreechart">
+    void interpretarmouseclickchart(org.jfree.chart.ChartMouseEvent e)
+    {
+        atualizarlistaannotationsgrafico();
+    }
+    
+    void interpretarmousemovechart(org.jfree.chart.ChartMouseEvent e)
+    {       
+        atualizarinformacoesposicaoatualgrafico();
+    }
     //</editor-fold>
     
+    void resetarcorbotoesferramentas()
+    {
+        jButtonAtivarSelecao.setForeground(Color.black);
+        jButtonAtivarReta.setForeground(Color.black);
+    }
+        
+    void atualizarinformacoesposicaoatualgrafico()
+    {
+             String valoryatualohlc = String.format( "%.4f", mcg.valormouseatualgraficoy);
+        java.util.Date dataatualohlc = new java.util.Date((long)mcg.valormouseatualgraficox);
+        jLabelInfo.setText("Price: " + valoryatualohlc + " Date: " + dataatualohlc.toString());   
+    }
+    // </editor-fold>
 
 
     /**

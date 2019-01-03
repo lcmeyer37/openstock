@@ -333,15 +333,15 @@ public class mcchartgenerator
         }
     }
         
-    public void adicionargraficosecundario()
-    {
-        //utilizado para adicionar um subgrafico abaixo do ohlc (a implementar)
-    }
     //</editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Funcoes para recriar e retornar chart OHLC com indicadores">
     public void recriarohlc(java.util.List<mierclasses.mccandle> catual, mierclasses.mcavsearchresultcandle infosimbolo)
     {
+        //limpar lista de id de indicadores considerando que todos os indicadores
+        //e anotacoes serao deletados e um novo OLHC chart sera criado
+        idindicadoresatual = new java.util.ArrayList<>();
+        
         // <editor-fold defaultstate="collapsed" desc="Recriar Grafico OHLC">
         //grafico ohlc
         candlesatual = catual;
