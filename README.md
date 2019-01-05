@@ -1,4 +1,4 @@
-# OpenStock
+# Open Stock
 Open Source Technical Analysis Software
 
 ![1.0a](https://github.com/lcmeyer37/openstock/blob/master/openstock02012019.jpg)
