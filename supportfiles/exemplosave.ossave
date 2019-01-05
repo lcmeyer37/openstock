@@ -12,13 +12,13 @@
         <Indicator>
             <Name>Closes</Name>
             <ID>indicadoridtest01</ID>
-            <BearCodeID>close</BearCodeID>
+            <BCID>close</BCID>
             <Parameters></Parameters>
         </Indicator>
         <Indicator>
             <Name>SMA (12)</Name>
             <ID>indicadoridtest02</ID>
-            <BearCodeID>smaclose</BearCodeID>
+            <BCID>smaclose</BCID>
             <Parameters>period=12;</Parameters>
         </Indicator>
     </IndicatorsInfo>

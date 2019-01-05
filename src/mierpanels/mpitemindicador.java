@@ -87,7 +87,7 @@ public class mpitemindicador extends javax.swing.JPanel
         try
         {
             String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
-            String cindicconfig = rootjar + "/arquivosconfig/indicadores.mfxconfig";
+            String cindicconfig = rootjar + "/configfiles/indicators.mfxconfig";
             //mierclasses.mcfuncoeshelper.mostrarmensagem(cindicconfig);
             
             File xmlArquivo = new File(cindicconfig);
@@ -97,7 +97,7 @@ public class mpitemindicador extends javax.swing.JPanel
         
             Document document = dbuilder.parse(xmlArquivo);
             
-            NodeList listaIndicadoresDisponiveis = document.getElementsByTagName("Indicador");
+            NodeList listaIndicadoresDisponiveis = document.getElementsByTagName("Indicator");
             
             for (int i = 0; i < listaIndicadoresDisponiveis.getLength(); i++)
             {
@@ -107,17 +107,17 @@ public class mpitemindicador extends javax.swing.JPanel
                 {
                     Element elIndicador = (Element) nodeIndicador;
                     
-                    String id =  elIndicador.getElementsByTagName("ID").item(0).getTextContent();
+                    String id =  elIndicador.getElementsByTagName("BCID").item(0).getTextContent();
                     //mierclasses.mcfuncoeshelper.mostrarmensagem("id: " + id);
                     
                     if (id.equals(idbci) == true)
                     {
-                        String nome = elIndicador.getElementsByTagName("Nome").item(0).getTextContent();
+                        String nome = elIndicador.getElementsByTagName("Name").item(0).getTextContent();
                         nomebci = nome;
                         //mierclasses.mcfuncoeshelper.mostrarmensagem("nome: " + nome);
-                        String arquivobcode = elIndicador.getElementsByTagName("ArquivoBearcode").item(0).getTextContent();
+                        String arquivobcode = elIndicador.getElementsByTagName("BearcodeFile").item(0).getTextContent();
                         //mierclasses.mcfuncoeshelper.mostrarmensagem("arquivobcode: " + arquivobcode);
-                        caminhoarquivobci = rootjar + "/arquivosconfig/" + arquivobcode;
+                        caminhoarquivobci = rootjar + "/configfiles/" + arquivobcode;
                         //mierclasses.mcfuncoeshelper.mostrarmensagem("caminhoarquivobci: " + caminhoarquivobci);
                         break;
                     }

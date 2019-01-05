@@ -115,7 +115,67 @@ public class mpsubmodulografico extends javax.swing.JPanel
         //indicadores
         //anotacoes
         
-        //IMPLEMENTAR!
+        // <editor-fold defaultstate="collapsed" desc="criar subxml com indicadores">
+        String subxmlIndicadores = "";
+        for (int i = 0; i < jPanelIndicadores.getComponentCount(); i++)
+        {
+            mierpanels.mpitemindicador miia = (mierpanels.mpitemindicador)jPanelIndicadores.getComponent(i);
+            subxmlIndicadores = subxmlIndicadores +
+                    "<Indicator>" +
+                        "<Name>" + miia.jLabelNomeItemIndicador.getText() + "</Name>" +
+                        "<ID>" + miia.id + "</ID>" +
+                        "<BCID>" + miia.mbcodeinterpreter.idbcode + "</BCID>" +
+                        "<Parameters>" + miia.mbcodeinterpreter.parametrosbcodejs + "</Parameters>" +
+                    "</Indicator>";
+            
+        }
+        // </editor-fold>
+        
+        // <editor-fold defaultstate="collapsed" desc="criar subxml com annotations">
+        String subxmlAnotacoes = "";
+        for (int i = 0; i < jPanelAnotacoes.getComponentCount(); i++)
+        {
+            mierpanels.mpitemanotacao miaa = (mierpanels.mpitemanotacao)jPanelAnotacoes.getComponent(i);
+            
+            String tipoAnotacao = miaa.tipoanotacao;
+            String parametrosAnotacao = "";
+            if (tipoAnotacao.equals("line"))
+            {
+                org.jfree.chart.annotations.XYLineAnnotation xylinha = (org.jfree.chart.annotations.XYLineAnnotation)miaa.annotation;
+                parametrosAnotacao = ""; //colocar aqui valores de ponto inicio fim da anotacao
+            }
+            
+            subxmlAnotacoes = subxmlAnotacoes +
+                    "<Annotation>" +
+                        "<Name>" + miaa.jLabelNomeItemAnotacao.getText() + "</Name>" +
+                        "<ID>" + miaa.id + "</ID>" +
+                        "<Type>" + tipoAnotacao + "</Type>" +
+                        "<Parameters>" + parametrosAnotacao + "</Parameters>" +
+                    "</Annotation>";
+        }
+        // </editor-fold>
+        
+        
+        String xmlSalvar =
+                "<?xml version=\"1.0\"?>" +
+                    "<OpenstockAssetSave>" +
+                        
+                        "<MainInfo>" +
+                            "<Name>" + mtgraficopai.jLabelNomeItemGrafico.getText() + "</Name>" +
+                            "<ID>" + mtgraficopai.id + "</ID>" +
+                            "<Symbol>" + jTextFieldNomeSimbolo.getText() + "</Symbol>" +
+                            "<Period>" + jComboBoxPeriodoSimbolo.getSelectedItem().toString() + "</Period>" +
+                        "</MainInfo>" +
+                
+                        "<IndicatorsInfo>" +
+                            subxmlIndicadores +
+                        "</IndicatorsInfo>" +
+                
+                        "<AnnotationsInfo>" +
+                            subxmlAnotacoes +
+                        "</AnnotationsInfo>" +
+                
+                    "</<OpenstockAssetSave>";
         
     }
     
@@ -169,7 +229,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
     
     void atualizarlistaannotationsgrafico()
     {
-        java.util.List<org.jfree.chart.annotations.XYAnnotation> lan = mcg.retornarlistaanotacoesatuais();
+        java.util.List<Object> lan = mcg.retornarlistaanotacoesatuais();
         int tamanhoanotacoesgraficas = lan.size();
         
         int tamanhoidsatual = mcg.idanotacoesatual.size();
@@ -185,7 +245,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
             //de anotacao esta sendo adicionada
             if (mcg.ferramentaatualgrafico.equals("reta"))
             {
-                mierpanels.mpitemanotacao novompia = new mierpanels.mpitemanotacao(this,"line");
+                mierpanels.mpitemanotacao novompia = new mierpanels.mpitemanotacao(this,"line",lan.get(tamanhoanotacoesgraficas-1));
                 mcg.adicionarplotohlc_annotationid(novompia.id);
                 jPanelAnotacoes.add(novompia);
             }

@@ -234,8 +234,8 @@ public class mcchartgenerator
 
             if (idanotacaoatual.equals(idanotacao))
             {
-                java.util.List<org.jfree.chart.annotations.XYAnnotation> lan = retornarlistaanotacoesatuais();
-                org.jfree.chart.annotations.XYAnnotation annotationremover = lan.get(i);
+                java.util.List<Object> lan = retornarlistaanotacoesatuais();
+                org.jfree.chart.annotations.XYAnnotation annotationremover = (org.jfree.chart.annotations.XYAnnotation)lan.get(i);
                 
                 org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot)chartatual.getPlot();
                 plotatual.removeAnnotation(annotationremover);
@@ -250,10 +250,10 @@ public class mcchartgenerator
     //</editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Funcoes Helper">
-    public java.util.List<org.jfree.chart.annotations.XYAnnotation> retornarlistaanotacoesatuais()
+    public java.util.List<Object> retornarlistaanotacoesatuais()
     {
         org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getXYPlot();
-        java.util.List<org.jfree.chart.annotations.XYAnnotation> listaannotations = plot.getAnnotations();
+        java.util.List<Object> listaannotations = plot.getAnnotations();
         return listaannotations;
     }
     //</editor-fold>

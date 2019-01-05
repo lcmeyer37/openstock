@@ -19,6 +19,10 @@ public class mpitemanotacao extends javax.swing.JPanel
     //variavel que diz que tipo de anotacao eh esta, ex: linha, fibonacci, etc.
     public String tipoanotacao;
     
+    //variavel jfree chart utilizada para salvar parametros da anotacao para carregamento futuro
+    //public org.jfree.chart.annotations.XYAnnotation xyannotation;
+    public Object annotation;
+    
     //id desta anotacao (utilizado para delecao)
     public String id;
     
@@ -26,7 +30,7 @@ public class mpitemanotacao extends javax.swing.JPanel
     /**
      * Creates new form mpsimbolo
      */
-    public mpitemanotacao(mierpanels.mpsubmodulografico smg, String tipo)
+    public mpitemanotacao(mierpanels.mpsubmodulografico smg, String tipo, Object an)
     {
         initComponents();
         
@@ -34,6 +38,7 @@ public class mpitemanotacao extends javax.swing.JPanel
         
         submodulografico = smg;
         tipoanotacao = tipo;
+        annotation = an;
     }
    
     

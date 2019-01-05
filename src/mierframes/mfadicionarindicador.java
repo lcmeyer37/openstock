@@ -44,7 +44,7 @@ public class mfadicionarindicador extends javax.swing.JFrame
             jComboBoxIndicadoresDisponiveis.removeAllItems();
             
             String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
-            String cindicconfig = rootjar + "/arquivosconfig/indicadores.mfxconfig";
+            String cindicconfig = rootjar + "/configfiles/indicators.mfxconfig";
             //mierclasses.mcfuncoeshelper.mostrarmensagem(cindicconfig);
             
             File xmlArquivo = new File(cindicconfig);
@@ -54,7 +54,7 @@ public class mfadicionarindicador extends javax.swing.JFrame
         
             Document document = dbuilder.parse(xmlArquivo);
             
-            NodeList listaIndicadoresDisponiveis = document.getElementsByTagName("Indicador");
+            NodeList listaIndicadoresDisponiveis = document.getElementsByTagName("Indicator");
             
             for (int i = 0; i < listaIndicadoresDisponiveis.getLength(); i++)
             {
@@ -64,9 +64,9 @@ public class mfadicionarindicador extends javax.swing.JFrame
                 {
                     Element elIndicador = (Element) nodeIndicador;
                     
-                    String id =  elIndicador.getElementsByTagName("ID").item(0).getTextContent();
-                    String nome = elIndicador.getElementsByTagName("Nome").item(0).getTextContent();
-                    String caminhobcode = elIndicador.getElementsByTagName("ArquivoBearcode").item(0).getTextContent();
+                    String id =  elIndicador.getElementsByTagName("BCID").item(0).getTextContent();
+                    String nome = elIndicador.getElementsByTagName("Name").item(0).getTextContent();
+                    String caminhobcode = elIndicador.getElementsByTagName("BearcodeFile").item(0).getTextContent();
                     
                     jComboBoxIndicadoresDisponiveis.addItem(nome + " [" + id + "]");
                 }
