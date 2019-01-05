@@ -110,7 +110,9 @@ public class mpsubmodulografico extends javax.swing.JPanel
     
     public void salvarconfiguracaoasset()
     {
-        //funcao para salvar as configuracoes de
+        try
+        {
+                    //funcao para salvar as configuracoes de
         //simbolo, periodo
         //indicadores
         //anotacoes
@@ -137,20 +139,39 @@ public class mpsubmodulografico extends javax.swing.JPanel
         {
             mierpanels.mpitemanotacao miaa = (mierpanels.mpitemanotacao)jPanelAnotacoes.getComponent(i);
             
-            String tipoAnotacao = miaa.tipoanotacao;
-            String parametrosAnotacao = "";
-            if (tipoAnotacao.equals("line"))
+            String tipoanotacao = miaa.tipoanotacao;
+            String anotacaoserializada = "";
+            
+            if (tipoanotacao.equals("line"))
             {
-                org.jfree.chart.annotations.XYLineAnnotation xylinha = (org.jfree.chart.annotations.XYLineAnnotation)miaa.annotation;
-                parametrosAnotacao = ""; //colocar aqui valores de ponto inicio fim da anotacao
+                org.jfree.chart.annotations.XYLineAnnotation lineserialize = 
+                        (org.jfree.chart.annotations.XYLineAnnotation) miaa.annotation;
+                
+                //making serialization of the annotations
+                //https://www.tutorialspoint.com/java/java_serialization.htm
+                //https://stackoverflow.com/questions/134492/how-to-serialize-an-object-into-a-string
+                try
+                {
+                    java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+                    java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(baos);
+                    oos.writeObject(lineserialize);
+                    oos.close();
+                    anotacaoserializada = java.util.Base64.getEncoder().encodeToString(baos.toByteArray()); 
+                }
+                catch (java.io.IOException ex)
+                {
+                    //necessario
+                }
             }
+            
+            
             
             subxmlAnotacoes = subxmlAnotacoes +
                     "<Annotation>" +
                         "<Name>" + miaa.jLabelNomeItemAnotacao.getText() + "</Name>" +
                         "<ID>" + miaa.id + "</ID>" +
-                        "<Type>" + tipoAnotacao + "</Type>" +
-                        "<Parameters>" + parametrosAnotacao + "</Parameters>" +
+                        "<Type>" + miaa.tipoanotacao + "</Type>" +
+                        "<Parameters>" + anotacaoserializada + "</Parameters>" +
                     "</Annotation>";
         }
         // </editor-fold>
@@ -177,6 +198,26 @@ public class mpsubmodulografico extends javax.swing.JPanel
                 
                     "</<OpenstockAssetSave>";
         
+        //abrir dialog para criar arquivo de save
+        javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+        fileChooser.setDialogTitle("Please choose a location and name for the Open Stock save file");
+
+        int userSelection = fileChooser.showSaveDialog(this);
+
+        if (userSelection == javax.swing.JFileChooser.APPROVE_OPTION) 
+        {
+            java.io.File fileToSave = fileChooser.getSelectedFile();
+            
+            java.io.PrintWriter writer = new java.io.PrintWriter(fileToSave + ".ossave", "UTF-8");
+            writer.println(xmlSalvar);
+            writer.close();
+        }
+        }
+        catch (Exception ex)
+        {
+            mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred when saving. Exception: " + ex.getMessage());
+        }
+
     }
     
     public void carregarconfiguracaoasset()
@@ -415,6 +456,13 @@ public class mpsubmodulografico extends javax.swing.JPanel
         jButtonCarregarConfiguracao.setText("Load Asset");
 
         jButtonSalvarConfiguracao.setText("Save Asset");
+        jButtonSalvarConfiguracao.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonSalvarConfiguracaoActionPerformed(evt);
+            }
+        });
 
         jButtonAtualizarDadosGrafico.setText("Update Symbol Data");
         jButtonAtualizarDadosGrafico.addActionListener(new java.awt.event.ActionListener()
@@ -609,6 +657,11 @@ public class mpsubmodulografico extends javax.swing.JPanel
         mierframes.mfadicionarsimbolo as = new mierframes.mfadicionarsimbolo(this);
         as.show();
     }//GEN-LAST:event_jButtonEscolherSimboloActionPerformed
+
+    private void jButtonSalvarConfiguracaoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonSalvarConfiguracaoActionPerformed
+    {//GEN-HEADEREND:event_jButtonSalvarConfiguracaoActionPerformed
+        salvarconfiguracaoasset();
+    }//GEN-LAST:event_jButtonSalvarConfiguracaoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

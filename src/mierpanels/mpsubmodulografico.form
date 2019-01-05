@@ -298,6 +298,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Save Asset"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonSalvarConfiguracaoActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButtonAtualizarDadosGrafico">
           <Properties>

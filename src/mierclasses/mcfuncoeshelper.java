@@ -13,7 +13,7 @@ public class mcfuncoeshelper
 {
     public static void mostrarmensagem(String mensagem)
     {
-        javax.swing.JOptionPane.showMessageDialog(null, mensagem, "MierStock FX", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        javax.swing.JOptionPane.showMessageDialog(null, mensagem, "Open Stock", javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }
     
     public static void setarclipboard(String mensagem)
