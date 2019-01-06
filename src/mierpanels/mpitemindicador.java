@@ -30,14 +30,27 @@ public class mpitemindicador extends javax.swing.JPanel
     //id deste indicador
     String id;
     
-    /**
-     * Creates new form mpsimbolo
-     */
+    //construtor novo indicador
     public mpitemindicador(mierpanels.mpsubmodulografico mpsmg, String idbearcode, String parametrosbearcode)
     {
         initComponents();
         
         id = "indicator"+java.util.UUID.randomUUID().toString();
+        
+        submodulografico = mpsmg;
+        
+        criarcodeengine(idbearcode,parametrosbearcode);
+
+    }
+    
+    //construtor recarregar indicador
+    public mpitemindicador(mierpanels.mpsubmodulografico mpsmg, String idind, String nome, String idbearcode, String parametrosbearcode)
+    {
+        initComponents();
+        
+        id = idind;
+        
+        jLabelNomeItemIndicador.setText(nome);
         
         submodulografico = mpsmg;
         

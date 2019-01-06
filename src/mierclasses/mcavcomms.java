@@ -37,6 +37,45 @@ public class mcavcomms
 
     // <editor-fold defaultstate="collapsed" desc="Stock Time Series">
 
+    public java.util.List<mccandle> recebermfxtestcandles()
+    {
+        //em teste
+        //funcao para retornar candles de teste
+        
+        java.util.List<mccandle> listacandlesretornar = new java.util.ArrayList<>();
+        
+        for (int i = 0; i < 50; i++)
+        {
+            java.util.Date datagerada = new java.util.Date(1993,04,30);
+            datagerada = new java.util.Date(datagerada.getTime() + 86400000 * i); //gerar dias apartir de 30 de abril de 1993
+            
+            String timestampcandle = datagerada.getYear() + "-" + datagerada.getMonth() + "-" + datagerada.getDate();
+            //System.out.println(timestampcandle);
+            
+            double sinvalue = java.lang.Math.sin(i);
+            double opend = sinvalue * 10;
+            double lowd = opend - 15;
+            double closed = opend - 10;
+            double highd = opend + 15;
+            double volumed = sinvalue * 1000;
+
+            
+            String opencandle = String.valueOf(opend);
+            //System.out.println(opencandle);
+            String highcandle = String.valueOf(highd);
+            String lowcandle = String.valueOf(lowd);
+            String closecandle = String.valueOf(closed);
+            String volumecandle= String.valueOf(volumed);
+            
+            // public mccandle(String tsstr, String ostr, String hstr, String cstr, String lstr, String vstr)
+            mccandle candleatual = new mccandle(timestampcandle,opencandle,highcandle,closecandle,lowcandle,volumecandle);
+            listacandlesretornar.add(candleatual);
+        }
+   
+        return listacandlesretornar;
+    }
+    
+    
     public java.util.List<mccandle> receberstockcandlesintraday(String simbolo, String intervalo, String outputsize)
     {
                     /*
@@ -383,7 +422,7 @@ public class mcavcomms
     
     public java.util.List<mcavsearchresultcandle> receberstocksearchbestmatches(String palavrabuscar)
     {
-
+        
         String jsonconteudo = "";
         jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords="+palavrabuscar+"&apikey=" + chavealphavantage);
         //mierclasses.mcfuncoeshelper.mostrarmensagem(jsonconteudo);

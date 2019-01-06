@@ -225,12 +225,25 @@ public class mcchartgenerator
         //funcao retorna a annotation adicionada
     }
     
+    public void adicionarplotohlc_annotationobjectbase64type(Object objectannotation, String tipo)
+    {
+        //funcao especial para carregamento de objetos de annotation
+        if (tipo.equals("line"))
+        {
+            org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getXYPlot();
+            org.jfree.chart.annotations.XYLineAnnotation xylineannotation = (org.jfree.chart.annotations.XYLineAnnotation)objectannotation;
+
+            plot.addAnnotation(xylineannotation);
+        }
+    }
+    
     public void removerplotohlc_annotation(String idanotacao)
     {
         //encontra o dataset para deletar utilizando o idindicador
         for (int i = 0; i < idanotacoesatual.size(); i++)
         {
             String idanotacaoatual = (String)idanotacoesatual.get(i);
+            //mierclasses.mcfuncoeshelper.mostrarmensagem(idanotacao);
 
             if (idanotacaoatual.equals(idanotacao))
             {
@@ -335,7 +348,7 @@ public class mcchartgenerator
     //</editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Funcoes para recriar e retornar chart OHLC com indicadores">
-    public void recriarohlc(java.util.List<mierclasses.mccandle> catual, mierclasses.mcavsearchresultcandle infosimbolo)
+    public void recriarohlc(java.util.List<mierclasses.mccandle> catual, String tituloohlc)
     {
         //limpar lista de id de indicadores considerando que todos os indicadores
         //e anotacoes serao deletados e um novo OLHC chart sera criado
@@ -347,14 +360,14 @@ public class mcchartgenerator
         candlesatual = catual;
         
         //criar dataset
-        org.jfree.data.xy.OHLCDataset olhcdataset = criarohlcdataset(candlesatual,infosimbolo);
+        org.jfree.data.xy.OHLCDataset olhcdataset = criarohlcdataset(candlesatual,tituloohlc);
     
         //criar grafico
         org.jfree.chart.JFreeChart chart = org.jfree.chart.ChartFactory.createHighLowChart
         (
-            infosimbolo.symbolstr + " - " + infosimbolo.namestr, 
-            "Data", 
-            "Preco",
+            tituloohlc, 
+            "Date", 
+            "Price",
             olhcdataset, 
             true
         );
@@ -394,7 +407,7 @@ public class mcchartgenerator
         return chartpanelatual;
     }
     
-    org.jfree.data.xy.OHLCDataset criarohlcdataset(java.util.List<mierclasses.mccandle> candles, mierclasses.mcavsearchresultcandle infosimbolo)
+    org.jfree.data.xy.OHLCDataset criarohlcdataset(java.util.List<mierclasses.mccandle> candles, String tituloohlc)
     {
         java.text.DateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd");
         //org.jfree.data.xy.OHLCDataItem dataItem[] = null;
@@ -423,7 +436,7 @@ public class mcchartgenerator
         org.jfree.data.xy.OHLCDataItem[] arrayohlcitems = new org.jfree.data.xy.OHLCDataItem[listohlcitems.size()];
         arrayohlcitems = listohlcitems.toArray(arrayohlcitems);
         
-        org.jfree.data.xy.OHLCDataset datasetretornar = new org.jfree.data.xy.DefaultOHLCDataset(infosimbolo.symbolstr + " - " + infosimbolo.namestr, arrayohlcitems);
+        org.jfree.data.xy.OHLCDataset datasetretornar = new org.jfree.data.xy.DefaultOHLCDataset(tituloohlc, arrayohlcitems);
         
         return datasetretornar;
     }

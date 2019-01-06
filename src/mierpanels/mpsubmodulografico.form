@@ -253,7 +253,6 @@
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldNomeSimbolo">
           <Properties>
-            <Property name="editable" type="boolean" value="false"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="7d" green="7d" red="7d" type="rgb"/>
             </Property>
@@ -293,6 +292,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Load Asset"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCarregarConfiguracaoActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButtonSalvarConfiguracao">
           <Properties>

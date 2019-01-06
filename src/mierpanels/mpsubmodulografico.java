@@ -8,6 +8,14 @@ package mierpanels;
 import java.awt.Color;
 import mierclasses.mcfuncoeshelper;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
+import org.w3c.dom.Element;
+import java.io.File;
+
 /**
  *
  * @author lucasmeyer
@@ -19,8 +27,6 @@ public class mpsubmodulografico extends javax.swing.JPanel
     public mierpanels.mpitemgrafico mtgraficopai; //item grafico associado a este submodulo
     
     public mierclasses.mcchartgenerator mcg; //classe utilizada para desenhar graficos
-    
-    public mierclasses.mcavsearchresultcandle mbmsimboloatual; //variavel que contem o simbolo atual em uso
     
     
     // <editor-fold defaultstate="collapsed" desc="Construtores Submodulo Grafico">
@@ -53,7 +59,6 @@ public class mpsubmodulografico extends javax.swing.JPanel
     {
         //funcao para adicionar o codigo do simbolo no textbox de simbolo
         jTextFieldNomeSimbolo.setText(simboloadicionar.symbolstr);
-        mbmsimboloatual = simboloadicionar;
     }
     
     //funcao responsavel por carregar o grafico com o simbolo e periodo desejado
@@ -64,25 +69,33 @@ public class mpsubmodulografico extends javax.swing.JPanel
         String periodoescolhido = jComboBoxPeriodoSimbolo.getSelectedItem().toString();
         
         java.util.List<mierclasses.mccandle> candles = null;
-        if (periodoescolhido.equals("1 minute"))
-            candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesintraday(simboloescolhido,"1min","");
-        else if (periodoescolhido.equals("5 minutes"))
-            candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesintraday(simboloescolhido,"5min","");
-        else if (periodoescolhido.equals("15 minutes"))
-            candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesintraday(simboloescolhido,"15min","");
-        else if (periodoescolhido.equals("30 minutes"))
-            candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesintraday(simboloescolhido,"30min","");
-        else if (periodoescolhido.equals("60 minutes"))
-            candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesintraday(simboloescolhido,"60min","");
-        else if (periodoescolhido.equals("Daily"))
-            candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesdaily(simboloescolhido, "");
-        else if (periodoescolhido.equals("Weekly"))
-            candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesweekly(simboloescolhido, "");
-        else if (periodoescolhido.equals("Monthly"))
-            candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesmonthly(simboloescolhido, "");
+        if (simboloescolhido.equals("mfxtest"))
+        {
+            //codigo para criar um dataset offline para teste
+            candles = mtgraficopai.tprincipalpai.mav.recebermfxtestcandles();
+        }
+        else
+        {
+            if (periodoescolhido.equals("1 minute"))
+                candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesintraday(simboloescolhido,"1min","");
+            else if (periodoescolhido.equals("5 minutes"))
+                candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesintraday(simboloescolhido,"5min","");
+            else if (periodoescolhido.equals("15 minutes"))
+                candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesintraday(simboloescolhido,"15min","");
+            else if (periodoescolhido.equals("30 minutes"))
+                candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesintraday(simboloescolhido,"30min","");
+            else if (periodoescolhido.equals("60 minutes"))
+                candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesintraday(simboloescolhido,"60min","");
+            else if (periodoescolhido.equals("Daily"))
+                candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesdaily(simboloescolhido, "");
+            else if (periodoescolhido.equals("Weekly"))
+                candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesweekly(simboloescolhido, "");
+            else if (periodoescolhido.equals("Monthly"))
+                candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesmonthly(simboloescolhido, "");
+        }
         
         //recriar grafico OHLC resetando anotacoes e indicadores atuais
-        mcg.recriarohlc(candles, mbmsimboloatual);
+        mcg.recriarohlc(candles,simboloescolhido + " (" + periodoescolhido + ")");
         //receber cpanel OHLC pos-atualizacao para adicionar ao panel
         org.jfree.chart.ChartPanel chartpanel = mcg.retornarcpanelohlc();
         chartpanel.addChartMouseListener(new org.jfree.chart.ChartMouseListener()
@@ -196,22 +209,22 @@ public class mpsubmodulografico extends javax.swing.JPanel
                             subxmlAnotacoes +
                         "</AnnotationsInfo>" +
                 
-                    "</<OpenstockAssetSave>";
+                    "</OpenstockAssetSave>";
         
-        //abrir dialog para criar arquivo de save
-        javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
-        fileChooser.setDialogTitle("Please choose a location and name for the Open Stock save file");
+            //abrir dialog para criar arquivo de save
+            javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+            fileChooser.setDialogTitle("Please choose a location and name for the Open Stock save file");
 
-        int userSelection = fileChooser.showSaveDialog(this);
+            int userSelection = fileChooser.showSaveDialog(this);
 
-        if (userSelection == javax.swing.JFileChooser.APPROVE_OPTION) 
-        {
-            java.io.File fileToSave = fileChooser.getSelectedFile();
-            
-            java.io.PrintWriter writer = new java.io.PrintWriter(fileToSave + ".ossave", "UTF-8");
-            writer.println(xmlSalvar);
-            writer.close();
-        }
+            if (userSelection == javax.swing.JFileChooser.APPROVE_OPTION) 
+            {
+                java.io.File fileToSave = fileChooser.getSelectedFile();
+
+                java.io.PrintWriter writer = new java.io.PrintWriter(fileToSave + ".ossave", "UTF-8");
+                writer.println(xmlSalvar);
+                writer.close();
+            }
         }
         catch (Exception ex)
         {
@@ -222,13 +235,114 @@ public class mpsubmodulografico extends javax.swing.JPanel
     
     public void carregarconfiguracaoasset()
     {
-        //funcao para salvar as configuracoes de
-        //simbolo, periodo
-        //indicadores
-        //anotacoes
-        
-        //IMPLEMENTAR!
-        
+
+       try
+       {
+            //abrir janela para selecionar arquivo de save para carregar
+            javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+            fileChooser.setDialogTitle("Please choose an Open Stock file to load");
+
+            int userSelection = fileChooser.showOpenDialog(this);
+
+            if (userSelection == javax.swing.JFileChooser.APPROVE_OPTION) 
+            {
+                
+                java.io.File fileToLoad = null;
+                DocumentBuilderFactory dbfactory = null;
+                DocumentBuilder dbuilder = null;
+                Document document = null;
+                try
+                {
+                    fileToLoad = fileChooser.getSelectedFile();
+                    dbfactory = DocumentBuilderFactory.newInstance();
+                    dbuilder = dbfactory.newDocumentBuilder();
+                    document = dbuilder.parse(fileToLoad);
+                }
+                catch (Exception ex)
+                {
+                    mierclasses.mcfuncoeshelper.mostrarmensagem(ex.getMessage());
+                }
+                
+                // <editor-fold defaultstate="collapsed" desc="comecar recarregando o submodulo com o nome e simbolo desejado">
+                NodeList listmaininfo = document.getElementsByTagName("MainInfo");
+                Node itemmaininfounico = listmaininfo.item(0);
+                Element elmaininfounico = (Element) itemmaininfounico;
+                String nomeasset = elmaininfounico.getElementsByTagName("Name").item(0).getTextContent();
+                String iditemgrafico = elmaininfounico.getElementsByTagName("ID").item(0).getTextContent();
+                String simbolo = elmaininfounico.getElementsByTagName("Symbol").item(0).getTextContent();
+                String periodo = elmaininfounico.getElementsByTagName("Period").item(0).getTextContent();
+                
+                mtgraficopai.jLabelNomeItemGrafico.setText(nomeasset);
+                mtgraficopai.id = iditemgrafico;
+                jTextFieldNomeSimbolo.setText(simbolo);
+                for (int i = 0; i < jComboBoxPeriodoSimbolo.getItemCount(); i++)
+                {
+                    String textoItemAtual = jComboBoxPeriodoSimbolo.getItemAt(i).toString();
+                    if (textoItemAtual.equals(periodo))
+                    {
+                        jComboBoxPeriodoSimbolo.setSelectedIndex(i);
+                        break;
+                    }
+                }
+                recarregargraficosimbolo();
+                //mierclasses.mcfuncoeshelper.mostrarmensagem("carregou grafico");
+                // </editor-fold>
+                
+                // <editor-fold defaultstate="collapsed" desc="recarregar indicadores">
+                NodeList listaindicadores = document.getElementsByTagName("Indicator");
+                
+                for (int i = 0; i < listaindicadores.getLength(); i++)
+                {
+                    Node nodeindicador = listaindicadores.item(i);
+                    Element elindicador = (Element) nodeindicador;
+                    String nome_indicador = elindicador.getElementsByTagName("Name").item(0).getTextContent();
+                    String id_indicador = elindicador.getElementsByTagName("ID").item(0).getTextContent();
+                    String bcid_indicador = elindicador.getElementsByTagName("BCID").item(0).getTextContent();
+                    String parametrosbc_indicador = elindicador.getElementsByTagName("Parameters").item(0).getTextContent();
+                
+                    //public mpitemindicador(mierpanels.mpsubmodulografico mpsmg, String idind, String nome, String idbearcode, String parametrosbearcode)
+                    adicionarIndicadorLoad(nome_indicador,id_indicador,bcid_indicador,parametrosbc_indicador);
+                }
+                //mierclasses.mcfuncoeshelper.mostrarmensagem("carregou indicadores");
+                // </editor-fold>
+                
+                // <editor-fold defaultstate="collapsed" desc="recarregar anotacoes">
+                NodeList listaanotacoes = document.getElementsByTagName("Annotation");
+                
+                for (int i = 0; i < listaanotacoes.getLength(); i++)
+                {
+                    Node nodeanotacao = listaanotacoes.item(i);
+                    Element elanotacao = (Element) nodeanotacao;
+                    String nome_anotacao = elanotacao.getElementsByTagName("Name").item(0).getTextContent();
+                    String id_anotacao = elanotacao.getElementsByTagName("ID").item(0).getTextContent();
+                    String tipo_anotacao = elanotacao.getElementsByTagName("Type").item(0).getTextContent();
+                    String parameters_anotacao = elanotacao.getElementsByTagName("Parameters").item(0).getTextContent();
+                    Object objeto_anotacao = null;
+                    try
+                    {
+                        byte [] data = java.util.Base64.getDecoder().decode(parameters_anotacao);
+                        java.io.ObjectInputStream ois = new java.io.ObjectInputStream(new java.io.ByteArrayInputStream(data));
+                        Object o = ois.readObject();
+                        ois.close();
+                        
+                        objeto_anotacao = o;
+                    }
+                    catch (Exception ex)
+                    {
+                        //necessario
+                    }
+                    
+                    adicionarAnotacaoLoad(nome_anotacao,id_anotacao,tipo_anotacao,objeto_anotacao);
+                }
+                //mierclasses.mcfuncoeshelper.mostrarmensagem("carregou anotacoes");
+                // </editor-fold>
+            }
+        }
+        catch (Exception ex)
+        {
+            mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred when loading. Exception: " + ex.getMessage());
+        }
+
     }
     
     // </editor-fold>
@@ -255,6 +369,39 @@ public class mpsubmodulografico extends javax.swing.JPanel
         }
 
     }
+    
+    public void adicionarIndicadorLoad(String nome, String id, String idbc, String paramsbc)
+    {
+        //funcao para adicionar novo item indicador a este submodulo grafico
+        
+        //public mpitemindicador(mierpanels.mpsubmodulografico mpsmg, String idbearcode, String parametrosbearcode)
+        mierpanels.mpitemindicador novoindicador = new mierpanels.mpitemindicador(this, id, nome, idbc, paramsbc);
+        String statusrunindicador = novoindicador.rodarscriptindicadoredesenhar();
+        if (statusrunindicador.equals("ok"))
+        {
+            mcg.adicionarplotohlc_indicadorid(novoindicador.id);
+            jPanelIndicadores.add(novoindicador);
+            this.validate();
+            this.repaint(); 
+        }
+        else
+        {
+            mierclasses.mcfuncoeshelper.mostrarmensagem("Algum problema ocorreu e o indicador não pôde ser utilizado:\n\n" + statusrunindicador);
+        }
+
+    }
+    
+    public void adicionarAnotacaoLoad(String nome, String id, String tipo, Object anotacaoemobjeto)
+    {
+        mierpanels.mpitemanotacao novompia = new mierpanels.mpitemanotacao(this, nome, id, tipo, anotacaoemobjeto);
+        mcg.adicionarplotohlc_annotationid(novompia.id);
+        jPanelAnotacoes.add(novompia);
+        
+        this.validate();
+        this.repaint();
+    }
+    
+    
     
     public void removerIndicador(mierpanels.mpitemindicador mpiiremover)
     {
@@ -444,7 +591,6 @@ public class mpsubmodulografico extends javax.swing.JPanel
         jLabelNomeSimbolo.setForeground(new java.awt.Color(255, 255, 255));
         jLabelNomeSimbolo.setText("Symbol:");
 
-        jTextFieldNomeSimbolo.setEditable(false);
         jTextFieldNomeSimbolo.setBackground(new java.awt.Color(125, 125, 125));
         jTextFieldNomeSimbolo.setForeground(new java.awt.Color(255, 255, 255));
 
@@ -454,6 +600,13 @@ public class mpsubmodulografico extends javax.swing.JPanel
         jComboBoxPeriodoSimbolo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1 minute", "5 minutes", "15 minutes", "30 minutes", "60 minutes", "Daily", "Weekly", "Monthly" }));
 
         jButtonCarregarConfiguracao.setText("Load Asset");
+        jButtonCarregarConfiguracao.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonCarregarConfiguracaoActionPerformed(evt);
+            }
+        });
 
         jButtonSalvarConfiguracao.setText("Save Asset");
         jButtonSalvarConfiguracao.addActionListener(new java.awt.event.ActionListener()
@@ -662,6 +815,11 @@ public class mpsubmodulografico extends javax.swing.JPanel
     {//GEN-HEADEREND:event_jButtonSalvarConfiguracaoActionPerformed
         salvarconfiguracaoasset();
     }//GEN-LAST:event_jButtonSalvarConfiguracaoActionPerformed
+
+    private void jButtonCarregarConfiguracaoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonCarregarConfiguracaoActionPerformed
+    {//GEN-HEADEREND:event_jButtonCarregarConfiguracaoActionPerformed
+        carregarconfiguracaoasset();
+    }//GEN-LAST:event_jButtonCarregarConfiguracaoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

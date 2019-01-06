@@ -26,10 +26,7 @@ public class mpitemanotacao extends javax.swing.JPanel
     //id desta anotacao (utilizado para delecao)
     public String id;
     
-    
-    /**
-     * Creates new form mpsimbolo
-     */
+    //construtor nova anotacao
     public mpitemanotacao(mierpanels.mpsubmodulografico smg, String tipo, Object an)
     {
         initComponents();
@@ -39,6 +36,22 @@ public class mpitemanotacao extends javax.swing.JPanel
         submodulografico = smg;
         tipoanotacao = tipo;
         annotation = an;
+    }
+    
+    //construtor recarregar anotacao
+    public mpitemanotacao(mierpanels.mpsubmodulografico smg, String nome, String idan, String tipo, Object an)
+    {
+        initComponents();
+        
+        id = idan;
+        
+        jLabelNomeItemAnotacao.setText(nome);
+        
+        submodulografico = smg;
+        tipoanotacao = tipo;
+        annotation = an;
+        
+        submodulografico.mcg.adicionarplotohlc_annotationobjectbase64type(annotation,tipoanotacao);
     }
    
     
