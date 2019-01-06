@@ -46,7 +46,7 @@ public class mfconfiguracoesgerais extends javax.swing.JFrame
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("General Configuration");
+        setTitle("About");
 
         jLabel1.setText("Open Stock");
 
@@ -54,7 +54,7 @@ public class mfconfiguracoesgerais extends javax.swing.JFrame
 
         jLabel3.setText("API Attribution: Data provided for free by IEX. View IEX’s Terms of Use.");
 
-        jButton1.setText("Open Stock GitHub");
+        jButton1.setText("Open Stock's GitHub");
         jButton1.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -63,7 +63,7 @@ public class mfconfiguracoesgerais extends javax.swing.JFrame
             }
         });
 
-        jButton2.setText("IEX Terms of Use");
+        jButton2.setText("IEX's Terms of Use");
         jButton2.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)

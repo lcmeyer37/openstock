@@ -68,7 +68,7 @@ public class mfadicionarsimbolo extends javax.swing.JFrame
         jlistSimbolosEncontrados = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Add New Symbol");
+        setTitle("Search for Symbol");
 
         jLabel2.setText("Search:");
 

@@ -396,17 +396,17 @@ public class mciexcomms
             String s_name = candleobjectatual.getString("name");
             //String s_date = candleobjectatual.getString("date");
             //String s_isenabled = String.valueOf(candleobjectatual.getBoolean("isEnabled"));
-            //String s_type = candleobjectatual.getString("type");
+            String s_type = candleobjectatual.getString("type");
             //String s_iedid = candleobjectatual.getString("iexId");
             
             if ((s_symbol.toLowerCase()).contains(parametrobusca.toLowerCase()))
             {
-                String simboloadd = s_symbol + " - " + s_name;
+                String simboloadd = s_symbol + " - " + s_name + " (" + s_type + ")";
                 listasimbolosencontrada.add(simboloadd);
             }
             else if ((s_name.toLowerCase()).contains(parametrobusca.toLowerCase()))
             {
-                String simboloadd = s_symbol + " - " + s_name;
+                String simboloadd = s_symbol + " - " + s_name + " (" + s_type + ")";
                 listasimbolosencontrada.add(simboloadd);
             }
             
