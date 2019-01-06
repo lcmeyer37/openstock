@@ -10,7 +10,7 @@ OpenStock is a project licensed under GNU GPLv3. The project is being created ma
 * Possibility to anaylise multiple charts at the same time
 * Use of Annotations and Indicators for Technical Analysis
 * To create your own Indicators to use with the software, making use of Bearcode Scripts (JavaScript files)
-* Save/Load charts and its TAs (to be added)
+* Save/Load charts and its TAs
 * Real-time cryptocurrency data (to be added)
 * Offline Trading for Training (to be added)
 * Support to other free data sources (IEX under consideration)
