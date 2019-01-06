@@ -40,4 +40,15 @@ public class mcfuncoeshelper
         
         return "";
     }
+    
+    public static String retornarSubstringIndices(String original, int indexInicioInclusivo, int indexFimInclusivo)
+    {
+        //[0] a [3] -> 3+1 - 0 = 4 chars
+        //[4] a [5] -> 5+1 - 4 = 2 chars
+        int tamanhoarray = (indexFimInclusivo+1) - indexInicioInclusivo;
+        char[] ch = new char[tamanhoarray];
+        original.getChars(indexInicioInclusivo, (indexFimInclusivo+1), ch, 0);
+        
+        return String.valueOf(ch);
+    }
 }

@@ -1,0 +1,285 @@
+//IEX API Testing
+//aapl 5y example
+[
+    {
+        "date": "2014-01-06",
+        "open": 70.4653,
+        "high": 71.6912,
+        "low": 69.9605,
+        "close": 71.3149,
+        "volume": 103359151,
+        "unadjustedVolume": 14765593,
+        "change": 0.386777,
+        "changePercent": 0.545,
+        "vwap": 70.9303,
+        "label": "Jan 6, 14",
+        "changeOverTime": 0
+    },
+    {
+        "date": "2014-01-07",
+        "open": 71.366,
+        "high": 71.5811,
+        "low": 70.5276,
+        "close": 70.8046,
+        "volume": 79432766,
+        "unadjustedVolume": 11347538,
+        "change": -0.510346,
+        "changePercent": -0.716,
+        "vwap": 71.7785,
+        "label": "Jan 7, 14",
+        "changeOverTime": -0.007155587401791223
+    },
+    {
+        "date": "2014-01-08",
+        "open": 70.6436,
+        "high": 71.5286,
+        "low": 70.6279,
+        "close": 71.2533,
+        "volume": 64686685,
+        "unadjustedVolume": 9240955,
+        "change": 0.448723,
+        "changePercent": 0.634,
+        "vwap": 71.2531,
+        "label": "Jan 8, 14",
+        "changeOverTime": -0.000863774610915791
+    },
+    {
+        "date": "2014-01-09",
+        "open": 71.6912,
+        "high": 71.6991,
+        "low": 70.19,
+        "close": 70.3432,
+        "volume": 69905199,
+        "unadjustedVolume": 9986457,
+        "change": -0.910039,
+        "changePercent": -1.277,
+        "vwap": 70.8314,
+        "label": "Jan 9, 14",
+        "changeOverTime": -0.013625483594592414
+    }
+]
+//aapl 1m example
+[
+    {
+        "date": "2018-12-04",
+        "open": 180.95,
+        "high": 182.3899,
+        "low": 176.27,
+        "close": 176.69,
+        "volume": 41344282,
+        "unadjustedVolume": 41344282,
+        "change": -8.13,
+        "changePercent": -4.399,
+        "vwap": 178.7221,
+        "label": "Dec 4",
+        "changeOverTime": 0
+    },
+    {
+        "date": "2018-12-06",
+        "open": 171.76,
+        "high": 174.78,
+        "low": 170.42,
+        "close": 174.72,
+        "volume": 43098410,
+        "unadjustedVolume": 43098410,
+        "change": -1.97,
+        "changePercent": -1.115,
+        "vwap": 172.4285,
+        "label": "Dec 6",
+        "changeOverTime": -0.011149470824608064
+    },
+    {
+        "date": "2018-12-07",
+        "open": 173.49,
+        "high": 174.49,
+        "low": 168.3,
+        "close": 168.49,
+        "volume": 42281631,
+        "unadjustedVolume": 42281631,
+        "change": -6.23,
+        "changePercent": -3.566,
+        "vwap": 170.4207,
+        "label": "Dec 7",
+        "changeOverTime": -0.046408964853698505
+    }
+]
+//aaple 1d example
+[
+    {
+        "date": "20190104",
+        "minute": "09:30",
+        "label": "09:30 AM",
+        "high": 144.54,
+        "low": 144.07,
+        "average": 144.356,
+        "volume": 9329,
+        "notional": 1346694.07,
+        "numberOfTrades": 95,
+        "marketHigh": 144.58,
+        "marketLow": 144.06,
+        "marketAverage": 144.451,
+        "marketVolume": 2029196,
+        "marketNotional": 293119046.0123,
+        "marketNumberOfTrades": 3799,
+        "open": 144.42,
+        "close": 144.48,
+        "marketOpen": 144.58,
+        "marketClose": 144.51,
+        "changeOverTime": 0,
+        "marketChangeOverTime": 0
+    },
+    {
+        "date": "20190104",
+        "minute": "09:31",
+        "label": "09:31 AM",
+        "high": 144.49,
+        "low": 143.82,
+        "average": 144.162,
+        "volume": 14569,
+        "notional": 2100302.925,
+        "numberOfTrades": 79,
+        "marketHigh": 144.54,
+        "marketLow": 143.6,
+        "marketAverage": 144.035,
+        "marketVolume": 472509,
+        "marketNotional": 68058023.4464,
+        "marketNumberOfTrades": 3741,
+        "open": 144.49,
+        "close": 143.91,
+        "marketOpen": 144.509,
+        "marketClose": 143.95,
+        "changeOverTime": -0.0013438998032640722,
+        "marketChangeOverTime": -0.0028798692982395196
+    }
+]
+//ref data symbols example
+[
+    {
+        "symbol": "A",
+        "name": "Agilent Technologies Inc.",
+        "date": "2019-01-04",
+        "isEnabled": true,
+        "type": "cs",
+        "iexId": "2"
+    },
+    {
+        "symbol": "AA",
+        "name": "Alcoa Corporation",
+        "date": "2019-01-04",
+        "isEnabled": true,
+        "type": "cs",
+        "iexId": "12042"
+    },
+    {
+        "symbol": "AAAU",
+        "name": "Perth Mint Physical Gold",
+        "date": "2019-01-04",
+        "isEnabled": true,
+        "type": "N/A",
+        "iexId": "14924"
+    },
+    {
+        "symbol": "AABA",
+        "name": "Altaba Inc.",
+        "date": "2019-01-04",
+        "isEnabled": true,
+        "type": "cs",
+        "iexId": "7653"
+    },
+    {
+        "symbol": "AAC",
+        "name": "AAC Holdings Inc.",
+        "date": "2019-01-04",
+        "isEnabled": true,
+        "type": "cs",
+        "iexId": "9169"
+    },
+    {
+        "symbol": "AADR",
+        "name": "AdvisorShares Dorsey Wright ADR",
+        "date": "2019-01-04",
+        "isEnabled": true,
+        "type": "et",
+        "iexId": "5"
+    },
+    {
+        "symbol": "AAL",
+        "name": "American Airlines Group Inc.",
+        "date": "2019-01-04",
+        "isEnabled": true,
+        "type": "cs",
+        "iexId": "8148"
+    },
+    {
+        "symbol": "AAMC",
+        "name": "Altisource Asset Management Corp Com",
+        "date": "2019-01-04",
+        "isEnabled": true,
+        "type": "cs",
+        "iexId": "7760"
+    },
+    {
+        "symbol": "AAME",
+        "name": "Atlantic American Corporation",
+        "date": "2019-01-04",
+        "isEnabled": true,
+        "type": "cs",
+        "iexId": "7"
+    },
+    {
+        "symbol": "AAN",
+        "name": "Aaron's Inc.",
+        "date": "2019-01-04",
+        "isEnabled": true,
+        "type": "cs",
+        "iexId": "8"
+    },
+    {
+        "symbol": "AAOI",
+        "name": "Applied Optoelectronics Inc.",
+        "date": "2019-01-04",
+        "isEnabled": true,
+        "type": "cs",
+        "iexId": "7790"
+    },
+    {
+        "symbol": "AAON",
+        "name": "AAON Inc.",
+        "date": "2019-01-04",
+        "isEnabled": true,
+        "type": "cs",
+        "iexId": "9"
+    },
+    {
+        "symbol": "AAP",
+        "name": "Advance Auto Parts Inc W/I",
+        "date": "2019-01-04",
+        "isEnabled": true,
+        "type": "cs",
+        "iexId": "10"
+    },
+    {
+        "symbol": "AAPL",
+        "name": "Apple Inc.",
+        "date": "2019-01-04",
+        "isEnabled": true,
+        "type": "cs",
+        "iexId": "11"
+    },
+    {
+        "symbol": "AAT",
+        "name": "American Assets Trust Inc.",
+        "date": "2019-01-04",
+        "isEnabled": true,
+        "type": "cs",
+        "iexId": "12"
+    },
+    {
+        "symbol": "AAU",
+        "name": "Almaden Minerals Ltd.",
+        "date": "2019-01-04",
+        "isEnabled": true,
+        "type": "cs",
+        "iexId": "13"
+    }
+]

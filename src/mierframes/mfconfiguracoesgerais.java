@@ -26,64 +26,6 @@ public class mfconfiguracoesgerais extends javax.swing.JFrame
     public mfconfiguracoesgerais()
     {
         initComponents();
-        inicializarjanelaconfiguracao();
-    }
-    
-    void inicializarjanelaconfiguracao()
-    {
-                //abrir documento /arquivosconfig/indicadores.mfxconfig para ler indicadores disponiveis para uso
-        //e criar itens com indicadores disponiveis no jComboBoxIndicadoresDisponiveis
-        
-        try
-        {
-            String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
-            String cgeneralconfig = rootjar + "/configfiles/general.mfxconfig";
-            //mierclasses.mcfuncoeshelper.mostrarmensagem(cindicconfig);
-            
-            File xmlArquivo = new File(cgeneralconfig);
-            DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
-        
-            DocumentBuilder dbuilder = dbfactory.newDocumentBuilder();
-        
-            Document document = dbuilder.parse(xmlArquivo);
-            
-            String avkey = document.getElementsByTagName("AVKEY").item(0).getTextContent();
-            jTextFieldNewAvkey.setText(avkey);
-        }
-        catch (Exception e) 
-        {
-            mierclasses.mcfuncoeshelper.mostrarmensagem("Uma exceção ocorreu: " + e.toString());
-        }
-    }
-    
-    void atualizaravkey()
-    {
-        try
-        {
-          String generalxmlatualizar = 
-                "<?xml version=\"1.0\"?>" +
-                    "<OpenstockGeneralConfiguration>" +
-                    "<AVKEY>"+jTextFieldNewAvkey.getText()+"</AVKEY>" +
-                   "</OpenstockGeneralConfiguration>";
-        
-
-        String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
-        String cgeneralconfig = rootjar + "/configfiles/general.mfxconfig";
-        File xmlArquivoConfigGeral = new File(cgeneralconfig);
-
-        java.io.PrintWriter writer = new java.io.PrintWriter(xmlArquivoConfigGeral, "UTF-8");
-        writer.println(generalxmlatualizar);
-        writer.close();   
-        
-        mierclasses.mcfuncoeshelper.mostrarmensagem("Alpha Vantage Key has been updated. Please restart Open Stock to use it.");
-        this.dispose();
-        
-        }
-        catch (Exception ex)
-        {
-            mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred. Exception: " + ex.getMessage());
-        }
-       
     }
 
     /**
@@ -96,27 +38,41 @@ public class mfconfiguracoesgerais extends javax.swing.JFrame
     private void initComponents()
     {
 
-        jLabelAvkey = new javax.swing.JLabel();
-        jTextFieldNewAvkey = new javax.swing.JTextField();
-        jButtonUpdateAvkey = new javax.swing.JButton();
-        jLabelAbout = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("General Configuration");
 
-        jLabelAvkey.setText("Alpha Vantage Key:");
+        jLabel1.setText("Open Stock");
 
-        jButtonUpdateAvkey.setText("Update");
-        jButtonUpdateAvkey.addActionListener(new java.awt.event.ActionListener()
+        jLabel2.setText("Version: iex1.02a");
+
+        jLabel3.setText("API Attribution: Data provided for free by IEX. View IEX’s Terms of Use.");
+
+        jButton1.setText("Open Stock GitHub");
+        jButton1.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jButtonUpdateAvkeyActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
-        jLabelAbout.setFont(new java.awt.Font("Lucida Grande", 2, 10)); // NOI18N
-        jLabelAbout.setText("Open Stock (Alpha Vantage v. 1.0a)");
+        jButton2.setText("IEX Terms of Use");
+        jButton2.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("(Lucas Meyer build - January 2019)");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -126,36 +82,60 @@ public class mfconfiguracoesgerais extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabelAvkey)
+                        .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldNewAvkey))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabelAbout)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
-                        .addComponent(jButtonUpdateAvkey)))
-                .addContainerGap())
+                        .addComponent(jButton2))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel3))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelAvkey)
-                    .addComponent(jTextFieldNewAvkey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonUpdateAvkey)
-                    .addComponent(jLabelAbout))
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonUpdateAvkeyActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonUpdateAvkeyActionPerformed
-    {//GEN-HEADEREND:event_jButtonUpdateAvkeyActionPerformed
-        atualizaravkey();
-    }//GEN-LAST:event_jButtonUpdateAvkeyActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
+    {//GEN-HEADEREND:event_jButton1ActionPerformed
+        try
+        {
+            java.awt.Desktop.getDesktop().browse(new java.net.URI("https://github.com/lcmeyer37/openstock"));
+        }
+        catch (Exception ex)
+        {
+            mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred. Exception: " + ex.getMessage());
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton2ActionPerformed
+    {//GEN-HEADEREND:event_jButton2ActionPerformed
+        try
+        {
+            java.awt.Desktop.getDesktop().browse(new java.net.URI("https://iextrading.com/api-exhibit-a/"));
+        }
+        catch (Exception ex)
+        {
+            mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred. Exception: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -203,9 +183,11 @@ public class mfconfiguracoesgerais extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonUpdateAvkey;
-    private javax.swing.JLabel jLabelAbout;
-    private javax.swing.JLabel jLabelAvkey;
-    private javax.swing.JTextField jTextFieldNewAvkey;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     // End of variables declaration//GEN-END:variables
 }

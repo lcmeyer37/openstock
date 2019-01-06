@@ -13,7 +13,6 @@ package mierframes;
 public class mfadicionarsimbolo extends javax.swing.JFrame
 {
     public static mierpanels.mpsubmodulografico submodulopai;
-    java.util.List<mierclasses.mcavsearchresultcandle> listaatualbm;
     
     /**
      * Creates new form WindowAdicionarSimbolo
@@ -31,22 +30,23 @@ public class mfadicionarsimbolo extends javax.swing.JFrame
     javax.swing.DefaultListModel modellistasimbolosencontrados;
     void procurarsimbolosemostrarnalista()
     {
-        listaatualbm = submodulopai.mtgraficopai.tprincipalpai.mav.receberstocksearchbestmatches(jtfProcurarSimbolo.getText());
-
+        //listaatualbm = submodulopai.mtgraficopai.tprincipalpai.mav.receberstocksearchbestmatches(jtfProcurarSimbolo.getText());
+        java.util.List<String> simbolosencontrados = 
+                submodulopai.mtgraficopai.tprincipalpai.miex.receberlistasimbolosprocura(jtfProcurarSimbolo.getText());
+        
         modellistasimbolosencontrados.removeAllElements();
-        for (int i = 0; i < listaatualbm.size(); i++)
+        for (int i = 0; i < simbolosencontrados.size(); i++)
         {
-            mierclasses.mcavsearchresultcandle bmatual = listaatualbm.get(i);
-            //mierclasses.mierfuncoeshelper.mostrarmensagem(bmatual.namestr);
-
-            modellistasimbolosencontrados.addElement("[" + bmatual.symbolstr + "|"+ bmatual.regionstr +"] " + bmatual.namestr);
+            modellistasimbolosencontrados.addElement(simbolosencontrados.get(i));
         }
         jlistSimbolosEncontrados.setSelectedIndex(0);
     }
     
     void adicionarsimboloprograma()
     {
-        submodulopai.adicionarsimboloaotextboxsubmodulo(listaatualbm.get(jlistSimbolosEncontrados.getSelectedIndex()));
+        String simboloatual = ((String)modellistasimbolosencontrados.getElementAt(jlistSimbolosEncontrados.getSelectedIndex())).split(" - ")[0];
+        
+        submodulopai.adicionarsimboloaotextboxsubmodulo(simboloatual);
         this.dispose();
     }
     

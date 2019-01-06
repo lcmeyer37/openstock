@@ -55,10 +55,10 @@ public class mpsubmodulografico extends javax.swing.JPanel
 
     // <editor-fold defaultstate="collapsed" desc="Main Section">
     
-    public void adicionarsimboloaotextboxsubmodulo(mierclasses.mcavsearchresultcandle simboloadicionar)
+    public void adicionarsimboloaotextboxsubmodulo(String simboloadicionar)
     {
         //funcao para adicionar o codigo do simbolo no textbox de simbolo
-        jTextFieldNomeSimbolo.setText(simboloadicionar.symbolstr);
+        jTextFieldNomeSimbolo.setText(simboloadicionar);
     }
     
     //funcao responsavel por carregar o grafico com o simbolo e periodo desejado
@@ -69,30 +69,37 @@ public class mpsubmodulografico extends javax.swing.JPanel
         String periodoescolhido = jComboBoxPeriodoSimbolo.getSelectedItem().toString();
         
         java.util.List<mierclasses.mccandle> candles = null;
+        //testes
+        //candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "5y");
+        //candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithminutes(simboloescolhido, "1d");
+        
+        
+        
         if (simboloescolhido.equals("mfxtest"))
         {
             //codigo para criar um dataset offline para teste
-            candles = mtgraficopai.tprincipalpai.mav.recebermfxtestcandles();
+            //candles = mtgraficopai.tprincipalpai.mav.recebermfxtestcandles();
         }
         else
         {
-            if (periodoescolhido.equals("1 minute"))
-                candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesintraday(simboloescolhido,"1min","");
-            else if (periodoescolhido.equals("5 minutes"))
-                candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesintraday(simboloescolhido,"5min","");
-            else if (periodoescolhido.equals("15 minutes"))
-                candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesintraday(simboloescolhido,"15min","");
-            else if (periodoescolhido.equals("30 minutes"))
-                candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesintraday(simboloescolhido,"30min","");
-            else if (periodoescolhido.equals("60 minutes"))
-                candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesintraday(simboloescolhido,"60min","");
-            else if (periodoescolhido.equals("Daily"))
-                candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesdaily(simboloescolhido, "");
-            else if (periodoescolhido.equals("Weekly"))
-                candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesweekly(simboloescolhido, "");
-            else if (periodoescolhido.equals("Monthly"))
-                candles = mtgraficopai.tprincipalpai.mav.receberstockcandlesmonthly(simboloescolhido, "");
+            if (periodoescolhido.equals("1 Day"))
+                candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithminutes(simboloescolhido, "1d");
+            else if (periodoescolhido.equals("1 Month"))
+                candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "1m");
+            else if (periodoescolhido.equals("3 Months"))
+                candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "3m");
+            else if (periodoescolhido.equals("6 Months"))
+                candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "6m");
+            else if (periodoescolhido.equals("Year-to-date"))
+                candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "ytd");
+            else if (periodoescolhido.equals("1 Year"))
+                candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "1y");
+            else if (periodoescolhido.equals("2 Years"))
+                candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "2y");
+            else if (periodoescolhido.equals("5 Years"))
+                candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "5y");
         }
+        
         
         //recriar grafico OHLC resetando anotacoes e indicadores atuais
         mcg.recriarohlc(candles,simboloescolhido + " (" + periodoescolhido + ")");
@@ -597,7 +604,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
         jLabelPeriodoSimbolo.setForeground(new java.awt.Color(255, 255, 255));
         jLabelPeriodoSimbolo.setText("Period:");
 
-        jComboBoxPeriodoSimbolo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1 minute", "5 minutes", "15 minutes", "30 minutes", "60 minutes", "Daily", "Weekly", "Monthly" }));
+        jComboBoxPeriodoSimbolo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1 Day", "1 Month", "3 Months", "6 Months", "Year-to-date", "1 Year", "2 Years", "5 Years" }));
 
         jButtonCarregarConfiguracao.setText("Load Asset");
         jButtonCarregarConfiguracao.addActionListener(new java.awt.event.ActionListener()

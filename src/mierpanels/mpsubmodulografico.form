@@ -273,14 +273,14 @@
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="8">
-                <StringItem index="0" value="1 minute"/>
-                <StringItem index="1" value="5 minutes"/>
-                <StringItem index="2" value="15 minutes"/>
-                <StringItem index="3" value="30 minutes"/>
-                <StringItem index="4" value="60 minutes"/>
-                <StringItem index="5" value="Daily"/>
-                <StringItem index="6" value="Weekly"/>
-                <StringItem index="7" value="Monthly"/>
+                <StringItem index="0" value="1 Day"/>
+                <StringItem index="1" value="1 Month"/>
+                <StringItem index="2" value="3 Months"/>
+                <StringItem index="3" value="6 Months"/>
+                <StringItem index="4" value="Year-to-date"/>
+                <StringItem index="5" value="1 Year"/>
+                <StringItem index="6" value="2 Years"/>
+                <StringItem index="7" value="5 Years"/>
               </StringArray>
             </Property>
           </Properties>

@@ -45,6 +45,7 @@ public class mccandle
 
     }
     
+    //eh esperado um timestamp no formato YYYY-MM-DD-HH-mm-ss
     java.util.Date interpretartimestamp(String timestampstr)
     {
         java.util.Date timestampretornar;
@@ -59,7 +60,7 @@ public class mccandle
         
         try
         {
-            ano = Integer.parseInt((timestampstr.split(" ")[0]).split("-")[0]);
+            ano = Integer.parseInt((timestampstr).split("-")[0]);
         }
         catch (java.lang.ArrayIndexOutOfBoundsException excecao)
         {
@@ -68,7 +69,7 @@ public class mccandle
         
         try
         {
-            mes = Integer.parseInt((timestampstr.split(" ")[0]).split("-")[1]);
+            mes = Integer.parseInt((timestampstr).split("-")[1]);
         }
         catch (java.lang.ArrayIndexOutOfBoundsException excecao)
         {
@@ -77,7 +78,7 @@ public class mccandle
         
         try
         {
-            dia = Integer.parseInt((timestampstr.split(" ")[0]).split("-")[2]);
+             dia = Integer.parseInt((timestampstr).split("-")[2]);
         }
         catch (java.lang.ArrayIndexOutOfBoundsException excecao)
         {
@@ -86,7 +87,7 @@ public class mccandle
         
         try
         {
-            hora = Integer.parseInt((timestampstr.split(" ")[1]).split(":")[0]);
+            hora =  Integer.parseInt((timestampstr).split("-")[3]);
             //mierfuncoeshelper.mostrarmensagem(hora.toString());
         }
         catch (java.lang.ArrayIndexOutOfBoundsException excecao)
@@ -96,7 +97,7 @@ public class mccandle
         
         try
         {
-            minuto = Integer.parseInt((timestampstr.split(" ")[1]).split(":")[1]);
+            minuto =  Integer.parseInt((timestampstr).split("-")[4]);
             //mierfuncoeshelper.mostrarmensagem(minuto.toString());
         }
         catch (java.lang.ArrayIndexOutOfBoundsException excecao)
@@ -106,7 +107,7 @@ public class mccandle
         
         try
         {
-            segundo = Integer.parseInt((timestampstr.split(" ")[1]).split(":")[2]);
+            segundo =  Integer.parseInt((timestampstr).split("-")[5]);
             //mierfuncoeshelper.mostrarmensagem(segundo.toString());
         }
         catch (java.lang.ArrayIndexOutOfBoundsException excecao)
@@ -114,10 +115,7 @@ public class mccandle
             segundo = -1;
         }
 
-        if ((hora > -1) == false)
-            timestampretornar = new java.util.Date(ano-1900,mes-1,dia);
-        else
-            timestampretornar = new java.util.Date(ano-1900,mes-1,dia,hora,minuto,segundo);
+        timestampretornar = new java.util.Date(ano-1900,mes-1,dia,hora,minuto,segundo);
         
         return timestampretornar;
     }

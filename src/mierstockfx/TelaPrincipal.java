@@ -20,7 +20,8 @@ public class TelaPrincipal extends javax.swing.JFrame
     //novo layout do mierstockfx
     //ele cria varios graficos, e todos tem a sua propria instancia de grafico com anotacoes, indicadores, e pode ser salvo ou carregado
     
-    public mierclasses.mcavcomms mav; //classe utilizada para comunicacao com alpha vantage
+    //public mierclasses.mcavcomms mav; //classe utilizada para comunicacao com alpha vantage
+    public mierclasses.mciexcomms miex; //classe utilizada para comunicacao com IEX API
     
     /**
      * Creates new form TelaPrincipal
@@ -48,7 +49,8 @@ public class TelaPrincipal extends javax.swing.JFrame
         this.repaint();
         
         //popular mcavcomms, utilizando para comunicar com alpha vantage
-        mav = new mierclasses.mcavcomms(resgatarAvKey());
+        //mav = new mierclasses.mcavcomms(resgatarAvKey());
+        miex = new mierclasses.mciexcomms();
     }
     
     String resgatarAvKey()
@@ -182,7 +184,7 @@ public class TelaPrincipal extends javax.swing.JFrame
 
         jLabelAdicionarGrafico.setText("Assets");
 
-        jButtonJanelaConfiguracoes.setText("Configuration");
+        jButtonJanelaConfiguracoes.setText("About");
         jButtonJanelaConfiguracoes.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
