@@ -5,6 +5,11 @@
  */
 package mierstockfx;
 
+import java.io.File;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+
 /**
  *
  * @author meyerlu
@@ -43,7 +48,31 @@ public class TelaPrincipal extends javax.swing.JFrame
         this.repaint();
         
         //popular mcavcomms, utilizando para comunicar com alpha vantage
-        mav = new mierclasses.mcavcomms("INSIRASEUALPHAVANTAGECODE");
+        mav = new mierclasses.mcavcomms(resgatarAvKey());
+    }
+    
+    String resgatarAvKey()
+    {
+        try
+        {
+            String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
+            String cgeneralconfig = rootjar + "/configfiles/general.mfxconfig";
+            //mierclasses.mcfuncoeshelper.mostrarmensagem(cindicconfig);
+            
+            File xmlArquivo = new File(cgeneralconfig);
+            DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
+        
+            DocumentBuilder dbuilder = dbfactory.newDocumentBuilder();
+        
+            Document document = dbuilder.parse(xmlArquivo);
+            
+            return document.getElementsByTagName("AVKEY").item(0).getTextContent();
+        }
+        catch (Exception e) 
+        {
+            mierclasses.mcfuncoeshelper.mostrarmensagem("Uma exceção ocorreu: " + e.toString());
+            return "";
+        }
     }
     
     void adicionarNovoGrafico()
@@ -154,6 +183,13 @@ public class TelaPrincipal extends javax.swing.JFrame
         jLabelAdicionarGrafico.setText("Assets");
 
         jButtonJanelaConfiguracoes.setText("Configuration");
+        jButtonJanelaConfiguracoes.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonJanelaConfiguracoesActionPerformed(evt);
+            }
+        });
 
         jPanelItensGrafico.setBackground(new java.awt.Color(155, 155, 155));
 
@@ -227,6 +263,12 @@ public class TelaPrincipal extends javax.swing.JFrame
     private void jButtonAdicionarGraficoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarGraficoActionPerformed
         adicionarNovoGrafico();
     }//GEN-LAST:event_jButtonAdicionarGraficoActionPerformed
+
+    private void jButtonJanelaConfiguracoesActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonJanelaConfiguracoesActionPerformed
+    {//GEN-HEADEREND:event_jButtonJanelaConfiguracoesActionPerformed
+        mierframes.mfconfiguracoesgerais mfcg = new mierframes.mfconfiguracoesgerais();
+        mfcg.show();
+    }//GEN-LAST:event_jButtonJanelaConfiguracoesActionPerformed
 
     /**
      * @param args the command line arguments
