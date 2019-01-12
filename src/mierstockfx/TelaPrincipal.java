@@ -268,7 +268,7 @@ public class TelaPrincipal extends javax.swing.JFrame
 
     private void jButtonJanelaConfiguracoesActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonJanelaConfiguracoesActionPerformed
     {//GEN-HEADEREND:event_jButtonJanelaConfiguracoesActionPerformed
-        mierframes.mfconfiguracoesgerais mfcg = new mierframes.mfconfiguracoesgerais();
+        mierframes.mfsobre mfcg = new mierframes.mfsobre();
         mfcg.show();
     }//GEN-LAST:event_jButtonJanelaConfiguracoesActionPerformed
 

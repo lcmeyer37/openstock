@@ -348,7 +348,7 @@ public class mcchartgenerator
     //</editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Funcoes para recriar e retornar chart OHLC com indicadores">
-    public void recriarohlc(java.util.List<mierclasses.mccandle> catual, String tituloohlc)
+    public void recriarohlc(java.util.List<mierclasses.mccandle> catual, String tituloohlc, String tipoescala)
     {
         //limpar lista de id de indicadores considerando que todos os indicadores
         //e anotacoes serao deletados e um novo OLHC chart sera criado
@@ -365,15 +365,29 @@ public class mcchartgenerator
         
         //criar grafico (novo com volume)
         org.jfree.chart.axis.DateAxis domainAxis = new org.jfree.chart.axis.DateAxis("Date");
-        org.jfree.chart.axis.NumberAxis rangeAxis = new org.jfree.chart.axis.NumberAxis("");
-        org.jfree.chart.renderer.xy.CandlestickRenderer renderer = new org.jfree.chart.renderer.xy.CandlestickRenderer();
-        org.jfree.data.xy.XYDataset dataset = (org.jfree.data.xy.XYDataset)olhcdataset;
-        org.jfree.chart.plot.XYPlot mainPlot = new org.jfree.chart.plot.XYPlot(dataset, domainAxis, rangeAxis, renderer);
-        renderer.setSeriesPaint(0, Color.BLACK);
-        renderer.setDrawVolume(true);
-        rangeAxis.setAutoRangeIncludesZero(false);
-        org.jfree.chart.JFreeChart chart = new org.jfree.chart.JFreeChart(tituloohlc.toUpperCase(), null, mainPlot, false);
-        chartatual = chart;
+        if (tipoescala.equals("linear"))
+        {
+            org.jfree.chart.axis.NumberAxis rangeAxis = new org.jfree.chart.axis.NumberAxis("");
+            org.jfree.chart.renderer.xy.CandlestickRenderer renderer = new org.jfree.chart.renderer.xy.CandlestickRenderer();
+            org.jfree.data.xy.XYDataset dataset = (org.jfree.data.xy.XYDataset)olhcdataset;
+            org.jfree.chart.plot.XYPlot mainPlot = new org.jfree.chart.plot.XYPlot(dataset, domainAxis, rangeAxis, renderer);
+            renderer.setSeriesPaint(0, Color.BLACK);
+            renderer.setDrawVolume(true);
+            rangeAxis.setAutoRangeIncludesZero(false);
+            org.jfree.chart.JFreeChart chart = new org.jfree.chart.JFreeChart(tituloohlc.toUpperCase(), null, mainPlot, false);
+            chartatual = chart;
+        }
+        else if (tipoescala.equals("logaritmica"))
+        {
+            org.jfree.chart.axis.LogAxis rangeAxis = new org.jfree.chart.axis.LogAxis("");
+            org.jfree.chart.renderer.xy.CandlestickRenderer renderer = new org.jfree.chart.renderer.xy.CandlestickRenderer();
+            org.jfree.data.xy.XYDataset dataset = (org.jfree.data.xy.XYDataset)olhcdataset;
+            org.jfree.chart.plot.XYPlot mainPlot = new org.jfree.chart.plot.XYPlot(dataset, domainAxis, rangeAxis, renderer);
+            renderer.setSeriesPaint(0, Color.BLACK);
+            renderer.setDrawVolume(true);
+            org.jfree.chart.JFreeChart chart = new org.jfree.chart.JFreeChart(tituloohlc.toUpperCase(), null, mainPlot, false);
+            chartatual = chart;
+        }
         
         
         // Create Panel

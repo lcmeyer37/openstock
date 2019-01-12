@@ -67,6 +67,8 @@ public class mpsubmodulografico extends javax.swing.JPanel
         //receber informacoes de candles de acordo com os paremetros principais
         String simboloescolhido = jTextFieldNomeSimbolo.getText();
         String periodoescolhido = jComboBoxPeriodoSimbolo.getSelectedItem().toString();
+        String escalagrafico = escalagraficoescolhido;
+        
         
         java.util.List<mierclasses.mccandle> candles = null;
         //testes
@@ -102,7 +104,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
         
         
         //recriar grafico OHLC resetando anotacoes e indicadores atuais
-        mcg.recriarohlc(candles,simboloescolhido + " (" + periodoescolhido + ")");
+        mcg.recriarohlc(candles,simboloescolhido + " (" + periodoescolhido + ")",escalagrafico);
         //receber cpanel OHLC pos-atualizacao para adicionar ao panel
         org.jfree.chart.ChartPanel chartpanel = mcg.retornarcpanelohlc();
         chartpanel.addChartMouseListener(new org.jfree.chart.ChartMouseListener()
@@ -205,6 +207,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
                             "<Name>" + mtgraficopai.jLabelNomeItemGrafico.getText() + "</Name>" +
                             "<ID>" + mtgraficopai.id + "</ID>" +
                             "<Symbol>" + jTextFieldNomeSimbolo.getText() + "</Symbol>" +
+                            "<Scale>" + escalagraficoescolhido + "</Scale>" +
                             "<Period>" + jComboBoxPeriodoSimbolo.getSelectedItem().toString() + "</Period>" +
                         "</MainInfo>" +
                 
@@ -278,6 +281,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
                 String iditemgrafico = elmaininfounico.getElementsByTagName("ID").item(0).getTextContent();
                 String simbolo = elmaininfounico.getElementsByTagName("Symbol").item(0).getTextContent();
                 String periodo = elmaininfounico.getElementsByTagName("Period").item(0).getTextContent();
+                String escala = elmaininfounico.getElementsByTagName("Scale").item(0).getTextContent();
                 
                 mtgraficopai.jLabelNomeItemGrafico.setText(nomeasset);
                 mtgraficopai.id = iditemgrafico;
@@ -291,6 +295,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
                         break;
                     }
                 }
+                alternartipoescala(escala);
                 recarregargraficosimbolo();
                 //mierclasses.mcfuncoeshelper.mostrarmensagem("carregou grafico");
                 // </editor-fold>
@@ -350,6 +355,23 @@ public class mpsubmodulografico extends javax.swing.JPanel
             mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred when loading. Exception: " + ex.getMessage());
         }
 
+    }
+    
+    String escalagraficoescolhido = "linear";
+    void alternartipoescala(String escalaalternar)
+    {
+        if (escalaalternar.equals("linear"))
+        {
+            escalagraficoescolhido = "linear";
+            jLabelLinearSwitch.setForeground(Color.blue);
+            jLabelLogaritmicaSwitch.setForeground(Color.white);
+        }
+        else if (escalaalternar.equals("logaritmica"))
+        {
+            escalagraficoescolhido = "logaritmica";
+            jLabelLinearSwitch.setForeground(Color.white);
+            jLabelLogaritmicaSwitch.setForeground(Color.blue);
+        }
     }
     
     // </editor-fold>
@@ -514,6 +536,8 @@ public class mpsubmodulografico extends javax.swing.JPanel
         jButtonCarregarConfiguracao = new javax.swing.JButton();
         jButtonSalvarConfiguracao = new javax.swing.JButton();
         jButtonAtualizarDadosGrafico = new javax.swing.JButton();
+        jLabelLinearSwitch = new javax.swing.JLabel();
+        jLabelLogaritmicaSwitch = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanelIndicadores = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -624,12 +648,32 @@ public class mpsubmodulografico extends javax.swing.JPanel
             }
         });
 
-        jButtonAtualizarDadosGrafico.setText("Update Symbol Data");
+        jButtonAtualizarDadosGrafico.setText("Update Data");
         jButtonAtualizarDadosGrafico.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
                 jButtonAtualizarDadosGraficoActionPerformed(evt);
+            }
+        });
+
+        jLabelLinearSwitch.setForeground(new java.awt.Color(0, 0, 255));
+        jLabelLinearSwitch.setText("Linear");
+        jLabelLinearSwitch.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jLabelLinearSwitchMouseClicked(evt);
+            }
+        });
+
+        jLabelLogaritmicaSwitch.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelLogaritmicaSwitch.setText("Logarithmic");
+        jLabelLogaritmicaSwitch.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jLabelLogaritmicaSwitchMouseClicked(evt);
             }
         });
 
@@ -640,7 +684,6 @@ public class mpsubmodulografico extends javax.swing.JPanel
             .addGroup(jPanelPrincipalLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonAtualizarDadosGrafico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPrincipalLayout.createSequentialGroup()
                         .addComponent(jLabelNomeSimbolo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -652,10 +695,17 @@ public class mpsubmodulografico extends javax.swing.JPanel
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboBoxPeriodoSimbolo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanelPrincipalLayout.createSequentialGroup()
-                        .addComponent(jButtonCarregarConfiguracao)
+                        .addGap(5, 5, 5)
+                        .addComponent(jLabelLinearSwitch)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabelLogaritmicaSwitch)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonAtualizarDadosGrafico, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
+                    .addGroup(jPanelPrincipalLayout.createSequentialGroup()
+                        .addComponent(jButtonCarregarConfiguracao, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonSalvarConfiguracao)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(jButtonSalvarConfiguracao)))
+                .addContainerGap())
         );
         jPanelPrincipalLayout.setVerticalGroup(
             jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -670,7 +720,10 @@ public class mpsubmodulografico extends javax.swing.JPanel
                     .addComponent(jComboBoxPeriodoSimbolo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelPeriodoSimbolo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonAtualizarDadosGrafico)
+                .addGroup(jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonAtualizarDadosGrafico)
+                    .addComponent(jLabelLinearSwitch)
+                    .addComponent(jLabelLogaritmicaSwitch))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonCarregarConfiguracao)
@@ -828,6 +881,16 @@ public class mpsubmodulografico extends javax.swing.JPanel
         carregarconfiguracaoasset();
     }//GEN-LAST:event_jButtonCarregarConfiguracaoActionPerformed
 
+    private void jLabelLinearSwitchMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabelLinearSwitchMouseClicked
+    {//GEN-HEADEREND:event_jLabelLinearSwitchMouseClicked
+        alternartipoescala("linear");
+    }//GEN-LAST:event_jLabelLinearSwitchMouseClicked
+
+    private void jLabelLogaritmicaSwitchMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabelLogaritmicaSwitchMouseClicked
+    {//GEN-HEADEREND:event_jLabelLogaritmicaSwitchMouseClicked
+        alternartipoescala("logaritmica");
+    }//GEN-LAST:event_jLabelLogaritmicaSwitchMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdicionarIndicador;
@@ -842,6 +905,8 @@ public class mpsubmodulografico extends javax.swing.JPanel
     private javax.swing.JLabel jLabelFerramentas;
     private javax.swing.JLabel jLabelIndicadores;
     private javax.swing.JLabel jLabelInfo;
+    private javax.swing.JLabel jLabelLinearSwitch;
+    private javax.swing.JLabel jLabelLogaritmicaSwitch;
     private javax.swing.JLabel jLabelNomeSimbolo;
     private javax.swing.JLabel jLabelPeriodoSimbolo;
     private javax.swing.JLabel jLabelPrincipal;
