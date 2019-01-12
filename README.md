@@ -1,12 +1,12 @@
 # Open Stock
 Open Source Technical Analysis Software
 
-![1.0a](sandp.png)
+![1.0a](sblogo.png)
 
 ## About
 Open Stock is a project licensed under GNU GPLv3. The project is being created making use of NetBeans and Java. And some of its features include:
 
-![1.0a](openstock02012019.jpg)
+![1.0a](sandptest.jpg)
 
 - [x] Real-time stocks data
 - [x] Possibility to anaylise multiple charts at the same time
