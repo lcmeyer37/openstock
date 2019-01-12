@@ -362,23 +362,17 @@ public class mcchartgenerator
         //criar dataset
         org.jfree.data.xy.OHLCDataset olhcdataset = criarohlcdataset(candlesatual,tituloohlc);
     
-        //criar grafico
-        org.jfree.chart.JFreeChart chart = org.jfree.chart.ChartFactory.createHighLowChart
-        (
-            tituloohlc, 
-            "Date", 
-            "Price",
-            olhcdataset, 
-            true
-        );
         
-        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chart.getPlot();
-        org.jfree.chart.axis.NumberAxis rangeAxis = (org.jfree.chart.axis.NumberAxis) plot.getRangeAxis();
-        org.jfree.chart.renderer.xy.HighLowRenderer renderer = (org.jfree.chart.renderer.xy.HighLowRenderer) plot.getRenderer();
-        renderer.setBaseStroke(new BasicStroke(2.0f));
-        renderer.setSeriesPaint(0, Color.blue);
- 
+        //criar grafico (novo com volume)
+        org.jfree.chart.axis.DateAxis domainAxis = new org.jfree.chart.axis.DateAxis("Date");
+        org.jfree.chart.axis.NumberAxis rangeAxis = new org.jfree.chart.axis.NumberAxis("");
+        org.jfree.chart.renderer.xy.CandlestickRenderer renderer = new org.jfree.chart.renderer.xy.CandlestickRenderer();
+        org.jfree.data.xy.XYDataset dataset = (org.jfree.data.xy.XYDataset)olhcdataset;
+        org.jfree.chart.plot.XYPlot mainPlot = new org.jfree.chart.plot.XYPlot(dataset, domainAxis, rangeAxis, renderer);
+        renderer.setSeriesPaint(0, Color.BLACK);
+        renderer.setDrawVolume(true);
         rangeAxis.setAutoRangeIncludesZero(false);
+        org.jfree.chart.JFreeChart chart = new org.jfree.chart.JFreeChart(tituloohlc.toUpperCase(), null, mainPlot, false);
         chartatual = chart;
         
         

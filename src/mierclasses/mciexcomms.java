@@ -191,6 +191,8 @@ public class mciexcomms
         */
         
         String jsonconteudo = mwcomms.receberconteudopagina("https://api.iextrading.com/1.0/stock/"+simbolo+"/chart/"+periodo);
+        //mierclasses.mcfuncoeshelper.setarclipboard(jsonconteudo);
+        //mierclasses.mcfuncoeshelper.mostrarmensagem(jsonconteudo);
         
         JSONArray candlesjson = new JSONArray(jsonconteudo);
         java.util.List<mccandle> listacandlesretornar = new java.util.ArrayList<>();
