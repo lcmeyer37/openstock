@@ -125,6 +125,8 @@
                   <Component id="jButtonAtivarSelecao" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButtonAtivarReta" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jButtonAtivarFibonacci" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -136,6 +138,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jButtonAtivarSelecao" alignment="3" max="32767" attributes="0"/>
                       <Component id="jButtonAtivarReta" alignment="3" max="32767" attributes="0"/>
+                      <Component id="jButtonAtivarFibonacci" alignment="3" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -160,6 +163,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAtivarRetaActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButtonAtivarFibonacci">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Fibonacci"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAtivarFibonacciActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

@@ -164,10 +164,10 @@ public class mpsubmodulografico extends javax.swing.JPanel
             String tipoanotacao = miaa.tipoanotacao;
             String anotacaoserializada = "";
             
-            if (tipoanotacao.equals("line"))
-            {
-                org.jfree.chart.annotations.XYLineAnnotation lineserialize = 
-                        (org.jfree.chart.annotations.XYLineAnnotation) miaa.annotation;
+            //if (tipoanotacao.equals("line"))
+            //{
+                //org.jfree.chart.annotations.XYLineAnnotation lineserialize = 
+                //        (org.jfree.chart.annotations.XYLineAnnotation) miaa.annotation;
                 
                 //making serialization of the annotations
                 //https://www.tutorialspoint.com/java/java_serialization.htm
@@ -176,7 +176,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
                 {
                     java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
                     java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(baos);
-                    oos.writeObject(lineserialize);
+                    oos.writeObject(miaa.annotation);
                     oos.close();
                     anotacaoserializada = java.util.Base64.getEncoder().encodeToString(baos.toByteArray()); 
                 }
@@ -184,7 +184,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
                 {
                     //necessario
                 }
-            }
+            //}
             
             
             
@@ -460,12 +460,20 @@ public class mpsubmodulografico extends javax.swing.JPanel
             
             //eh necessario saber qual a ferramenta atual em uso para saber qual tipo
             //de anotacao esta sendo adicionada
-            if (mcg.ferramentaatualgrafico.equals("reta"))
+            if (mcg.ferramentaatualgrafico.equals("line"))
             {
-                mierpanels.mpitemanotacao novompia = new mierpanels.mpitemanotacao(this,"line",lan.get(tamanhoanotacoesgraficas-1));
+                mierpanels.mpitemanotacao novompia = new mierpanels.mpitemanotacao(this,"line",mcg.ultimoobjetoanotacao);
                 mcg.adicionarplotohlc_annotationid(novompia.id);
                 jPanelAnotacoes.add(novompia);
             }
+            else if(mcg.ferramentaatualgrafico.equals("fibonacci"))
+            {
+                
+                mierpanels.mpitemanotacao novompia = new mierpanels.mpitemanotacao(this,"fibonacci",mcg.ultimoobjetoanotacao);
+                mcg.adicionarplotohlc_annotationid(novompia.id);
+                jPanelAnotacoes.add(novompia);
+            }
+                    
         }
         
         this.validate();
@@ -474,8 +482,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
     
     public void removerAnotacao(mierpanels.mpitemanotacao mpiaremover)
     {
-
-        mcg.removerplotohlc_annotation(mpiaremover.id);
+        mcg.removerplotohlc_annotation(mpiaremover.id, mpiaremover.annotation, mpiaremover.tipoanotacao);
         jPanelAnotacoes.remove(mpiaremover);
         this.validate();
         this.repaint();
@@ -501,6 +508,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
     {
         jButtonAtivarSelecao.setForeground(Color.black);
         jButtonAtivarReta.setForeground(Color.black);
+        jButtonAtivarFibonacci.setForeground(Color.black);
     }
         
     void atualizarinformacoesposicaoatualgrafico()
@@ -526,6 +534,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
         jPanelFerramentasInfo = new javax.swing.JPanel();
         jButtonAtivarSelecao = new javax.swing.JButton();
         jButtonAtivarReta = new javax.swing.JButton();
+        jButtonAtivarFibonacci = new javax.swing.JButton();
         jLabelFerramentas = new javax.swing.JLabel();
         jPanelPrincipal = new javax.swing.JPanel();
         jButtonEscolherSimbolo = new javax.swing.JButton();
@@ -584,6 +593,15 @@ public class mpsubmodulografico extends javax.swing.JPanel
             }
         });
 
+        jButtonAtivarFibonacci.setText("Fibonacci");
+        jButtonAtivarFibonacci.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonAtivarFibonacciActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelFerramentasInfoLayout = new javax.swing.GroupLayout(jPanelFerramentasInfo);
         jPanelFerramentasInfo.setLayout(jPanelFerramentasInfoLayout);
         jPanelFerramentasInfoLayout.setHorizontalGroup(
@@ -593,6 +611,8 @@ public class mpsubmodulografico extends javax.swing.JPanel
                 .addComponent(jButtonAtivarSelecao)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonAtivarReta)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonAtivarFibonacci)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelFerramentasInfoLayout.setVerticalGroup(
@@ -601,7 +621,8 @@ public class mpsubmodulografico extends javax.swing.JPanel
                 .addContainerGap()
                 .addGroup(jPanelFerramentasInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonAtivarSelecao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonAtivarReta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButtonAtivarReta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonAtivarFibonacci, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -891,9 +912,17 @@ public class mpsubmodulografico extends javax.swing.JPanel
         alternartipoescala("logaritmica");
     }//GEN-LAST:event_jLabelLogaritmicaSwitchMouseClicked
 
+    private void jButtonAtivarFibonacciActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAtivarFibonacciActionPerformed
+    {//GEN-HEADEREND:event_jButtonAtivarFibonacciActionPerformed
+        mcg.trocarferramentaparafibonacci();
+        resetarcorbotoesferramentas();
+        jButtonAtivarFibonacci.setForeground(Color.red);
+    }//GEN-LAST:event_jButtonAtivarFibonacciActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdicionarIndicador;
+    private javax.swing.JButton jButtonAtivarFibonacci;
     private javax.swing.JButton jButtonAtivarReta;
     private javax.swing.JButton jButtonAtivarSelecao;
     private javax.swing.JButton jButtonAtualizarDadosGrafico;
