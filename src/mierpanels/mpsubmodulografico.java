@@ -507,6 +507,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
     void resetarcorbotoesferramentas()
     {
         jButtonAtivarSelecao.setForeground(Color.black);
+        jButtonAtivarRegua.setForeground(Color.black);
         jButtonAtivarReta.setForeground(Color.black);
         jButtonAtivarFibonacci.setForeground(Color.black);
     }
@@ -535,6 +536,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
         jButtonAtivarSelecao = new javax.swing.JButton();
         jButtonAtivarReta = new javax.swing.JButton();
         jButtonAtivarFibonacci = new javax.swing.JButton();
+        jButtonAtivarRegua = new javax.swing.JButton();
         jLabelFerramentas = new javax.swing.JLabel();
         jPanelPrincipal = new javax.swing.JPanel();
         jButtonEscolherSimbolo = new javax.swing.JButton();
@@ -602,6 +604,15 @@ public class mpsubmodulografico extends javax.swing.JPanel
             }
         });
 
+        jButtonAtivarRegua.setText("Ruler");
+        jButtonAtivarRegua.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonAtivarReguaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelFerramentasInfoLayout = new javax.swing.GroupLayout(jPanelFerramentasInfo);
         jPanelFerramentasInfo.setLayout(jPanelFerramentasInfoLayout);
         jPanelFerramentasInfoLayout.setHorizontalGroup(
@@ -609,6 +620,8 @@ public class mpsubmodulografico extends javax.swing.JPanel
             .addGroup(jPanelFerramentasInfoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButtonAtivarSelecao)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonAtivarRegua)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonAtivarReta)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -622,7 +635,8 @@ public class mpsubmodulografico extends javax.swing.JPanel
                 .addGroup(jPanelFerramentasInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonAtivarSelecao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonAtivarReta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonAtivarFibonacci, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButtonAtivarFibonacci, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonAtivarRegua, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -919,10 +933,18 @@ public class mpsubmodulografico extends javax.swing.JPanel
         jButtonAtivarFibonacci.setForeground(Color.red);
     }//GEN-LAST:event_jButtonAtivarFibonacciActionPerformed
 
+    private void jButtonAtivarReguaActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAtivarReguaActionPerformed
+    {//GEN-HEADEREND:event_jButtonAtivarReguaActionPerformed
+        mcg.trocarferramentapararegua();
+        resetarcorbotoesferramentas();
+        jButtonAtivarRegua.setForeground(Color.red);
+    }//GEN-LAST:event_jButtonAtivarReguaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdicionarIndicador;
     private javax.swing.JButton jButtonAtivarFibonacci;
+    private javax.swing.JButton jButtonAtivarRegua;
     private javax.swing.JButton jButtonAtivarReta;
     private javax.swing.JButton jButtonAtivarSelecao;
     private javax.swing.JButton jButtonAtualizarDadosGrafico;

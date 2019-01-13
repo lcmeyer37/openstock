@@ -11,6 +11,7 @@ import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import org.jfree.ui.TextAnchor;
 
 
 /**
@@ -54,6 +55,11 @@ public class mcchartgenerator
         ferramentaatualgrafico = "selection";
     }
     
+    public void trocarferramentapararegua()
+    {
+        ferramentaatualgrafico = "ruler";
+    }
+    
     public void trocarferramentaparareta()
     {
         ferramentaatualgrafico = "line";
@@ -78,6 +84,10 @@ public class mcchartgenerator
             //no modo de selecao nao eh necessario fazer nada, soh resetar quaisquer ferramentas em uso
             ferramentaselecao_mclick();
         }
+        else if (ferramentaatualgrafico.equals("ruler"))
+        {
+            ferramentaregua_mclick(cmevent);
+        }
         else if (ferramentaatualgrafico.equals("line"))
         {
             //no modo de reta o usuario clica a primeira vez para dar o primeiro ponto da reta, e uma segunda vez para dar o segundo ponto
@@ -100,6 +110,10 @@ public class mcchartgenerator
         {
             //no modo de selecao nao eh necessario fazer nada, soh resetar quaisquer ferramentas em uso
             ferramentaselecao_mmove();
+        }
+        else if (ferramentaatualgrafico.equals("ruler"))
+        {
+            ferramentaregua_mmove(cmevent);
         }
         else if (ferramentaatualgrafico.equals("line"))
         {
@@ -178,11 +192,79 @@ public class mcchartgenerator
     }
     // </editor-fold>
     
+    // <editor-fold defaultstate="collapsed" desc="Ferramenta - Regua">
+    boolean regua_jatemponto1 = false;
+    double regua_pontox1 = 0;
+    double regua_pontoy1 = 0;
+    java.util.List<Object> regua_preview; 
+    void ferramentaregua_mclick(org.jfree.chart.ChartMouseEvent cmevent)
+    {
+        if (regua_jatemponto1 == false)
+        {
+            regua_pontox1 = valormouseatualgraficox;
+            regua_pontoy1 = valormouseatualgraficoy;
+            regua_jatemponto1 = true;
+        }
+        else if (regua_jatemponto1 == true)
+        {
+            regua_jatemponto1 = false;
+            
+            //a regua eh temporaria, soh aparece enquanto o mouse esta movendo
+            try
+            {
+                org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot)chartatual.getPlot();
+                
+                for (int i = 0; i < regua_preview.size(); i++)
+                {
+                    plotatual.removeAnnotation((org.jfree.chart.annotations.XYAnnotation)regua_preview.get(i));
+                }
+            }
+            catch (Exception ex)
+            {}
+
+            regua_preview = null;
+            regua_pontox1 = 0;
+            regua_pontoy1 = 0;
+        }
+    }
+    
+    void ferramentaregua_mmove(org.jfree.chart.ChartMouseEvent cmevent)
+    {
+        
+        if (regua_jatemponto1 == false)
+        {
+        }
+        else if (regua_jatemponto1 == true)
+        {
+            //remover annotation
+            try
+            {
+                org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot)chartatual.getPlot();
+                
+                for (int i = 0; i < regua_preview.size(); i++)
+                {
+                    plotatual.removeAnnotation((org.jfree.chart.annotations.XYAnnotation)regua_preview.get(i));
+                }
+            }
+            catch (Exception ex)
+            {}
+
+            
+            //ja tendo o o primeiro ponto, pode desenhar o preview
+            double regua_pontox2 = valormouseatualgraficox;
+            double regua_pontoy2 = valormouseatualgraficoy;
+            
+            //adicionar annotation line preview nova
+            regua_preview = adicionarplotohlc_annotationregua(regua_pontox1, regua_pontoy1, regua_pontox2, regua_pontoy2);
+        }
+    }
+    // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="Ferramenta - Fibonacci">
     boolean fib_jatemponto1 = false;
     double fib_pontox1 = 0;
     double fib_pontoy1 = 0;
-    java.util.List<org.jfree.chart.annotations.XYLineAnnotation> fib_preview; //o retracement de fibonacci se refere a um conjunto de linhas que sera desenhado
+    java.util.List<Object> fib_preview; //o retracement de fibonacci se refere a um conjunto de linhas que sera desenhado
     void ferramentafib_mclick(org.jfree.chart.ChartMouseEvent cmevent)
     {
         if (fib_jatemponto1 == false)
@@ -204,10 +286,8 @@ public class mcchartgenerator
     void ferramentafib_mmove(org.jfree.chart.ChartMouseEvent cmevent)
     {
         
-        //no caso de reta move, nos queremos que a annotation apareca constantemente como preview ateh o usuario dar o segundo clique
         if (fib_jatemponto1 == false)
         {
-            //caso nao tenha o primeiro ponto, nao desenhar preview ainda 
         }
         else if (fib_jatemponto1 == true)
         {
@@ -218,7 +298,7 @@ public class mcchartgenerator
                 
                 for (int i = 0; i < fib_preview.size(); i++)
                 {
-                    plotatual.removeAnnotation(fib_preview.get(i));
+                    plotatual.removeAnnotation((org.jfree.chart.annotations.XYAnnotation)fib_preview.get(i));
                 }
             }
             catch (Exception ex)
@@ -252,6 +332,11 @@ public class mcchartgenerator
     {
         //resetar selecao
 
+        //resetar regua
+        regua_jatemponto1 = false;
+        regua_preview = null;
+        regua_pontox1 = 0;
+        regua_pontoy1 = 0;
         
         //resetar reta
         reta_jatemponto1 = false;
@@ -305,7 +390,7 @@ public class mcchartgenerator
         //funcao retorna a annotation adicionada
     }
     
-    public java.util.List<org.jfree.chart.annotations.XYLineAnnotation> adicionarplotohlc_annotationfib(double x1, double y1, double x2, double y2)
+    public java.util.List<Object> adicionarplotohlc_annotationfib(double x1, double y1, double x2, double y2)
     { 
         //funcao para desenhar fibonacci retracement no grafico
         
@@ -322,6 +407,9 @@ public class mcchartgenerator
         double y1_0 = (((y2-y1)*0.000)+y1);
         double y2_0 = y1_0;
         org.jfree.chart.annotations.XYLineAnnotation xylalinha0 = new org.jfree.chart.annotations.XYLineAnnotation(x1_0, y1_0, x2_0, y2_0, new BasicStroke(1.0f), Color.black);
+        org.jfree.chart.annotations.XYTextAnnotation tatexto0 = new org.jfree.chart.annotations.XYTextAnnotation("0%", x1, y1_0);
+        tatexto0.setTextAnchor(TextAnchor.CENTER_RIGHT);
+        
         
         //linha paralela ao eixo x da altura 23.6% 
         double x1_236 = x1;
@@ -329,35 +417,47 @@ public class mcchartgenerator
         double y1_236 = (((y2-y1)*0.236)+y1);
         double y2_236 = y1_236;
         org.jfree.chart.annotations.XYLineAnnotation xylalinha236 = new org.jfree.chart.annotations.XYLineAnnotation(x1_236, y1_236, x2_236, y2_236, new BasicStroke(1.0f), Color.gray);
-
+        org.jfree.chart.annotations.XYTextAnnotation tatexto236 = new org.jfree.chart.annotations.XYTextAnnotation("23.6%", x1, y1_236);
+        tatexto236.setTextAnchor(TextAnchor.CENTER_RIGHT);
+        
+        
         //linha paralela ao eixo x da altura 38.2%
         double x1_382 = x1;
         double x2_382 = x2;
         double y1_382 = (((y2-y1)*0.382)+y1);
         double y2_382 = y1_382;
         org.jfree.chart.annotations.XYLineAnnotation xylalinha382 = new org.jfree.chart.annotations.XYLineAnnotation(x1_382, y1_382, x2_382, y2_382, new BasicStroke(1.0f), Color.gray);
-
+        org.jfree.chart.annotations.XYTextAnnotation tatexto382 = new org.jfree.chart.annotations.XYTextAnnotation("38.2%", x1, y1_382);
+        tatexto382.setTextAnchor(TextAnchor.CENTER_RIGHT);
+        
         //linha paralela ao eixo x da altura 50.0%
         double x1_500 = x1;
         double x2_500 = x2;
         double y1_500 = (((y2-y1)*0.500)+y1);
         double y2_500 = y1_500;
         org.jfree.chart.annotations.XYLineAnnotation xylalinha500 = new org.jfree.chart.annotations.XYLineAnnotation(x1_500, y1_500, x2_500, y2_500, new BasicStroke(1.0f), Color.black);
-
+        org.jfree.chart.annotations.XYTextAnnotation tatexto500 = new org.jfree.chart.annotations.XYTextAnnotation("50.0%", x1, y1_500);
+        tatexto500.setTextAnchor(TextAnchor.CENTER_RIGHT);
+        
         //linha paralela ao eixo x da altura 61.8%
         double x1_618 = x1;
         double x2_618 = x2;
         double y1_618 = (((y2-y1)*0.618)+y1);
         double y2_618 = y1_618;
         org.jfree.chart.annotations.XYLineAnnotation xylalinha618 = new org.jfree.chart.annotations.XYLineAnnotation(x1_618, y1_618, x2_618, y2_618, new BasicStroke(1.0f), Color.gray);
-
+        org.jfree.chart.annotations.XYTextAnnotation tatexto618 = new org.jfree.chart.annotations.XYTextAnnotation("61.8%", x1, y1_618);
+        tatexto618.setTextAnchor(TextAnchor.CENTER_RIGHT);
+        
+        
         //linha paralela ao eixo x, e esta altura se refere a maxima atribuida pelo usuario, ou seja a altura y2
         double x1_10000 = x1;
         double x2_10000 = x2;
         double y1_10000 = (((y2-y1)*1.000)+y1);
         double y2_10000 = y1_10000;
         org.jfree.chart.annotations.XYLineAnnotation xylalinha10000 = new org.jfree.chart.annotations.XYLineAnnotation(x1_10000, y1_10000, x2_10000, y2_10000, new BasicStroke(1.0f), Color.black);
-
+        org.jfree.chart.annotations.XYTextAnnotation tatexto10000 = new org.jfree.chart.annotations.XYTextAnnotation("100%", x1, y1_10000);
+        tatexto10000.setTextAnchor(TextAnchor.CENTER_RIGHT);
+        
         
         //adicionar linhas do fib retracement
         plot.addAnnotation(xylalinha0);
@@ -366,18 +466,75 @@ public class mcchartgenerator
         plot.addAnnotation(xylalinha500);
         plot.addAnnotation(xylalinha618);
         plot.addAnnotation(xylalinha10000);
+        plot.addAnnotation(tatexto0);
+        plot.addAnnotation(tatexto236);
+        plot.addAnnotation(tatexto382);
+        plot.addAnnotation(tatexto500);
+        plot.addAnnotation(tatexto618);
+        plot.addAnnotation(tatexto10000);
         
-        java.util.List<org.jfree.chart.annotations.XYLineAnnotation> fiblinhas = new java.util.ArrayList<>();
+        java.util.List<Object> fiblinhas = new java.util.ArrayList<>();
         fiblinhas.add(xylalinha0);
         fiblinhas.add(xylalinha236);
         fiblinhas.add(xylalinha382);
         fiblinhas.add(xylalinha500);
         fiblinhas.add(xylalinha618);
         fiblinhas.add(xylalinha10000);
+        fiblinhas.add(tatexto0);
+        fiblinhas.add(tatexto236);
+        fiblinhas.add(tatexto382);
+        fiblinhas.add(tatexto500);
+        fiblinhas.add(tatexto618);
+        fiblinhas.add(tatexto10000);
         
         return fiblinhas;
-        //mierfuncoeshelper.mostrarmensagem("anotacao reta adicionada");
-        //funcao retorna a annotation adicionada
+    }
+    
+    public java.util.List<Object> adicionarplotohlc_annotationregua(double x1, double y1, double x2, double y2)
+    { 
+        //funcao para desenhar uma linha temporaria mostrando a diferenca de porcentagem e tempo entre dois niveis
+        // A 
+        //  \    
+        //   \  
+        //    \ 
+        //     B
+        //  textofinal
+       
+        
+        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getXYPlot();
+        
+        //linha diagonal
+        double x1_diagonal = x1;
+        double x2_diagonal = x2;
+        double y1_diagonal = y1;
+        double y2_diagonal = y2;
+        org.jfree.chart.annotations.XYLineAnnotation xyladiagonal = new org.jfree.chart.annotations.XYLineAnnotation(x1_diagonal, y1_diagonal, x2_diagonal, y2_diagonal, new BasicStroke(1.0f), Color.blue);
+        
+        //texto datas
+        String datacomeco = new java.util.Date((long)x1).toString();
+        String datafim = new java.util.Date((long)x2).toString();
+        String textodata = datacomeco + " - " + datafim;
+        org.jfree.chart.annotations.XYTextAnnotation tatextodata = new org.jfree.chart.annotations.XYTextAnnotation(textodata, x1, y1);
+        tatextodata.setTextAnchor(TextAnchor.CENTER_LEFT);        
+        
+        //texto porcentagem
+        String textoporcentagem = String.format("%.2f",(y2 - y1)) + " (" + String.format("%.2f",((y2 - y1)/y1)*100) + "%)";
+        org.jfree.chart.annotations.XYTextAnnotation tatextoporcentagem = new org.jfree.chart.annotations.XYTextAnnotation(textoporcentagem, x2, y2);
+        tatextoporcentagem.setTextAnchor(TextAnchor.CENTER_LEFT);
+        
+        //adicionar linhas e textos
+        plot.addAnnotation(xyladiagonal);
+
+        plot.addAnnotation(tatextodata);
+        plot.addAnnotation(tatextoporcentagem);
+
+        java.util.List<Object> subanotacoes = new java.util.ArrayList<>();
+        subanotacoes.add(xyladiagonal);
+
+        subanotacoes.add(tatextodata);
+        subanotacoes.add(tatextoporcentagem);
+
+        return subanotacoes;
     }
     
     public void adicionarplotohlc_annotationobjectbase64type(Object objectannotation, String tipo)
