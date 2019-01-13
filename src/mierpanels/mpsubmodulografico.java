@@ -460,20 +460,9 @@ public class mpsubmodulografico extends javax.swing.JPanel
             
             //eh necessario saber qual a ferramenta atual em uso para saber qual tipo
             //de anotacao esta sendo adicionada
-            if (mcg.ferramentaatualgrafico.equals("line"))
-            {
-                mierpanels.mpitemanotacao novompia = new mierpanels.mpitemanotacao(this,"line",mcg.ultimoobjetoanotacao);
-                mcg.adicionarplotohlc_annotationid(novompia.id);
-                jPanelAnotacoes.add(novompia);
-            }
-            else if(mcg.ferramentaatualgrafico.equals("fibonacci"))
-            {
-                
-                mierpanels.mpitemanotacao novompia = new mierpanels.mpitemanotacao(this,"fibonacci",mcg.ultimoobjetoanotacao);
-                mcg.adicionarplotohlc_annotationid(novompia.id);
-                jPanelAnotacoes.add(novompia);
-            }
-                    
+            mierpanels.mpitemanotacao novompia = new mierpanels.mpitemanotacao(this,mcg.ferramentaatualgrafico,mcg.ultimoobjetoanotacao);
+            mcg.adicionarplotohlc_annotationid(novompia.id);
+            jPanelAnotacoes.add(novompia);    
         }
         
         this.validate();
@@ -510,6 +499,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
         jButtonAtivarRegua.setForeground(Color.black);
         jButtonAtivarReta.setForeground(Color.black);
         jButtonAtivarFibonacci.setForeground(Color.black);
+        jButtonAtivarTexto.setForeground(Color.black);
     }
         
     void atualizarinformacoesposicaoatualgrafico()
@@ -537,6 +527,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
         jButtonAtivarReta = new javax.swing.JButton();
         jButtonAtivarFibonacci = new javax.swing.JButton();
         jButtonAtivarRegua = new javax.swing.JButton();
+        jButtonAtivarTexto = new javax.swing.JButton();
         jLabelFerramentas = new javax.swing.JLabel();
         jPanelPrincipal = new javax.swing.JPanel();
         jButtonEscolherSimbolo = new javax.swing.JButton();
@@ -613,6 +604,15 @@ public class mpsubmodulografico extends javax.swing.JPanel
             }
         });
 
+        jButtonAtivarTexto.setText("Text");
+        jButtonAtivarTexto.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonAtivarTextoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelFerramentasInfoLayout = new javax.swing.GroupLayout(jPanelFerramentasInfo);
         jPanelFerramentasInfo.setLayout(jPanelFerramentasInfoLayout);
         jPanelFerramentasInfoLayout.setHorizontalGroup(
@@ -621,9 +621,11 @@ public class mpsubmodulografico extends javax.swing.JPanel
                 .addContainerGap()
                 .addComponent(jButtonAtivarSelecao)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonAtivarRegua)
+                .addComponent(jButtonAtivarTexto)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonAtivarReta)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonAtivarRegua)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonAtivarFibonacci)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -636,7 +638,8 @@ public class mpsubmodulografico extends javax.swing.JPanel
                     .addComponent(jButtonAtivarSelecao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonAtivarReta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonAtivarFibonacci, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonAtivarRegua, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButtonAtivarRegua, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonAtivarTexto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -940,6 +943,13 @@ public class mpsubmodulografico extends javax.swing.JPanel
         jButtonAtivarRegua.setForeground(Color.red);
     }//GEN-LAST:event_jButtonAtivarReguaActionPerformed
 
+    private void jButtonAtivarTextoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAtivarTextoActionPerformed
+    {//GEN-HEADEREND:event_jButtonAtivarTextoActionPerformed
+        mcg.trocarferramentaparatexto();
+        resetarcorbotoesferramentas();
+        jButtonAtivarTexto.setForeground(Color.red);
+    }//GEN-LAST:event_jButtonAtivarTextoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdicionarIndicador;
@@ -947,6 +957,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
     private javax.swing.JButton jButtonAtivarRegua;
     private javax.swing.JButton jButtonAtivarReta;
     private javax.swing.JButton jButtonAtivarSelecao;
+    private javax.swing.JButton jButtonAtivarTexto;
     private javax.swing.JButton jButtonAtualizarDadosGrafico;
     private javax.swing.JButton jButtonCarregarConfiguracao;
     private javax.swing.JButton jButtonEscolherSimbolo;

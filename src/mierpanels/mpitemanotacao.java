@@ -57,6 +57,13 @@ public class mpitemanotacao extends javax.swing.JPanel
     
     public void renomearitem(String novonome)
     {
+        if (tipoanotacao.equals("text"))
+        {
+            //caso seja anotacao, tambem renomear a anotacao no grafico em si
+            java.util.List<Object> subanotacoes = (java.util.List<Object>) annotation;
+            org.jfree.chart.annotations.XYTextAnnotation antexto = (org.jfree.chart.annotations.XYTextAnnotation)subanotacoes.get(0);
+            antexto.setText(novonome);
+        }
         jLabelNomeItemAnotacao.setText(novonome);
     }
     

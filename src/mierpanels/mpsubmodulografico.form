@@ -124,9 +124,11 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButtonAtivarSelecao" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jButtonAtivarRegua" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonAtivarTexto" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButtonAtivarReta" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jButtonAtivarRegua" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButtonAtivarFibonacci" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
@@ -142,6 +144,7 @@
                       <Component id="jButtonAtivarReta" alignment="3" max="32767" attributes="0"/>
                       <Component id="jButtonAtivarFibonacci" alignment="3" max="32767" attributes="0"/>
                       <Component id="jButtonAtivarRegua" alignment="3" max="32767" attributes="0"/>
+                      <Component id="jButtonAtivarTexto" alignment="3" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -182,6 +185,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAtivarReguaActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButtonAtivarTexto">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Text"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAtivarTextoActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

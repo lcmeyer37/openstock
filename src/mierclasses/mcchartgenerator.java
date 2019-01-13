@@ -70,6 +70,10 @@ public class mcchartgenerator
         ferramentaatualgrafico = "fibonacci";
     }
     
+    public void trocarferramentaparatexto()
+    {
+        ferramentaatualgrafico = "text";
+    }
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Interpretadores de Eventos">
@@ -96,6 +100,10 @@ public class mcchartgenerator
         else if (ferramentaatualgrafico.equals("fibonacci"))
         {
             ferramentafib_mclick(cmevent);
+        }
+        else if (ferramentaatualgrafico.equals("text"))
+        {
+            ferramentatexto_mclick(cmevent);
         }
     }
     
@@ -124,6 +132,10 @@ public class mcchartgenerator
         {
             ferramentafib_mmove(cmevent);
         }
+        else if (ferramentaatualgrafico.equals("text"))
+        {
+            ferramentatexto_mmove(cmevent);
+        }
     }
     //</editor-fold>
 
@@ -138,11 +150,25 @@ public class mcchartgenerator
     }
     // </editor-fold>
     
+    // <editor-fold defaultstate="collapsed" desc="Ferramenta - Texto">
+    void ferramentatexto_mclick(org.jfree.chart.ChartMouseEvent cmevent)
+    {
+        double reta_pontox = valormouseatualgraficox;
+        double reta_pontoy = valormouseatualgraficoy;
+        ultimoobjetoanotacao = adicionarplotohlc_annotationtexto(reta_pontox, reta_pontoy);
+    }
+    
+    void ferramentatexto_mmove(org.jfree.chart.ChartMouseEvent cmevent)
+    {
+        //nada a fazer
+    }
+    // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="Ferramenta - Reta">
     boolean reta_jatemponto1 = false;
     double reta_pontox1 = 0;
     double reta_pontoy1 = 0;
-    org.jfree.chart.annotations.XYLineAnnotation reta_preview; //reta que fica sendo redesenhada para preview e no fim eh salva com segundo clique
+    java.util.List<Object> reta_preview; //reta que fica sendo redesenhada para preview e no fim eh salva com segundo clique
     void ferramentareta_mclick(org.jfree.chart.ChartMouseEvent cmevent)
     {
         if (reta_jatemponto1 == false)
@@ -175,7 +201,11 @@ public class mcchartgenerator
             try
             {
                 org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot)chartatual.getPlot();
-                plotatual.removeAnnotation(reta_preview);
+                
+                for (int i = 0; i < reta_preview.size(); i++)
+                {
+                    plotatual.removeAnnotation((org.jfree.chart.annotations.XYAnnotation)reta_preview.get(i));
+                }
             }
             catch (Exception ex)
             {}
@@ -332,6 +362,8 @@ public class mcchartgenerator
     {
         //resetar selecao
 
+        //resetar texto
+        
         //resetar regua
         regua_jatemponto1 = false;
         regua_preview = null;
@@ -357,8 +389,21 @@ public class mcchartgenerator
         //essa adicao deve ser feita manualmente pela logica do core de ferramentas, que funcionam com o mouse
         idanotacoesatual.add(idadicionar);
     }
+    
+    public java.util.List<Object> adicionarplotohlc_annotationtexto(double x, double y)
+    {
+        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getXYPlot();
+        org.jfree.chart.annotations.XYTextAnnotation tatexto = new org.jfree.chart.annotations.XYTextAnnotation("New Annotation", x, y);
+        tatexto.setTextAnchor(TextAnchor.CENTER_LEFT);
+        plot.addAnnotation(tatexto);
+        
+        java.util.List<Object> subannotations = new java.util.ArrayList<>();
+        subannotations.add(tatexto);
+        
+        return subannotations;
+    }
 
-    public org.jfree.chart.annotations.XYLineAnnotation adicionarplotohlc_annotationreta(double x1, double y1, double x2, double y2)
+    public java.util.List<Object> adicionarplotohlc_annotationreta(double x1, double y1, double x2, double y2)
     { 
         /*
         org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getXYPlot();
@@ -385,7 +430,11 @@ public class mcchartgenerator
         org.jfree.chart.annotations.XYLineAnnotation xylineannotation = new org.jfree.chart.annotations.XYLineAnnotation(x1, y1, x2, y2, new BasicStroke(1.0f), Color.red);
 
         plot.addAnnotation(xylineannotation);
-        return xylineannotation;
+        
+        java.util.List<Object> subannotations = new java.util.ArrayList<>();
+        subannotations.add(xylineannotation);
+        
+        return subannotations;
         //mierfuncoeshelper.mostrarmensagem("anotacao reta adicionada");
         //funcao retorna a annotation adicionada
     }
@@ -473,21 +522,21 @@ public class mcchartgenerator
         plot.addAnnotation(tatexto618);
         plot.addAnnotation(tatexto10000);
         
-        java.util.List<Object> fiblinhas = new java.util.ArrayList<>();
-        fiblinhas.add(xylalinha0);
-        fiblinhas.add(xylalinha236);
-        fiblinhas.add(xylalinha382);
-        fiblinhas.add(xylalinha500);
-        fiblinhas.add(xylalinha618);
-        fiblinhas.add(xylalinha10000);
-        fiblinhas.add(tatexto0);
-        fiblinhas.add(tatexto236);
-        fiblinhas.add(tatexto382);
-        fiblinhas.add(tatexto500);
-        fiblinhas.add(tatexto618);
-        fiblinhas.add(tatexto10000);
+        java.util.List<Object> subannotations = new java.util.ArrayList<>();
+        subannotations.add(xylalinha0);
+        subannotations.add(xylalinha236);
+        subannotations.add(xylalinha382);
+        subannotations.add(xylalinha500);
+        subannotations.add(xylalinha618);
+        subannotations.add(xylalinha10000);
+        subannotations.add(tatexto0);
+        subannotations.add(tatexto236);
+        subannotations.add(tatexto382);
+        subannotations.add(tatexto500);
+        subannotations.add(tatexto618);
+        subannotations.add(tatexto10000);
         
-        return fiblinhas;
+        return subannotations;
     }
     
     public java.util.List<Object> adicionarplotohlc_annotationregua(double x1, double y1, double x2, double y2)
@@ -528,35 +577,25 @@ public class mcchartgenerator
         plot.addAnnotation(tatextodata);
         plot.addAnnotation(tatextoporcentagem);
 
-        java.util.List<Object> subanotacoes = new java.util.ArrayList<>();
-        subanotacoes.add(xyladiagonal);
+        java.util.List<Object> subannotations = new java.util.ArrayList<>();
+        subannotations.add(xyladiagonal);
 
-        subanotacoes.add(tatextodata);
-        subanotacoes.add(tatextoporcentagem);
+        subannotations.add(tatextodata);
+        subannotations.add(tatextoporcentagem);
 
-        return subanotacoes;
+        return subannotations;
     }
     
     public void adicionarplotohlc_annotationobjectbase64type(Object objectannotation, String tipo)
     {
         //funcao especial para carregamento de objetos de annotation
-        if (tipo.equals("line"))
-        {
-            org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getXYPlot();
-            org.jfree.chart.annotations.XYLineAnnotation xylineannotation = (org.jfree.chart.annotations.XYLineAnnotation)objectannotation;
+        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getXYPlot();
 
-            plot.addAnnotation(xylineannotation);
-        }
-        else if (tipo.equals("fibonacci"))
+        java.util.List<org.jfree.chart.annotations.XYAnnotation> anotacoesadicionar = (java.util.List<org.jfree.chart.annotations.XYAnnotation>)objectannotation;
+        org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot)chartatual.getPlot();
+        for (int i = 0; i < anotacoesadicionar.size(); i++)
         {
-            org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getXYPlot();
-            
-            java.util.List<org.jfree.chart.annotations.XYLineAnnotation> anotacoesadicionar = (java.util.List<org.jfree.chart.annotations.XYLineAnnotation>)objectannotation;
-            org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot)chartatual.getPlot();
-            for (int i = 0; i < anotacoesadicionar.size(); i++)
-            {
-                plot.addAnnotation(anotacoesadicionar.get(i)); 
-            }
+            plot.addAnnotation(anotacoesadicionar.get(i)); 
         }
     }
     
@@ -564,20 +603,11 @@ public class mcchartgenerator
     public void removerplotohlc_annotation(String idanotacao, Object objanotacao, String tipoanotacao)
     {
         //remover a anotacao grafica do chart
-        if (tipoanotacao.equals("line"))
+        java.util.List<org.jfree.chart.annotations.XYAnnotation> subanotacoesremover = (java.util.List<org.jfree.chart.annotations.XYAnnotation>)objanotacao;
+        org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot)chartatual.getPlot();
+        for (int i = 0; i < subanotacoesremover.size(); i++)
         {
-            org.jfree.chart.annotations.XYLineAnnotation anotacaoremover = (org.jfree.chart.annotations.XYLineAnnotation)objanotacao;
-            org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot)chartatual.getPlot();
-            plotatual.removeAnnotation(anotacaoremover);   
-        }
-        else if (tipoanotacao.equals("fibonacci"))
-        {
-            java.util.List<org.jfree.chart.annotations.XYLineAnnotation> anotacoesremover = (java.util.List<org.jfree.chart.annotations.XYLineAnnotation>)objanotacao;
-            org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot)chartatual.getPlot();
-            for (int i = 0; i < anotacoesremover.size(); i++)
-            {
-                plotatual.removeAnnotation(anotacoesremover.get(i));  
-            }
+            plotatual.removeAnnotation(subanotacoesremover.get(i));  
         }
 
         //remover id da anotacao da lista
