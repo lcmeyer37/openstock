@@ -243,9 +243,42 @@ public class mciexcomms
         return listacandlesretornar;
     }
     
-    // </editor-fold>
-    
-    // <editor-fold defaultstate="collapsed" desc="Stocks - Chart">
+    public java.util.List<mccandle> receberstockchartsample()
+    {
+        //funcao para entregar lista de cadles de exemplo
+        String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
+        String samplejson = rootjar + "/outfiles/samples/apple5y.json";
+        String jsonconteudo = mierclasses.mcfuncoeshelper.retornarStringArquivo(samplejson);
+        
+        JSONArray candlesjson = new JSONArray(jsonconteudo);
+        java.util.List<mccandle> listacandlesretornar = new java.util.ArrayList<>();
+        for (int i = 0; i < candlesjson.length(); i++)
+        {
+            JSONObject candleobjectatual = candlesjson.getJSONObject(i);
+            String cjson_date = candleobjectatual.getString("date");
+            String cjson_open = String.valueOf(candleobjectatual.getDouble("open"));
+            String cjson_high = String.valueOf(candleobjectatual.getDouble("high"));
+            String cjson_close = String.valueOf(candleobjectatual.getDouble("close"));
+            String cjson_low = String.valueOf(candleobjectatual.getDouble("low"));
+            String cjson_volume = String.valueOf(candleobjectatual.getDouble("volume"));
+            
+            String timestampcandle = 
+                    cjson_date.split("-")[0] + "-" +
+                    cjson_date.split("-")[1] + "-" +
+                    cjson_date.split("-")[2] + "-" +
+                    "00" + "-" +
+                    "00" + "-" +
+                    "00"; 
+            
+            mierclasses.mccandle candleadd = new mierclasses.mccandle
+        (timestampcandle, cjson_open, cjson_high, cjson_close, cjson_low, cjson_volume);
+            
+            listacandlesretornar.add(candleadd);
+            
+        }
+        
+        return listacandlesretornar;
+    }
     
     public java.util.List<String> receberlistasimbolosprocura(String parametrobusca)
     {

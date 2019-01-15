@@ -33,8 +33,6 @@ public class mcbearcodeinterpreter
     //eh possivel tambem que parametros nao sejam necessarios para um certo script, entao esta variavel pode vir
     //com texto vazio ""
     
-    mierpanels.mpitemindicador mpiindicadorpai; //item indicador que contem este objeto bearcode interpreter
-    
     //parametros de get utilizados pelo script em sua ultima run
     public java.util.List<mierclasses.mccandle> candles_lastrun;
     
@@ -57,17 +55,22 @@ public class mcbearcodeinterpreter
     public String tipodesenho_lastrun;
     
     //classe utilizada para intepretacao de codigo bear code
-    public mcbearcodeinterpreter(String id, String nome, String codbcjs, String paramsbcjs, mierpanels.mpitemindicador mpiipai)
+    public mcbearcodeinterpreter(String id, String nome, String codbcjs, String paramsbcjs)
     {
         idbcode = id;
         nomebcode = nome;
         codigobcodejs = codbcjs;
         parametrosbcodejs = paramsbcjs;
-        mpiindicadorpai = mpiipai;
-
     }
     
-    public String rodarscript()
+    public void atualizarscriptparametros(String codnovo, String paramsnovo)
+    {
+        //funcao para reatualizar codigo e parametros (utilizado pelo editor)
+        codigobcodejs = codnovo;
+        parametrosbcodejs = paramsnovo;
+    }
+    
+    public String rodarscript(java.util.List<mierclasses.mccandle> candlesscript, mierclasses.mcjtextareahandler runoutput)
     {
         try{
             
@@ -88,7 +91,7 @@ public class mcbearcodeinterpreter
         }
 
         //adicionar candles do submodulo grafico ao script, e informacao de versao atual do bearcode
-        candles_lastrun = mpiindicadorpai.submodulografico.mcg.candlesatual;
+        candles_lastrun = candlesscript;
         //reordenar a lista de candles por timestampdate
         java.util.Collections.sort(candles_lastrun, new java.util.Comparator<mierclasses.mccandle>() 
         {
@@ -100,8 +103,15 @@ public class mcbearcodeinterpreter
         engine.put("candles", candles_lastrun);
         String bcversion = "1.0a";
         engine.put("bearcodeversion", bcversion);
-        //adicionar uma variavel out especial, para debug de scripts
+        
+        //debugoutput e utilizado para output no system.out e debug em dev
         engine.put("debugoutput",System.out);
+        
+        //run output eh utilizado dentro do bearcode editor para print no jTextAreaOutput
+        if (runoutput.equals(null) == false)
+        {
+            engine.put("runoutput", runoutput);
+        }
 
         //rodar script
         //mierclasses.mcfuncoeshelper.mostrarmensagem("codigo para rodar: " + codigobcodejs)

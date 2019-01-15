@@ -44,7 +44,7 @@ public class mfadicionarindicador extends javax.swing.JFrame
             jComboBoxIndicadoresDisponiveis.removeAllItems();
             
             String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
-            String cindicconfig = rootjar + "/configfiles/indicators.mfxconfig";
+            String cindicconfig = rootjar + "/outfiles/bearcode/indicators.mfxconfig";
             //mierclasses.mcfuncoeshelper.mostrarmensagem(cindicconfig);
             
             File xmlArquivo = new File(cindicconfig);

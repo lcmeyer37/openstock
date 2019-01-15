@@ -51,4 +51,17 @@ public class mcfuncoeshelper
         
         return String.valueOf(ch);
     }
+    
+    public static String retornarStringArquivo(String path) 
+    {
+        try
+        {
+            byte[] encoded = java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(path));
+            return new String(encoded, java.nio.charset.StandardCharsets.UTF_8);   
+        }
+        catch (java.io.IOException ex)
+        {
+            return null;
+        }
+    }
 }

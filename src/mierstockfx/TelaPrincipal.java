@@ -155,8 +155,7 @@ public class TelaPrincipal extends javax.swing.JFrame
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jPanelHolderTelaPrincipal = new javax.swing.JPanel();
         jPanelHolderSubmoduloGrafico = new javax.swing.JPanel();
@@ -184,11 +183,9 @@ public class TelaPrincipal extends javax.swing.JFrame
 
         jLabelAdicionarGrafico.setText("Assets");
 
-        jButtonJanelaConfiguracoes.setText("About");
-        jButtonJanelaConfiguracoes.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButtonJanelaConfiguracoes.setText("Options");
+        jButtonJanelaConfiguracoes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonJanelaConfiguracoesActionPerformed(evt);
             }
         });
@@ -209,10 +206,8 @@ public class TelaPrincipal extends javax.swing.JFrame
         jScrollPane1.setViewportView(jPanelItensGrafico);
 
         jButtonAdicionarGrafico.setText("Add");
-        jButtonAdicionarGrafico.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButtonAdicionarGrafico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAdicionarGraficoActionPerformed(evt);
             }
         });
@@ -268,7 +263,7 @@ public class TelaPrincipal extends javax.swing.JFrame
 
     private void jButtonJanelaConfiguracoesActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonJanelaConfiguracoesActionPerformed
     {//GEN-HEADEREND:event_jButtonJanelaConfiguracoesActionPerformed
-        mierframes.mfsobre mfcg = new mierframes.mfsobre();
+        mierframes.mfconfiguracoes mfcg = new mierframes.mfconfiguracoes(this);
         mfcg.show();
     }//GEN-LAST:event_jButtonJanelaConfiguracoesActionPerformed
 

@@ -66,7 +66,7 @@ public class mpitemindicador extends javax.swing.JPanel
     public String rodarscriptindicadoredesenhar()
     {
         //funcao para rodar script relacionado a este item indicador
-        String statusrun = mbcodeinterpreter.rodarscript();      
+        String statusrun = mbcodeinterpreter.rodarscript(submodulografico.mcg.candlesatual,null);      
         
         if (statusrun.equals("ok"))
         {
@@ -89,7 +89,7 @@ public class mpitemindicador extends javax.swing.JPanel
         //funcao para criar um novo mcbearcodeinterpreter, que sera utilizado para
         //interpretar o codigo bearcode e gerar os valores x e y relacionados a este indicador
         
-        String tipobci = "indicador";
+        //String tipobci = "indicador";
         //mierclasses.mcfuncoeshelper.mostrarmensagem("tipobci: " + tipobci);
         String idbci = idbearcode;
         //mierclasses.mcfuncoeshelper.mostrarmensagem("idbci: " + idbci);
@@ -100,7 +100,7 @@ public class mpitemindicador extends javax.swing.JPanel
         try
         {
             String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
-            String cindicconfig = rootjar + "/configfiles/indicators.mfxconfig";
+            String cindicconfig = rootjar + "/outfiles/bearcode/indicators.mfxconfig";
             //mierclasses.mcfuncoeshelper.mostrarmensagem(cindicconfig);
             
             File xmlArquivo = new File(cindicconfig);
@@ -130,7 +130,7 @@ public class mpitemindicador extends javax.swing.JPanel
                         //mierclasses.mcfuncoeshelper.mostrarmensagem("nome: " + nome);
                         String arquivobcode = elIndicador.getElementsByTagName("BearcodeFile").item(0).getTextContent();
                         //mierclasses.mcfuncoeshelper.mostrarmensagem("arquivobcode: " + arquivobcode);
-                        caminhoarquivobci = rootjar + "/configfiles/" + arquivobcode;
+                        caminhoarquivobci = rootjar + "/outfiles/bearcode/" + arquivobcode;
                         //mierclasses.mcfuncoeshelper.mostrarmensagem("caminhoarquivobci: " + caminhoarquivobci);
                         break;
                     }
@@ -165,7 +165,8 @@ public class mpitemindicador extends javax.swing.JPanel
             mierclasses.mcfuncoeshelper.mostrarmensagem("Uma exceção ocorreu: " + e.toString());
         } 
         
-        mbcodeinterpreter = new mierclasses.mcbearcodeinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode,this);
+        
+        mbcodeinterpreter = new mierclasses.mcbearcodeinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode);
         //mierclasses.mcfuncoeshelper.mostrarmensagem("mbcodeinterpreter.tipobcode: " + mbcodeinterpreter.tipobcode);
         //mierclasses.mcfuncoeshelper.mostrarmensagem("mbcodeinterpreter.idbcode: " + mbcodeinterpreter.idbcode);
         //mierclasses.mcfuncoeshelper.mostrarmensagem("mbcodeinterpreter.nomebcode: " + mbcodeinterpreter.nomebcode);
