@@ -62,6 +62,12 @@
         <BearcodeFile>smaclose.bearcode</BearcodeFile>
     </Indicator>
 
+    <Indicator>
+        <BCID>emaclose</BCID>
+        <Name>Exponential Moving Average (Close)</Name>
+        <BearcodeFile>emaclose.bearcode</BearcodeFile>
+    </Indicator>
+
     <!--<Indicator>
         <BCID>test</BCID>
         <Name>Bearcode Scripting Engine Test</Name>

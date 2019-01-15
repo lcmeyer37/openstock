@@ -6,7 +6,7 @@ debugoutput.println("NOVO TESTE");
 var candlesinput = candles;
 
 //parametro esperado para este codigo
-var periodoinput = period; //periodo=10;periodo=50;etc...
+var periodoinput = parseInt(period); //periodo=10;periodo=50;etc...
 
 //receber dois arrays com closes e timestamps
 var valoresclose = [];
