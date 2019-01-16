@@ -117,7 +117,7 @@ public class mfeditorbearcode extends javax.swing.JFrame
         //funcao para repopular 
         //mbcodeinterpreter = new mierclasses.mcbearcodeinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode,this);
         mbcodeinterpreter.atualizarscriptparametros(jTextAreaScript.getText(), jTextFieldParameters.getText());
-        String result = mbcodeinterpreter.rodarscript(candlessample,mcjtah);
+        String result = mbcodeinterpreter.rodarscript(candlessample,true,mcjtah);
         
         if (result.equals("ok"))
         {

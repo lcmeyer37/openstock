@@ -66,7 +66,7 @@ public class mpitemindicador extends javax.swing.JPanel
     public String rodarscriptindicadoredesenhar()
     {
         //funcao para rodar script relacionado a este item indicador
-        String statusrun = mbcodeinterpreter.rodarscript(submodulografico.mcg.candlesatual,null);      
+        String statusrun = mbcodeinterpreter.rodarscript(submodulografico.mcg.candlesatual,false,null);      
         
         if (statusrun.equals("ok"))
         {

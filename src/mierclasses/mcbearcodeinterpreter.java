@@ -70,7 +70,7 @@ public class mcbearcodeinterpreter
         parametrosbcodejs = paramsnovo;
     }
     
-    public String rodarscript(java.util.List<mierclasses.mccandle> candlesscript, mierclasses.mcjtextareahandler runoutput)
+    public String rodarscript(java.util.List<mierclasses.mccandle> candlesscript, Boolean adicionarouthandler, mierclasses.mcjtextareahandler runoutput)
     {
         try{
             
@@ -108,7 +108,7 @@ public class mcbearcodeinterpreter
         engine.put("debugoutput",System.out);
         
         //run output eh utilizado dentro do bearcode editor para print no jTextAreaOutput
-        if (runoutput.equals(null) == false)
+        if (adicionarouthandler == true)
         {
             engine.put("runoutput", runoutput);
         }
