@@ -19,15 +19,15 @@ public class mpitemanotacao extends javax.swing.JPanel
     //variavel que diz que tipo de anotacao eh esta, ex: linha, fibonacci, etc.
     public String tipoanotacao;
     
-    //variavel jfree chart utilizada para salvar parametros da anotacao para carregamento futuro
-    //public org.jfree.chart.annotations.XYAnnotation xyannotation;
-    public Object annotation;
+    //lista de subanotacoes desta anotacao para carregamento futuro
+    //(public java.list.util.List<org.jfree.chart.annotations.XYAnnotation>)
+    public java.util.List<org.jfree.chart.annotations.XYAnnotation> subannotationsanotacao;
     
     //id desta anotacao (utilizado para delecao)
     public String id;
     
     //construtor nova anotacao
-    public mpitemanotacao(mierpanels.mpsubmodulografico smg, String tipo, Object an)
+    public mpitemanotacao(mierpanels.mpsubmodulografico smg, String tipo, java.util.List<org.jfree.chart.annotations.XYAnnotation> subans)
     {
         initComponents();
         
@@ -35,11 +35,11 @@ public class mpitemanotacao extends javax.swing.JPanel
         
         submodulografico = smg;
         tipoanotacao = tipo;
-        annotation = an;
+        subannotationsanotacao = subans;
     }
     
     //construtor recarregar anotacao
-    public mpitemanotacao(mierpanels.mpsubmodulografico smg, String nome, String idan, String tipo, Object an)
+    public mpitemanotacao(mierpanels.mpsubmodulografico smg, String nome, String idan, String tipo, java.util.List<org.jfree.chart.annotations.XYAnnotation> subans)
     {
         initComponents();
         
@@ -49,9 +49,7 @@ public class mpitemanotacao extends javax.swing.JPanel
         
         submodulografico = smg;
         tipoanotacao = tipo;
-        annotation = an;
-        
-        submodulografico.mcg.adicionarplotohlc_annotationobjectbase64type(annotation,tipoanotacao);
+        subannotationsanotacao = subans;
     }
    
     
@@ -60,8 +58,7 @@ public class mpitemanotacao extends javax.swing.JPanel
         if (tipoanotacao.equals("text"))
         {
             //caso seja anotacao, tambem renomear a anotacao no grafico em si
-            java.util.List<Object> subanotacoes = (java.util.List<Object>) annotation;
-            org.jfree.chart.annotations.XYTextAnnotation antexto = (org.jfree.chart.annotations.XYTextAnnotation)subanotacoes.get(0);
+            org.jfree.chart.annotations.XYTextAnnotation antexto = (org.jfree.chart.annotations.XYTextAnnotation)subannotationsanotacao.get(0);
             antexto.setText(novonome);
         }
         jLabelNomeItemAnotacao.setText(novonome);

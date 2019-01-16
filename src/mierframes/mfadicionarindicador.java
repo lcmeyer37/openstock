@@ -86,7 +86,7 @@ public class mfadicionarindicador extends javax.swing.JFrame
         //mierclasses.mcfuncoeshelper.mostrarmensagem(idbc);
         String parametrosbc = jTextFieldParametrosIndicador.getText();
         //mierclasses.mcfuncoeshelper.mostrarmensagem(parametrosbc);
-        submodulopai.adicionarIndicador(idbc, parametrosbc);
+        submodulopai.adicionarIndicadorNovo(idbc, parametrosbc);
         this.dispose();
     }
     

@@ -176,7 +176,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
                 {
                     java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
                     java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(baos);
-                    oos.writeObject(miaa.annotation);
+                    oos.writeObject(miaa.subannotationsanotacao);
                     oos.close();
                     anotacaoserializada = java.util.Base64.getEncoder().encodeToString(baos.toByteArray()); 
                 }
@@ -235,6 +235,8 @@ public class mpsubmodulografico extends javax.swing.JPanel
                 writer.println(xmlSalvar);
                 writer.close();
             }
+            
+            mierclasses.mcfuncoeshelper.mostrarmensagem("Asset file saved.");
         }
         catch (Exception ex)
         {
@@ -330,6 +332,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
                     String tipo_anotacao = elanotacao.getElementsByTagName("Type").item(0).getTextContent();
                     String parameters_anotacao = elanotacao.getElementsByTagName("Parameters").item(0).getTextContent();
                     Object objetos_subanotacoes_anotacao = null;
+                    java.util.List<org.jfree.chart.annotations.XYAnnotation> listasubanotacoesdaanotacao = null;
                     try
                     {
                         byte [] data = java.util.Base64.getDecoder().decode(parameters_anotacao);
@@ -338,13 +341,14 @@ public class mpsubmodulografico extends javax.swing.JPanel
                         ois.close();
                         
                         objetos_subanotacoes_anotacao = o;
+                        listasubanotacoesdaanotacao = (java.util.List<org.jfree.chart.annotations.XYAnnotation>)objetos_subanotacoes_anotacao;
                     }
                     catch (Exception ex)
                     {
                         //necessario
                     }
                     
-                    adicionarAnotacaoLoad(nome_anotacao,id_anotacao,tipo_anotacao,objetos_subanotacoes_anotacao);
+                    adicionarAnotacaoLoad(nome_anotacao,id_anotacao,tipo_anotacao,listasubanotacoesdaanotacao);
                 }
                 //mierclasses.mcfuncoeshelper.mostrarmensagem("carregou anotacoes");
                 // </editor-fold>
@@ -378,8 +382,15 @@ public class mpsubmodulografico extends javax.swing.JPanel
     
     // <editor-fold defaultstate="collapsed" desc="Indicators Section">
         
-    public void adicionarIndicador(String idbc, String paramsbc)
+    public void adicionarIndicadorNovo(String idbc, String paramsbc)
     {
+        //funcao para adicionar novo indicador no chartgenerator em uso
+        
+        
+        
+        
+        
+        
         //funcao para adicionar novo item indicador a este submodulo grafico
         
         //public mpitemindicador(mierpanels.mpsubmodulografico mpsmg, String idbearcode, String parametrosbearcode)
@@ -419,24 +430,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
         }
 
     }
-    
-    public void adicionarAnotacaoLoad(String nome, String id, String tipo, Object subanotacoesanotacaoobjeto)
-    {
-        mierpanels.mpitemanotacao novompia = new mierpanels.mpitemanotacao(this, nome, id, tipo, subanotacoesanotacaoobjeto);
-        java.util.List<org.jfree.chart.annotations.XYAnnotation> anotacoesadicionar = (java.util.List<org.jfree.chart.annotations.XYAnnotation>)subanotacoesanotacaoobjeto;
-        for (int i = 0; i < anotacoesadicionar.size(); i++)
-        {
-            mcg.adicionarplotohlc_annotationid(novompia.id);
-        }
-       
-        jPanelAnotacoes.add(novompia);
-        
-        this.validate();
-        this.repaint();
-    }
-    
-    
-    
+
     public void removerIndicador(mierpanels.mpitemindicador mpiiremover)
     {
         mcg.removerplotohlc_indicador(mpiiremover.id);
@@ -449,50 +443,65 @@ public class mpsubmodulografico extends javax.swing.JPanel
     
     // <editor-fold defaultstate="collapsed" desc="Annotations Section">
     
-    void atualizarlistaannotationsgrafico()
+    void adicionarAnotacaoNovo()
     {
-        java.util.List<Object> lan = mcg.retornarlistaanotacoesatuais();
-        int tamanhoanotacoesgraficas = lan.size();
+        //funcao especial que roda sempre com o mouse click dentro do chart panel, eh necessario calcular a diferenca 
+        //entre subannotations presentes no grafico com o numero atual de ids de subannotations do chartgenerator atual,
+        //para saber se um novo item de anotacao deve ser adicionado no submodulo
         
-        int tamanhoidsatual = mcg.idanotacoesatual.size();
+        java.util.List<org.jfree.chart.annotations.XYAnnotation> listasubanotacoesgraficas = mcg.retornartodassubanotacoes();
+        int tamanhoanotacoesgraficas = listasubanotacoesgraficas.size();
+        int quantidadeidssubmoduloatual = mcg.idferramentassubannotationsatual.size();
         
-        int diferencaanotacoesgraficasids = tamanhoanotacoesgraficas - tamanhoidsatual;
+        int diferencasubannotationsgraficoeidssubannotations = tamanhoanotacoesgraficas - quantidadeidssubmoduloatual;
         
-        if (diferencaanotacoesgraficasids > 0)
+        if (diferencasubannotationsgraficoeidssubannotations > 0)
         {
-            //considerando que temos mais anotacoes graficas que ids na lista de ids do chartgenerator,
-            //conclui-se que uma nova anotacao acabou de ser criada graficamente, 
-            //entao um novo id deve ser adicionado a lista de anotacoes
-            //e um novo item de anotacao deve ser criado
+            //considerando que existem mais subannotations graficos que ids na lista, quer dizer que acabou de ser adicionado uma nova anotacao
+            //e ela deve ser registrada neste submodulo com um novo item anotacao e seu id adicionado na lista de controle do chart generator
+            mierpanels.mpitemanotacao novompia = new mierpanels.mpitemanotacao(this,mcg.ferramentaatualgrafico,mcg.ultimalistasubanotacoesanotacao);
             
-            //eh necessario saber qual a ferramenta atual em uso para saber qual tipo
-            //de anotacao esta sendo adicionada
-            mierpanels.mpitemanotacao novompia = new mierpanels.mpitemanotacao(this,mcg.ferramentaatualgrafico,mcg.ultimoobjetoanotacao);
+            //adicionar esta nova anotacao a lista de controle do chartgenerator atual
+             mcg.adicionarplotohlc_ferramentaid(novompia.id, novompia.subannotationsanotacao.size());
             
-            //considerando que existem anotacoes que tem mais de um elemento grafico, e que a lista de ids de anotacao se referem a estes elementos graficos, temos entao:
-            //caso reta, um elemento grafico, um id novo
-            //caso fibonacci, 12 elementos graficos (6 linhas e 6 textos), 12 ids novos (todos de mesmo valor)
-            for (int i = 0; i < diferencaanotacoesgraficasids; i++)
-            {
-                mcg.adicionarplotohlc_annotationid(novompia.id);
-            }
+            //adicionar item de anotacao grafica deste submodulo
             jPanelAnotacoes.add(novompia);    
         }
         
         this.validate();
         this.repaint();
-        
-        //mcg.printlistaidsanotacao();
     }
+    
+    public void adicionarAnotacaoLoad(String nome, String id, String tipo, java.util.List<org.jfree.chart.annotations.XYAnnotation> subanotacoesanotacaoobjeto)
+    {
+        //funcao para adicionar nova anotacao em modo de carregamento
+        
+        //criar novo item de anotacao
+        mierpanels.mpitemanotacao novompia = new mierpanels.mpitemanotacao(this, nome, id, tipo, subanotacoesanotacaoobjeto);
+        //adicionar subannotations referentes a esta anotacao no grafico
+        mcg.adicionarplotohlc_subannotationsobjectbase64type(subanotacoesanotacaoobjeto);
+        //adicionar esta anotacao a lista de controle do chartgenerator atual
+        mcg.adicionarplotohlc_ferramentaid(novompia.id, subanotacoesanotacaoobjeto.size());
+        //adicionar item de anotacao grafica deste submodulo
+        jPanelAnotacoes.add(novompia);
+        
+        this.validate();
+        this.repaint();
+    }
+    
+    
     
     public void removerAnotacao(mierpanels.mpitemanotacao mpiaremover)
     {
-        mcg.removerplotohlc_annotation(mpiaremover.id, mpiaremover.annotation, mpiaremover.tipoanotacao);
+        //remover subanotacoes graficas desta anotacao do grafico
+        mcg.removerplotohlc_subannotations(mpiaremover.subannotationsanotacao);
+        //remover os id referente a esta anotacao da lista de controle
+        mcg.removerplotohlc_ferramentaid(mpiaremover.id, mpiaremover.subannotationsanotacao.size());
+        //remover item de anotacao grafica deste submodulo
         jPanelAnotacoes.remove(mpiaremover);
+        
         this.validate();
         this.repaint();
-        
-        //mcg.printlistaidsanotacao();
     }
         
     // </editor-fold>
@@ -502,7 +511,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
     // <editor-fold defaultstate="collapsed" desc="Funcoes de interpretacao de mouse events do jfreechart">
     void interpretarmouseclickchart(org.jfree.chart.ChartMouseEvent e)
     {
-        atualizarlistaannotationsgrafico();
+        adicionarAnotacaoNovo();
     }
     
     void interpretarmousemovechart(org.jfree.chart.ChartMouseEvent e)
