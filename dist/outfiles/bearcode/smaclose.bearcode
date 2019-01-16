@@ -1,6 +1,6 @@
 //codigo de simple moving average
 
-runoutput.print("SMA EXAMPLE");
+//runoutput.print("SMA EXAMPLE");
 
 //candles recebidos pelo OpenStock
 var candlesinput = candles;
@@ -15,7 +15,7 @@ for (i = 0; i < candlesinput.length; i++)
 {
     valoresclose.push(candlesinput[i].closed);
     valorestimestamp.push(candlesinput[i].timestampdate);
-    runoutput.print(i+": " + candlesinput[i].closed + "\n" + candlesinput[i].timestampdate + "\n\n");
+    //runoutput.print(i+": " + candlesinput[i].closed + "\n" + candlesinput[i].timestampdate + "\n\n");
 }
 
 //exemplo de 100 candles para sma 5, temos entao os calculos de sma_t_5 ate sma_t_99, sendo entao 94 valores com indices de 0 a 93
