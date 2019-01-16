@@ -384,21 +384,26 @@ public class mpsubmodulografico extends javax.swing.JPanel
         
     public void adicionarIndicadorNovo(String idbc, String paramsbc)
     {
-        //funcao para adicionar novo indicador no chartgenerator em uso
-        
-        
-        
-        
-        
-        
         //funcao para adicionar novo item indicador a este submodulo grafico
         
-        //public mpitemindicador(mierpanels.mpsubmodulografico mpsmg, String idbearcode, String parametrosbearcode)
+        //criar item do indicador
         mierpanels.mpitemindicador novoindicador = new mierpanels.mpitemindicador(this, idbc, paramsbc);
+        //rodar algoritmo do indicador
         String statusrunindicador = novoindicador.rodarscriptindicadoredesenhar();
         if (statusrunindicador.equals("ok"))
         {
+            //considerando que o indicador rodou com sucesso, adicionar dados do indicador no grafico
+            mcg.adicionarplotohlc_indicador
+                (
+                    novoindicador.mbcodeinterpreter.pontosx_lastrun,
+                    novoindicador.mbcodeinterpreter.pontosy_lastrun,
+                    novoindicador.mbcodeinterpreter.tituloscript_lastrun,
+                    novoindicador.mbcodeinterpreter.tipoeixoy_lastrun,
+                    novoindicador.mbcodeinterpreter.tipodesenho_lastrun
+                );
+            //adicionar id de controle no chart generator
             mcg.adicionarplotohlc_indicadorid(novoindicador.id);
+            //adicionar item no submodulo
             jPanelIndicadores.add(novoindicador);
             this.validate();
             this.repaint(); 
@@ -408,17 +413,23 @@ public class mpsubmodulografico extends javax.swing.JPanel
             mierclasses.mcfuncoeshelper.mostrarmensagem("Algum problema ocorreu e o indicador não pôde ser utilizado:\n\n" + statusrunindicador);
         }
 
+        mcg.printlistaidsindicador();
     }
     
     public void adicionarIndicadorLoad(String nome, String id, String idbc, String paramsbc)
     {
-        //funcao para adicionar novo item indicador a este submodulo grafico
-        
-        //public mpitemindicador(mierpanels.mpsubmodulografico mpsmg, String idbearcode, String parametrosbearcode)
         mierpanels.mpitemindicador novoindicador = new mierpanels.mpitemindicador(this, id, nome, idbc, paramsbc);
         String statusrunindicador = novoindicador.rodarscriptindicadoredesenhar();
         if (statusrunindicador.equals("ok"))
         {
+             mcg.adicionarplotohlc_indicador
+            (
+                novoindicador.mbcodeinterpreter.pontosx_lastrun,
+                novoindicador.mbcodeinterpreter.pontosy_lastrun,
+                novoindicador.mbcodeinterpreter.tituloscript_lastrun,
+                novoindicador.mbcodeinterpreter.tipoeixoy_lastrun,
+                novoindicador.mbcodeinterpreter.tipodesenho_lastrun
+            );
             mcg.adicionarplotohlc_indicadorid(novoindicador.id);
             jPanelIndicadores.add(novoindicador);
             this.validate();
@@ -434,9 +445,12 @@ public class mpsubmodulografico extends javax.swing.JPanel
     public void removerIndicador(mierpanels.mpitemindicador mpiiremover)
     {
         mcg.removerplotohlc_indicador(mpiiremover.id);
+        mcg.removerplotohlc_indicadorid(mpiiremover.id);
         jPanelIndicadores.remove(mpiiremover);
         this.validate();
         this.repaint();
+        
+        mcg.printlistaidsindicador();
     }
     
     // </editor-fold>

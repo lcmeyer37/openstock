@@ -67,19 +67,7 @@ public class mpitemindicador extends javax.swing.JPanel
     {
         //funcao para rodar script relacionado a este item indicador
         String statusrun = mbcodeinterpreter.rodarscript(submodulografico.mcg.candlesatual,false,null);      
-        
-        if (statusrun.equals("ok"))
-        {
-                submodulografico.mcg.adicionarplotohlc_indicador
-                (
-                        mbcodeinterpreter.pontosx_lastrun,
-                        mbcodeinterpreter.pontosy_lastrun,
-                        mbcodeinterpreter.tituloscript_lastrun,
-                        mbcodeinterpreter.tipoeixoy_lastrun,
-                        mbcodeinterpreter.tipodesenho_lastrun
-                );
-        }
-        
+       
         return statusrun;
     }
 

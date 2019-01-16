@@ -32,6 +32,9 @@ public class mcchartgenerator {
 
     //ultima anotacao (lista de subanotacoes pertencentes a esta anotacao)
     public java.util.List<org.jfree.chart.annotations.XYAnnotation> ultimalistasubanotacoesanotacao;
+    
+    //dataset utilizado para indicadores no grafico de ohlc
+    org.jfree.data.time.TimeSeriesCollection datasetindicadoresohlc;
 
     //classe que se comunica com jfreecharts para criar graficos de interesse para o programa
     public mcchartgenerator() {
@@ -44,8 +47,10 @@ public class mcchartgenerator {
     }
 
     // <editor-fold defaultstate="collapsed" desc="Funcoes para funcionamento de Ferramentas no chart OHLC">
+    
     //as ferramentas sao desenhos graficos que podem ser adicionados no grafico. 
     //esses desenhos sao criados com uma ou mais Annotations - exemplo: Line = 1 lineannotation, Fibonacci = 6 linesannotations + 6 textsannotations
+    
     // <editor-fold defaultstate="collapsed" desc="Troca de Ferramentas">
     //ferramentas criam elementos de annotation no grafico ohlc
     //variavel que diz qual a ferramenta atual de edicao do grafico
@@ -304,26 +309,8 @@ public class mcchartgenerator {
         return subannotations;
     }
 
-    public java.util.List<org.jfree.chart.annotations.XYAnnotation> adicionarplotohlc_annotationreta(double x1, double y1, double x2, double y2) {
-        /*
-        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getXYPlot();
-        org.jfree.data.xy.XYSeriesCollection dataset = (org.jfree.data.xy.XYSeriesCollection)plot.getDataset();
-        
-        org.jfree.chart.annotations.XYLineAnnotation xylineannotation = new org.jfree.chart.annotations.XYLineAnnotation(0, 0, (dataset.getSeries(0)).getMaxX(), (dataset.getSeries(0)).getMaxY(), new BasicStroke(10.0f), Color.red);
-
-        plot.addAnnotation(xylineannotation);
-        mcfuncoeshelper.mostrarmensagem("anotacao reta adicionada");
-         */
-
- /*
-        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getXYPlot();
-        org.jfree.data.xy.OHLCDataset dataset = (org.jfree.data.xy.OHLCDataset)plot.getDataset();
-        
-        org.jfree.chart.annotations.XYLineAnnotation xylineannotation = new org.jfree.chart.annotations.XYLineAnnotation(dataset.getXValue(0, 0), dataset.getYValue(0, 0), dataset.getXValue(0, 50), dataset.getYValue(0, 50), new BasicStroke(10.0f), Color.red);
-
-        plot.addAnnotation(xylineannotation);
-        mcfuncoeshelper.mostrarmensagem("anotacao reta adicionada");
-         */
+    public java.util.List<org.jfree.chart.annotations.XYAnnotation> adicionarplotohlc_annotationreta(double x1, double y1, double x2, double y2) 
+    {
         org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getXYPlot();
         org.jfree.chart.annotations.XYLineAnnotation xylineannotation = new org.jfree.chart.annotations.XYLineAnnotation(x1, y1, x2, y2, new BasicStroke(1.0f), Color.red);
 
@@ -333,8 +320,6 @@ public class mcchartgenerator {
         subannotations.add(xylineannotation);
 
         return subannotations;
-        //mierfuncoeshelper.mostrarmensagem("anotacao reta adicionada");
-        //funcao retorna a annotation adicionada
     }
 
     public java.util.List<org.jfree.chart.annotations.XYAnnotation> adicionarplotohlc_annotationfib(double x1, double y1, double x2, double y2) {
@@ -478,6 +463,7 @@ public class mcchartgenerator {
 
     // </editor-fold>    
     //</editor-fold>
+    
     //funcao para adicionar ids referentes a subannotations de uma ferramenta na lista de controle
     public void adicionarplotohlc_ferramentaid(String idadicionar, int numerosubannotations) 
     {
@@ -522,26 +508,36 @@ public class mcchartgenerator {
     }
 
     //</editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="Funcoes Helper">
-    public java.util.List<org.jfree.chart.annotations.XYAnnotation> retornartodassubanotacoes() {
-        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getXYPlot();
-        java.util.List<org.jfree.chart.annotations.XYAnnotation> listasubannotations = plot.getAnnotations();
-        return listasubannotations;
-    }
-    //</editor-fold>
-
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="Funcoes para funcionamento de indicadores">
-    public void adicionarplotohlc_indicador(
-            Object xvalues,
-            Object yvalues,
-            String tituloscript,
-            String tipoeixoy,
-            String desenhografico
-    ) {
+     
+    // <editor-fold defaultstate="collapsed" desc="Funcoes para funcionamento de Indicadores">
+    public void adicionarplotohlc_indicador(Object xvalues,Object yvalues,String tituloscript,String tipoeixoy,String desenhografico) 
+    {
         //funcao para adicionar um grafico de indicador sobre o grafico ohlc
 
-        if (tipoeixoy.equals("timestamp") && desenhografico.equals("line")) {
+        if (tipoeixoy.equals("timestamp") && desenhografico.equals("line")) 
+        {
+            
+            //interpretar valores de x como double, e de y como date
+            double[] yvalues_double = (double[]) yvalues;
+            java.util.Date[] xvalues_date = (java.util.Date[]) xvalues;
+
+            //criar timeseries com os dados
+            org.jfree.data.time.TimeSeries seriesadd = new org.jfree.data.time.TimeSeries(tituloscript);
+
+            for (int i = 0; i < yvalues_double.length; i++) {
+
+                org.jfree.data.time.Millisecond millisegundoatual
+                        = new org.jfree.data.time.Millisecond(xvalues_date[i]);
+
+                double valoratual = yvalues_double[i];
+
+                seriesadd.add(millisegundoatual, valoratual);
+            }
+            //adicionar series no dataset
+            datasetindicadoresohlc.addSeries(seriesadd);
+            
+            
+            /*
             //interpretar valores de x como double, e de y como date
             double[] yvalues_double = (double[]) yvalues;
             java.util.Date[] xvalues_date = (java.util.Date[]) xvalues;
@@ -572,46 +568,40 @@ public class mcchartgenerator {
             int numerodatasetsatual = plotatual.getDatasetCount();
             plotatual.setDataset(numerodatasetsatual, datasetadd);
             plotatual.setRenderer(numerodatasetsatual, rendereradd);
+            
+            mierclasses.mcfuncoeshelper.mostrarmensagem("numero de datasets no ohlc: " + plotatual.getDatasetCount());
+            */
         }
     }
 
-    public void adicionarplotohlc_indicadorid(String idindicador) {
+    public void adicionarplotohlc_indicadorid(String idindicador) 
+    {
         idindicadoresatual.add(idindicador);
     }
 
-    public void removerplotohlc_indicador(String idindicador) {
-        //encontra o dataset para deletar utilizando o idindicador
-        for (int i = 0; i < idindicadoresatual.size(); i++) {
+    public void removerplotohlc_indicador(String idindicador) 
+    {
+        //encontra o dataset com o id do indicador para remove-lo do grafico
+        for (int i = 0; i < idindicadoresatual.size(); i++) 
+        {
             String idindicadoratual = (String) idindicadoresatual.get(i);
 
-            if (idindicador.equals(idindicadoratual)) {
-                org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot) chartatual.getPlot();
-                org.jfree.data.time.TimeSeriesCollection datasetatual = (org.jfree.data.time.TimeSeriesCollection) plotatual.getDataset(i + 1); //i+1 porque o 0 eh o proprio ohlc
-                datasetatual.removeAllSeries();
-
-                //idindicadoresatual.remove(i); //nao fazer!
+            if (idindicador.equals(idindicadoratual)) 
+            {
+                datasetindicadoresohlc.removeSeries(i);
             }
         }
     }
-
-    //funcao de teste
-    public void printlistaidsanotacao() {
-        String listaids = "";
-        for (int i = 0; i < idferramentassubannotationsatual.size(); i++) {
-            listaids = listaids + idferramentassubannotationsatual.get(i) + "\n";
-        }
-        mierclasses.mcfuncoeshelper.mostrarmensagem(listaids);
+    
+    public void removerplotohlc_indicadorid(String idindicador)
+    {
+        //remove o idindicador da lista de controle
+        idindicadoresatual.remove(idindicador);
     }
 
-    public void printlistaidsindicador() {
-        String listaids = "";
-        for (int i = 0; i < idindicadoresatual.size(); i++) {
-            listaids = listaids + idindicadoresatual.get(i) + "\n";
-        }
-        mierclasses.mcfuncoeshelper.mostrarmensagem(listaids);
-    }
 
     //</editor-fold>
+   
     // <editor-fold defaultstate="collapsed" desc="Funcoes para recriar e retornar chart OHLC com indicadores">
     public void recriarohlc(java.util.List<mierclasses.mccandle> catual, String tituloohlc, String tipoescala) {
         //limpar lista de id de indicadores considerando que todos os indicadores
@@ -626,7 +616,8 @@ public class mcchartgenerator {
         //criar dataset
         org.jfree.data.xy.OHLCDataset olhcdataset = criarohlcdataset(candlesatual, tituloohlc);
 
-        //criar grafico (novo com volume)
+        //criar grafico novo
+        //adicionar dataset OHLC
         org.jfree.chart.axis.DateAxis domainAxis = new org.jfree.chart.axis.DateAxis("");
         if (tipoescala.equals("linear")) {
             org.jfree.chart.axis.NumberAxis rangeAxis = new org.jfree.chart.axis.NumberAxis("");
@@ -648,7 +639,15 @@ public class mcchartgenerator {
             org.jfree.chart.JFreeChart chart = new org.jfree.chart.JFreeChart(tituloohlc.toUpperCase(), null, mainPlot, false);
             chartatual = chart;
         }
-
+        //adicionar dataset vazio para indicadores
+        org.jfree.chart.renderer.xy.XYLineAndShapeRenderer rendereradd = new org.jfree.chart.renderer.xy.DefaultXYItemRenderer();
+        rendereradd.setBaseShapesVisible(false);
+        rendereradd.setBaseStroke(new BasicStroke(2.0f));
+        org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot) chartatual.getPlot();
+        datasetindicadoresohlc = new org.jfree.data.time.TimeSeriesCollection();
+        plotatual.setDataset(1, datasetindicadoresohlc);
+        plotatual.setRenderer(1, rendereradd);
+        
         // Create Panel
         org.jfree.chart.ChartPanel chartpanel = new org.jfree.chart.ChartPanel(chartatual);
         chartpanel.addChartMouseListener(new org.jfree.chart.ChartMouseListener() {
@@ -701,4 +700,33 @@ public class mcchartgenerator {
     }
 
     // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Funcoes Helper">
+    public java.util.List<org.jfree.chart.annotations.XYAnnotation> retornartodassubanotacoes() 
+    {
+        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getXYPlot();
+        java.util.List<org.jfree.chart.annotations.XYAnnotation> listasubannotations = plot.getAnnotations();
+        return listasubannotations;
+    }
+    
+        //funcao de teste
+    public void printlistaidsanotacao() 
+    {
+        String listaids = "";
+        for (int i = 0; i < idferramentassubannotationsatual.size(); i++) {
+            listaids = listaids + idferramentassubannotationsatual.get(i) + "\n";
+        }
+        //mierclasses.mcfuncoeshelper.mostrarmensagem(listaids);
+    }
+
+    public void printlistaidsindicador() 
+    {
+        String listaids = "";
+        for (int i = 0; i < idindicadoresatual.size(); i++) 
+        {
+            listaids = listaids + idindicadoresatual.get(i) + "\n";
+        }
+        //mierclasses.mcfuncoeshelper.mostrarmensagem(listaids);
+    }
+    //</editor-fold>
 }
