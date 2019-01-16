@@ -329,7 +329,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
                     String id_anotacao = elanotacao.getElementsByTagName("ID").item(0).getTextContent();
                     String tipo_anotacao = elanotacao.getElementsByTagName("Type").item(0).getTextContent();
                     String parameters_anotacao = elanotacao.getElementsByTagName("Parameters").item(0).getTextContent();
-                    Object objeto_anotacao = null;
+                    Object objetos_subanotacoes_anotacao = null;
                     try
                     {
                         byte [] data = java.util.Base64.getDecoder().decode(parameters_anotacao);
@@ -337,14 +337,14 @@ public class mpsubmodulografico extends javax.swing.JPanel
                         Object o = ois.readObject();
                         ois.close();
                         
-                        objeto_anotacao = o;
+                        objetos_subanotacoes_anotacao = o;
                     }
                     catch (Exception ex)
                     {
                         //necessario
                     }
                     
-                    adicionarAnotacaoLoad(nome_anotacao,id_anotacao,tipo_anotacao,objeto_anotacao);
+                    adicionarAnotacaoLoad(nome_anotacao,id_anotacao,tipo_anotacao,objetos_subanotacoes_anotacao);
                 }
                 //mierclasses.mcfuncoeshelper.mostrarmensagem("carregou anotacoes");
                 // </editor-fold>
@@ -420,10 +420,15 @@ public class mpsubmodulografico extends javax.swing.JPanel
 
     }
     
-    public void adicionarAnotacaoLoad(String nome, String id, String tipo, Object anotacaoemobjeto)
+    public void adicionarAnotacaoLoad(String nome, String id, String tipo, Object subanotacoesanotacaoobjeto)
     {
-        mierpanels.mpitemanotacao novompia = new mierpanels.mpitemanotacao(this, nome, id, tipo, anotacaoemobjeto);
-        mcg.adicionarplotohlc_annotationid(novompia.id);
+        mierpanels.mpitemanotacao novompia = new mierpanels.mpitemanotacao(this, nome, id, tipo, subanotacoesanotacaoobjeto);
+        java.util.List<org.jfree.chart.annotations.XYAnnotation> anotacoesadicionar = (java.util.List<org.jfree.chart.annotations.XYAnnotation>)subanotacoesanotacaoobjeto;
+        for (int i = 0; i < anotacoesadicionar.size(); i++)
+        {
+            mcg.adicionarplotohlc_annotationid(novompia.id);
+        }
+       
         jPanelAnotacoes.add(novompia);
         
         this.validate();
@@ -451,7 +456,9 @@ public class mpsubmodulografico extends javax.swing.JPanel
         
         int tamanhoidsatual = mcg.idanotacoesatual.size();
         
-        if (tamanhoanotacoesgraficas > tamanhoidsatual)
+        int diferencaanotacoesgraficasids = tamanhoanotacoesgraficas - tamanhoidsatual;
+        
+        if (diferencaanotacoesgraficasids > 0)
         {
             //considerando que temos mais anotacoes graficas que ids na lista de ids do chartgenerator,
             //conclui-se que uma nova anotacao acabou de ser criada graficamente, 
@@ -461,12 +468,21 @@ public class mpsubmodulografico extends javax.swing.JPanel
             //eh necessario saber qual a ferramenta atual em uso para saber qual tipo
             //de anotacao esta sendo adicionada
             mierpanels.mpitemanotacao novompia = new mierpanels.mpitemanotacao(this,mcg.ferramentaatualgrafico,mcg.ultimoobjetoanotacao);
-            mcg.adicionarplotohlc_annotationid(novompia.id);
+            
+            //considerando que existem anotacoes que tem mais de um elemento grafico, e que a lista de ids de anotacao se referem a estes elementos graficos, temos entao:
+            //caso reta, um elemento grafico, um id novo
+            //caso fibonacci, 12 elementos graficos (6 linhas e 6 textos), 12 ids novos (todos de mesmo valor)
+            for (int i = 0; i < diferencaanotacoesgraficasids; i++)
+            {
+                mcg.adicionarplotohlc_annotationid(novompia.id);
+            }
             jPanelAnotacoes.add(novompia);    
         }
         
         this.validate();
         this.repaint();
+        
+        //mcg.printlistaidsanotacao();
     }
     
     public void removerAnotacao(mierpanels.mpitemanotacao mpiaremover)
@@ -475,6 +491,8 @@ public class mpsubmodulografico extends javax.swing.JPanel
         jPanelAnotacoes.remove(mpiaremover);
         this.validate();
         this.repaint();
+        
+        //mcg.printlistaidsanotacao();
     }
         
     // </editor-fold>

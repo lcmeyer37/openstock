@@ -608,17 +608,14 @@ public class mcchartgenerator
         for (int i = 0; i < subanotacoesremover.size(); i++)
         {
             plotatual.removeAnnotation(subanotacoesremover.get(i));  
+            //mierclasses.mcfuncoeshelper.mostrarmensagem("anotacao grafica removida");
         }
 
-        //remover id da anotacao da lista
-        for (int i = 0; i < idanotacoesatual.size(); i++)
+        int quantidadeidslistaanotacoes = idanotacoesatual.size();
+        for (int i = 0; i < quantidadeidslistaanotacoes; i++)
         {
-            String idanotacaoatual = (String)idanotacoesatual.get(i);
-            if (idanotacaoatual.equals(idanotacao))
-            {
-               idanotacoesatual.remove(i); //necessario para logica atual
-               break; 
-            }
+            idanotacoesatual.remove(idanotacao); //necessario para logica atual
+            //mierclasses.mcfuncoeshelper.mostrarmensagem("anotacao removida");
         }
     }
     
@@ -706,6 +703,27 @@ public class mcchartgenerator
                 //idindicadoresatual.remove(i); //nao fazer!
             }
         }
+    }
+    
+    //funcao de teste
+    public void printlistaidsanotacao()
+    {
+        String listaids = "";
+        for (int i = 0; i < idanotacoesatual.size(); i++)
+        {
+            listaids = listaids + idanotacoesatual.get(i) + "\n";
+        }
+        mierclasses.mcfuncoeshelper.mostrarmensagem(listaids);
+    }
+    
+    public void printlistaidsindicador()
+    {
+        String listaids = "";
+        for (int i = 0; i < idindicadoresatual.size(); i++)
+        {
+            listaids = listaids + idindicadoresatual.get(i) + "\n";
+        }
+        mierclasses.mcfuncoeshelper.mostrarmensagem(listaids);
     }
         
     //</editor-fold>
