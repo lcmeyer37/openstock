@@ -27,6 +27,9 @@ public class mpitemindicador extends javax.swing.JPanel
     //classe interpretadora de bearcode (contem o codigo relacionado a este indicador)
     public mierclasses.mcbearcodeinterpreter mbcodeinterpreter;
 
+    //grafico separado deste item indicador
+    mierframes.mfchartseparado mfcs;
+    
     //id deste indicador
     String id;
     
@@ -77,8 +80,16 @@ public class mpitemindicador extends javax.swing.JPanel
     {
         //funcao para criar mfchartseparado com grafico separado deste indicador, e associa-lo a este
         //mpitemindicador, para poder ser acessado ao clicar no botao G
-        //...
-        jLabelAbrirJanelaMostrarGraficoSeparado.setVisible(false);
+        mfcs = new mierframes.mfchartseparado();
+        /*
+            novoindicador.mbcodeinterpreter.pontosx_lastrun,
+            novoindicador.mbcodeinterpreter.pontosy_lastrun,
+            novoindicador.mbcodeinterpreter.tituloscript_lastrun,
+            novoindicador.mbcodeinterpreter.tipodesenho_lastrun
+        */
+        mfcs.recriarplot_indicador(mbcodeinterpreter.pontosx_lastrun, mbcodeinterpreter.pontosy_lastrun, mbcodeinterpreter.tituloscript_lastrun, mbcodeinterpreter.tipodesenho_lastrun);
+        
+        jLabelAbrirJanelaMostrarGraficoSeparado.setVisible(true);
     }
     
     void criarcodeengine(String idbearcode, String parametrosbearcode)
@@ -287,7 +298,7 @@ public class mpitemindicador extends javax.swing.JPanel
 
     private void jLabelAbrirJanelaMostrarGraficoSeparadoMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabelAbrirJanelaMostrarGraficoSeparadoMouseClicked
     {//GEN-HEADEREND:event_jLabelAbrirJanelaMostrarGraficoSeparadoMouseClicked
-        // TODO add your handling code here:
+        mfcs.show();
     }//GEN-LAST:event_jLabelAbrirJanelaMostrarGraficoSeparadoMouseClicked
 
 

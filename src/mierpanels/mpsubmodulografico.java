@@ -398,8 +398,11 @@ public class mpsubmodulografico extends javax.swing.JPanel
                     novoindicador.mbcodeinterpreter.tituloscript_lastrun,
                     novoindicador.mbcodeinterpreter.tipodesenho_lastrun
                 );
+                
+                //o grafco tambem pode ser apresentado separadamente
+                novoindicador.criargraficoseparadoindicador();
             }
-            else if (novoindicador.mbcodeinterpreter.localdesenho_lastrun.equals("drawseparate"))
+            else if (novoindicador.mbcodeinterpreter.localdesenho_lastrun.equals("drawseparateonly"))
             {
                 //considerando que o grafico deve ser desenhado separadamente
                 novoindicador.criargraficoseparadoindicador();
