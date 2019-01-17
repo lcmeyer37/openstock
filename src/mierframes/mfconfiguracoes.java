@@ -36,7 +36,8 @@ public static mierstockfx.TelaPrincipal telappai;
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jPanel2 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -51,6 +52,7 @@ public static mierstockfx.TelaPrincipal telappai;
         jLabelAPIAttribution = new javax.swing.JLabel();
         jButtonGithub = new javax.swing.JButton();
         jButtonIEX = new javax.swing.JButton();
+        jButtonLicense = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -69,15 +71,19 @@ public static mierstockfx.TelaPrincipal telappai;
         jPanelMore.setBackground(new java.awt.Color(55, 55, 55));
 
         jButtonAddRemoveIndicators.setText("Add and Remove Indicators");
-        jButtonAddRemoveIndicators.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButtonAddRemoveIndicators.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButtonAddRemoveIndicatorsActionPerformed(evt);
             }
         });
 
         jButtonOpenBearcodeEditor.setText("Bearcode Editor");
-        jButtonOpenBearcodeEditor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButtonOpenBearcodeEditor.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButtonOpenBearcodeEditorActionPerformed(evt);
             }
         });
@@ -90,7 +96,7 @@ public static mierstockfx.TelaPrincipal telappai;
                 .addContainerGap()
                 .addGroup(jPanelMoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButtonOpenBearcodeEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonAddRemoveIndicators, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE))
+                    .addComponent(jButtonAddRemoveIndicators, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanelMoreLayout.setVerticalGroup(
@@ -123,16 +129,29 @@ public static mierstockfx.TelaPrincipal telappai;
         jLabelAPIAttribution.setText("API Attribution: Data provided for free by IEX. View IEX’s Terms of Use.");
 
         jButtonGithub.setText("Open Stock's GitHub");
-        jButtonGithub.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButtonGithub.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButtonGithubActionPerformed(evt);
             }
         });
 
         jButtonIEX.setText("IEX's Terms of Use");
-        jButtonIEX.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButtonIEX.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButtonIEXActionPerformed(evt);
+            }
+        });
+
+        jButtonLicense.setText("Open Stock License");
+        jButtonLicense.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonLicenseActionPerformed(evt);
             }
         });
 
@@ -152,8 +171,10 @@ public static mierstockfx.TelaPrincipal telappai;
                             .addComponent(jLabelLastBuild))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabelBear, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabelAPIAttribution, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelAPIAttribution, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
                     .addGroup(jPanelAboutLayout.createSequentialGroup()
+                        .addComponent(jButtonLicense)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonGithub)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonIEX)
@@ -177,7 +198,8 @@ public static mierstockfx.TelaPrincipal telappai;
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelAboutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonGithub)
-                    .addComponent(jButtonIEX))
+                    .addComponent(jButtonIEX)
+                    .addComponent(jButtonLicense))
                 .addContainerGap())
         );
 
@@ -235,6 +257,12 @@ public static mierstockfx.TelaPrincipal telappai;
         mfebc.show();
     }//GEN-LAST:event_jButtonOpenBearcodeEditorActionPerformed
 
+    private void jButtonLicenseActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonLicenseActionPerformed
+    {//GEN-HEADEREND:event_jButtonLicenseActionPerformed
+        mierframes.mflicense mfl = new mierframes.mflicense();
+        mfl.show();
+    }//GEN-LAST:event_jButtonLicenseActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -287,6 +315,7 @@ public static mierstockfx.TelaPrincipal telappai;
     private javax.swing.JButton jButtonAddRemoveIndicators;
     private javax.swing.JButton jButtonGithub;
     private javax.swing.JButton jButtonIEX;
+    private javax.swing.JButton jButtonLicense;
     private javax.swing.JButton jButtonOpenBearcodeEditor;
     private javax.swing.JLabel jLabelAPIAttribution;
     private javax.swing.JLabel jLabelBear;

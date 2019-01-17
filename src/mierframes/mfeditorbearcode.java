@@ -84,7 +84,9 @@ public class mfeditorbearcode extends javax.swing.JFrame
                 "var xvalues = Java.to(xvaluestimestamp_indicator,\"java.util.Date[]\");";
                 
         jTextAreaScript.setText(scriptdefault);
+        jTextAreaScript.setCaretPosition(0);
         jTextAreaOutput.setText("");
+        jTextAreaOutput.setCaretPosition(0);
         jLabelCurrentFile.setText("Current File: (new)");
     }
     

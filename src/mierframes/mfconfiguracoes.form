@@ -84,7 +84,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jButtonOpenBearcodeEditor" max="32767" attributes="0"/>
-                          <Component id="jButtonAddRemoveIndicators" pref="345" max="32767" attributes="0"/>
+                          <Component id="jButtonAddRemoveIndicators" pref="423" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -153,8 +153,10 @@
                               <EmptySpace max="32767" attributes="0"/>
                               <Component id="jLabelBear" min="-2" pref="70" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="jLabelAPIAttribution" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jLabelAPIAttribution" alignment="0" pref="423" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
+                              <Component id="jButtonLicense" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="jButtonGithub" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jButtonIEX" min="-2" max="-2" attributes="0"/>
@@ -186,6 +188,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jButtonGithub" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButtonIEX" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonLicense" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -247,6 +250,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonIEXActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButtonLicense">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Open Stock License"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonLicenseActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

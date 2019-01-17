@@ -614,6 +614,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
         setBackground(new java.awt.Color(55, 55, 55));
 
         jPanelChartpanelholder.setBackground(new java.awt.Color(0, 0, 0));
+        jPanelChartpanelholder.setCursor(new java.awt.Cursor(java.awt.Cursor.CROSSHAIR_CURSOR));
 
         javax.swing.GroupLayout jPanelChartpanelholderLayout = new javax.swing.GroupLayout(jPanelChartpanelholder);
         jPanelChartpanelholder.setLayout(jPanelChartpanelholderLayout);
