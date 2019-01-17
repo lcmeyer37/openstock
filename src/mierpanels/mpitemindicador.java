@@ -36,6 +36,7 @@ public class mpitemindicador extends javax.swing.JPanel
         initComponents();
         
         id = "indicator"+java.util.UUID.randomUUID().toString();
+        jLabelAbrirJanelaMostrarGraficoSeparado.setVisible(false);
         
         submodulografico = mpsmg;
         
@@ -49,6 +50,7 @@ public class mpitemindicador extends javax.swing.JPanel
         initComponents();
         
         id = idind;
+        jLabelAbrirJanelaMostrarGraficoSeparado.setVisible(false);
         
         jLabelNomeItemIndicador.setText(nome);
         
@@ -63,14 +65,22 @@ public class mpitemindicador extends javax.swing.JPanel
         jLabelNomeItemIndicador.setText(novonome);
     }
      
-    public String rodarscriptindicadoredesenhar()
+    public String rodarscriptindicador()
     {
         //funcao para rodar script relacionado a este item indicador
-        String statusrun = mbcodeinterpreter.rodarscript(submodulografico.mcg.candlesatual,false,null);      
-       
+        String statusrun = mbcodeinterpreter.rodarscript(submodulografico.mcg.candlesatual,false,null);
+        
         return statusrun;
     }
 
+    public void criargraficoseparadoindicador()
+    {
+        //funcao para criar mfchartseparado com grafico separado deste indicador, e associa-lo a este
+        //mpitemindicador, para poder ser acessado ao clicar no botao G
+        //...
+        jLabelAbrirJanelaMostrarGraficoSeparado.setVisible(false);
+    }
+    
     void criarcodeengine(String idbearcode, String parametrosbearcode)
     {
         //public mcbearcodeinterpreter(String tipo, String id, String nome, String codbcjs, String paramsbcjs)
@@ -176,6 +186,7 @@ public class mpitemindicador extends javax.swing.JPanel
         jLabelNomeItemIndicador = new javax.swing.JLabel();
         jLabeRemoverItemIndicador = new javax.swing.JLabel();
         jLabelAbrirJanelaRenomearItemIndicador = new javax.swing.JLabel();
+        jLabelAbrirJanelaMostrarGraficoSeparado = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(155, 155, 155));
 
@@ -206,6 +217,17 @@ public class mpitemindicador extends javax.swing.JPanel
             }
         });
 
+        jLabelAbrirJanelaMostrarGraficoSeparado.setForeground(new java.awt.Color(125, 255, 255));
+        jLabelAbrirJanelaMostrarGraficoSeparado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelAbrirJanelaMostrarGraficoSeparado.setText("G");
+        jLabelAbrirJanelaMostrarGraficoSeparado.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jLabelAbrirJanelaMostrarGraficoSeparadoMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelSubLayout = new javax.swing.GroupLayout(jPanelSub);
         jPanelSub.setLayout(jPanelSubLayout);
         jPanelSubLayout.setHorizontalGroup(
@@ -213,6 +235,8 @@ public class mpitemindicador extends javax.swing.JPanel
             .addGroup(jPanelSubLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabelNomeItemIndicador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(30, 30, 30)
+                .addComponent(jLabelAbrirJanelaMostrarGraficoSeparado, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelAbrirJanelaRenomearItemIndicador, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -224,10 +248,11 @@ public class mpitemindicador extends javax.swing.JPanel
             .addGroup(jPanelSubLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelSubLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelNomeItemIndicador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelNomeItemIndicador)
                     .addGroup(jPanelSubLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabeRemoverItemIndicador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabelAbrirJanelaRenomearItemIndicador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jLabeRemoverItemIndicador)
+                        .addComponent(jLabelAbrirJanelaRenomearItemIndicador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabelAbrirJanelaMostrarGraficoSeparado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -260,9 +285,15 @@ public class mpitemindicador extends javax.swing.JPanel
         submodulografico.removerIndicador(this);
     }//GEN-LAST:event_jLabeRemoverItemIndicadorMouseClicked
 
+    private void jLabelAbrirJanelaMostrarGraficoSeparadoMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabelAbrirJanelaMostrarGraficoSeparadoMouseClicked
+    {//GEN-HEADEREND:event_jLabelAbrirJanelaMostrarGraficoSeparadoMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabelAbrirJanelaMostrarGraficoSeparadoMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabeRemoverItemIndicador;
+    private javax.swing.JLabel jLabelAbrirJanelaMostrarGraficoSeparado;
     private javax.swing.JLabel jLabelAbrirJanelaRenomearItemIndicador;
     public javax.swing.JLabel jLabelNomeItemIndicador;
     private javax.swing.JPanel jPanelSub;

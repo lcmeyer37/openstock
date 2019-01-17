@@ -62,7 +62,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
     }
     
     //funcao responsavel por carregar o grafico com o simbolo e periodo desejado
-    public void recarregargraficosimbolo()
+    public void recriargraficoohlc()
     {
         //receber informacoes de candles de acordo com os paremetros principais
         String simboloescolhido = jTextFieldNomeSimbolo.getText();
@@ -71,11 +71,6 @@ public class mpsubmodulografico extends javax.swing.JPanel
         
         
         java.util.List<mierclasses.mccandle> candles = null;
-        //testes
-        //candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "5y");
-        //candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithminutes(simboloescolhido, "1d");
-        
-        
         
         if (simboloescolhido.equals("mfxtest"))
         {
@@ -298,7 +293,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
                     }
                 }
                 alternartipoescala(escala);
-                recarregargraficosimbolo();
+                recriargraficoohlc();
                 //mierclasses.mcfuncoeshelper.mostrarmensagem("carregou grafico");
                 // </editor-fold>
                 
@@ -389,18 +384,27 @@ public class mpsubmodulografico extends javax.swing.JPanel
         //criar item do indicador
         mierpanels.mpitemindicador novoindicador = new mierpanels.mpitemindicador(this, idbc, paramsbc);
         //rodar algoritmo do indicador
-        String statusrunindicador = novoindicador.rodarscriptindicadoredesenhar();
+        String statusrunindicador = novoindicador.rodarscriptindicador();
         if (statusrunindicador.equals("ok"))
         {
-            //considerando que o indicador rodou com sucesso, adicionar dados do indicador no grafico
-            mcg.adicionarplotohlc_indicador
+            if (novoindicador.mbcodeinterpreter.localdesenho_lastrun.equals("drawoncandles"))
+            {
+                //considerando que o indicador rodou com sucesso, e que ele deve ser desenhado no ohlc,
+                //adicionar dados do indicador no grafico
+                mcg.adicionarplotohlc_indicador
                 (
                     novoindicador.mbcodeinterpreter.pontosx_lastrun,
                     novoindicador.mbcodeinterpreter.pontosy_lastrun,
                     novoindicador.mbcodeinterpreter.tituloscript_lastrun,
-                    novoindicador.mbcodeinterpreter.tipoeixoy_lastrun,
                     novoindicador.mbcodeinterpreter.tipodesenho_lastrun
                 );
+            }
+            else if (novoindicador.mbcodeinterpreter.localdesenho_lastrun.equals("drawseparate"))
+            {
+                //considerando que o grafico deve ser desenhado separadamente
+                novoindicador.criargraficoseparadoindicador();
+            }
+
             //adicionar id de controle no chart generator
             mcg.adicionarplotohlc_indicadorid(novoindicador.id);
             //adicionar item no submodulo
@@ -413,23 +417,26 @@ public class mpsubmodulografico extends javax.swing.JPanel
             mierclasses.mcfuncoeshelper.mostrarmensagem("Algum problema ocorreu e o indicador não pôde ser utilizado:\n\n" + statusrunindicador);
         }
 
-        mcg.printlistaidsindicador();
+        //mcg.printlistaidsindicador();
     }
     
     public void adicionarIndicadorLoad(String nome, String id, String idbc, String paramsbc)
     {
         mierpanels.mpitemindicador novoindicador = new mierpanels.mpitemindicador(this, id, nome, idbc, paramsbc);
-        String statusrunindicador = novoindicador.rodarscriptindicadoredesenhar();
+        String statusrunindicador = novoindicador.rodarscriptindicador();
         if (statusrunindicador.equals("ok"))
         {
-             mcg.adicionarplotohlc_indicador
-            (
-                novoindicador.mbcodeinterpreter.pontosx_lastrun,
-                novoindicador.mbcodeinterpreter.pontosy_lastrun,
-                novoindicador.mbcodeinterpreter.tituloscript_lastrun,
-                novoindicador.mbcodeinterpreter.tipoeixoy_lastrun,
-                novoindicador.mbcodeinterpreter.tipodesenho_lastrun
-            );
+            if (novoindicador.mbcodeinterpreter.localdesenho_lastrun.equals("drawoncandles"))
+            {
+                mcg.adicionarplotohlc_indicador
+                (
+                    novoindicador.mbcodeinterpreter.pontosx_lastrun,
+                    novoindicador.mbcodeinterpreter.pontosy_lastrun,
+                    novoindicador.mbcodeinterpreter.tituloscript_lastrun,
+                    novoindicador.mbcodeinterpreter.tipodesenho_lastrun
+                );
+            }
+
             mcg.adicionarplotohlc_indicadorid(novoindicador.id);
             jPanelIndicadores.add(novoindicador);
             this.validate();
@@ -450,7 +457,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
         this.validate();
         this.repaint();
         
-        mcg.printlistaidsindicador();
+        //mcg.printlistaidsindicador();
     }
     
     // </editor-fold>
@@ -545,7 +552,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
         
     void atualizarinformacoesposicaoatualgrafico()
     {
-             String valoryatualohlc = String.format( "%.4f", mcg.valormouseatualgraficoy);
+        String valoryatualohlc = String.format( "%.4f", mcg.valormouseatualgraficoy);
         java.util.Date dataatualohlc = new java.util.Date((long)mcg.valormouseatualgraficox);
         jLabelInfo.setText("Price: " + valoryatualohlc + " Date: " + dataatualohlc.toString());   
     }
@@ -916,7 +923,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
 
     private void jButtonAtualizarDadosGraficoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAtualizarDadosGraficoActionPerformed
     {//GEN-HEADEREND:event_jButtonAtualizarDadosGraficoActionPerformed
-        recarregargraficosimbolo();
+        recriargraficoohlc();
     }//GEN-LAST:event_jButtonAtualizarDadosGraficoActionPerformed
 
     private void jButtonEscolherSimboloActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonEscolherSimboloActionPerformed
