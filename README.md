@@ -13,6 +13,7 @@ Open Stock is a project licensed under GNU GPLv3. The project is being created m
 - [x] Use of Annotations and Indicators for Technical Analysis
 - [x] To create your own Indicators to use with the software, making use of Bearcode Scripts (JavaScript files)
 - [x] Save/Load charts and its TAs
+- [x] OHLC and Separate Indicator charts
 - [ ] Real-time cryptocurrency and other assets data
 - [ ] Offline Trading for training
 
