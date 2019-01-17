@@ -75,7 +75,7 @@ public class mpitemgrafico extends javax.swing.JPanel
 
         jLabelAbrirDeletarGrafico.setForeground(new java.awt.Color(255, 0, 0));
         jLabelAbrirDeletarGrafico.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelAbrirDeletarGrafico.setText("D");
+        jLabelAbrirDeletarGrafico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/trashred.png"))); // NOI18N
         jLabelAbrirDeletarGrafico.addMouseListener(new java.awt.event.MouseAdapter()
         {
             public void mouseClicked(java.awt.event.MouseEvent evt)
@@ -86,7 +86,7 @@ public class mpitemgrafico extends javax.swing.JPanel
 
         jLabelAbrirJanelaRenomearItemGrafico.setForeground(new java.awt.Color(255, 255, 125));
         jLabelAbrirJanelaRenomearItemGrafico.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelAbrirJanelaRenomearItemGrafico.setText("R");
+        jLabelAbrirJanelaRenomearItemGrafico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/penyellow.png"))); // NOI18N
         jLabelAbrirJanelaRenomearItemGrafico.addMouseListener(new java.awt.event.MouseAdapter()
         {
             public void mouseClicked(java.awt.event.MouseEvent evt)
@@ -102,10 +102,10 @@ public class mpitemgrafico extends javax.swing.JPanel
             .addGroup(jPanelSubLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabelNomeItemGrafico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelAbrirJanelaRenomearItemGrafico, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelAbrirDeletarGrafico, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelAbrirJanelaRenomearItemGrafico)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelAbrirDeletarGrafico)
                 .addContainerGap())
         );
         jPanelSubLayout.setVerticalGroup(
@@ -114,9 +114,11 @@ public class mpitemgrafico extends javax.swing.JPanel
                 .addContainerGap()
                 .addGroup(jPanelSubLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelNomeItemGrafico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanelSubLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabelAbrirDeletarGrafico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabelAbrirJanelaRenomearItemGrafico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanelSubLayout.createSequentialGroup()
+                        .addGroup(jPanelSubLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelAbrirJanelaRenomearItemGrafico)
+                            .addComponent(jLabelAbrirDeletarGrafico))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 

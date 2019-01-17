@@ -431,6 +431,8 @@ public class mpsubmodulografico extends javax.swing.JPanel
         {
             if (novoindicador.mbcodeinterpreter.localdesenho_lastrun.equals("drawoncandles"))
             {
+                //considerando que o indicador rodou com sucesso, e que ele deve ser desenhado no ohlc,
+                //adicionar dados do indicador no grafico
                 mcg.adicionarplotohlc_indicador
                 (
                     novoindicador.mbcodeinterpreter.pontosx_lastrun,
@@ -438,6 +440,14 @@ public class mpsubmodulografico extends javax.swing.JPanel
                     novoindicador.mbcodeinterpreter.tituloscript_lastrun,
                     novoindicador.mbcodeinterpreter.tipodesenho_lastrun
                 );
+                
+                //o grafco tambem pode ser apresentado separadamente
+                novoindicador.criargraficoseparadoindicador();
+            }
+            else if (novoindicador.mbcodeinterpreter.localdesenho_lastrun.equals("drawseparateonly"))
+            {
+                //considerando que o grafico deve ser desenhado separadamente
+                novoindicador.criargraficoseparadoindicador();
             }
 
             mcg.adicionarplotohlc_indicadorid(novoindicador.id);
@@ -569,7 +579,8 @@ public class mpsubmodulografico extends javax.swing.JPanel
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jPanelChartpanelholder = new javax.swing.JPanel();
         jPanelFerramentasInfo = new javax.swing.JPanel();
@@ -619,36 +630,46 @@ public class mpsubmodulografico extends javax.swing.JPanel
 
         jButtonAtivarSelecao.setForeground(new java.awt.Color(255, 0, 0));
         jButtonAtivarSelecao.setText("Select");
-        jButtonAtivarSelecao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButtonAtivarSelecao.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButtonAtivarSelecaoActionPerformed(evt);
             }
         });
 
         jButtonAtivarReta.setText("Line");
-        jButtonAtivarReta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButtonAtivarReta.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButtonAtivarRetaActionPerformed(evt);
             }
         });
 
         jButtonAtivarFibonacci.setText("Fibonacci");
-        jButtonAtivarFibonacci.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButtonAtivarFibonacci.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButtonAtivarFibonacciActionPerformed(evt);
             }
         });
 
         jButtonAtivarRegua.setText("Ruler");
-        jButtonAtivarRegua.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButtonAtivarRegua.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButtonAtivarReguaActionPerformed(evt);
             }
         });
 
         jButtonAtivarTexto.setText("Text");
-        jButtonAtivarTexto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButtonAtivarTexto.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButtonAtivarTextoActionPerformed(evt);
             }
         });
@@ -689,8 +710,10 @@ public class mpsubmodulografico extends javax.swing.JPanel
         jPanelPrincipal.setBackground(new java.awt.Color(120, 120, 120));
 
         jButtonEscolherSimbolo.setText("Search");
-        jButtonEscolherSimbolo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButtonEscolherSimbolo.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButtonEscolherSimboloActionPerformed(evt);
             }
         });
@@ -707,38 +730,48 @@ public class mpsubmodulografico extends javax.swing.JPanel
         jComboBoxPeriodoSimbolo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1 Day", "1 Month", "3 Months", "6 Months", "Year-to-date", "1 Year", "2 Years", "5 Years" }));
 
         jButtonCarregarConfiguracao.setText("Load Asset");
-        jButtonCarregarConfiguracao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButtonCarregarConfiguracao.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButtonCarregarConfiguracaoActionPerformed(evt);
             }
         });
 
         jButtonSalvarConfiguracao.setText("Save Asset");
-        jButtonSalvarConfiguracao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButtonSalvarConfiguracao.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButtonSalvarConfiguracaoActionPerformed(evt);
             }
         });
 
-        jButtonAtualizarDadosGrafico.setText("Update Data");
-        jButtonAtualizarDadosGrafico.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButtonAtualizarDadosGrafico.setText("Update");
+        jButtonAtualizarDadosGrafico.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButtonAtualizarDadosGraficoActionPerformed(evt);
             }
         });
 
         jLabelLinearSwitch.setForeground(new java.awt.Color(0, 0, 255));
         jLabelLinearSwitch.setText("Linear");
-        jLabelLinearSwitch.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jLabelLinearSwitch.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 jLabelLinearSwitchMouseClicked(evt);
             }
         });
 
         jLabelLogaritmicaSwitch.setForeground(new java.awt.Color(255, 255, 255));
         jLabelLogaritmicaSwitch.setText("Logarithmic");
-        jLabelLogaritmicaSwitch.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jLabelLogaritmicaSwitch.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 jLabelLogaritmicaSwitchMouseClicked(evt);
             }
         });
@@ -834,8 +867,10 @@ public class mpsubmodulografico extends javax.swing.JPanel
         jLabelIndicadores.setText("Indicators");
 
         jButtonAdicionarIndicador.setText("Add");
-        jButtonAdicionarIndicador.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButtonAdicionarIndicador.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButtonAdicionarIndicadorActionPerformed(evt);
             }
         });
@@ -897,8 +932,8 @@ public class mpsubmodulografico extends javax.swing.JPanel
                     .addComponent(jLabelAnotacoes))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jPanelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );

@@ -88,7 +88,10 @@ public class mpitemanotacao extends javax.swing.JPanel
 
         jLabelRemoverAnotacao.setForeground(new java.awt.Color(255, 0, 0));
         jLabelRemoverAnotacao.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelRemoverAnotacao.setText("D");
+        jLabelRemoverAnotacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/trashred.png"))); // NOI18N
+        jLabelRemoverAnotacao.setMaximumSize(new java.awt.Dimension(20, 20));
+        jLabelRemoverAnotacao.setMinimumSize(new java.awt.Dimension(20, 20));
+        jLabelRemoverAnotacao.setPreferredSize(new java.awt.Dimension(20, 20));
         jLabelRemoverAnotacao.addMouseListener(new java.awt.event.MouseAdapter()
         {
             public void mouseClicked(java.awt.event.MouseEvent evt)
@@ -99,7 +102,10 @@ public class mpitemanotacao extends javax.swing.JPanel
 
         jLabelAbrirJanelaRenomearItemAnotacao.setForeground(new java.awt.Color(255, 255, 125));
         jLabelAbrirJanelaRenomearItemAnotacao.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelAbrirJanelaRenomearItemAnotacao.setText("R");
+        jLabelAbrirJanelaRenomearItemAnotacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/penyellow.png"))); // NOI18N
+        jLabelAbrirJanelaRenomearItemAnotacao.setMaximumSize(new java.awt.Dimension(20, 20));
+        jLabelAbrirJanelaRenomearItemAnotacao.setMinimumSize(new java.awt.Dimension(20, 20));
+        jLabelAbrirJanelaRenomearItemAnotacao.setPreferredSize(new java.awt.Dimension(20, 20));
         jLabelAbrirJanelaRenomearItemAnotacao.addMouseListener(new java.awt.event.MouseAdapter()
         {
             public void mouseClicked(java.awt.event.MouseEvent evt)
@@ -115,29 +121,31 @@ public class mpitemanotacao extends javax.swing.JPanel
             .addGroup(jPanelSubLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabelNomeItemAnotacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelAbrirJanelaRenomearItemAnotacao, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelRemoverAnotacao, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelAbrirJanelaRenomearItemAnotacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelRemoverAnotacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanelSubLayout.setVerticalGroup(
             jPanelSubLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelSubLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelSubLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelSubLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabelNomeItemAnotacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanelSubLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabelRemoverAnotacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabelAbrirJanelaRenomearItemAnotacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addGroup(jPanelSubLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jLabelAbrirJanelaRenomearItemAnotacao, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabelRemoverAnotacao, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jLabelAbrirJanelaRenomearItemAnotacao.getAccessibleContext().setAccessibleName("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanelSub, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
