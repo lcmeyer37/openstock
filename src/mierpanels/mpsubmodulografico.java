@@ -28,6 +28,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
     
     public mierclasses.mcchartgenerator mcg; //classe utilizada para desenhar graficos
     
+    Boolean poderecarregar = false; //diz se o submodulo ja foi criado pela primeira vez, e pode ser recarregado
     
     // <editor-fold defaultstate="collapsed" desc="Construtores Submodulo Grafico">
     
@@ -61,8 +62,9 @@ public class mpsubmodulografico extends javax.swing.JPanel
         jTextFieldNomeSimbolo.setText(simboloadicionar);
     }
     
-    //funcao responsavel por carregar o grafico com o simbolo e periodo desejado
-    public void recriargraficoohlc()
+    
+    //funcao responsavel por criar o grafico com o simbolo e periodo desejado pela primeira vez
+    public void criargraficoohlc()
     {
         //receber informacoes de candles de acordo com os paremetros principais
         String simboloescolhido = jTextFieldNomeSimbolo.getText();
@@ -293,7 +295,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
                     }
                 }
                 alternartipoescala(escala);
-                recriargraficoohlc();
+                criargraficoohlc();
                 //mierclasses.mcfuncoeshelper.mostrarmensagem("carregou grafico");
                 // </editor-fold>
                 
@@ -373,6 +375,130 @@ public class mpsubmodulografico extends javax.swing.JPanel
         }
     }
     
+
+    public void recarregardados()
+    {
+        //funcao para recarregar dados ohlc e de indicadores
+        //e recarregar os desenhos graficos no chart OHLC
+        
+        // <editor-fold defaultstate="collapsed" desc="Recarregar Chartpanel OHLC">
+        
+        //receber informacoes de candles de acordo com os paremetros principais
+        String simboloescolhido = jTextFieldNomeSimbolo.getText();
+        String periodoescolhido = jComboBoxPeriodoSimbolo.getSelectedItem().toString();
+        String escalagrafico = escalagraficoescolhido;
+        
+        
+        java.util.List<mierclasses.mccandle> candles = null;
+        
+        if (simboloescolhido.equals("mfxtest"))
+        {
+            //codigo para criar um dataset offline para teste
+            candles = mtgraficopai.tprincipalpai.miex.receberstockchartsample();
+        }
+        else
+        {
+            if (periodoescolhido.equals("1 Day"))
+                candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithminutes(simboloescolhido, "1d");
+            else if (periodoescolhido.equals("1 Month"))
+                candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "1m");
+            else if (periodoescolhido.equals("3 Months"))
+                candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "3m");
+            else if (periodoescolhido.equals("6 Months"))
+                candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "6m");
+            else if (periodoescolhido.equals("Year-to-date"))
+                candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "ytd");
+            else if (periodoescolhido.equals("1 Year"))
+                candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "1y");
+            else if (periodoescolhido.equals("2 Years"))
+                candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "2y");
+            else if (periodoescolhido.equals("5 Years"))
+                candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "5y");
+        }
+        
+        
+        //recarregar grafico OHLC
+        mcg.recarregarohlc(candles,simboloescolhido + " (" + periodoescolhido + ")",escalagrafico);
+        //receber cpanel OHLC pos-atualizacao para adicionar ao panel
+        org.jfree.chart.ChartPanel chartpanel = mcg.retornarcpanelohlc();
+        chartpanel.addChartMouseListener(new org.jfree.chart.ChartMouseListener()
+        {
+            public void chartMouseClicked(org.jfree.chart.ChartMouseEvent e)
+            {
+                interpretarmouseclickchart(e);
+            }
+
+            public void chartMouseMoved(org.jfree.chart.ChartMouseEvent e) 
+            {
+                interpretarmousemovechart(e);
+            }
+        });
+        
+        //atualizar cpanel OHLC
+        jPanelChartpanelholder.removeAll();
+        jPanelChartpanelholder.setLayout(new java.awt.BorderLayout());
+        jPanelChartpanelholder.add(chartpanel);
+
+        // </editor-fold>
+        
+        // <editor-fold defaultstate="collapsed" desc="Recarregar Dados e Plots dos Indicadores">
+        
+        //comecar limpando graficamente os timeseries dos indicadores
+        mcg.removerplotohlc_indicadores();
+        
+        //atualizar dados de todos os indicadores e adiciona-los novamente (os seus ids ja existem)
+        for (int i = 0; i < jPanelIndicadores.getComponentCount(); i++)
+        {
+            
+            mierpanels.mpitemindicador novoindicador = (mierpanels.mpitemindicador)jPanelIndicadores.getComponent(i);
+            String statusrunindicador = novoindicador.rodarscriptindicador();
+            if (statusrunindicador.equals("ok"))
+            {
+                if (novoindicador.mbcodeinterpreter.localdesenho_lastrun.equals("drawoncandles"))
+                {
+                    //considerando que o indicador rodou com sucesso, e que ele deve ser desenhado no ohlc,
+                    //adicionar dados do indicador no grafico
+                    mcg.adicionarplotohlc_indicador
+                    (
+                        novoindicador.mbcodeinterpreter.pontosx_lastrun,
+                        novoindicador.mbcodeinterpreter.pontosy_lastrun,
+                        novoindicador.mbcodeinterpreter.tituloscript_lastrun,
+                        novoindicador.mbcodeinterpreter.tipodesenho_lastrun
+                    );
+
+                    //recarregar grafico separado do indicador
+                    novoindicador.recarregargraficoseparadoindicador();
+                }
+                else if (novoindicador.mbcodeinterpreter.localdesenho_lastrun.equals("drawseparateonly"))
+                {
+                    //recarregar grafico separado do indicador
+                    novoindicador.recarregargraficoseparadoindicador();
+                }
+            }
+            else
+            {
+                mierclasses.mcfuncoeshelper.mostrarmensagem("Algum problema ocorreu e o indicador não pôde ser utilizado:\n\n" + statusrunindicador);
+            }
+            
+        }
+        
+        //</editor-fold>
+        
+        // <editor-fold defaultstate="collapsed" desc="Recarregar Dados e Plots das Anotacoes">
+        //remover todos subannotations
+        mcg.removerplotohlc_todossubannotations();
+        
+        for (int i = 0; i < jPanelAnotacoes.getComponentCount(); i++)
+        {
+            mierpanels.mpitemanotacao novoanotacao = (mierpanels.mpitemanotacao)jPanelAnotacoes.getComponent(i);
+            mcg.adicionarplotohlc_subannotationsobjectbase64type(novoanotacao.subannotationsanotacao);
+        }
+        // </editor-fold
+        
+        this.validate();
+        this.repaint(); 
+    }
+    
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Indicators Section">
@@ -401,11 +527,13 @@ public class mpsubmodulografico extends javax.swing.JPanel
                 
                 //o grafco tambem pode ser apresentado separadamente
                 novoindicador.criargraficoseparadoindicador();
+                novoindicador.recarregargraficoseparadoindicador();
             }
             else if (novoindicador.mbcodeinterpreter.localdesenho_lastrun.equals("drawseparateonly"))
             {
                 //considerando que o grafico deve ser desenhado separadamente
                 novoindicador.criargraficoseparadoindicador();
+                novoindicador.recarregargraficoseparadoindicador();
             }
 
             //adicionar id de controle no chart generator
@@ -443,11 +571,13 @@ public class mpsubmodulografico extends javax.swing.JPanel
                 
                 //o grafco tambem pode ser apresentado separadamente
                 novoindicador.criargraficoseparadoindicador();
+                novoindicador.recarregargraficoseparadoindicador();
             }
             else if (novoindicador.mbcodeinterpreter.localdesenho_lastrun.equals("drawseparateonly"))
             {
                 //considerando que o grafico deve ser desenhado separadamente
                 novoindicador.criargraficoseparadoindicador();
+                novoindicador.recarregargraficoseparadoindicador();
             }
 
             mcg.adicionarplotohlc_indicadorid(novoindicador.id);
@@ -472,7 +602,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
         
         //mcg.printlistaidsindicador();
     }
-    
+
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Annotations Section">
@@ -522,8 +652,6 @@ public class mpsubmodulografico extends javax.swing.JPanel
         this.validate();
         this.repaint();
     }
-    
-    
     
     public void removerAnotacao(mierpanels.mpitemanotacao mpiaremover)
     {
@@ -962,7 +1090,15 @@ public class mpsubmodulografico extends javax.swing.JPanel
 
     private void jButtonAtualizarDadosGraficoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAtualizarDadosGraficoActionPerformed
     {//GEN-HEADEREND:event_jButtonAtualizarDadosGraficoActionPerformed
-        recriargraficoohlc();
+        if (poderecarregar == false)
+        {
+           criargraficoohlc();
+           poderecarregar = true;
+        }
+        else if (poderecarregar == true)
+        {
+            recarregardados();
+        }
     }//GEN-LAST:event_jButtonAtualizarDadosGraficoActionPerformed
 
     private void jButtonEscolherSimboloActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonEscolherSimboloActionPerformed

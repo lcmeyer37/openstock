@@ -81,6 +81,11 @@ public class mpitemindicador extends javax.swing.JPanel
         //funcao para criar mfchartseparado com grafico separado deste indicador, e associa-lo a este
         //mpitemindicador, para poder ser acessado ao clicar no botao G
         mfcs = new mierframes.mfchartseparado();
+        jLabelAbrirJanelaMostrarGraficoSeparado.setVisible(true);
+    }
+    
+    public void recarregargraficoseparadoindicador()
+    {
         /*
             novoindicador.mbcodeinterpreter.pontosx_lastrun,
             novoindicador.mbcodeinterpreter.pontosy_lastrun,
@@ -89,7 +94,6 @@ public class mpitemindicador extends javax.swing.JPanel
         */
         mfcs.recriarplot_indicador(mbcodeinterpreter.pontosx_lastrun, mbcodeinterpreter.pontosy_lastrun, mbcodeinterpreter.tituloscript_lastrun, mbcodeinterpreter.tipodesenho_lastrun);
         
-        jLabelAbrirJanelaMostrarGraficoSeparado.setVisible(true);
     }
     
     void criarcodeengine(String idbearcode, String parametrosbearcode)

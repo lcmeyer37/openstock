@@ -569,6 +569,16 @@ public class mcchartgenerator
             //mierclasses.mcfuncoeshelper.mostrarmensagem("anotacao grafica removida");
         }
     }
+    
+    public void removerplotohlc_todossubannotations()
+    {
+        org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot) chartatual.getPlot();
+        java.util.List<org.jfree.chart.plot.XYPlot> todassubannotations = plotatual.getAnnotations();
+        for (int i = 0; i < todassubannotations.size(); i++)
+        {
+            plotatual.removeAnnotation((org.jfree.chart.annotations.XYAnnotation)todassubannotations.get(i));
+        }
+    }
 
     //</editor-fold>
     
@@ -621,13 +631,18 @@ public class mcchartgenerator
             }
         }
     }
-
+    
     public void removerplotohlc_indicadorid(String idindicador)
     {
         //remove o idindicador da lista de controle
         idindicadoresatual.remove(idindicador);
     }
 
+    public void removerplotohlc_indicadores()
+    {
+        //remover todos os indicadores do grafico
+        datasetindicadoresohlc.removeAllSeries();
+    }
     //</editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Funcoes para recriar e retornar chart OHLC com indicadores">
@@ -736,6 +751,73 @@ public class mcchartgenerator
 
         return datasetretornar;
     }
+    
+    public void recarregarohlc(java.util.List<mierclasses.mccandle> catual, String tituloohlc, String tipoescala)
+    {
+        //sabendo que este grafico ohlc ja foi criado, 
+        //caso soh seja necessario recarregar seus dados,
+        //esta funcao deve ser rodada
+
+        //grafico ohlc
+        candlesatual = catual;
+
+        //recriar dataset com candles
+        org.jfree.data.xy.OHLCDataset olhcdataset = criarohlcdataset(candlesatual, tituloohlc);
+
+        //criar grafico novo
+        //adicionar dataset OHLC
+        org.jfree.chart.axis.DateAxis domainAxis = new org.jfree.chart.axis.DateAxis("");
+        if (tipoescala.equals("linear"))
+        {
+            org.jfree.chart.axis.NumberAxis rangeAxis = new org.jfree.chart.axis.NumberAxis("");
+            org.jfree.chart.renderer.xy.CandlestickRenderer renderer = new org.jfree.chart.renderer.xy.CandlestickRenderer();
+            org.jfree.data.xy.XYDataset dataset = (org.jfree.data.xy.XYDataset) olhcdataset;
+            org.jfree.chart.plot.XYPlot mainPlot = new org.jfree.chart.plot.XYPlot(dataset, domainAxis, rangeAxis, renderer);
+            renderer.setSeriesPaint(0, Color.BLACK);
+            renderer.setDrawVolume(true);
+            rangeAxis.setAutoRangeIncludesZero(false);
+            org.jfree.chart.JFreeChart chart = new org.jfree.chart.JFreeChart(tituloohlc.toUpperCase(), null, mainPlot, false);
+            chartatual = chart;
+        } 
+        else if (tipoescala.equals("logaritmica"))
+        {
+            org.jfree.chart.axis.LogAxis rangeAxis = new org.jfree.chart.axis.LogAxis("");
+            org.jfree.chart.renderer.xy.CandlestickRenderer renderer = new org.jfree.chart.renderer.xy.CandlestickRenderer();
+            org.jfree.data.xy.XYDataset dataset = (org.jfree.data.xy.XYDataset) olhcdataset;
+            org.jfree.chart.plot.XYPlot mainPlot = new org.jfree.chart.plot.XYPlot(dataset, domainAxis, rangeAxis, renderer);
+            renderer.setSeriesPaint(0, Color.BLACK);
+            renderer.setDrawVolume(true);
+            org.jfree.chart.JFreeChart chart = new org.jfree.chart.JFreeChart(tituloohlc.toUpperCase(), null, mainPlot, false);
+            chartatual = chart;
+        }
+        //adicionar dataset vazio para indicadores
+        org.jfree.chart.renderer.xy.XYLineAndShapeRenderer rendereradd = new org.jfree.chart.renderer.xy.DefaultXYItemRenderer();
+        rendereradd.setBaseShapesVisible(false);
+        rendereradd.setBaseStroke(new BasicStroke(2.0f));
+        org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot) chartatual.getPlot();
+        datasetindicadoresohlc = new org.jfree.data.time.TimeSeriesCollection();
+        plotatual.setDataset(1, datasetindicadoresohlc);
+        plotatual.setRenderer(1, rendereradd);
+
+        // Create Panel
+        org.jfree.chart.ChartPanel chartpanel = new org.jfree.chart.ChartPanel(chartatual);
+        chartpanel.addChartMouseListener(new org.jfree.chart.ChartMouseListener()
+        {
+            public void chartMouseClicked(org.jfree.chart.ChartMouseEvent e)
+            {
+                interpretarferramenta_mclick(e);
+            }
+
+            public void chartMouseMoved(org.jfree.chart.ChartMouseEvent e)
+            {
+                interpretarferramenta_mmove(e);
+            }
+        });
+        chartpanelatual = chartpanel;
+        //</editor-fold>
+
+    }
+
 
     // </editor-fold>
     
