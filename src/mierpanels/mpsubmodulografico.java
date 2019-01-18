@@ -524,6 +524,8 @@ public class mpsubmodulografico extends javax.swing.JPanel
                     novoindicador.mbcodeinterpreter.tituloscript_lastrun,
                     novoindicador.mbcodeinterpreter.tipodesenho_lastrun
                 );
+                //adicionar id de controle no chart generator
+                mcg.adicionarplotohlc_indicadorid(novoindicador.id);
                 
                 //o grafco tambem pode ser apresentado separadamente
                 novoindicador.criargraficoseparadoindicador();
@@ -536,8 +538,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
                 novoindicador.recarregargraficoseparadoindicador();
             }
 
-            //adicionar id de controle no chart generator
-            mcg.adicionarplotohlc_indicadorid(novoindicador.id);
+            
             //adicionar item no submodulo
             jPanelIndicadores.add(novoindicador);
             this.validate();
@@ -568,6 +569,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
                     novoindicador.mbcodeinterpreter.tituloscript_lastrun,
                     novoindicador.mbcodeinterpreter.tipodesenho_lastrun
                 );
+                mcg.adicionarplotohlc_indicadorid(novoindicador.id);
                 
                 //o grafco tambem pode ser apresentado separadamente
                 novoindicador.criargraficoseparadoindicador();
@@ -580,7 +582,6 @@ public class mpsubmodulografico extends javax.swing.JPanel
                 novoindicador.recarregargraficoseparadoindicador();
             }
 
-            mcg.adicionarplotohlc_indicadorid(novoindicador.id);
             jPanelIndicadores.add(novoindicador);
             this.validate();
             this.repaint(); 
@@ -594,8 +595,12 @@ public class mpsubmodulografico extends javax.swing.JPanel
 
     public void removerIndicador(mierpanels.mpitemindicador mpiiremover)
     {
-        mcg.removerplotohlc_indicador(mpiiremover.id);
-        mcg.removerplotohlc_indicadorid(mpiiremover.id);
+        if (mpiiremover.mbcodeinterpreter.localdesenho_lastrun.equals("drawoncandles"))
+        {
+            mcg.removerplotohlc_indicador(mpiiremover.id);
+            mcg.removerplotohlc_indicadorid(mpiiremover.id);
+        }
+        
         jPanelIndicadores.remove(mpiiremover);
         this.validate();
         this.repaint();

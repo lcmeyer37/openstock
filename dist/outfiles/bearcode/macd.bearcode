@@ -1,0 +1,144 @@
+//MACD Script
+//MACD Line = (EMA_close t-12) - (EMA_close t-26)
+//MACD Signal Line = (EMA_MACD t-9)
+//MACD Histogram = MACD Line - MACD Signal Line
+
+//candles OpenStock
+var candlesinput = candles;
+
+//parametrosinput
+
+//receber valores de close e timestamp
+var closes_timestamps = retornarclosestimestamp();
+var closes = closes_timestamps[0];
+var timestamps = closes_timestamps[1];
+
+//calcular ema_close t-12 e ema_close t-26
+var ema_timestamps_ta = calculate_ema(12,closes,timestamps);
+var ema_timestamps_tb = calculate_ema(26,closes,timestamps);
+
+//calcular macdline
+var macdline = calculate_difference
+(
+    ema_timestamps_ta[0],
+    ema_timestamps_tb[0],
+    ema_timestamps_ta[1],
+    ema_timestamps_tb[1],
+    (26-12)
+);
+
+
+//calcular signalline
+var signalline = calculate_ema(9,macdline[0],macdline[1]);
+
+//calcular histogram
+var macdhistogram = calculate_difference
+(
+    macdline[0],
+    signalline[0],
+    macdline[1],
+    signalline[1],
+    9
+)
+
+
+//funcao para retornar valores de EMA_close das candles
+function retornarclosestimestamp()
+{
+    var valoresclose = [];
+    var timestampsclose = [];
+
+    for (i = 0; i < candlesinput.length; i++)
+    {
+        valoresclose.push(candlesinput[i].closed);
+        //runoutput.print(candlesinput[i].closed);
+        timestampsclose.push(candlesinput[i].timestampdate);
+        //runoutput.print(candlesinput[i].timestampdate);
+    }
+
+    var retornoclose = [];
+    retornoclose.push(valoresclose);
+    retornoclose.push(timestampsclose);
+    //runoutput.print("retornoclose: " + retornoclose[1]);
+
+    return retornoclose;
+}
+
+
+//funcao para calcular EMA
+function calculate_ema(periodo,valoresx,valorestimestamp)
+{
+    var valormultiplierema = (2.0/(periodo+1.0));
+
+    var valoresema = [];
+    var timestampsema = [];
+
+    for (i = periodo; i < valoresx.length; i++)
+    {
+        if (i == periodo)
+        {
+            var somaatual = 0;
+            for (j = 0; j < periodo; j++)
+            {
+                var indiceatual = i-periodo+j;
+                somaatual = somaatual + valoresx[indiceatual];
+            }
+            var emaatual = somaatual/periodo;
+            var timestampatual = valorestimestamp[i];
+            valoresema.push(emaatual);
+            timestampsema.push(timestampatual);
+        }
+        else if (i > periodo)
+        {
+            var emaanterior = valoresema[i-periodo-1];
+            var closingatual = valoresx[i];
+
+            var emaatual = (closingatual-emaanterior)*valormultiplierema + emaanterior;
+            var timestampatual = valorestimestamp[i];
+
+            valoresema.push(emaatual);
+            timestampsema.push(timestampatual);
+        }
+    }
+
+    var retornoema = [];
+    retornoema.push(valoresema);
+    retornoema.push(timestampsema);    
+    
+    return retornoema;
+}
+
+//funcao para calcular diferenca entre valoresa - valoresb
+function calculate_difference(valores_a,valores_b,timestamps_a,timestamps_b,gapindex)
+{
+    //suposicao
+    //ema_a tem 77 valores, e seu periodo eh de 12
+    //ema_b tem 63 valores, e seu periodo eh de 26
+    //deve ser feito a subtracao a partir de (ema_a[0+14]-ema_b[0])  ateh (ema_a[62+14=76]-ema_b[62])
+
+    var valoresdiff = [];
+    var timestampsdiff = []
+
+    var diferencaperiodos = gapindex;
+    var tamanhofinal = valores_b.length;
+
+    //returns de macd line, emata - ematb, where period a < b
+    for (i = 0; i < tamanhofinal; i++)
+    {
+        var diffatual = valores_a[i+diferencaperiodos] - valores_b[i];
+        var timestampatual = timestamps_b[i]; //ou timestamps_a[i+diferencaperiodos]
+
+        valoresdiff.push(diffatual);
+        timestampsdiff.push(timestampatual);
+    }
+
+    var retornodiff = [];
+    retornodiff.push(valoresdiff);
+    retornodiff.push(timestampsdiff);
+
+    return retornodiff;
+}
+
+var scriptdescription = "MACD (12,26,9);timestamp;drawseparateonly;line"; 
+var yvalues = Java.to(macdhistogram[0],"double[]");
+var xvalues = Java.to(macdhistogram[1],"java.util.Date[]");
