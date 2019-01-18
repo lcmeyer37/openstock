@@ -68,6 +68,18 @@
         <BearcodeFile>emaclose.bearcode</BearcodeFile>
     </Indicator>
 
+    <Indicator>
+        <BCID>macd</BCID>
+        <Name>MACD</Name>
+        <BearcodeFile>macd.bearcode</BearcodeFile>
+    </Indicator>
+
+    <Indicator>
+        <BCID>macdfull</BCID>
+        <Name>MACD with Parameters</Name>
+        <BearcodeFile>macdfull.bearcode</BearcodeFile>
+    </Indicator>
+
     <!--<Indicator>
         <BCID>test</BCID>
         <Name>Bearcode Scripting Engine Test</Name>

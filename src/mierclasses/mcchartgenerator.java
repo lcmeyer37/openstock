@@ -23,7 +23,7 @@ public class mcchartgenerator
     public org.jfree.chart.JFreeChart chartatual; //chart atual
     public org.jfree.chart.ChartPanel chartpanelatual; //chartpanel atual
     public java.util.List<mierclasses.mccandle> candlesatual; //lista de candles atual utilizadas por este mcg
-    public java.util.List<String> idindicadoresatual; //lista com ids dos indicadores atuais presentes no chart
+    public java.util.List<String> idindicadoresatual; //lista com ids dos indicadores atuais presentes no chart (nao serve para indicadores que nao estao desenhados no chart)
     public java.util.List<String> idferramentassubannotationsatual; //lista com ids das ferramentas atuais presentes no chart
 
     //informacoes sobre a ultima posicao do mouse no chart
