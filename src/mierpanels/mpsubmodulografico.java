@@ -349,6 +349,8 @@ public class mpsubmodulografico extends javax.swing.JPanel
                 }
                 //mierclasses.mcfuncoeshelper.mostrarmensagem("carregou anotacoes");
                 // </editor-fold>
+                
+                poderecarregar = true;
             }
         }
         catch (Exception ex)
@@ -376,7 +378,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
     }
     
 
-    public void recarregardados()
+    public void recarregardadosasset()
     {
         //funcao para recarregar dados ohlc e de indicadores
         //e recarregar os desenhos graficos no chart OHLC
@@ -1102,7 +1104,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
         }
         else if (poderecarregar == true)
         {
-            recarregardados();
+            recarregardadosasset();
         }
     }//GEN-LAST:event_jButtonAtualizarDadosGraficoActionPerformed
 
