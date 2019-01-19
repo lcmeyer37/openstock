@@ -20,15 +20,18 @@ import org.jfree.ui.TextAnchor;
 public class mcchartgenerator
 {
 
+    // <editor-fold defaultstate="collapsed" desc="Variaveis Publicas">
     public org.jfree.chart.JFreeChart chartatual; //chart atual
     public org.jfree.chart.ChartPanel chartpanelatual; //chartpanel atual
     public java.util.List<mierclasses.mccandle> candlesatual; //lista de candles atual utilizadas por este mcg
-    public java.util.List<String> idindicadoresatual; //lista com ids dos indicadores atuais presentes no chart (nao serve para indicadores que nao estao desenhados no chart)
-    public java.util.List<String> idferramentassubannotationsatual; //lista com ids das ferramentas atuais presentes no chart
+    public java.util.List<String> idindicadoresatual; //lista com ids dos indicadores atuais presentes no chart ohlc (nao serve para indicadores que nao estao desenhados no chart)
+    public java.util.List<String> idferramentassubannotationsatual; //lista com ids das ferramentas atuais presentes no chart ohlc
 
     //informacoes sobre a ultima posicao do mouse no chart
     public double valormouseatualgraficox; //contem o ultimo valor em x que o mouse tocou
     public double valormouseatualgraficoy; //contem o ultimo valor em y que o mouse tocou
+    public org.jfree.data.Range rangex; //contem o range atual de x
+    public org.jfree.data.Range rangey; //contem o range atual de y
     public org.jfree.chart.entity.ChartEntity entityatualgrafico; //contem a ultima entidade que o mouse tocou
 
     //ultima anotacao (lista de subanotacoes pertencentes a esta anotacao)
@@ -36,6 +39,7 @@ public class mcchartgenerator
 
     //dataset utilizado para indicadores no grafico de ohlc
     org.jfree.data.time.TimeSeriesCollection datasetindicadoresohlc;
+    // </editor-fold >
 
     //classe que se comunica com jfreecharts para criar graficos de interesse para o programa
     public mcchartgenerator()
@@ -87,12 +91,14 @@ public class mcchartgenerator
     void interpretarferramenta_mclick(org.jfree.chart.ChartMouseEvent cmevent)
     {
         //sempre atualizar informacoes sobre a posicao atual do mouse no grafico
-        //funcao para atualizar o ultimo ponto x e y e a entity selecionada pelo mouse
+        //atualizar o ultimo ponto x e y, ranges e a entity selecionada pelo mouse
         java.awt.geom.Point2D p = chartpanelatual.translateScreenToJava2D(cmevent.getTrigger().getPoint());
         java.awt.geom.Rectangle2D plotArea = chartpanelatual.getChartRenderingInfo().getPlotInfo().getDataArea();
         org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getPlot(); // your plot
         valormouseatualgraficox = plot.getDomainAxis().java2DToValue(p.getX(), plotArea, plot.getDomainAxisEdge());
         valormouseatualgraficoy = plot.getRangeAxis().java2DToValue(p.getY(), plotArea, plot.getRangeAxisEdge());
+        rangex = plot.getDomainAxis().getRange();
+        rangey = plot.getRangeAxis().getRange();
         entityatualgrafico = cmevent.getEntity();
 
         //funcao para interpretar a ferramenta atual e manipular o grafico
@@ -123,12 +129,14 @@ public class mcchartgenerator
     void interpretarferramenta_mmove(org.jfree.chart.ChartMouseEvent cmevent)
     {
         //sempre atualizar informacoes sobre a posicao atual do mouse no grafico
-        //funcao para atualizar o ultimo ponto x e y e a entity selecionada pelo mouse
+        //atualizar o ultimo ponto x e y, ranges e a entity selecionada pelo mouse
         java.awt.geom.Point2D p = chartpanelatual.translateScreenToJava2D(cmevent.getTrigger().getPoint());
         java.awt.geom.Rectangle2D plotArea = chartpanelatual.getChartRenderingInfo().getPlotInfo().getDataArea();
         org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getPlot(); // your plot
         valormouseatualgraficox = plot.getDomainAxis().java2DToValue(p.getX(), plotArea, plot.getDomainAxisEdge());
         valormouseatualgraficoy = plot.getRangeAxis().java2DToValue(p.getY(), plotArea, plot.getRangeAxisEdge());
+        rangex = plot.getDomainAxis().getRange();
+        rangey = plot.getRangeAxis().getRange();
         entityatualgrafico = cmevent.getEntity();
 
         //funcao para interpretar a ferramenta atual e manipular o grafico

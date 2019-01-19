@@ -51,7 +51,9 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jLabelNomeItemIndicador" max="32767" attributes="0"/>
+                  <Component id="jLabelNomeItemIndicador" pref="126" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jLabelEscolherGraficoParaBottom" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jLabelAbrirJanelaMostrarGraficoSeparado" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -67,10 +69,11 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="jLabelNomeItemIndicador" alignment="0" max="32767" attributes="0"/>
                       <Component id="jLabelAbrirJanelaRenomearItemIndicador" alignment="0" max="32767" attributes="0"/>
                       <Component id="jLabeRemoverItemIndicador" alignment="0" max="32767" attributes="0"/>
                       <Component id="jLabelAbrirJanelaMostrarGraficoSeparado" max="32767" attributes="0"/>
+                      <Component id="jLabelEscolherGraficoParaBottom" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jLabelNomeItemIndicador" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -130,6 +133,21 @@
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabelAbrirJanelaMostrarGraficoSeparadoMouseClicked"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabelEscolherGraficoParaBottom">
+          <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="7d" type="rgb"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="0"/>
+            <Property name="text" type="java.lang.String" value="N"/>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabelEscolherGraficoParaBottomMouseClicked"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

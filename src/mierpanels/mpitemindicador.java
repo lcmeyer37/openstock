@@ -28,7 +28,7 @@ public class mpitemindicador extends javax.swing.JPanel
     public mierclasses.mcbearcodeinterpreter mbcodeinterpreter;
 
     //grafico separado deste item indicador
-    mierframes.mfchartseparado mfcs;
+    public mierframes.mfchartseparado mfcs;
     
     //id deste indicador
     String id;
@@ -92,7 +92,10 @@ public class mpitemindicador extends javax.swing.JPanel
             novoindicador.mbcodeinterpreter.tituloscript_lastrun,
             novoindicador.mbcodeinterpreter.tipodesenho_lastrun
         */
-        mfcs.recriarplot_indicador(mbcodeinterpreter.pontosx_lastrun, mbcodeinterpreter.pontosy_lastrun, mbcodeinterpreter.tituloscript_lastrun, mbcodeinterpreter.tipoplot_lastrun);
+        mfcs.associarplotchartpaneljanela
+        (
+                mfcs.retornarnovoplot_indicador(mbcodeinterpreter.pontosx_lastrun, mbcodeinterpreter.pontosy_lastrun, mbcodeinterpreter.tituloscript_lastrun, mbcodeinterpreter.tipoplot_lastrun)
+        );
         
     }
     
@@ -186,6 +189,7 @@ public class mpitemindicador extends javax.swing.JPanel
         //mierclasses.mcfuncoeshelper.mostrarmensagem("mbcodeinterpreter.parametrosbcodejs: " + mbcodeinterpreter.parametrosbcodejs);
         //mierclasses.mcfuncoeshelper.mostrarmensagem("mbcodeinterpreter.codigobcodejs: " + mbcodeinterpreter.codigobcodejs);
     }
+
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -202,6 +206,7 @@ public class mpitemindicador extends javax.swing.JPanel
         jLabeRemoverItemIndicador = new javax.swing.JLabel();
         jLabelAbrirJanelaRenomearItemIndicador = new javax.swing.JLabel();
         jLabelAbrirJanelaMostrarGraficoSeparado = new javax.swing.JLabel();
+        jLabelEscolherGraficoParaBottom = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(155, 155, 155));
 
@@ -243,13 +248,26 @@ public class mpitemindicador extends javax.swing.JPanel
             }
         });
 
+        jLabelEscolherGraficoParaBottom.setForeground(new java.awt.Color(125, 255, 255));
+        jLabelEscolherGraficoParaBottom.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelEscolherGraficoParaBottom.setText("N");
+        jLabelEscolherGraficoParaBottom.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jLabelEscolherGraficoParaBottomMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelSubLayout = new javax.swing.GroupLayout(jPanelSub);
         jPanelSub.setLayout(jPanelSubLayout);
         jPanelSubLayout.setHorizontalGroup(
             jPanelSubLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelSubLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelNomeItemIndicador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelNomeItemIndicador, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelEscolherGraficoParaBottom)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelAbrirJanelaMostrarGraficoSeparado)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -263,10 +281,11 @@ public class mpitemindicador extends javax.swing.JPanel
             .addGroup(jPanelSubLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelSubLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabelNomeItemIndicador, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabelAbrirJanelaRenomearItemIndicador, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabeRemoverItemIndicador, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabelAbrirJanelaMostrarGraficoSeparado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabelAbrirJanelaMostrarGraficoSeparado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelEscolherGraficoParaBottom, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelNomeItemIndicador, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -304,11 +323,24 @@ public class mpitemindicador extends javax.swing.JPanel
         mfcs.show();
     }//GEN-LAST:event_jLabelAbrirJanelaMostrarGraficoSeparadoMouseClicked
 
+    private void jLabelEscolherGraficoParaBottomMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabelEscolherGraficoParaBottomMouseClicked
+    {//GEN-HEADEREND:event_jLabelEscolherGraficoParaBottomMouseClicked
+        if (jLabelEscolherGraficoParaBottom.getText().equals("N"))
+        {
+            submodulografico.setarGraficoIndicadorSecundario(this);
+        }
+        else if (jLabelEscolherGraficoParaBottom.getText().equals("S"))
+        {
+            submodulografico.removerGraficoIndicadorSecundario();
+        }
+    }//GEN-LAST:event_jLabelEscolherGraficoParaBottomMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabeRemoverItemIndicador;
     private javax.swing.JLabel jLabelAbrirJanelaMostrarGraficoSeparado;
     private javax.swing.JLabel jLabelAbrirJanelaRenomearItemIndicador;
+    public javax.swing.JLabel jLabelEscolherGraficoParaBottom;
     public javax.swing.JLabel jLabelNomeItemIndicador;
     private javax.swing.JPanel jPanelSub;
     // End of variables declaration//GEN-END:variables

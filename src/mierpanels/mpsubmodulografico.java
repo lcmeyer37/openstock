@@ -40,6 +40,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
         mtgraficopai = mtgpai;
         
         inicializarsubmodulografico();
+
     }
     
     //inicializacao de novo submodulo grafico
@@ -55,6 +56,12 @@ public class mpsubmodulografico extends javax.swing.JPanel
         jTextFieldNomeSimbolo.setText("testdata");
         criargraficoohlc();
         poderecarregar = true;
+        
+        //splitter nao aparece quando nao tem grafico secundario
+        jSplitPaneChartpanels.setDividerLocation(500);
+    
+        this.validate();
+        this.repaint();
     }
     
     // </editor-fold>
@@ -125,9 +132,9 @@ public class mpsubmodulografico extends javax.swing.JPanel
         //mostrar cpanel OHLC (deletar qualquer outro panel antes presente)
         jPanelIndicadores.removeAll();
         jPanelAnotacoes.removeAll();
-        jPanelChartpanelholder.removeAll();
-        jPanelChartpanelholder.setLayout(new java.awt.BorderLayout());
-        jPanelChartpanelholder.add(chartpanel);
+        jPanelOHLCChartpanel.removeAll();
+        jPanelOHLCChartpanel.setLayout(new java.awt.BorderLayout());
+        jPanelOHLCChartpanel.add(chartpanel);
         //setVisible(true);
         this.validate();
     }
@@ -442,9 +449,9 @@ public class mpsubmodulografico extends javax.swing.JPanel
         });
         
         //atualizar cpanel OHLC
-        jPanelChartpanelholder.removeAll();
-        jPanelChartpanelholder.setLayout(new java.awt.BorderLayout());
-        jPanelChartpanelholder.add(chartpanel);
+        jPanelOHLCChartpanel.removeAll();
+        jPanelOHLCChartpanel.setLayout(new java.awt.BorderLayout());
+        jPanelOHLCChartpanel.add(chartpanel);
 
         // </editor-fold>
         
@@ -488,6 +495,19 @@ public class mpsubmodulografico extends javax.swing.JPanel
             
         }
         
+        //tambem recarregar grafico secundario
+        for (int i = 0; i < jPanelIndicadores.getComponentCount(); i++)
+        {
+            mierpanels.mpitemindicador miia = (mierpanels.mpitemindicador)jPanelIndicadores.getComponent(i);
+            String indicadorembottom = miia.jLabelEscolherGraficoParaBottom.getText();
+            if (indicadorembottom.equals("S"))
+            {
+                //encontrado o indicador cujo grafico esta como secundario, tambem atualiza-lo
+                setarGraficoIndicadorSecundario(miia);
+                break;
+            }
+        }
+        
         //</editor-fold>
         
         // <editor-fold defaultstate="collapsed" desc="Recarregar Dados e Plots das Anotacoes">
@@ -499,7 +519,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
             mierpanels.mpitemanotacao novoanotacao = (mierpanels.mpitemanotacao)jPanelAnotacoes.getComponent(i);
             mcg.adicionarplotohlc_subannotationsobjectbase64type(novoanotacao.subannotationsanotacao);
         }
-        // </editor-fold
+        // </editor-fold>
         
         this.validate();
         this.repaint(); 
@@ -612,6 +632,49 @@ public class mpsubmodulografico extends javax.swing.JPanel
         //mcg.printlistaidsindicador();
     }
 
+    public void setarGraficoIndicadorSecundario(mierpanels.mpitemindicador mpiidestacarabaixo)
+    {
+        for (int i = 0; i < jPanelIndicadores.getComponentCount(); i++)
+        {
+            mierpanels.mpitemindicador miia = (mierpanels.mpitemindicador)jPanelIndicadores.getComponent(i);
+            miia.jLabelEscolherGraficoParaBottom.setText("N");
+        }
+        
+        //funcao que pega o grafico separado deste indicador e o separa para ficar logo abaixo do grafico ohlc
+        //principal, tambem eh desejavel que quando o usuario estiver realizando zoom no grafico ohlc,
+        //que o range do zoom do ohlc tambem passe para este grafico em questao
+        jPanelSecondaryChartPanel.removeAll();
+        jPanelSecondaryChartPanel.setLayout(new java.awt.BorderLayout());       
+        jPanelSecondaryChartPanel.add
+        (
+            mpiidestacarabaixo.mfcs.retornarnovoplot_indicador
+            (
+                     mpiidestacarabaixo.mbcodeinterpreter.pontosx_lastrun, 
+                     mpiidestacarabaixo.mbcodeinterpreter.pontosy_lastrun, 
+                     mpiidestacarabaixo.mbcodeinterpreter.tituloscript_lastrun,
+                     mpiidestacarabaixo.mbcodeinterpreter.tipoplot_lastrun
+             )       
+        );
+        mpiidestacarabaixo.jLabelEscolherGraficoParaBottom.setText("S");
+        //setVisible(true);
+        jSplitPaneChartpanels.setDividerLocation(350);
+        this.validate();
+        this.repaint();
+    }
+    
+    public void removerGraficoIndicadorSecundario()
+    {
+        jPanelSecondaryChartPanel.removeAll();
+        
+        for (int i = 0; i < jPanelIndicadores.getComponentCount(); i++)
+        {
+            mierpanels.mpitemindicador miia = (mierpanels.mpitemindicador)jPanelIndicadores.getComponent(i);
+            miia.jLabelEscolherGraficoParaBottom.setText("N");
+        }
+        jSplitPaneChartpanels.setDividerLocation(500);
+        this.validate();
+        this.repaint();
+    }
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Annotations Section">
@@ -683,11 +746,13 @@ public class mpsubmodulografico extends javax.swing.JPanel
     void interpretarmouseclickchart(org.jfree.chart.ChartMouseEvent e)
     {
         adicionarAnotacaoNovo();
+        atualizarrangegraficosecundario();
     }
     
     void interpretarmousemovechart(org.jfree.chart.ChartMouseEvent e)
     {       
         atualizarinformacoesposicaoatualgrafico();
+        atualizarrangegraficosecundario();
     }
     //</editor-fold>
     
@@ -704,7 +769,31 @@ public class mpsubmodulografico extends javax.swing.JPanel
     {
         String valoryatualohlc = String.format( "%.4f", mcg.valormouseatualgraficoy);
         java.util.Date dataatualohlc = new java.util.Date((long)mcg.valormouseatualgraficox);
+        //String valoratualrangex = String.format( "%.4f", mcg.rangex.getLength());
+        //String valoratualrangey = String.format( "%.4f", mcg.rangey.getLength());
         jLabelInfo.setText("Price: " + valoryatualohlc + " Date: " + dataatualohlc.toString());   
+    }
+    
+    void atualizarrangegraficosecundario()
+    {
+        //funcao para atualizar o range do grafico secundario, para ser igual ao do grafico primario
+        
+        if (jPanelSecondaryChartPanel.getComponentCount() == 1)
+        {
+            org.jfree.chart.ChartPanel chartpanelohlc = mcg.chartpanelatual;
+            org.jfree.chart.JFreeChart chartohlc = chartpanelohlc.getChart();
+            org.jfree.chart.plot.XYPlot plotohlc = (org.jfree.chart.plot.XYPlot)chartohlc.getPlot();
+
+            org.jfree.chart.ChartPanel chartpanelsecundario = (org.jfree.chart.ChartPanel)jPanelSecondaryChartPanel.getComponent(0);
+            org.jfree.chart.JFreeChart chartsecundario = chartpanelsecundario.getChart();
+            org.jfree.chart.plot.XYPlot plotsecundario = (org.jfree.chart.plot.XYPlot)chartsecundario.getPlot();
+
+            plotsecundario.getDomainAxis().setRange(plotohlc.getDomainAxis().getRange());
+            //plotsecundario.getRangeAxis().setRange(plotohlc.getRangeAxis().getRange());
+
+            this.validate();  
+        }
+  
     }
     // </editor-fold>
 
@@ -719,7 +808,6 @@ public class mpsubmodulografico extends javax.swing.JPanel
     private void initComponents()
     {
 
-        jPanelChartpanelholder = new javax.swing.JPanel();
         jPanelFerramentasInfo = new javax.swing.JPanel();
         jButtonAtivarSelecao = new javax.swing.JButton();
         jButtonAtivarReta = new javax.swing.JButton();
@@ -747,22 +835,12 @@ public class mpsubmodulografico extends javax.swing.JPanel
         jButtonAdicionarIndicador = new javax.swing.JButton();
         jLabelAnotacoes = new javax.swing.JLabel();
         jLabelInfo = new javax.swing.JLabel();
+        jPanelChartHolders = new javax.swing.JPanel();
+        jSplitPaneChartpanels = new javax.swing.JSplitPane();
+        jPanelOHLCChartpanel = new javax.swing.JPanel();
+        jPanelSecondaryChartPanel = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(55, 55, 55));
-
-        jPanelChartpanelholder.setBackground(new java.awt.Color(0, 0, 0));
-        jPanelChartpanelholder.setCursor(new java.awt.Cursor(java.awt.Cursor.CROSSHAIR_CURSOR));
-
-        javax.swing.GroupLayout jPanelChartpanelholderLayout = new javax.swing.GroupLayout(jPanelChartpanelholder);
-        jPanelChartpanelholder.setLayout(jPanelChartpanelholderLayout);
-        jPanelChartpanelholderLayout.setHorizontalGroup(
-            jPanelChartpanelholderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanelChartpanelholderLayout.setVerticalGroup(
-            jPanelChartpanelholderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 377, Short.MAX_VALUE)
-        );
 
         jPanelFerramentasInfo.setBackground(new java.awt.Color(120, 120, 120));
 
@@ -1019,6 +1097,59 @@ public class mpsubmodulografico extends javax.swing.JPanel
         jLabelInfo.setForeground(new java.awt.Color(255, 255, 255));
         jLabelInfo.setText("-");
 
+        jSplitPaneChartpanels.setBackground(new java.awt.Color(55, 55, 55));
+        jSplitPaneChartpanels.setDividerLocation(500);
+        jSplitPaneChartpanels.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jSplitPaneChartpanels.addComponentListener(new java.awt.event.ComponentAdapter()
+        {
+            public void componentResized(java.awt.event.ComponentEvent evt)
+            {
+                jSplitPaneChartpanelsComponentResized(evt);
+            }
+        });
+
+        jPanelOHLCChartpanel.setBackground(new java.awt.Color(0, 0, 0));
+        jPanelOHLCChartpanel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        javax.swing.GroupLayout jPanelOHLCChartpanelLayout = new javax.swing.GroupLayout(jPanelOHLCChartpanel);
+        jPanelOHLCChartpanel.setLayout(jPanelOHLCChartpanelLayout);
+        jPanelOHLCChartpanelLayout.setHorizontalGroup(
+            jPanelOHLCChartpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanelOHLCChartpanelLayout.setVerticalGroup(
+            jPanelOHLCChartpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jSplitPaneChartpanels.setTopComponent(jPanelOHLCChartpanel);
+
+        jPanelSecondaryChartPanel.setBackground(new java.awt.Color(45, 45, 45));
+
+        javax.swing.GroupLayout jPanelSecondaryChartPanelLayout = new javax.swing.GroupLayout(jPanelSecondaryChartPanel);
+        jPanelSecondaryChartPanel.setLayout(jPanelSecondaryChartPanelLayout);
+        jPanelSecondaryChartPanelLayout.setHorizontalGroup(
+            jPanelSecondaryChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanelSecondaryChartPanelLayout.setVerticalGroup(
+            jPanelSecondaryChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jSplitPaneChartpanels.setBottomComponent(jPanelSecondaryChartPanel);
+
+        javax.swing.GroupLayout jPanelChartHoldersLayout = new javax.swing.GroupLayout(jPanelChartHolders);
+        jPanelChartHolders.setLayout(jPanelChartHoldersLayout);
+        jPanelChartHoldersLayout.setHorizontalGroup(
+            jPanelChartHoldersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSplitPaneChartpanels)
+        );
+        jPanelChartHoldersLayout.setVerticalGroup(
+            jPanelChartHoldersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSplitPaneChartpanels, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -1026,7 +1157,6 @@ public class mpsubmodulografico extends javax.swing.JPanel
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanelChartpanelholder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanelFerramentasInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1037,18 +1167,19 @@ public class mpsubmodulografico extends javax.swing.JPanel
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabelIndicadores)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(18, 18, 18)
                                 .addComponent(jButtonAdicionarIndicador)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabelAnotacoes)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane2)))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabelFerramentas)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabelInfo)))
+                        .addComponent(jLabelInfo))
+                    .addComponent(jPanelChartHolders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -1061,18 +1192,23 @@ public class mpsubmodulografico extends javax.swing.JPanel
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelFerramentasInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanelChartpanelholder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanelChartHolders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelIndicadores)
-                    .addComponent(jButtonAdicionarIndicador)
-                    .addComponent(jLabelPrincipal)
-                    .addComponent(jLabelAnotacoes))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jPanelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabelAnotacoes)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelIndicadores)
+                            .addComponent(jButtonAdicionarIndicador))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabelPrincipal)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -1157,6 +1293,14 @@ public class mpsubmodulografico extends javax.swing.JPanel
         jButtonAtivarTexto.setForeground(Color.red);
     }//GEN-LAST:event_jButtonAtivarTextoActionPerformed
 
+    private void jSplitPaneChartpanelsComponentResized(java.awt.event.ComponentEvent evt)//GEN-FIRST:event_jSplitPaneChartpanelsComponentResized
+    {//GEN-HEADEREND:event_jSplitPaneChartpanelsComponentResized
+        if (jPanelSecondaryChartPanel.getComponentCount() == 0)
+        {
+            jSplitPaneChartpanels.setDividerLocation(500);
+        }
+    }//GEN-LAST:event_jSplitPaneChartpanelsComponentResized
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdicionarIndicador;
@@ -1180,12 +1324,15 @@ public class mpsubmodulografico extends javax.swing.JPanel
     private javax.swing.JLabel jLabelPeriodoSimbolo;
     private javax.swing.JLabel jLabelPrincipal;
     private javax.swing.JPanel jPanelAnotacoes;
-    private javax.swing.JPanel jPanelChartpanelholder;
+    private javax.swing.JPanel jPanelChartHolders;
     private javax.swing.JPanel jPanelFerramentasInfo;
     private javax.swing.JPanel jPanelIndicadores;
+    private javax.swing.JPanel jPanelOHLCChartpanel;
     private javax.swing.JPanel jPanelPrincipal;
+    private javax.swing.JPanel jPanelSecondaryChartPanel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSplitPane jSplitPaneChartpanels;
     private javax.swing.JTextField jTextFieldNomeSimbolo;
     // End of variables declaration//GEN-END:variables
 }
