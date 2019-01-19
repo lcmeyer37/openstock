@@ -8,6 +8,6 @@ for (i = 0; i < candlesinput.length; i++)
     valorestimestamp.push(candlesinput[i].timestampdate);
 }
 
-var scriptdescription = "Volume;timestamp;drawseparate;bar";
+var scriptdescription = "Volume;drawseparatebar";
 var yvalues = Java.to(valoresvolume,"double[]");
 var xvalues = Java.to(valorestimestamp,"java.util.Date[]");

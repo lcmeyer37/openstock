@@ -583,34 +583,29 @@ public class mcchartgenerator
     //</editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Funcoes para funcionamento de Indicadores">
-    public void adicionarplotohlc_indicador(Object xvalues, Object yvalues, String tituloscript, String desenhografico)
+    public void adicionarplotohlc_indicador(Object xvalues, Object yvalues, String tituloscript)
     {
         //funcao para adicionar um grafico de indicador sobre o grafico ohlc
+        //interpretar valores de x como double, e de y como date
+        double[] yvalues_double = (double[]) yvalues;
+        java.util.Date[] xvalues_date = (java.util.Date[]) xvalues;
 
-        if (desenhografico.equals("line"))
+        //criar timeseries com os dados
+        org.jfree.data.time.TimeSeries seriesadd = new org.jfree.data.time.TimeSeries(tituloscript);
+
+        for (int i = 0; i < yvalues_double.length; i++)
         {
 
-            //interpretar valores de x como double, e de y como date
-            double[] yvalues_double = (double[]) yvalues;
-            java.util.Date[] xvalues_date = (java.util.Date[]) xvalues;
+            org.jfree.data.time.Millisecond millisegundoatual
+                    = new org.jfree.data.time.Millisecond(xvalues_date[i]);
 
-            //criar timeseries com os dados
-            org.jfree.data.time.TimeSeries seriesadd = new org.jfree.data.time.TimeSeries(tituloscript);
+            double valoratual = yvalues_double[i];
 
-            for (int i = 0; i < yvalues_double.length; i++)
-            {
-
-                org.jfree.data.time.Millisecond millisegundoatual
-                        = new org.jfree.data.time.Millisecond(xvalues_date[i]);
-
-                double valoratual = yvalues_double[i];
-
-                seriesadd.add(millisegundoatual, valoratual);
-            }
-            //adicionar series no dataset
-            datasetindicadoresohlc.addSeries(seriesadd);
-
+            seriesadd.add(millisegundoatual, valoratual);
         }
+        //adicionar series no dataset
+        datasetindicadoresohlc.addSeries(seriesadd);
+
     }
 
     public void adicionarplotohlc_indicadorid(String idindicador)

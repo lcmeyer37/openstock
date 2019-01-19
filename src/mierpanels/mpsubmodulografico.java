@@ -50,6 +50,11 @@ public class mpsubmodulografico extends javax.swing.JPanel
         
         jPanelAnotacoes.setLayout(new java.awt.GridLayout(20,1));
         jPanelIndicadores.setLayout(new java.awt.GridLayout(20,1));
+        
+        //comecar mostrando dataset de teste
+        jTextFieldNomeSimbolo.setText("testdata");
+        criargraficoohlc();
+        poderecarregar = true;
     }
     
     // </editor-fold>
@@ -74,12 +79,12 @@ public class mpsubmodulografico extends javax.swing.JPanel
         
         java.util.List<mierclasses.mccandle> candles = null;
         
-        if (simboloescolhido.equals("mfxtest"))
+        if ((simboloescolhido.equals("testdata")) == true)
         {
             //codigo para criar um dataset offline para teste
             candles = mtgraficopai.tprincipalpai.miex.receberstockchartsample();
         }
-        else
+        else if ((simboloescolhido.equals("testdata")) == false)
         {
             if (periodoescolhido.equals("1 Day"))
                 candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithminutes(simboloescolhido, "1d");
@@ -393,12 +398,12 @@ public class mpsubmodulografico extends javax.swing.JPanel
         
         java.util.List<mierclasses.mccandle> candles = null;
         
-        if (simboloescolhido.equals("mfxtest"))
+        if ((simboloescolhido.equals("testdata")) == true)
         {
             //codigo para criar um dataset offline para teste
             candles = mtgraficopai.tprincipalpai.miex.receberstockchartsample();
         }
-        else
+        else if ((simboloescolhido.equals("testdata")) == false)
         {
             if (periodoescolhido.equals("1 Day"))
                 candles = mtgraficopai.tprincipalpai.miex.receberstockchartwithminutes(simboloescolhido, "1d");
@@ -456,7 +461,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
             String statusrunindicador = novoindicador.rodarscriptindicador();
             if (statusrunindicador.equals("ok"))
             {
-                if (novoindicador.mbcodeinterpreter.localdesenho_lastrun.equals("drawoncandles"))
+                if (novoindicador.mbcodeinterpreter.tipoplot_lastrun.equals("drawoncandles"))
                 {
                     //considerando que o indicador rodou com sucesso, e que ele deve ser desenhado no ohlc,
                     //adicionar dados do indicador no grafico
@@ -464,14 +469,13 @@ public class mpsubmodulografico extends javax.swing.JPanel
                     (
                         novoindicador.mbcodeinterpreter.pontosx_lastrun,
                         novoindicador.mbcodeinterpreter.pontosy_lastrun,
-                        novoindicador.mbcodeinterpreter.tituloscript_lastrun,
-                        novoindicador.mbcodeinterpreter.tipodesenho_lastrun
+                        novoindicador.mbcodeinterpreter.tituloscript_lastrun
                     );
 
                     //recarregar grafico separado do indicador
                     novoindicador.recarregargraficoseparadoindicador();
                 }
-                else if (novoindicador.mbcodeinterpreter.localdesenho_lastrun.equals("drawseparateonly"))
+                else
                 {
                     //recarregar grafico separado do indicador
                     novoindicador.recarregargraficoseparadoindicador();
@@ -515,7 +519,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
         String statusrunindicador = novoindicador.rodarscriptindicador();
         if (statusrunindicador.equals("ok"))
         {
-            if (novoindicador.mbcodeinterpreter.localdesenho_lastrun.equals("drawoncandles"))
+            if (novoindicador.mbcodeinterpreter.tipoplot_lastrun.equals("drawoncandles"))
             {
                 //considerando que o indicador rodou com sucesso, e que ele deve ser desenhado no ohlc,
                 //adicionar dados do indicador no grafico
@@ -523,8 +527,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
                 (
                     novoindicador.mbcodeinterpreter.pontosx_lastrun,
                     novoindicador.mbcodeinterpreter.pontosy_lastrun,
-                    novoindicador.mbcodeinterpreter.tituloscript_lastrun,
-                    novoindicador.mbcodeinterpreter.tipodesenho_lastrun
+                    novoindicador.mbcodeinterpreter.tituloscript_lastrun
                 );
                 //adicionar id de controle no chart generator
                 mcg.adicionarplotohlc_indicadorid(novoindicador.id);
@@ -533,7 +536,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
                 novoindicador.criargraficoseparadoindicador();
                 novoindicador.recarregargraficoseparadoindicador();
             }
-            else if (novoindicador.mbcodeinterpreter.localdesenho_lastrun.equals("drawseparateonly"))
+            else
             {
                 //considerando que o grafico deve ser desenhado separadamente
                 novoindicador.criargraficoseparadoindicador();
@@ -560,7 +563,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
         String statusrunindicador = novoindicador.rodarscriptindicador();
         if (statusrunindicador.equals("ok"))
         {
-            if (novoindicador.mbcodeinterpreter.localdesenho_lastrun.equals("drawoncandles"))
+            if (novoindicador.mbcodeinterpreter.tipoplot_lastrun.equals("drawoncandles"))
             {
                 //considerando que o indicador rodou com sucesso, e que ele deve ser desenhado no ohlc,
                 //adicionar dados do indicador no grafico
@@ -568,8 +571,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
                 (
                     novoindicador.mbcodeinterpreter.pontosx_lastrun,
                     novoindicador.mbcodeinterpreter.pontosy_lastrun,
-                    novoindicador.mbcodeinterpreter.tituloscript_lastrun,
-                    novoindicador.mbcodeinterpreter.tipodesenho_lastrun
+                    novoindicador.mbcodeinterpreter.tituloscript_lastrun
                 );
                 mcg.adicionarplotohlc_indicadorid(novoindicador.id);
                 
@@ -577,7 +579,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
                 novoindicador.criargraficoseparadoindicador();
                 novoindicador.recarregargraficoseparadoindicador();
             }
-            else if (novoindicador.mbcodeinterpreter.localdesenho_lastrun.equals("drawseparateonly"))
+            else
             {
                 //considerando que o grafico deve ser desenhado separadamente
                 novoindicador.criargraficoseparadoindicador();
@@ -597,7 +599,7 @@ public class mpsubmodulografico extends javax.swing.JPanel
 
     public void removerIndicador(mierpanels.mpitemindicador mpiiremover)
     {
-        if (mpiiremover.mbcodeinterpreter.localdesenho_lastrun.equals("drawoncandles"))
+        if (mpiiremover.mbcodeinterpreter.tipoplot_lastrun.equals("drawoncandles"))
         {
             mcg.removerplotohlc_indicador(mpiiremover.id);
             mcg.removerplotohlc_indicadorid(mpiiremover.id);

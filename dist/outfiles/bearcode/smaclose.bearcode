@@ -45,6 +45,6 @@ for (i = periodoinput; i < valoresclose.length; i++)
     valoressma_timestamp.push(timestampatual);
 }
 
-var scriptdescription = "SMA ("+periodoinput+");timestamp;drawoncandles;line"; 
+var scriptdescription = "SMA ("+periodoinput+");drawoncandles"; 
 var yvalues = Java.to(valoresma_mediasclose,"double[]");
 var xvalues = Java.to(valoressma_timestamp,"java.util.Date[]");

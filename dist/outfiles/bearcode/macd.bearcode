@@ -139,6 +139,6 @@ function calculate_difference(valores_a,valores_b,timestamps_a,timestamps_b,gapi
     return retornodiff;
 }
 
-var scriptdescription = "MACD (12,26,9);timestamp;drawseparateonly;line"; 
+var scriptdescription = "MACD (12,26,9);drawseparatebar"; 
 var yvalues = Java.to(macdhistogram[0],"double[]");
 var xvalues = Java.to(macdhistogram[1],"java.util.Date[]");

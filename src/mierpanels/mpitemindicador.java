@@ -92,7 +92,7 @@ public class mpitemindicador extends javax.swing.JPanel
             novoindicador.mbcodeinterpreter.tituloscript_lastrun,
             novoindicador.mbcodeinterpreter.tipodesenho_lastrun
         */
-        mfcs.recriarplot_indicador(mbcodeinterpreter.pontosx_lastrun, mbcodeinterpreter.pontosy_lastrun, mbcodeinterpreter.tituloscript_lastrun, mbcodeinterpreter.tipodesenho_lastrun);
+        mfcs.recriarplot_indicador(mbcodeinterpreter.pontosx_lastrun, mbcodeinterpreter.pontosy_lastrun, mbcodeinterpreter.tituloscript_lastrun, mbcodeinterpreter.tipoplot_lastrun);
         
     }
     

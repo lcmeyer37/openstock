@@ -69,6 +69,6 @@ for (i = periodoinput; i < valoresclose.length; i++)
     }
 }
 
-var scriptdescription = "EMA ("+periodoinput+");timestamp;drawoncandles;line"; 
+var scriptdescription = "EMA ("+periodoinput+");drawoncandles"; 
 var yvalues = Java.to(valoresema_emasclose,"double[]");
 var xvalues = Java.to(valoresema_timestamp,"java.util.Date[]");

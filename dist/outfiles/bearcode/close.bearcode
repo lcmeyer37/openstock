@@ -12,7 +12,7 @@ for (i = 0; i < candlesinput.length; i++)
     valorestimestamp.push(candlesinput[i].timestampdate);
 }
 
-var scriptdescription = "Close;timestamp;drawoncandles;line"; //descreve que tipo de script bearcode eh este, para ser interpretado de forma correta pelo OpenStock
+var scriptdescription = "Close;drawoncandles"; //descreve que tipo de script bearcode eh este, para ser interpretado de forma correta pelo OpenStock
 var yvalues = Java.to(valoresclose,"double[]");
 var xvalues = Java.to(valorestimestamp,"java.util.Date[]");
 
