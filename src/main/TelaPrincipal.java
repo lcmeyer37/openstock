@@ -42,14 +42,13 @@ public class TelaPrincipal extends javax.swing.JFrame
         jPanelItensAnalisadorAsset.setLayout(new java.awt.GridLayout(20,1));
         //holder do grafico eh um grid com um unico item
         jPanelHolderAnalisadorAsset.setLayout(new java.awt.GridLayout(1,1));
-       
+
+        //popular miex, utilizando para comunicar com IEX API
+        miex = new mierclasses.mciexcomms();
         
         //revalidar componentes apos alteracoes graficas e criacoes
         this.validate();
         this.repaint();
-        
-        //popular miex, utilizando para comunicar com IEX API
-        miex = new mierclasses.mciexcomms();
     }
     
     

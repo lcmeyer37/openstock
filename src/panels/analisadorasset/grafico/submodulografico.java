@@ -60,6 +60,20 @@ public class submodulografico extends javax.swing.JPanel
         
         //splitter nao aparece quando nao tem grafico secundario
         jSplitPaneChartpanels.setDividerLocation(500);
+        
+        //timer e timertask para atualizar range e info de graficos utilizados
+        java.util.TimerTask chartrangeinfoupdater = new java.util.TimerTask() 
+        {
+            public void run() 
+            {
+                atualizarinformacoesposicaoatualgrafico();
+                atualizarrangegraficosecundario(); 
+            }
+        };
+        java.util.Timer timer_chartrangeinfoupdater = new java.util.Timer("chartrangeinfoupdater");
+        long delay  = 100L;
+        long period = 100L;
+        timer_chartrangeinfoupdater.scheduleAtFixedRate(chartrangeinfoupdater, delay, period);
     
         this.validate();
         this.repaint();
@@ -747,13 +761,10 @@ public class submodulografico extends javax.swing.JPanel
     void interpretarmouseclickchart(org.jfree.chart.ChartMouseEvent e)
     {
         adicionarAnotacaoNovo();
-        atualizarrangegraficosecundario();
     }
     
     void interpretarmousemovechart(org.jfree.chart.ChartMouseEvent e)
     {       
-        atualizarinformacoesposicaoatualgrafico();
-        atualizarrangegraficosecundario();
     }
     //</editor-fold>
     
@@ -781,18 +792,22 @@ public class submodulografico extends javax.swing.JPanel
         
         if (jPanelSecondaryChartPanel.getComponentCount() == 1)
         {
-            org.jfree.chart.ChartPanel chartpanelohlc = mcg.chartpanelatual;
-            org.jfree.chart.JFreeChart chartohlc = chartpanelohlc.getChart();
-            org.jfree.chart.plot.XYPlot plotohlc = (org.jfree.chart.plot.XYPlot)chartohlc.getPlot();
-
+            //org.jfree.chart.ChartPanel chartpanelohlc = mcg.chartpanelatual;
+            //org.jfree.chart.JFreeChart chartohlc = chartpanelohlc.getChart();
+            //org.jfree.chart.plot.XYPlot plotohlc = (org.jfree.chart.plot.XYPlot)chartohlc.getPlot();
+            //org.jfree.data.Range rangexohlc = plotohlc.getDomainAxis().getRange();
+            
             org.jfree.chart.ChartPanel chartpanelsecundario = (org.jfree.chart.ChartPanel)jPanelSecondaryChartPanel.getComponent(0);
             org.jfree.chart.JFreeChart chartsecundario = chartpanelsecundario.getChart();
             org.jfree.chart.plot.XYPlot plotsecundario = (org.jfree.chart.plot.XYPlot)chartsecundario.getPlot();
-
-            plotsecundario.getDomainAxis().setRange(plotohlc.getDomainAxis().getRange());
-            //plotsecundario.getRangeAxis().setRange(plotohlc.getRangeAxis().getRange());
-
-            this.validate();  
+            org.jfree.data.Range rangexsecundario = plotsecundario.getDomainAxis().getRange();
+            
+            //plotsecundario.getDomainAxis().setRange(plotohlc.getDomainAxis().getRange());
+            
+            if (mcg.rangex != rangexsecundario)
+            {
+               plotsecundario.getDomainAxis().setRange(mcg.rangex); 
+            }
         }
   
     }

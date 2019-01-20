@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="mierstockfx.jnlp">
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="openstock.jnlp">
   <information>
-    <title>mierstockfx</title>
+    <title>openstock</title>
     <vendor>lucasmeyer</vendor>
     <description>null</description>
     <offline-allowed/>
@@ -20,11 +20,11 @@
     <jar href="lib/orsonpdf-1.6-eval.jar" size="72444" download="eager" />
     <jar href="lib/servlet.jar" size="80054" download="eager" />
     <jar href="lib/swtgraphics2d.jar" size="17492" download="eager" />
-    <jar href="mierstockfx.jar" size="211839" download="eager" />
+    <jar href="mierstockfx.jar" size="211775" download="eager" />
   </resources>
-  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="mierstockfx" >
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="openstock" >
     <param name="requiredFXVersion" value="8.0+"/>
   </applet-desc>
-  <jfx:javafx-desc  width="800" height="600" main-class="main.Mierstockfx"  name="mierstockfx" />
+  <jfx:javafx-desc  width="800" height="600" main-class="main.Mierstockfx"  name="openstock" />
   <update check="always"/>
 </jnlp>

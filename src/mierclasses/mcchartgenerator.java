@@ -101,6 +101,8 @@ public class mcchartgenerator
         rangey = plot.getRangeAxis().getRange();
         entityatualgrafico = cmevent.getEntity();
 
+        //mierclasses.mcfuncoeshelper.mostrarmensagem("click test");
+        
         //funcao para interpretar a ferramenta atual e manipular o grafico
         if (ferramentaatualgrafico.equals("selection"))
         {
@@ -138,6 +140,8 @@ public class mcchartgenerator
         rangex = plot.getDomainAxis().getRange();
         rangey = plot.getRangeAxis().getRange();
         entityatualgrafico = cmevent.getEntity();
+        
+        //mierclasses.mcfuncoeshelper.mostrarmensagem("move test");
 
         //funcao para interpretar a ferramenta atual e manipular o grafico
         if (ferramentaatualgrafico.equals("selection"))
