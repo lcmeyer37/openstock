@@ -42,7 +42,7 @@ var macdhistogram = calculate_difference
 )
 
 
-//funcao para retornar valores de EMA_close das candles
+//funcao para retornar valores de close das candles
 function retornarclosestimestamp()
 {
     var valoresclose = [];

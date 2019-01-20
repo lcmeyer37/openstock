@@ -6,6 +6,7 @@
 package mierpanels;
 
 import java.awt.Color;
+import java.beans.PropertyChangeEvent;
 import mierclasses.mcfuncoeshelper;
 
 import javax.xml.parsers.DocumentBuilderFactory;

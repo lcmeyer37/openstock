@@ -80,6 +80,18 @@
         <BearcodeFile>macdfull.bearcode</BearcodeFile>
     </Indicator>
 
+    <Indicator>
+        <BCID>rsi</BCID>
+        <Name>RSI</Name>
+        <BearcodeFile>rsi.bearcode</BearcodeFile>
+    </Indicator>
+
+    <Indicator>
+        <BCID>rsifull</BCID>
+        <Name>RSI with Parameters</Name>
+        <BearcodeFile>rsifull.bearcode</BearcodeFile>
+    </Indicator>
+
     <!--<Indicator>
         <BCID>test</BCID>
         <Name>Bearcode Scripting Engine Test</Name>
