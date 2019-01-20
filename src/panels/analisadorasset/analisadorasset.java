@@ -89,25 +89,12 @@ public class analisadorasset extends javax.swing.JPanel
     private void initComponents()
     {
 
-        jPanelSubmodulosHolder = new javax.swing.JPanel();
         jPanelEscolherSubmodulo = new javax.swing.JPanel();
         jButtonMostrarGrafico = new javax.swing.JButton();
         jButtonMostrarTrader = new javax.swing.JButton();
+        jPanelSubmodulosHolder = new javax.swing.JPanel();
 
-        jPanelSubmodulosHolder.setBackground(new java.awt.Color(255, 0, 0));
-
-        javax.swing.GroupLayout jPanelSubmodulosHolderLayout = new javax.swing.GroupLayout(jPanelSubmodulosHolder);
-        jPanelSubmodulosHolder.setLayout(jPanelSubmodulosHolderLayout);
-        jPanelSubmodulosHolderLayout.setHorizontalGroup(
-            jPanelSubmodulosHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanelSubmodulosHolderLayout.setVerticalGroup(
-            jPanelSubmodulosHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 425, Short.MAX_VALUE)
-        );
-
-        jPanelEscolherSubmodulo.setBackground(new java.awt.Color(120, 120, 120));
+        jPanelEscolherSubmodulo.setBackground(new java.awt.Color(25, 25, 25));
 
         jButtonMostrarGrafico.setForeground(new java.awt.Color(255, 0, 0));
         jButtonMostrarGrafico.setText("Chart");
@@ -128,41 +115,51 @@ public class analisadorasset extends javax.swing.JPanel
             }
         });
 
+        jPanelSubmodulosHolder.setBackground(new java.awt.Color(255, 0, 0));
+
+        javax.swing.GroupLayout jPanelSubmodulosHolderLayout = new javax.swing.GroupLayout(jPanelSubmodulosHolder);
+        jPanelSubmodulosHolder.setLayout(jPanelSubmodulosHolderLayout);
+        jPanelSubmodulosHolderLayout.setHorizontalGroup(
+            jPanelSubmodulosHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanelSubmodulosHolderLayout.setVerticalGroup(
+            jPanelSubmodulosHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 431, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanelEscolherSubmoduloLayout = new javax.swing.GroupLayout(jPanelEscolherSubmodulo);
         jPanelEscolherSubmodulo.setLayout(jPanelEscolherSubmoduloLayout);
         jPanelEscolherSubmoduloLayout.setHorizontalGroup(
             jPanelEscolherSubmoduloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelEscolherSubmoduloLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jButtonMostrarGrafico)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonMostrarTrader)
-                .addContainerGap(491, Short.MAX_VALUE))
+                .addContainerGap(496, Short.MAX_VALUE))
+            .addComponent(jPanelSubmodulosHolder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanelEscolherSubmoduloLayout.setVerticalGroup(
             jPanelEscolherSubmoduloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jButtonMostrarGrafico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jButtonMostrarTrader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanelEscolherSubmoduloLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelEscolherSubmoduloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonMostrarGrafico)
+                    .addComponent(jButtonMostrarTrader))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelSubmodulosHolder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanelSubmodulosHolder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanelEscolherSubmodulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+            .addComponent(jPanelEscolherSubmodulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanelEscolherSubmodulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanelSubmodulosHolder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanelEscolherSubmodulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 

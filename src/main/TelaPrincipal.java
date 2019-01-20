@@ -145,7 +145,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Open Stock");
 
-        jPanelHolderAnalisadorAsset.setBackground(new java.awt.Color(55, 55, 55));
+        jPanelHolderAnalisadorAsset.setBackground(new java.awt.Color(25, 25, 25));
 
         javax.swing.GroupLayout jPanelHolderAnalisadorAssetLayout = new javax.swing.GroupLayout(jPanelHolderAnalisadorAsset);
         jPanelHolderAnalisadorAsset.setLayout(jPanelHolderAnalisadorAssetLayout);
