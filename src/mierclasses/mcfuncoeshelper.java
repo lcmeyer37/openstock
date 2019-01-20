@@ -27,7 +27,7 @@ public class mcfuncoeshelper
     {
         try
         {
-            java.security.CodeSource codeSource = mierstockfx.Mierstockfx.class.getProtectionDomain().getCodeSource();
+            java.security.CodeSource codeSource = main.Mierstockfx.class.getProtectionDomain().getCodeSource();
             java.io.File jarFile = new java.io.File(codeSource.getLocation().toURI().getPath());
             String jarDir = jarFile.getParentFile().getPath();
             
