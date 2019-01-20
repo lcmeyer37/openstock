@@ -22,6 +22,6 @@ This project has a similar counterpart made in C# .NET. Connected to the HitBTC 
 Data provided for free by IEX. View IEX’s Terms of Use at https://iextrading.com/api-exhibit-a/.
 
 ## Usage
-To test the software download the contents of https://github.com/lcmeyer37/openstock/tree/master/dist and run the .jar file.
+To test the software you can download the latest contents of https://github.com/lcmeyer37/openstock/tree/master/dist or download the current release at https://github.com/lcmeyer37/openstock/releases/download/v1.01/openstock20012019.zip and run the .jar file.
 
 [Contribute with crypto](https://commerce.coinbase.com/checkout/4f5a0777-1d17-4a96-90e6-9a2d6046a08b)
