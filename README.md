@@ -24,4 +24,4 @@ Data provided for free by IEX. View IEX’s Terms of Use at https://iextrading.c
 ## Usage
 To test the software download the contents of https://github.com/lcmeyer37/openstock/tree/master/dist and run the .jar file.
 
-#### [Contribute with crypto](https://commerce.coinbase.com/checkout/4f5a0777-1d17-4a96-90e6-9a2d6046a08b)
+[Contribute with crypto](https://commerce.coinbase.com/checkout/4f5a0777-1d17-4a96-90e6-9a2d6046a08b)
