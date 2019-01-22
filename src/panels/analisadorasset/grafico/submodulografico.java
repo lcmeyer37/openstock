@@ -652,7 +652,10 @@ public class submodulografico extends javax.swing.JPanel
         for (int i = 0; i < jPanelIndicadores.getComponentCount(); i++)
         {
             panels.analisadorasset.grafico.itemindicador miia = (panels.analisadorasset.grafico.itemindicador)jPanelIndicadores.getComponent(i);
-            miia.jLabelEscolherGraficoParaBottom.setText("N");
+            String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
+            String caminhoimagem = rootjar + "/outfiles/assets/downgray.png";
+            miia.jLabelEscolherGraficoParaBottom.setIcon(new javax.swing.ImageIcon(caminhoimagem));
+            miia.chartseparadoembottom = false;
         }
         
         //funcao que pega o grafico separado deste indicador e o separa para ficar logo abaixo do grafico ohlc
@@ -670,8 +673,11 @@ public class submodulografico extends javax.swing.JPanel
                      mpiidestacarabaixo.mbcodeinterpreter.tipoplot_lastrun
              )       
         );
-        mpiidestacarabaixo.jLabelEscolherGraficoParaBottom.setText("S");
-        //setVisible(true);
+        String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
+        String caminhoimagem = rootjar + "/outfiles/assets/downblue.png";
+        mpiidestacarabaixo.jLabelEscolherGraficoParaBottom.setIcon(new javax.swing.ImageIcon(caminhoimagem));
+        mpiidestacarabaixo.chartseparadoembottom = true;
+
         jSplitPaneChartpanels.setDividerLocation(350);
         this.validate();
         this.repaint();
@@ -684,7 +690,10 @@ public class submodulografico extends javax.swing.JPanel
         for (int i = 0; i < jPanelIndicadores.getComponentCount(); i++)
         {
             panels.analisadorasset.grafico.itemindicador miia = (panels.analisadorasset.grafico.itemindicador)jPanelIndicadores.getComponent(i);
-            miia.jLabelEscolherGraficoParaBottom.setText("N");
+            String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
+            String caminhoimagem = rootjar + "/outfiles/assets/downgray.png";
+            miia.jLabelEscolherGraficoParaBottom.setIcon(new javax.swing.ImageIcon(caminhoimagem));
+            miia.chartseparadoembottom = false;
         }
         jSplitPaneChartpanels.setDividerLocation(500);
         this.validate();

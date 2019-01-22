@@ -30,6 +30,9 @@ public class itemindicador extends javax.swing.JPanel
     //grafico separado deste item indicador
     public frames.analisadorasset.grafico.chartseparado mfcs;
     
+    //variavel que diz se o grafico separado deste indicador esta em bottom
+    public Boolean chartseparadoembottom;
+    
     //id deste indicador
     String id;
     
@@ -81,6 +84,7 @@ public class itemindicador extends javax.swing.JPanel
         //funcao para criar chartseparado com grafico separado deste indicador, e associa-lo a este
         //mpitemindicador, para poder ser acessado ao clicar no botao G
         mfcs = new frames.analisadorasset.grafico.chartseparado();
+        chartseparadoembottom = false;
         jLabelAbrirJanelaMostrarGraficoSeparado.setVisible(true);
     }
     
@@ -250,7 +254,7 @@ public class itemindicador extends javax.swing.JPanel
 
         jLabelEscolherGraficoParaBottom.setForeground(new java.awt.Color(125, 255, 255));
         jLabelEscolherGraficoParaBottom.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelEscolherGraficoParaBottom.setText("N");
+        jLabelEscolherGraficoParaBottom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/downgray.png"))); // NOI18N
         jLabelEscolherGraficoParaBottom.addMouseListener(new java.awt.event.MouseAdapter()
         {
             public void mouseClicked(java.awt.event.MouseEvent evt)
@@ -265,9 +269,9 @@ public class itemindicador extends javax.swing.JPanel
             jPanelSubLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelSubLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelNomeItemIndicador, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                .addComponent(jLabelNomeItemIndicador, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelEscolherGraficoParaBottom)
+                .addComponent(jLabelEscolherGraficoParaBottom, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelAbrirJanelaMostrarGraficoSeparado)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -284,8 +288,8 @@ public class itemindicador extends javax.swing.JPanel
                     .addComponent(jLabelAbrirJanelaRenomearItemIndicador, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabeRemoverItemIndicador, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabelAbrirJanelaMostrarGraficoSeparado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabelEscolherGraficoParaBottom, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabelNomeItemIndicador, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabelEscolherGraficoParaBottom, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelNomeItemIndicador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -325,11 +329,11 @@ public class itemindicador extends javax.swing.JPanel
 
     private void jLabelEscolherGraficoParaBottomMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabelEscolherGraficoParaBottomMouseClicked
     {//GEN-HEADEREND:event_jLabelEscolherGraficoParaBottomMouseClicked
-        if (jLabelEscolherGraficoParaBottom.getText().equals("N"))
+        if (chartseparadoembottom == false)
         {
             submodulografico.setarGraficoIndicadorSecundario(this);
         }
-        else if (jLabelEscolherGraficoParaBottom.getText().equals("S"))
+        else if (chartseparadoembottom == true)
         {
             submodulografico.removerGraficoIndicadorSecundario();
         }
