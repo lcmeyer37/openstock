@@ -91,6 +91,12 @@
         <Name>RSI with Parameters</Name>
         <BearcodeFile>rsifull.bearcode</BearcodeFile>
     </Indicator>
+	
+	<Indicator>
+        <BCID>dema</BCID>
+        <Name>Double Exponential Moving Average (DEMA)</Name>
+        <BearcodeFile>dema.bearcode</BearcodeFile>
+    </Indicator>
 
     <!--<Indicator>
         <BCID>test</BCID>
