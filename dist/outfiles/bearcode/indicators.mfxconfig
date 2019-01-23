@@ -58,14 +58,26 @@
 
     <Indicator>
         <BCID>smaclose</BCID>
-        <Name>Simple Moving Average (Close)</Name>
+        <Name>Simple Moving Average (SMA)</Name>
         <BearcodeFile>smaclose.bearcode</BearcodeFile>
     </Indicator>
 
     <Indicator>
         <BCID>emaclose</BCID>
-        <Name>Exponential Moving Average (Close)</Name>
+        <Name>Exponential Moving Average (EMA)</Name>
         <BearcodeFile>emaclose.bearcode</BearcodeFile>
+    </Indicator>
+
+    <Indicator>
+        <BCID>wmaclose</BCID>
+        <Name>Weighted Moving Average (WMA)</Name>
+        <BearcodeFile>wmaclose.bearcode</BearcodeFile>
+    </Indicator>
+
+    <Indicator>
+        <BCID>dema</BCID>
+        <Name>Double Exponential Moving Average (DEMA)</Name>
+        <BearcodeFile>dema.bearcode</BearcodeFile>
     </Indicator>
 
     <Indicator>
@@ -92,11 +104,6 @@
         <BearcodeFile>rsifull.bearcode</BearcodeFile>
     </Indicator>
 	
-	<Indicator>
-        <BCID>dema</BCID>
-        <Name>Double Exponential Moving Average (DEMA)</Name>
-        <BearcodeFile>dema.bearcode</BearcodeFile>
-    </Indicator>
 
     <!--<Indicator>
         <BCID>test</BCID>

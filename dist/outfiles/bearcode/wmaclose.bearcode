@@ -1,0 +1,90 @@
+//WMA: weighted mobing average, where n= period
+//
+//example period of 5: ((D5*5)+(D4*4)+(D3*3)+(D2*2)+(D1*1)) / (5+4+3+2+1)
+
+//candles OpenStock
+var candlesinput = candles;
+
+//parametrosinput
+var periodoinput = parseInt(period);
+
+//receber valores de close e timestamp
+var closes_timestamps = retornarclosestimestamp();
+var closes = closes_timestamps[0];
+var timestamps = closes_timestamps[1];
+
+//calcular wma_periodo
+var wma_periodo = calculate_wma(periodoinput,closes,timestamps);
+
+
+//funcao para retornar valores de close das candles
+function retornarclosestimestamp()
+{
+    var valoresclose = [];
+    var timestampsclose = [];
+
+    for (i = 0; i < candlesinput.length; i++)
+    {
+        valoresclose.push(candlesinput[i].closed);
+        //runoutput.print(candlesinput[i].closed);
+        timestampsclose.push(candlesinput[i].timestampdate);
+        //runoutput.print(candlesinput[i].timestampdate);
+    }
+
+    var retornoclose = [];
+    retornoclose.push(valoresclose);
+    retornoclose.push(timestampsclose);
+    //runoutput.print("retornoclose: " + retornoclose[1]);
+
+    return retornoclose;
+}
+
+
+//funcao para calcular WMA
+function calculate_wma(periodo,valoresx,valorestimestamp)
+{
+    var valoreswma = [];
+    var timestampswma = [];
+
+    //calcular denominador ponderada (somatoria de 1 ao periodo)
+    var denominador = 0;
+    for (i = 0; i < periodo;i++)
+    {
+        denominador = denominador + (i+1);
+    }
+
+    for (i = periodo; i < valoresx.length; i++)
+    {
+        var somaponderada = 0;
+
+        for (j = 0; j < periodo; j++)
+        {
+            //exemplo de periodo 10 em i = 10 e j de 0 a 9
+            //indiceatual(i=10,j=0) = i-periodo+j = 10-10+0 = 0
+            //somaponderada = somaponderada + valoresx[0]*(j+1) ou seja somaponderada + valoresx[0]*1
+            //indiceatual(i=10,j=9) = i-periodo+j = 10-10+9 = 9
+            //somaponderada = somaponderada + valoresx[9]*(9+1) ou seja somaponderada + valoresx[9]*10
+
+            var indiceatual = i-periodo+j;
+            somaponderada = somaponderada + valoresx[indiceatual]*(j+1);
+        }
+        var wmaatual = somaponderada/denominador;
+        //runoutput.print(wmaatual);
+        var timestampatual = valorestimestamp[i];
+        //runoutput.print(timestampatual + "\n");
+
+        valoreswma.push(wmaatual);
+        timestampswma.push(timestampatual);
+    }
+
+    var retornowma = [];
+    retornowma.push(valoreswma);
+    retornowma.push(timestampswma);    
+    
+    return retornowma;
+}
+
+
+var scriptdescription = "WMA ("+periodoinput+");drawoncandles"; 
+var yvalues = Java.to(wma_periodo[0],"double[]");
+var xvalues = Java.to(wma_periodo[1],"java.util.Date[]");
