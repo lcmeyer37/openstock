@@ -81,6 +81,12 @@
     </Indicator>
 
     <Indicator>
+        <BCID>tema</BCID>
+        <Name>Triple Exponential Moving Average (TEMA)</Name>
+        <BearcodeFile>tema.bearcode</BearcodeFile>
+    </Indicator>
+
+    <Indicator>
         <BCID>macd</BCID>
         <Name>MACD</Name>
         <BearcodeFile>macd.bearcode</BearcodeFile>
