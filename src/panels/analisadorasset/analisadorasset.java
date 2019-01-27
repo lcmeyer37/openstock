@@ -106,7 +106,7 @@ public class analisadorasset extends javax.swing.JPanel
             }
         });
 
-        jButtonMostrarTrader.setText("Trader");
+        jButtonMostrarTrader.setText("Trader (WIP)");
         jButtonMostrarTrader.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -137,7 +137,7 @@ public class analisadorasset extends javax.swing.JPanel
                 .addComponent(jButtonMostrarGrafico)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonMostrarTrader)
-                .addContainerGap(496, Short.MAX_VALUE))
+                .addContainerGap(462, Short.MAX_VALUE))
             .addComponent(jPanelSubmodulosHolder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanelEscolherSubmoduloLayout.setVerticalGroup(
