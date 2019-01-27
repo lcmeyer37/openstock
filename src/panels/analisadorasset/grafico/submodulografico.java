@@ -29,8 +29,6 @@ public class submodulografico extends javax.swing.JPanel
     
     public mierclasses.mcchartgenerator mcg; //classe utilizada para desenhar graficos
     
-    Boolean poderecarregar = false; //diz se o submodulo ja foi criado pela primeira vez, e pode ser recarregado
-    
     // <editor-fold defaultstate="collapsed" desc="Construtores Submodulo Grafico">
     
     //construtor novo submodulo grafico
@@ -41,10 +39,8 @@ public class submodulografico extends javax.swing.JPanel
         aassetpai = aapai;
         
         inicializarsubmodulografico();
-
     }
     
-    //inicializacao de novo submodulo grafico
     void inicializarsubmodulografico()
     {
         //popular objeto utilizado para desenho de graficos
@@ -53,14 +49,8 @@ public class submodulografico extends javax.swing.JPanel
         jPanelAnotacoes.setLayout(new java.awt.GridLayout(100,1));
         jPanelIndicadores.setLayout(new java.awt.GridLayout(100,1));
         
-        //comecar mostrando dataset de teste
-        jTextFieldNomeSimbolo.setText("testdata");
-        criargraficoohlc();
-        poderecarregar = true;
-        
         //splitter nao aparece quando nao tem grafico secundario
-        jSplitPaneChartpanels.setDividerLocation(500);
-        
+        jSplitPaneChartpanels.setDividerLocation(500);     
         //timer e timertask para atualizar range e info de graficos utilizados
         java.util.TimerTask chartrangeinfoupdater = new java.util.TimerTask() 
         {
@@ -74,11 +64,15 @@ public class submodulografico extends javax.swing.JPanel
         long delay  = 100L;
         long period = 100L;
         timer_chartrangeinfoupdater.scheduleAtFixedRate(chartrangeinfoupdater, delay, period);
-    
+        
+        //comecar mostrando dataset de teste e criar pela primeira vez o grafico
+        jTextFieldNomeSimbolo.setText(aassetpai.assetsimbolo);
+        recriarsubmodulografico();
+        
         this.validate();
         this.repaint();
     }
-    
+     
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Main Section">
@@ -91,10 +85,11 @@ public class submodulografico extends javax.swing.JPanel
     
     
     //funcao responsavel por criar o grafico com o simbolo e periodo desejado pela primeira vez
-    public void criargraficoohlc()
+    public void recriarsubmodulografico()
     {
         //receber informacoes de candles de acordo com os paremetros principais
-        String simboloescolhido = jTextFieldNomeSimbolo.getText();
+        aassetpai.alterarasset(jTextFieldNomeSimbolo.getText());
+        String simboloescolhido = aassetpai.assetsimbolo;
         String periodoescolhido = jComboBoxPeriodoSimbolo.getSelectedItem().toString();
         String escalagrafico = escalagraficoescolhido;
         
@@ -322,8 +317,8 @@ public class submodulografico extends javax.swing.JPanel
                     }
                 }
                 alternartipoescala(escala);
-                criargraficoohlc();
-                //mierclasses.mcfuncoeshelper.mostrarmensagem("carregou grafico");
+                //se faz necessario criar novamente o submodulo grafico ao carregar
+                recriarsubmodulografico();
                 // </editor-fold>
                 
                 // <editor-fold defaultstate="collapsed" desc="recarregar indicadores">
@@ -376,8 +371,7 @@ public class submodulografico extends javax.swing.JPanel
                 }
                 //mierclasses.mcfuncoeshelper.mostrarmensagem("carregou anotacoes");
                 // </editor-fold>
-                
-                poderecarregar = true;
+
             }
         }
         catch (Exception ex)
@@ -405,15 +399,17 @@ public class submodulografico extends javax.swing.JPanel
     }
     
 
-    public void recarregardadosasset()
+    public void recarregardadossubmodulografico()
     {
         //funcao para recarregar dados ohlc e de indicadores
         //e recarregar os desenhos graficos no chart OHLC
+        //ou seja, recarregar o submodulo grafico
         
         // <editor-fold defaultstate="collapsed" desc="Recarregar Chartpanel OHLC">
         
         //receber informacoes de candles de acordo com os paremetros principais
-        String simboloescolhido = jTextFieldNomeSimbolo.getText();
+        aassetpai.alterarasset(jTextFieldNomeSimbolo.getText());
+        String simboloescolhido = aassetpai.assetsimbolo;
         String periodoescolhido = jComboBoxPeriodoSimbolo.getSelectedItem().toString();
         String escalagrafico = escalagraficoescolhido;
         
@@ -1260,15 +1256,7 @@ public class submodulografico extends javax.swing.JPanel
 
     private void jButtonAtualizarDadosGraficoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAtualizarDadosGraficoActionPerformed
     {//GEN-HEADEREND:event_jButtonAtualizarDadosGraficoActionPerformed
-        if (poderecarregar == false)
-        {
-           criargraficoohlc();
-           poderecarregar = true;
-        }
-        else if (poderecarregar == true)
-        {
-            recarregardadosasset();
-        }
+        aassetpai.atualizardadosasset();
     }//GEN-LAST:event_jButtonAtualizarDadosGraficoActionPerformed
 
     private void jButtonEscolherSimboloActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonEscolherSimboloActionPerformed

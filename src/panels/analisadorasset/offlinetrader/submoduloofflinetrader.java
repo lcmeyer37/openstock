@@ -26,6 +26,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
     
     public panels.analisadorasset.analisadorasset aassetpai; //analisador de asset pai, contem modulos para analises do asset (ateh o momento grafico e trader)
     
+    public mierclasses.mcofflinetrader otrader; //offline trader utilizado por este submodulo
+    
     
     /**
      * Creates new form submodulotrader
@@ -35,8 +37,47 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         initComponents();
         
         aassetpai = aapai;
+        otrader = new mierclasses.mcofflinetrader(this);
+        
+        inicializarsubmoduloofflinetrader();
+    }
+    
+    void inicializarsubmoduloofflinetrader()
+    {
+        //associar o simbolo utilizado pelo trader
+        otrader.recriarofflinetrader(aassetpai.assetsimbolo);
+        
+        //atualizar informacoes de bid ask atual
+        otrader.atualizarbidask();
+        
+        jLabelComprar.setText("Buy " + otrader.simbolo.toUpperCase());
+        jLabelVender.setText("Sell " + otrader.simbolo.toUpperCase());
+        jTextFieldMelhorAsk.setText(String.format( "%.6f",otrader.melhorask));
+        jTextFieldMelhorBid.setText(String.format( "%.6f",otrader.melhorbid));
+        jTextFieldMoedaBaseAtual.setText(String.format( "%.6f",otrader.quantidademoedabase));
+        jTextFieldMoedaCotacaoAtual.setText(String.format( "%.6f",otrader.quantidademoedacotacao));
+    }
+    
+    public void recarregardadossubmoduloofflinetrader()
+    {
+        //caso o simbolo tenha sido alterado, as informacoes do trader precisam ser resetadas
+        if (aassetpai.assetsimbolo.equals(otrader.simbolo) == false)
+            otrader.recriarofflinetrader(aassetpai.assetsimbolo);
+        
+        //atualizar informacoes de bid ask atual
+        otrader.atualizarbidask();
+        
+        jLabelComprar.setText("Buy " + otrader.simbolo.toUpperCase());
+        jLabelVender.setText("Sell " + otrader.simbolo.toUpperCase());
+        jTextFieldMelhorAsk.setText(String.format( "%.6f",otrader.melhorask));
+        jTextFieldMelhorBid.setText(String.format( "%.6f",otrader.melhorbid));
+        jTextFieldMoedaBaseAtual.setText(String.format( "%.6f",otrader.quantidademoedabase));
+        jTextFieldMoedaCotacaoAtual.setText(String.format( "%.6f",otrader.quantidademoedacotacao));
     }
 
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -55,8 +96,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jButtonComprarManual = new javax.swing.JButton();
         jPanelSubComprar = new javax.swing.JPanel();
         jLabelComprar = new javax.swing.JLabel();
-        jLabelMelhorBid = new javax.swing.JLabel();
-        jTextFieldMelhorBid = new javax.swing.JTextField();
+        jLabelMelhorAsk = new javax.swing.JLabel();
+        jTextFieldMelhorAsk = new javax.swing.JTextField();
         jPanelVendaManual = new javax.swing.JPanel();
         jLabelVenderQuantidade = new javax.swing.JLabel();
         jTextFieldVenderQuantidade = new javax.swing.JTextField();
@@ -65,8 +106,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jButtonVenderManual = new javax.swing.JButton();
         jPanelSubVender = new javax.swing.JPanel();
         jLabelVender = new javax.swing.JLabel();
-        jLabelMelhorAsk = new javax.swing.JLabel();
-        jTextFieldMelhorAsk = new javax.swing.JTextField();
+        jLabelMelhorBid = new javax.swing.JLabel();
+        jTextFieldMelhorBid = new javax.swing.JTextField();
         jPanelFundos = new javax.swing.JPanel();
         jPanelSubFundos = new javax.swing.JPanel();
         jLabelFundos = new javax.swing.JLabel();
@@ -97,12 +138,15 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jLabelComprarQuantidade.setForeground(new java.awt.Color(255, 255, 255));
         jLabelComprarQuantidade.setText("Amount:");
 
+        jTextFieldComprarQuantidade.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+
         jLabelComprarTotal.setForeground(new java.awt.Color(255, 255, 255));
         jLabelComprarTotal.setText("Total:");
 
         jTextFieldComprarTotal.setEditable(false);
         jTextFieldComprarTotal.setBackground(new java.awt.Color(120, 120, 120));
         jTextFieldComprarTotal.setForeground(new java.awt.Color(255, 255, 255));
+        jTextFieldComprarTotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         jButtonComprarManual.setText("Buy Market");
 
@@ -123,12 +167,20 @@ public class submoduloofflinetrader extends javax.swing.JPanel
             .addComponent(jLabelComprar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
         );
 
-        jLabelMelhorBid.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelMelhorBid.setText("Best Bid:");
+        jLabelMelhorAsk.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelMelhorAsk.setText("Best Ask to Buy:");
 
-        jTextFieldMelhorBid.setEditable(false);
-        jTextFieldMelhorBid.setBackground(new java.awt.Color(120, 120, 120));
-        jTextFieldMelhorBid.setForeground(new java.awt.Color(255, 255, 255));
+        jTextFieldMelhorAsk.setEditable(false);
+        jTextFieldMelhorAsk.setBackground(new java.awt.Color(120, 120, 120));
+        jTextFieldMelhorAsk.setForeground(new java.awt.Color(255, 255, 255));
+        jTextFieldMelhorAsk.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jTextFieldMelhorAsk.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jTextFieldMelhorAskActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelCompraManualLayout = new javax.swing.GroupLayout(jPanelCompraManual);
         jPanelCompraManual.setLayout(jPanelCompraManualLayout);
@@ -147,11 +199,11 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                         .addComponent(jTextFieldComprarTotal))
                     .addGroup(jPanelCompraManualLayout.createSequentialGroup()
                         .addGroup(jPanelCompraManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelMelhorBid)
+                            .addComponent(jLabelMelhorAsk)
                             .addComponent(jLabelComprarQuantidade))
                         .addGap(23, 23, 23)
                         .addGroup(jPanelCompraManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldMelhorBid)
+                            .addComponent(jTextFieldMelhorAsk)
                             .addComponent(jTextFieldComprarQuantidade))))
                 .addContainerGap())
         );
@@ -161,8 +213,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                 .addComponent(jPanelSubComprar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelCompraManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelMelhorBid)
-                    .addComponent(jTextFieldMelhorBid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelMelhorAsk)
+                    .addComponent(jTextFieldMelhorAsk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelCompraManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelComprarQuantidade)
@@ -181,12 +233,15 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jLabelVenderQuantidade.setForeground(new java.awt.Color(255, 255, 255));
         jLabelVenderQuantidade.setText("Amount:");
 
+        jTextFieldVenderQuantidade.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+
         jLabelVenderTotal.setForeground(new java.awt.Color(255, 255, 255));
         jLabelVenderTotal.setText("Total:");
 
         jTextFieldVenderTotal.setEditable(false);
         jTextFieldVenderTotal.setBackground(new java.awt.Color(120, 120, 120));
         jTextFieldVenderTotal.setForeground(new java.awt.Color(255, 255, 255));
+        jTextFieldVenderTotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         jButtonVenderManual.setText("Sell Market");
 
@@ -207,12 +262,13 @@ public class submoduloofflinetrader extends javax.swing.JPanel
             .addComponent(jLabelVender, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
         );
 
-        jLabelMelhorAsk.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelMelhorAsk.setText("Best Ask:");
+        jLabelMelhorBid.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelMelhorBid.setText("Best Bid to Sell:");
 
-        jTextFieldMelhorAsk.setEditable(false);
-        jTextFieldMelhorAsk.setBackground(new java.awt.Color(120, 120, 120));
-        jTextFieldMelhorAsk.setForeground(new java.awt.Color(255, 255, 255));
+        jTextFieldMelhorBid.setEditable(false);
+        jTextFieldMelhorBid.setBackground(new java.awt.Color(120, 120, 120));
+        jTextFieldMelhorBid.setForeground(new java.awt.Color(255, 255, 255));
+        jTextFieldMelhorBid.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         javax.swing.GroupLayout jPanelVendaManualLayout = new javax.swing.GroupLayout(jPanelVendaManual);
         jPanelVendaManual.setLayout(jPanelVendaManualLayout);
@@ -227,13 +283,13 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                         .addComponent(jButtonVenderManual))
                     .addGroup(jPanelVendaManualLayout.createSequentialGroup()
                         .addGroup(jPanelVendaManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelMelhorAsk)
+                            .addComponent(jLabelMelhorBid)
                             .addComponent(jLabelVenderQuantidade)
                             .addComponent(jLabelVenderTotal))
                         .addGap(23, 23, 23)
                         .addGroup(jPanelVendaManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextFieldVenderTotal)
-                            .addComponent(jTextFieldMelhorAsk)
+                            .addComponent(jTextFieldMelhorBid)
                             .addComponent(jTextFieldVenderQuantidade))))
                 .addContainerGap())
         );
@@ -243,8 +299,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                 .addComponent(jPanelSubVender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelVendaManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelMelhorAsk)
-                    .addComponent(jTextFieldMelhorAsk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelMelhorBid)
+                    .addComponent(jTextFieldMelhorBid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelVendaManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelVenderQuantidade)
@@ -286,10 +342,12 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jTextFieldMoedaBaseAtual.setEditable(false);
         jTextFieldMoedaBaseAtual.setBackground(new java.awt.Color(120, 120, 120));
         jTextFieldMoedaBaseAtual.setForeground(new java.awt.Color(255, 255, 255));
+        jTextFieldMoedaBaseAtual.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         jTextFieldMoedaCotacaoAtual.setEditable(false);
         jTextFieldMoedaCotacaoAtual.setBackground(new java.awt.Color(120, 120, 120));
         jTextFieldMoedaCotacaoAtual.setForeground(new java.awt.Color(255, 255, 255));
+        jTextFieldMoedaCotacaoAtual.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         jButtonAlterarFundos.setText("Deposits and Withdrawals");
         jButtonAlterarFundos.addActionListener(new java.awt.event.ActionListener()
@@ -517,6 +575,11 @@ public class submoduloofflinetrader extends javax.swing.JPanel
     {//GEN-HEADEREND:event_jComboBoxScriptAtualTraderbotActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxScriptAtualTraderbotActionPerformed
+
+    private void jTextFieldMelhorAskActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jTextFieldMelhorAskActionPerformed
+    {//GEN-HEADEREND:event_jTextFieldMelhorAskActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldMelhorAskActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

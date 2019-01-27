@@ -36,6 +36,10 @@ public class analisadorasset extends javax.swing.JPanel
     //submodulo trader
     public panels.analisadorasset.offlinetrader.submoduloofflinetrader subtrader;
     
+    //recebe o simbolo do asset atual em uso
+    //asset associado
+    public String assetsimbolo;
+    
     /**
      * Creates new form mpanalisadorasset
      */
@@ -47,10 +51,12 @@ public class analisadorasset extends javax.swing.JPanel
         
         //associar o item analisador asset a este analisador asset
         iaassetpai = iaapai;
+        assetsimbolo = "testdata";
         
         //criar submodulos grafico e trader para uso
         subgrafico = new panels.analisadorasset.grafico.submodulografico(this);
         subtrader = new panels.analisadorasset.offlinetrader.submoduloofflinetrader(this);
+        
         
         mostrarsubmodulografico();
     }
@@ -77,6 +83,18 @@ public class analisadorasset extends javax.swing.JPanel
         jButtonMostrarGrafico.setForeground(Color.black);
         this.validate();
         this.repaint();
+    }
+    
+    public void alterarasset(String novosimbolo)
+    {
+        assetsimbolo = novosimbolo;
+    }
+    
+    public void atualizardadosasset()
+    {
+        //funcao para recarregar dados dos submodulos relacionados a este asset
+        subgrafico.recarregardadossubmodulografico();
+        subtrader.recarregardadossubmoduloofflinetrader();
     }
 
     /**

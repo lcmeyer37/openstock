@@ -35,6 +35,9 @@ public class mcquote
     public String previousclosestr;
     
     public double closed;
+    public double opend;
+    public double highd;
+    public double lowd;
     public double previousclosed;
     public java.util.Date opentimedate;
     public java.util.Date closetimedate;
@@ -58,6 +61,9 @@ public class mcquote
         previousclosestr = pcstr;
         
         closed = Double.valueOf(closestr);
+        opend = Double.valueOf(openstr);
+        highd = Double.valueOf(highstr);
+        lowd = Double.valueOf(lowstr);
         previousclosed = Double.valueOf(previousclosestr);
         opentimedate = new java.util.Date(Long.valueOf(opentimestr));
         closetimedate = new java.util.Date(Long.valueOf(closetimestr));
