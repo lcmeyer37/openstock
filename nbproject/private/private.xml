@@ -5,14 +5,17 @@
         <group>
             <file>file:/Users/lucasmeyer/Documents/Lucas/Repositorios/Githubs/openstock/src/main/TelaPrincipal.java</file>
             <file>file:/Users/lucasmeyer/Documents/Lucas/Repositorios/Githubs/openstock/src/mierclasses/mcchartgenerator.java</file>
-            <file>file:/Users/lucasmeyer/Documents/Lucas/Repositorios/Githubs/openstock/src/panels/analisadorasset/grafico/submodulografico.java</file>
             <file>file:/Users/lucasmeyer/Documents/Lucas/Repositorios/Githubs/openstock/src/panels/analisadorasset/offlinetrader/submoduloofflinetrader.java</file>
-            <file>file:/Users/lucasmeyer/Documents/Lucas/Repositorios/Githubs/openstock/src/mierclasses/mccandle.java</file>
             <file>file:/Users/lucasmeyer/Documents/Lucas/Repositorios/Githubs/openstock/src/panels/analisadorasset/itemanalisadorasset.java</file>
+            <file>file:/Users/lucasmeyer/Documents/Lucas/Repositorios/Githubs/openstock/src/mierclasses/mcofflinetrader.java</file>
             <file>file:/Users/lucasmeyer/Documents/Lucas/Repositorios/Githubs/openstock/src/mierclasses/mciexcomms.java</file>
             <file>file:/Users/lucasmeyer/Documents/Lucas/Repositorios/Githubs/openstock/src/mierclasses/mcquote.java</file>
             <file>file:/Users/lucasmeyer/Documents/Lucas/Repositorios/Githubs/openstock/src/panels/analisadorasset/grafico/itemanotacao.java</file>
             <file>file:/Users/lucasmeyer/Documents/Lucas/Repositorios/Githubs/openstock/src/mierclasses/mcbearcodeinterpreter.java</file>
+            <file>file:/Users/lucasmeyer/Documents/Lucas/Repositorios/Githubs/openstock/src/panels/analisadorasset/grafico/submodulografico.java</file>
+            <file>file:/Users/lucasmeyer/Documents/Lucas/Repositorios/Githubs/openstock/src/mierclasses/mcofflinetransaction.java</file>
+            <file>file:/Users/lucasmeyer/Documents/Lucas/Repositorios/Githubs/openstock/src/mierclasses/mccandle.java</file>
+            <file>file:/Users/lucasmeyer/Documents/Lucas/Repositorios/Githubs/openstock/src/mierclasses/mcjtextareahandler.java</file>
             <file>file:/Users/lucasmeyer/Documents/Lucas/Repositorios/Githubs/openstock/src/panels/analisadorasset/analisadorasset.java</file>
         </group>
     </open-files>

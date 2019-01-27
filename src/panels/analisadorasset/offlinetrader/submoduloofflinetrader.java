@@ -56,8 +56,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jTextFieldMelhorBid.setText(String.format( "%.6f",otrader.melhorbid));
         jTextFieldMoedaBaseAtual.setText(String.format( "%.6f",otrader.quantidademoedabase));
         jTextFieldMoedaCotacaoAtual.setText(String.format( "%.6f",otrader.quantidademoedacotacao));
-        jLabelFeeCompra.setText("Fee: " + String.format( "%.4f",otrader.feecompra));
-        jLabelFeeVenda.setText("Fee: " + String.format( "%.4f",otrader.feevenda));
+        jLabelFeeCompra.setText("Fee " + String.format( "%.2f",100*otrader.feecompra) + "%");
+        jLabelFeeVenda.setText("Fee " + String.format( "%.2f",100*otrader.feevenda) + "%");
     }
     
     public void recarregardadossubmoduloofflinetrader()
@@ -75,8 +75,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jTextFieldMelhorBid.setText(String.format( "%.6f",otrader.melhorbid));
         jTextFieldMoedaBaseAtual.setText(String.format( "%.6f",otrader.quantidademoedabase));
         jTextFieldMoedaCotacaoAtual.setText(String.format( "%.6f",otrader.quantidademoedacotacao));
-        jLabelFeeCompra.setText("Fee: " + String.format( "%.4f",otrader.feecompra));
-        jLabelFeeVenda.setText("Fee: " + String.format( "%.4f",otrader.feevenda));
+        jLabelFeeCompra.setText("Fee " + String.format( "%.2f",100*otrader.feecompra) + "%");
+        jLabelFeeVenda.setText("Fee " + String.format( "%.2f",100*otrader.feevenda) + "%");
     }
 
     
@@ -188,8 +188,9 @@ public class submoduloofflinetrader extends javax.swing.JPanel
             }
         });
 
+        jLabelFeeCompra.setFont(new java.awt.Font("Lucida Grande", 2, 12)); // NOI18N
         jLabelFeeCompra.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelFeeCompra.setText("Fee:");
+        jLabelFeeCompra.setText("Fee");
 
         javax.swing.GroupLayout jPanelCompraManualLayout = new javax.swing.GroupLayout(jPanelCompraManual);
         jPanelCompraManual.setLayout(jPanelCompraManualLayout);
@@ -282,8 +283,9 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jTextFieldMelhorBid.setForeground(new java.awt.Color(255, 255, 255));
         jTextFieldMelhorBid.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
+        jLabelFeeVenda.setFont(new java.awt.Font("Lucida Grande", 2, 12)); // NOI18N
         jLabelFeeVenda.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelFeeVenda.setText("Fee:");
+        jLabelFeeVenda.setText("Fee");
 
         javax.swing.GroupLayout jPanelVendaManualLayout = new javax.swing.GroupLayout(jPanelVendaManual);
         jPanelVendaManual.setLayout(jPanelVendaManualLayout);
