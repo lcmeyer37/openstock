@@ -56,6 +56,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jTextFieldMelhorBid.setText(String.format( "%.6f",otrader.melhorbid));
         jTextFieldMoedaBaseAtual.setText(String.format( "%.6f",otrader.quantidademoedabase));
         jTextFieldMoedaCotacaoAtual.setText(String.format( "%.6f",otrader.quantidademoedacotacao));
+        jLabelFeeCompra.setText("Fee: " + String.format( "%.4f",otrader.feecompra));
+        jLabelFeeVenda.setText("Fee: " + String.format( "%.4f",otrader.feevenda));
     }
     
     public void recarregardadossubmoduloofflinetrader()
@@ -73,6 +75,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jTextFieldMelhorBid.setText(String.format( "%.6f",otrader.melhorbid));
         jTextFieldMoedaBaseAtual.setText(String.format( "%.6f",otrader.quantidademoedabase));
         jTextFieldMoedaCotacaoAtual.setText(String.format( "%.6f",otrader.quantidademoedacotacao));
+        jLabelFeeCompra.setText("Fee: " + String.format( "%.4f",otrader.feecompra));
+        jLabelFeeVenda.setText("Fee: " + String.format( "%.4f",otrader.feevenda));
     }
 
     
@@ -98,6 +102,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jLabelComprar = new javax.swing.JLabel();
         jLabelMelhorAsk = new javax.swing.JLabel();
         jTextFieldMelhorAsk = new javax.swing.JTextField();
+        jLabelFeeCompra = new javax.swing.JLabel();
         jPanelVendaManual = new javax.swing.JPanel();
         jLabelVenderQuantidade = new javax.swing.JLabel();
         jTextFieldVenderQuantidade = new javax.swing.JTextField();
@@ -108,6 +113,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jLabelVender = new javax.swing.JLabel();
         jLabelMelhorBid = new javax.swing.JLabel();
         jTextFieldMelhorBid = new javax.swing.JTextField();
+        jLabelFeeVenda = new javax.swing.JLabel();
         jPanelFundos = new javax.swing.JPanel();
         jPanelSubFundos = new javax.swing.JPanel();
         jLabelFundos = new javax.swing.JLabel();
@@ -182,6 +188,9 @@ public class submoduloofflinetrader extends javax.swing.JPanel
             }
         });
 
+        jLabelFeeCompra.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelFeeCompra.setText("Fee:");
+
         javax.swing.GroupLayout jPanelCompraManualLayout = new javax.swing.GroupLayout(jPanelCompraManual);
         jPanelCompraManual.setLayout(jPanelCompraManualLayout);
         jPanelCompraManualLayout.setHorizontalGroup(
@@ -191,7 +200,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                 .addContainerGap()
                 .addGroup(jPanelCompraManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelCompraManualLayout.createSequentialGroup()
-                        .addGap(0, 125, Short.MAX_VALUE)
+                        .addComponent(jLabelFeeCompra, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonComprarManual))
                     .addGroup(jPanelCompraManualLayout.createSequentialGroup()
                         .addComponent(jLabelComprarTotal)
@@ -224,7 +234,9 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                     .addComponent(jLabelComprarTotal)
                     .addComponent(jTextFieldComprarTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonComprarManual)
+                .addGroup(jPanelCompraManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonComprarManual)
+                    .addComponent(jLabelFeeCompra))
                 .addContainerGap())
         );
 
@@ -270,6 +282,9 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jTextFieldMelhorBid.setForeground(new java.awt.Color(255, 255, 255));
         jTextFieldMelhorBid.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
+        jLabelFeeVenda.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelFeeVenda.setText("Fee:");
+
         javax.swing.GroupLayout jPanelVendaManualLayout = new javax.swing.GroupLayout(jPanelVendaManual);
         jPanelVendaManual.setLayout(jPanelVendaManualLayout);
         jPanelVendaManualLayout.setHorizontalGroup(
@@ -279,7 +294,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                 .addContainerGap()
                 .addGroup(jPanelVendaManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelVendaManualLayout.createSequentialGroup()
-                        .addGap(0, 149, Short.MAX_VALUE)
+                        .addComponent(jLabelFeeVenda, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
+                        .addGap(41, 41, 41)
                         .addComponent(jButtonVenderManual))
                     .addGroup(jPanelVendaManualLayout.createSequentialGroup()
                         .addGroup(jPanelVendaManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -310,7 +326,9 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                     .addComponent(jLabelVenderTotal)
                     .addComponent(jTextFieldVenderTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonVenderManual)
+                .addGroup(jPanelVendaManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonVenderManual)
+                    .addComponent(jLabelFeeVenda))
                 .addContainerGap())
         );
 
@@ -591,6 +609,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
     private javax.swing.JLabel jLabelComprar;
     private javax.swing.JLabel jLabelComprarQuantidade;
     private javax.swing.JLabel jLabelComprarTotal;
+    private javax.swing.JLabel jLabelFeeCompra;
+    private javax.swing.JLabel jLabelFeeVenda;
     private javax.swing.JLabel jLabelFundos;
     private javax.swing.JLabel jLabelHeaderTransacoes;
     private javax.swing.JLabel jLabelMelhorAsk;

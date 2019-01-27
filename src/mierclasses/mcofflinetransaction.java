@@ -25,8 +25,26 @@ public class mcofflinetransaction
     //classe para segurar informacoes de uma transacao realizada
     public String idstr; //id da transacao
     public String tipostr; //tipo de transacao: deposito, saque, trade
-    public double preco_traded; //preco da moeda base em moeda cotacao (caso trade)
-    public double quantidaded; //quantidade de moeda depositada, sacada ou transacionada
-    public String timestampstr; //timestamp da transacao em string
+    public String preco_tradestr; //preco da moeda base em moeda cotacao (caso trade)
+    public String quantidadestr; //quantidade de moeda (base/cotacao depositada/sacada) (base comprada/vendida)
+    public String timestampstr; //timestamp da transacao em string (long)
     
+    public double preco_traded;
+    public double quantidaded;
+    public java.util.Date timestampdate;
+    
+    public mcofflinetransaction(String id, String tip, String p_trade, String quan, String tm)
+    {
+        idstr = id;
+        tipostr = tip;
+        preco_tradestr = p_trade;
+        quantidadestr = quan;
+        timestampstr = tm;
+        
+        if (preco_tradestr.equals("NN") == false)
+            preco_traded = Double.valueOf(preco_tradestr);
+        
+        quantidaded = Double.valueOf(quantidadestr);
+        timestampdate = new java.util.Date(Long.valueOf(timestampstr));
+    }
 }
