@@ -451,4 +451,66 @@ public class mciexcomms
     }
     
     // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Stocks - Quote">
+    public mcquote receberquote(String simbolo)
+    {
+        //funcao para receber informacoes de quote de um simbolo especifico
+        String jsonconteudo = mwcomms.receberconteudopagina("https://api.iextrading.com/1.0/stock/"+simbolo+"/quote");
+
+        
+        JSONObject quoteobject = new JSONObject(jsonconteudo);
+        String qjson_symbol = quoteobject.getString("symbol");
+        String qjson_cname = quoteobject.getString("companyName");
+        String qjson_open = String.valueOf(quoteobject.getDouble("open"));
+        String qjson_opentime = String.valueOf(quoteobject.getLong("openTime"));
+        String qjson_close = String.valueOf(quoteobject.getDouble("close"));
+        String qjson_closetime = String.valueOf(quoteobject.getLong("closeTime"));
+        String qjson_high = String.valueOf(quoteobject.getDouble("high"));
+        String qjson_low = String.valueOf(quoteobject.getDouble("low"));
+        String qjson_lvolume = String.valueOf(quoteobject.getLong("latestVolume"));
+        String qjon_pclose = String.valueOf(quoteobject.getDouble("previousClose"));
+        
+        mierclasses.mcquote mcquoteretornar = new mierclasses.mcquote
+            (
+                qjson_symbol, qjson_cname, qjson_open, 
+                qjson_opentime, qjson_close, qjson_closetime, 
+                qjson_high, qjson_low, qjson_lvolume, qjon_pclose
+            );
+        
+        
+        return mcquoteretornar;
+    }
+    //</editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Offline Trading Values">
+    
+    //the values returned by these functions are not real and used for offline trading and testing only 
+    
+    public java.util.List<Double> receberlastaskbidofflinetrading(String simbolo)
+    {
+        //funcao para estimar um valor de ask e bid para o simbolo atual, para testar o trader bot
+        mierclasses.mcquote quote = receberquote(simbolo);
+        
+        double ultimoclose = quote.closed;
+        
+        double rangebidaskestimado = 0.005;
+        
+        //os valores de bid e ask no momento serao estimados, ja que os valores de ask e bid reais nem sempre estao
+        //disponiveis pelo IEX API por conta de diversos fatores: indisponibilidade de servico, market closed, etc,
+        //e o interessante no modo offline eh sempre ter um valor para testar o bot em cima.
+        
+        //no momento o bid e ask serao estimados como -+ 0.5% do close final recebido
+        
+        double bidestimado = ultimoclose - (ultimoclose*rangebidaskestimado);
+        double askestimado = ultimoclose + (ultimoclose*rangebidaskestimado);
+        
+        //https://stackoverflow.com/questions/20039098/issue-creating-a-double-array-list
+        java.util.List<Double> retorno = new java.util.ArrayList<>();
+        retorno.add(bidestimado);
+        retorno.add(askestimado);
+        
+        return retorno;
+    }
+    // </editor-fold>
 }

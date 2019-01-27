@@ -50,8 +50,8 @@ public class submodulografico extends javax.swing.JPanel
         //popular objeto utilizado para desenho de graficos
         mcg = new mierclasses.mcchartgenerator();
         
-        jPanelAnotacoes.setLayout(new java.awt.GridLayout(20,1));
-        jPanelIndicadores.setLayout(new java.awt.GridLayout(20,1));
+        jPanelAnotacoes.setLayout(new java.awt.GridLayout(100,1));
+        jPanelIndicadores.setLayout(new java.awt.GridLayout(100,1));
         
         //comecar mostrando dataset de teste
         jTextFieldNomeSimbolo.setText("testdata");

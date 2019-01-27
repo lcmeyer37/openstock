@@ -34,7 +34,7 @@ public class analisadorasset extends javax.swing.JPanel
     //submobulo grafico
     public panels.analisadorasset.grafico.submodulografico subgrafico;
     //submodulo trader
-    public panels.analisadorasset.trader.submodulotrader subtrader;
+    public panels.analisadorasset.offlinetrader.submoduloofflinetrader subtrader;
     
     /**
      * Creates new form mpanalisadorasset
@@ -50,7 +50,7 @@ public class analisadorasset extends javax.swing.JPanel
         
         //criar submodulos grafico e trader para uso
         subgrafico = new panels.analisadorasset.grafico.submodulografico(this);
-        subtrader = new panels.analisadorasset.trader.submodulotrader(this);
+        subtrader = new panels.analisadorasset.offlinetrader.submoduloofflinetrader(this);
         
         mostrarsubmodulografico();
     }
