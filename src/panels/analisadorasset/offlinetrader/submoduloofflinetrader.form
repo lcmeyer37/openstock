@@ -42,12 +42,10 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="jPanelVendaManual" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jPanelCompraManual" alignment="0" max="32767" attributes="0"/>
-                  </Group>
-                  <Component id="jPanelFundos" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="jPanelCompraManual" max="32767" attributes="0"/>
+                  <Component id="jPanelVendaManual" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jPanelFundos" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanelTransacoes" max="32767" attributes="0"/>
@@ -118,7 +116,7 @@
                       <Component id="jLabelComprarTotal" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jTextFieldComprarTotal" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="12" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jButtonComprarManual" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabelFeeCompra" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -166,6 +164,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Buy Market"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonComprarManualActionPerformed"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JPanel" name="jPanelSubComprar">
           <Properties>
@@ -448,7 +449,7 @@
                       <Component id="jLabelMoedaCotacaoAtual" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jTextFieldMoedaCotacaoAtual" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="38" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Component id="jButtonAlterarFundos" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -565,7 +566,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jPanelHeaderTransacoes" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPaneLinhasTransacoes" pref="275" max="32767" attributes="0"/>
+                  <Component id="jScrollPaneLinhasTransacoes" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -697,7 +698,7 @@
                       <Component id="jButtonAtivarDesativarTrader" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabelStatusTrader" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="8" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

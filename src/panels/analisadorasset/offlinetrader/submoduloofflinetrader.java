@@ -44,6 +44,9 @@ public class submoduloofflinetrader extends javax.swing.JPanel
     
     void inicializarsubmoduloofflinetrader()
     {
+        //set jPanel de transacoes
+        jPanelLinhasTransacoes.setLayout(new java.awt.GridLayout(500,1));
+        
         //associar o simbolo utilizado pelo trader
         otrader.recriarofflinetrader(aassetpai.assetsimbolo);
         
@@ -58,6 +61,9 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jTextFieldMoedaCotacaoAtual.setText(String.format( "%.6f",otrader.quantidademoedacotacao));
         jLabelFeeCompra.setText("Fee " + String.format( "%.2f",100*otrader.feecompra) + "%");
         jLabelFeeVenda.setText("Fee " + String.format( "%.2f",100*otrader.feevenda) + "%");
+        
+        this.validate();
+        this.repaint();
     }
     
     public void recarregardadossubmoduloofflinetrader()
@@ -68,7 +74,6 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         
         //atualizar informacoes de bid ask atual
         otrader.atualizarbidask();
-        
         jLabelComprar.setText("Buy " + otrader.simbolo.toUpperCase());
         jLabelVender.setText("Sell " + otrader.simbolo.toUpperCase());
         jTextFieldMelhorAsk.setText(String.format( "%.6f",otrader.melhorask));
@@ -77,10 +82,66 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jTextFieldMoedaCotacaoAtual.setText(String.format( "%.6f",otrader.quantidademoedacotacao));
         jLabelFeeCompra.setText("Fee " + String.format( "%.2f",100*otrader.feecompra) + "%");
         jLabelFeeVenda.setText("Fee " + String.format( "%.2f",100*otrader.feevenda) + "%");
+        
+        //atualizar lista de transacoes offline
+        for (int i = 0; i < otrader.transacoes.size(); i++)
+        {
+            jPanelLinhasTransacoes.add(new panels.analisadorasset.offlinetrader.itemtransacao(otrader.transacoes.get(i)));
+        }
+        
+        this.validate();
+        this.repaint();
     }
 
-    
-    
+    // <editor-fold defaultstate="collapsed" desc="Implementação para Realização de Transações">
+    public String realizardepositoousaque(String tipomoeda, String depositoousaque, String valortransacao)
+    {
+        try
+        {
+            String resposta = "erro - desconhecido";
+            
+            if (tipomoeda.equals("base") == true)
+            {
+                if (depositoousaque.equals("deposito") == true)
+                {
+                    double valor = Double.valueOf(valortransacao);
+                    resposta = otrader.realizardeposito_base(valor);
+                }
+                else if (depositoousaque.equals("saque") == true)
+                {
+                    double valor = Double.valueOf(valortransacao);
+                    resposta = otrader.realizarsaque_base(valor);
+                }
+            }
+            else if (tipomoeda.equals("cotacao") == true)
+            {
+                if (depositoousaque.equals("deposito") == true)
+                {
+                    double valor = Double.valueOf(valortransacao);
+                    resposta = otrader.realizardeposito_cotacao(valor);
+                }
+                else if (depositoousaque.equals("saque") == true)
+                {
+                    double valor = Double.valueOf(valortransacao);
+                    resposta = otrader.realizarsaque_cotacao(valor);
+                }
+            }
+            
+            if (resposta.equals("ok") == true)
+            {
+                //considerando que a transacao foi bem sucedida, recarregar submodulo para mostrar nova linha de transacao
+                recarregardadossubmoduloofflinetrader();
+            }
+            
+            return resposta;
+        }
+        catch (Exception ex)
+        {
+            //caso aja algum problema, ignorar todo o processo de transacao
+            return "erro - " + ex.getMessage();
+        }
+    }
+    // </editor-fold>
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -155,6 +216,13 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jTextFieldComprarTotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         jButtonComprarManual.setText("Buy Market");
+        jButtonComprarManual.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonComprarManualActionPerformed(evt);
+            }
+        });
 
         jPanelSubComprar.setBackground(new java.awt.Color(35, 35, 35));
 
@@ -234,7 +302,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                 .addGroup(jPanelCompraManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelComprarTotal)
                     .addComponent(jTextFieldComprarTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(jPanelCompraManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonComprarManual)
                     .addComponent(jLabelFeeCompra))
@@ -409,7 +477,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                 .addGroup(jPanelFundosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelMoedaCotacaoAtual)
                     .addComponent(jTextFieldMoedaCotacaoAtual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonAlterarFundos)
                 .addContainerGap())
         );
@@ -484,7 +552,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelHeaderTransacoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneLinhasTransacoes, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                .addComponent(jScrollPaneLinhasTransacoes)
                 .addContainerGap())
         );
 
@@ -549,7 +617,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                     .addComponent(jComboBoxScriptAtualTraderbot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonAtivarDesativarTrader)
                     .addComponent(jLabelStatusTrader))
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -573,11 +641,10 @@ public class submoduloofflinetrader extends javax.swing.JPanel
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jPanelVendaManual, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanelCompraManual, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jPanelFundos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanelCompraManual, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelVendaManual, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelFundos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelTransacoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -588,7 +655,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
 
     private void jButtonAlterarFundosActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAlterarFundosActionPerformed
     {//GEN-HEADEREND:event_jButtonAlterarFundosActionPerformed
-        // TODO add your handling code here:
+        frames.analisadorasset.offlinetrader.adicionarremoverfundos mfarf = new frames.analisadorasset.offlinetrader.adicionarremoverfundos(this);
+        mfarf.show();
     }//GEN-LAST:event_jButtonAlterarFundosActionPerformed
 
     private void jComboBoxScriptAtualTraderbotActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jComboBoxScriptAtualTraderbotActionPerformed
@@ -600,6 +668,11 @@ public class submoduloofflinetrader extends javax.swing.JPanel
     {//GEN-HEADEREND:event_jTextFieldMelhorAskActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldMelhorAskActionPerformed
+
+    private void jButtonComprarManualActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonComprarManualActionPerformed
+    {//GEN-HEADEREND:event_jButtonComprarManualActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonComprarManualActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -34,11 +34,17 @@ public class renomearitemindicador extends javax.swing.JFrame
     private void initComponents()
     {
 
+        jPanelFundo = new javax.swing.JPanel();
+        jPanelFundo2 = new javax.swing.JPanel();
         jTextFieldNovoNomeItemIndicador = new javax.swing.JTextField();
         jButtonConfirmarNovoNomeItemIndicador = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Rename Indicator");
+
+        jPanelFundo.setBackground(new java.awt.Color(55, 55, 55));
+
+        jPanelFundo2.setBackground(new java.awt.Color(120, 120, 120));
 
         jButtonConfirmarNovoNomeItemIndicador.setText("OK");
         jButtonConfirmarNovoNomeItemIndicador.addActionListener(new java.awt.event.ActionListener()
@@ -49,25 +55,59 @@ public class renomearitemindicador extends javax.swing.JFrame
             }
         });
 
+        javax.swing.GroupLayout jPanelFundo2Layout = new javax.swing.GroupLayout(jPanelFundo2);
+        jPanelFundo2.setLayout(jPanelFundo2Layout);
+        jPanelFundo2Layout.setHorizontalGroup(
+            jPanelFundo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelFundo2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTextFieldNovoNomeItemIndicador, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
+                .addGap(63, 63, 63))
+            .addGroup(jPanelFundo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelFundo2Layout.createSequentialGroup()
+                    .addContainerGap(303, Short.MAX_VALUE)
+                    .addComponent(jButtonConfirmarNovoNomeItemIndicador)
+                    .addContainerGap()))
+        );
+        jPanelFundo2Layout.setVerticalGroup(
+            jPanelFundo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelFundo2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTextFieldNovoNomeItemIndicador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
+            .addGroup(jPanelFundo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelFundo2Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jButtonConfirmarNovoNomeItemIndicador)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+
+        javax.swing.GroupLayout jPanelFundoLayout = new javax.swing.GroupLayout(jPanelFundo);
+        jPanelFundo.setLayout(jPanelFundoLayout);
+        jPanelFundoLayout.setHorizontalGroup(
+            jPanelFundoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelFundoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelFundo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanelFundoLayout.setVerticalGroup(
+            jPanelFundoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelFundoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelFundo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTextFieldNovoNomeItemIndicador, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonConfirmarNovoNomeItemIndicador)
-                .addContainerGap())
+            .addComponent(jPanelFundo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldNovoNomeItemIndicador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonConfirmarNovoNomeItemIndicador))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanelFundo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -129,6 +169,8 @@ public class renomearitemindicador extends javax.swing.JFrame
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonConfirmarNovoNomeItemIndicador;
+    private javax.swing.JPanel jPanelFundo;
+    private javax.swing.JPanel jPanelFundo2;
     private javax.swing.JTextField jTextFieldNovoNomeItemIndicador;
     // End of variables declaration//GEN-END:variables
 }

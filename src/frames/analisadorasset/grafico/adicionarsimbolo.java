@@ -60,7 +60,9 @@ public class adicionarsimbolo extends javax.swing.JFrame
     private void initComponents()
     {
 
-        jLabel2 = new javax.swing.JLabel();
+        jPanelFundo = new javax.swing.JPanel();
+        jPanelFundo2 = new javax.swing.JPanel();
+        jLabelProcurar = new javax.swing.JLabel();
         jtfProcurarSimbolo = new javax.swing.JTextField();
         jbProcurarSimbolo = new javax.swing.JButton();
         jbAdicionarSimbolo = new javax.swing.JButton();
@@ -70,7 +72,12 @@ public class adicionarsimbolo extends javax.swing.JFrame
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Search for Symbol");
 
-        jLabel2.setText("Search:");
+        jPanelFundo.setBackground(new java.awt.Color(55, 55, 55));
+
+        jPanelFundo2.setBackground(new java.awt.Color(120, 120, 120));
+
+        jLabelProcurar.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelProcurar.setText("Search:");
 
         jbProcurarSimbolo.setText("OK");
         jbProcurarSimbolo.addActionListener(new java.awt.event.ActionListener()
@@ -92,38 +99,69 @@ public class adicionarsimbolo extends javax.swing.JFrame
 
         jScrollPane1.setViewportView(jlistSimbolosEncontrados);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanelFundo2Layout = new javax.swing.GroupLayout(jPanelFundo2);
+        jPanelFundo2.setLayout(jPanelFundo2Layout);
+        jPanelFundo2Layout.setHorizontalGroup(
+            jPanelFundo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelFundo2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
+                .addGroup(jPanelFundo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(jPanelFundo2Layout.createSequentialGroup()
+                        .addComponent(jLabelProcurar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtfProcurarSimbolo)
+                        .addComponent(jtfProcurarSimbolo, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jbProcurarSimbolo))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFundo2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jbAdicionarSimbolo)))
                 .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        jPanelFundo2Layout.setVerticalGroup(
+            jPanelFundo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelFundo2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                .addGroup(jPanelFundo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelProcurar)
                     .addComponent(jtfProcurarSimbolo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbProcurarSimbolo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbAdicionarSimbolo)
                 .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanelFundoLayout = new javax.swing.GroupLayout(jPanelFundo);
+        jPanelFundo.setLayout(jPanelFundoLayout);
+        jPanelFundoLayout.setHorizontalGroup(
+            jPanelFundoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelFundoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelFundo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanelFundoLayout.setVerticalGroup(
+            jPanelFundoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelFundoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelFundo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanelFundo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(2, 2, 2)
+                .addComponent(jPanelFundo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(3, 3, 3))
         );
 
         pack();
@@ -188,7 +226,9 @@ public class adicionarsimbolo extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabelProcurar;
+    private javax.swing.JPanel jPanelFundo;
+    private javax.swing.JPanel jPanelFundo2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbAdicionarSimbolo;
     private javax.swing.JButton jbProcurarSimbolo;

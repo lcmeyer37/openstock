@@ -101,6 +101,8 @@ public class adicionarindicador extends javax.swing.JFrame
     private void initComponents()
     {
 
+        jPanelFundo = new javax.swing.JPanel();
+        jPanelFundo2 = new javax.swing.JPanel();
         jLabelNome = new javax.swing.JLabel();
         jComboBoxIndicadoresDisponiveis = new javax.swing.JComboBox<>();
         jLabelParametros = new javax.swing.JLabel();
@@ -110,10 +112,16 @@ public class adicionarindicador extends javax.swing.JFrame
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Add New Indicator");
 
+        jPanelFundo.setBackground(new java.awt.Color(55, 55, 55));
+
+        jPanelFundo2.setBackground(new java.awt.Color(120, 120, 120));
+
+        jLabelNome.setForeground(new java.awt.Color(255, 255, 255));
         jLabelNome.setText("Name:");
 
         jComboBoxIndicadoresDisponiveis.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "(no indicators)" }));
 
+        jLabelParametros.setForeground(new java.awt.Color(255, 255, 255));
         jLabelParametros.setText("Parameters:");
 
         jButtonAdicionarIndicador.setText("Add");
@@ -125,40 +133,70 @@ public class adicionarindicador extends javax.swing.JFrame
             }
         });
 
+        javax.swing.GroupLayout jPanelFundo2Layout = new javax.swing.GroupLayout(jPanelFundo2);
+        jPanelFundo2.setLayout(jPanelFundo2Layout);
+        jPanelFundo2Layout.setHorizontalGroup(
+            jPanelFundo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelFundo2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelFundo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFundo2Layout.createSequentialGroup()
+                        .addComponent(jLabelParametros)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(jPanelFundo2Layout.createSequentialGroup()
+                        .addComponent(jLabelNome)
+                        .addGap(32, 32, 32)))
+                .addGroup(jPanelFundo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jComboBoxIndicadoresDisponiveis, 0, 319, Short.MAX_VALUE)
+                    .addComponent(jTextFieldParametrosIndicador))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFundo2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonAdicionarIndicador)
+                .addContainerGap())
+        );
+        jPanelFundo2Layout.setVerticalGroup(
+            jPanelFundo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelFundo2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelFundo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelNome)
+                    .addComponent(jComboBoxIndicadoresDisponiveis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelFundo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelParametros)
+                    .addComponent(jTextFieldParametrosIndicador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonAdicionarIndicador)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanelFundoLayout = new javax.swing.GroupLayout(jPanelFundo);
+        jPanelFundo.setLayout(jPanelFundoLayout);
+        jPanelFundoLayout.setHorizontalGroup(
+            jPanelFundoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelFundoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelFundo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanelFundoLayout.setVerticalGroup(
+            jPanelFundoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelFundoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelFundo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabelNome)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBoxIndicadoresDisponiveis, 0, 342, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabelParametros)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldParametrosIndicador))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonAdicionarIndicador)))
-                .addContainerGap())
+            .addComponent(jPanelFundo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelNome)
-                    .addComponent(jComboBoxIndicadoresDisponiveis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelParametros)
-                    .addComponent(jTextFieldParametrosIndicador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonAdicionarIndicador)
-                .addContainerGap())
+            .addComponent(jPanelFundo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -220,6 +258,8 @@ public class adicionarindicador extends javax.swing.JFrame
     private javax.swing.JComboBox<String> jComboBoxIndicadoresDisponiveis;
     private javax.swing.JLabel jLabelNome;
     private javax.swing.JLabel jLabelParametros;
+    private javax.swing.JPanel jPanelFundo;
+    private javax.swing.JPanel jPanelFundo2;
     private javax.swing.JTextField jTextFieldParametrosIndicador;
     // End of variables declaration//GEN-END:variables
 }
