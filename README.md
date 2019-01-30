@@ -1,7 +1,7 @@
 # Open Stock
 Open Source Technical Analysis Software
 
-![1.0a](sblogo.png)
+![Bear Logo](sblogo.png)
 
 ## About
 Open Stock is a project [licensed under GNU GPLv3](https://github.com/lcmeyer37/openstock/blob/master/LICENSE), being created making use of NetBeans and Java. Some of its features include:
