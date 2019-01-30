@@ -148,241 +148,11 @@ public class submodulografico extends javax.swing.JPanel
         //setVisible(true);
         this.validate();
     }
+
+   
     
-    public void salvarconfiguracaoasset()
-    {
-        try
-        {
-                    //funcao para salvar as configuracoes de
-        //simbolo, periodo
-        //indicadores
-        //anotacoes
-        
-        // <editor-fold defaultstate="collapsed" desc="criar subxml com indicadores">
-        String subxmlIndicadores = "";
-        for (int i = 0; i < jPanelIndicadores.getComponentCount(); i++)
-        {
-                panels.analisadorasset.grafico.itemindicador miia = (panels.analisadorasset.grafico.itemindicador)jPanelIndicadores.getComponent(i);
-            subxmlIndicadores = subxmlIndicadores +
-                    "<Indicator>" +
-                        "<Name>" + miia.jLabelNomeItemIndicador.getText() + "</Name>" +
-                        "<ID>" + miia.id + "</ID>" +
-                        "<BCID>" + miia.mbcodeinterpreter.idbcode + "</BCID>" +
-                        "<Parameters>" + miia.mbcodeinterpreter.parametrosbcodejs + "</Parameters>" +
-                    "</Indicator>";
-            
-        }
-        // </editor-fold>
-        
-        // <editor-fold defaultstate="collapsed" desc="criar subxml com annotations">
-        String subxmlAnotacoes = "";
-        for (int i = 0; i < jPanelAnotacoes.getComponentCount(); i++)
-        {
-                panels.analisadorasset.grafico.itemanotacao miaa = (panels.analisadorasset.grafico.itemanotacao)jPanelAnotacoes.getComponent(i);
-            
-            String tipoanotacao = miaa.tipoanotacao;
-            String anotacaoserializada = "";
-            
-            //if (tipoanotacao.equals("line"))
-            //{
-                //org.jfree.chart.annotations.XYLineAnnotation lineserialize = 
-                //        (org.jfree.chart.annotations.XYLineAnnotation) miaa.annotation;
-                
-                //making serialization of the annotations
-                //https://www.tutorialspoint.com/java/java_serialization.htm
-                //https://stackoverflow.com/questions/134492/how-to-serialize-an-object-into-a-string
-                try
-                {
-                    java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-                    java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(baos);
-                    oos.writeObject(miaa.subannotationsanotacao);
-                    oos.close();
-                    anotacaoserializada = java.util.Base64.getEncoder().encodeToString(baos.toByteArray()); 
-                }
-                catch (java.io.IOException ex)
-                {
-                    //necessario
-                }
-            //}
-            
-            
-            
-            subxmlAnotacoes = subxmlAnotacoes +
-                    "<Annotation>" +
-                        "<Name>" + miaa.jLabelNomeItemAnotacao.getText() + "</Name>" +
-                        "<ID>" + miaa.id + "</ID>" +
-                        "<Type>" + miaa.tipoanotacao + "</Type>" +
-                        "<Parameters>" + anotacaoserializada + "</Parameters>" +
-                    "</Annotation>";
-        }
-        // </editor-fold>
-        
-        
-        String xmlSalvar =
-                "<?xml version=\"1.0\"?>" +
-                    "<OpenstockAssetSave>" +
-                        
-                        "<MainInfo>" +
-                            "<Name>" + aassetpai.iaassetpai.jLabelNomeAnalisadorAsset.getText() + "</Name>" +
-                            "<ID>" + aassetpai.iaassetpai.id + "</ID>" +
-                            "<Symbol>" + jTextFieldNomeSimbolo.getText() + "</Symbol>" +
-                            "<Scale>" + escalagraficoescolhido + "</Scale>" +
-                            "<Period>" + jComboBoxPeriodoSimbolo.getSelectedItem().toString() + "</Period>" +
-                        "</MainInfo>" +
-                
-                        "<IndicatorsInfo>" +
-                            subxmlIndicadores +
-                        "</IndicatorsInfo>" +
-                
-                        "<AnnotationsInfo>" +
-                            subxmlAnotacoes +
-                        "</AnnotationsInfo>" +
-                
-                    "</OpenstockAssetSave>";
-        
-            //abrir dialog para criar arquivo de save
-            javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
-            fileChooser.setDialogTitle("Please choose a location and name for the Open Stock save file");
-
-            int userSelection = fileChooser.showSaveDialog(this);
-
-            if (userSelection == javax.swing.JFileChooser.APPROVE_OPTION) 
-            {
-                java.io.File fileToSave = fileChooser.getSelectedFile();
-
-                java.io.PrintWriter writer = new java.io.PrintWriter(fileToSave + ".ossave", "UTF-8");
-                writer.println(xmlSalvar);
-                writer.close();
-            }
-            
-            mierclasses.mcfuncoeshelper.mostrarmensagem("Asset file saved.");
-        }
-        catch (Exception ex)
-        {
-            mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred when saving. Exception: " + ex.getMessage());
-        }
-
-    }
-    
-    public void carregarconfiguracaoasset()
-    {
-
-       try
-       {
-            //abrir janela para selecionar arquivo de save para carregar
-            javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
-            fileChooser.setDialogTitle("Please choose an Open Stock file to load");
-
-            int userSelection = fileChooser.showOpenDialog(this);
-
-            if (userSelection == javax.swing.JFileChooser.APPROVE_OPTION) 
-            {
-                
-                java.io.File fileToLoad = null;
-                DocumentBuilderFactory dbfactory = null;
-                DocumentBuilder dbuilder = null;
-                Document document = null;
-                try
-                {
-                    fileToLoad = fileChooser.getSelectedFile();
-                    dbfactory = DocumentBuilderFactory.newInstance();
-                    dbuilder = dbfactory.newDocumentBuilder();
-                    document = dbuilder.parse(fileToLoad);
-                }
-                catch (Exception ex)
-                {
-                    mierclasses.mcfuncoeshelper.mostrarmensagem(ex.getMessage());
-                }
-                
-                // <editor-fold defaultstate="collapsed" desc="comecar recarregando o submodulo com o nome e simbolo desejado">
-                NodeList listmaininfo = document.getElementsByTagName("MainInfo");
-                Node itemmaininfounico = listmaininfo.item(0);
-                Element elmaininfounico = (Element) itemmaininfounico;
-                String nomeasset = elmaininfounico.getElementsByTagName("Name").item(0).getTextContent();
-                String iditemgrafico = elmaininfounico.getElementsByTagName("ID").item(0).getTextContent();
-                String simbolo = elmaininfounico.getElementsByTagName("Symbol").item(0).getTextContent();
-                String periodo = elmaininfounico.getElementsByTagName("Period").item(0).getTextContent();
-                String escala = elmaininfounico.getElementsByTagName("Scale").item(0).getTextContent();
-                
-                aassetpai.iaassetpai.jLabelNomeAnalisadorAsset.setText(nomeasset);
-                aassetpai.iaassetpai.id = iditemgrafico;
-                jTextFieldNomeSimbolo.setText(simbolo);
-                for (int i = 0; i < jComboBoxPeriodoSimbolo.getItemCount(); i++)
-                {
-                    String textoItemAtual = jComboBoxPeriodoSimbolo.getItemAt(i).toString();
-                    if (textoItemAtual.equals(periodo))
-                    {
-                        jComboBoxPeriodoSimbolo.setSelectedIndex(i);
-                        break;
-                    }
-                }
-                alternartipoescala(escala);
-                //se faz necessario criar novamente o submodulo grafico ao carregar
-                recriarsubmodulografico();
-                // </editor-fold>
-                
-                // <editor-fold defaultstate="collapsed" desc="recarregar indicadores">
-                NodeList listaindicadores = document.getElementsByTagName("Indicator");
-                
-                for (int i = 0; i < listaindicadores.getLength(); i++)
-                {
-                    Node nodeindicador = listaindicadores.item(i);
-                    Element elindicador = (Element) nodeindicador;
-                    String nome_indicador = elindicador.getElementsByTagName("Name").item(0).getTextContent();
-                    String id_indicador = elindicador.getElementsByTagName("ID").item(0).getTextContent();
-                    String bcid_indicador = elindicador.getElementsByTagName("BCID").item(0).getTextContent();
-                    String parametrosbc_indicador = elindicador.getElementsByTagName("Parameters").item(0).getTextContent();
-                
-                    //public itemindicador(mierpanels.submodulografico mpsmg, String idind, String nome, String idbearcode, String parametrosbearcode)
-                    adicionarIndicadorLoad(nome_indicador,id_indicador,bcid_indicador,parametrosbc_indicador);
-                }
-                //mierclasses.mcfuncoeshelper.mostrarmensagem("carregou indicadores");
-                // </editor-fold>
-                
-                // <editor-fold defaultstate="collapsed" desc="recarregar anotacoes">
-                NodeList listaanotacoes = document.getElementsByTagName("Annotation");
-                
-                for (int i = 0; i < listaanotacoes.getLength(); i++)
-                {
-                    Node nodeanotacao = listaanotacoes.item(i);
-                    Element elanotacao = (Element) nodeanotacao;
-                    String nome_anotacao = elanotacao.getElementsByTagName("Name").item(0).getTextContent();
-                    String id_anotacao = elanotacao.getElementsByTagName("ID").item(0).getTextContent();
-                    String tipo_anotacao = elanotacao.getElementsByTagName("Type").item(0).getTextContent();
-                    String parameters_anotacao = elanotacao.getElementsByTagName("Parameters").item(0).getTextContent();
-                    Object objetos_subanotacoes_anotacao = null;
-                    java.util.List<org.jfree.chart.annotations.XYAnnotation> listasubanotacoesdaanotacao = null;
-                    try
-                    {
-                        byte [] data = java.util.Base64.getDecoder().decode(parameters_anotacao);
-                        java.io.ObjectInputStream ois = new java.io.ObjectInputStream(new java.io.ByteArrayInputStream(data));
-                        Object o = ois.readObject();
-                        ois.close();
-                        
-                        objetos_subanotacoes_anotacao = o;
-                        listasubanotacoesdaanotacao = (java.util.List<org.jfree.chart.annotations.XYAnnotation>)objetos_subanotacoes_anotacao;
-                    }
-                    catch (Exception ex)
-                    {
-                        //necessario
-                    }
-                    
-                    adicionarAnotacaoLoad(nome_anotacao,id_anotacao,tipo_anotacao,listasubanotacoesdaanotacao);
-                }
-                //mierclasses.mcfuncoeshelper.mostrarmensagem("carregou anotacoes");
-                // </editor-fold>
-
-            }
-        }
-        catch (Exception ex)
-        {
-            mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred when loading. Exception: " + ex.getMessage());
-        }
-
-    }
-    
-    String escalagraficoescolhido = "linear";
-    void alternartipoescala(String escalaalternar)
+    public String escalagraficoescolhido = "linear";
+    public void alternartipoescala(String escalaalternar)
     {
         if (escalaalternar.equals("linear"))
         {
@@ -1267,12 +1037,12 @@ public class submodulografico extends javax.swing.JPanel
 
     private void jButtonSalvarConfiguracaoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonSalvarConfiguracaoActionPerformed
     {//GEN-HEADEREND:event_jButtonSalvarConfiguracaoActionPerformed
-        salvarconfiguracaoasset();
+        aassetpai.salvardadosasset();
     }//GEN-LAST:event_jButtonSalvarConfiguracaoActionPerformed
 
     private void jButtonCarregarConfiguracaoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonCarregarConfiguracaoActionPerformed
     {//GEN-HEADEREND:event_jButtonCarregarConfiguracaoActionPerformed
-        carregarconfiguracaoasset();
+        aassetpai.carregardadosasset();
     }//GEN-LAST:event_jButtonCarregarConfiguracaoActionPerformed
 
     private void jLabelLinearSwitchMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabelLinearSwitchMouseClicked
@@ -1326,7 +1096,7 @@ public class submodulografico extends javax.swing.JPanel
     private javax.swing.JButton jButtonCarregarConfiguracao;
     private javax.swing.JButton jButtonEscolherSimbolo;
     private javax.swing.JButton jButtonSalvarConfiguracao;
-    private javax.swing.JComboBox<String> jComboBoxPeriodoSimbolo;
+    public javax.swing.JComboBox<String> jComboBoxPeriodoSimbolo;
     private javax.swing.JLabel jLabelAnotacoes;
     private javax.swing.JLabel jLabelFerramentas;
     private javax.swing.JLabel jLabelIndicadores;
@@ -1336,16 +1106,16 @@ public class submodulografico extends javax.swing.JPanel
     private javax.swing.JLabel jLabelNomeSimbolo;
     private javax.swing.JLabel jLabelPeriodoSimbolo;
     private javax.swing.JLabel jLabelPrincipal;
-    private javax.swing.JPanel jPanelAnotacoes;
+    public javax.swing.JPanel jPanelAnotacoes;
     private javax.swing.JPanel jPanelChartHolders;
     private javax.swing.JPanel jPanelFerramentasInfo;
-    private javax.swing.JPanel jPanelIndicadores;
+    public javax.swing.JPanel jPanelIndicadores;
     private javax.swing.JPanel jPanelOHLCChartpanel;
     private javax.swing.JPanel jPanelPrincipal;
     private javax.swing.JPanel jPanelSecondaryChartPanel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSplitPane jSplitPaneChartpanels;
-    private javax.swing.JTextField jTextFieldNomeSimbolo;
+    public javax.swing.JTextField jTextFieldNomeSimbolo;
     // End of variables declaration//GEN-END:variables
 }

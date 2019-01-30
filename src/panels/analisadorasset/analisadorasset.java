@@ -17,6 +17,12 @@
 package panels.analisadorasset;
 
 import java.awt.Color;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  *
@@ -97,6 +103,329 @@ public class analisadorasset extends javax.swing.JPanel
         subtrader.recarregardadossubmoduloofflinetrader();
     }
 
+    public void salvardadosasset()
+    {
+        //funcao para salvar dados do asset: chart e trader offline
+        
+        try
+        {
+        
+            // <editor-fold defaultstate="collapsed" desc="Chart">
+            
+            //funcao para salvar as configuracoes de
+            //simbolo, periodo
+            //indicadores
+            //anotacoes
+
+            // <editor-fold defaultstate="collapsed" desc="criar subxml com indicadores">
+            String subxmlIndicadores = "";
+            for (int i = 0; i < subgrafico.jPanelIndicadores.getComponentCount(); i++)
+            {
+                panels.analisadorasset.grafico.itemindicador miia = (panels.analisadorasset.grafico.itemindicador)subgrafico.jPanelIndicadores.getComponent(i);
+                subxmlIndicadores = subxmlIndicadores +
+                        "<Indicator>" +
+                            "<Name>" + miia.jLabelNomeItemIndicador.getText() + "</Name>" +
+                            "<ID>" + miia.id + "</ID>" +
+                            "<BCID>" + miia.mbcodeinterpreter.idbcode + "</BCID>" +
+                            "<Parameters>" + miia.mbcodeinterpreter.parametrosbcodejs + "</Parameters>" +
+                        "</Indicator>";
+
+            }
+            // </editor-fold>
+
+            // <editor-fold defaultstate="collapsed" desc="criar subxml com annotations">
+            String subxmlAnotacoes = "";
+            for (int i = 0; i < subgrafico.jPanelAnotacoes.getComponentCount(); i++)
+            {
+                panels.analisadorasset.grafico.itemanotacao miaa = (panels.analisadorasset.grafico.itemanotacao)subgrafico.jPanelAnotacoes.getComponent(i);
+
+            String tipoanotacao = miaa.tipoanotacao;
+            String anotacaoserializada = "";
+
+            try
+            {
+                java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+                java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(baos);
+                oos.writeObject(miaa.subannotationsanotacao);
+                oos.close();
+                anotacaoserializada = java.util.Base64.getEncoder().encodeToString(baos.toByteArray()); 
+            }
+            catch (java.io.IOException ex)
+            {
+                //necessario
+            }
+
+            subxmlAnotacoes = subxmlAnotacoes +
+                    "<Annotation>" +
+                        "<Name>" + miaa.jLabelNomeItemAnotacao.getText() + "</Name>" +
+                        "<ID>" + miaa.id + "</ID>" +
+                        "<Type>" + miaa.tipoanotacao + "</Type>" +
+                        "<Parameters>" + anotacaoserializada + "</Parameters>" +
+                    "</Annotation>";
+            }
+            // </editor-fold>
+
+
+            String subxmlChart =
+
+                    "<CMainInfo>" +
+                            "<Symbol>" + subgrafico.jTextFieldNomeSimbolo.getText() + "</Symbol>" +
+                            "<Scale>" + subgrafico.escalagraficoescolhido + "</Scale>" +
+                            "<Period>" + subgrafico.jComboBoxPeriodoSimbolo.getSelectedItem().toString() + "</Period>" +
+                        "</CMainInfo>" +
+
+                        "<IndicatorsInfo>" +
+                            subxmlIndicadores +
+                        "</IndicatorsInfo>" +
+
+                        "<AnnotationsInfo>" +
+                            subxmlAnotacoes +
+                        "</AnnotationsInfo>";
+
+            // </editor-fold>
+            
+            // <editor-fold defaultstate="collapsed" desc="Trader">
+            
+            String subxmlTransacoes = "";
+            for (int i = 0; i < subtrader.otrader.transacoes.size(); i++)
+            {
+                mierclasses.mcofflinetransaction transacaoatual = (mierclasses.mcofflinetransaction) subtrader.otrader.transacoes.get(i);
+                
+                subxmlTransacoes = subxmlTransacoes + 
+                        "<Transaction>" +
+                            "<ID>" + transacaoatual.idstr + "</ID>" +
+                            "<TypeTransaction>" + transacaoatual.tipostr + "</TypeTransaction>" +
+                            "<PriceTransaction>" + transacaoatual.preco_tradestr + "</PriceTransaction>" +
+                            "<AmountTransaction>" + transacaoatual.quantidadestr + "</AmountTransaction>" +
+                            "<TimestamplongTransaction>" + transacaoatual.timestampstr + "</TimestamplongTransaction>" +
+                        "</Transaction>";
+            }
+            
+            String subxmlTrader =
+
+                    "<TOMainInfo>" +
+                            "<Symbol>" + subtrader.otrader.simbolo + "</Symbol>" +
+                            "<BaseCurrencyAmount>" + String.valueOf(subtrader.otrader.quantidademoedabase) + "</BaseCurrencyAmount>" +
+                            "<QuoteCurrencyAmount>" + String.valueOf(subtrader.otrader.quantidademoedacotacao) + "</QuoteCurrencyAmount>" +
+                        "</TOMainInfo>" +
+
+                        "<TransactionsInfo>" +
+                            subxmlTransacoes +
+                        "</TransactionsInfo>";
+            
+            //</editor-fold>
+            
+            String xmlSave = 
+                "<?xml version=\"1.0\"?>" +
+                    "<OpenstockAssetSave>" +
+                    
+                        "<About>" +
+                            "<Name>" + subgrafico.aassetpai.iaassetpai.jLabelNomeAnalisadorAsset.getText() + "</Name>" +
+                            "<ID>" + subgrafico.aassetpai.iaassetpai.id + "</ID>" +
+                        "</About>" +
+                    
+                        "<Chart>" +
+                            subxmlChart +
+                        "</Chart>" +
+                    
+                        "<TraderOffline>" +
+                            subxmlTrader +
+                        "</TraderOffline>" +
+                    
+                    "</OpenstockAssetSave>";
+
+
+            //abrir dialog para criar arquivo de save
+            javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+            fileChooser.setDialogTitle("Please choose a location and name for the Open Stock save file");
+
+            int userSelection = fileChooser.showSaveDialog(this);
+
+            if (userSelection == javax.swing.JFileChooser.APPROVE_OPTION) 
+            {
+                java.io.File fileToSave = fileChooser.getSelectedFile();
+
+                java.io.PrintWriter writer = new java.io.PrintWriter(fileToSave + ".ossave", "UTF-8");
+                writer.println(xmlSave);
+                writer.close();
+            }
+            
+            mierclasses.mcfuncoeshelper.mostrarmensagem("Asset file saved.");
+        }
+        catch (Exception ex)
+        {
+            mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred when saving. Exception: " + ex.getMessage());
+        }
+        
+    }
+    
+    
+    public void carregardadosasset()
+    {
+        //try
+        //{
+            //abrir janela para selecionar arquivo de save para carregar
+            javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+            fileChooser.setDialogTitle("Please choose an Open Stock file to load");
+
+            int userSelection = fileChooser.showOpenDialog(this);
+
+            if (userSelection == javax.swing.JFileChooser.APPROVE_OPTION) 
+            {
+                
+                java.io.File fileToLoad = null;
+                DocumentBuilderFactory dbfactory = null;
+                DocumentBuilder dbuilder = null;
+                Document document = null;
+                try
+                {
+                    fileToLoad = fileChooser.getSelectedFile();
+                    dbfactory = DocumentBuilderFactory.newInstance();
+                    dbuilder = dbfactory.newDocumentBuilder();
+                    document = dbuilder.parse(fileToLoad);
+                }
+                catch (Exception ex)
+                {
+                    mierclasses.mcfuncoeshelper.mostrarmensagem(ex.getMessage());
+                }
+                
+                
+                //recarregar nome do item asset associado a este
+                iaassetpai.renomearitem(assetsimbolo);
+                NodeList listabout = document.getElementsByTagName("About");
+                Node itemaboutinfounico = listabout.item(0);
+                Element elaboutinfounico = (Element) itemaboutinfounico;
+                String nomeasset = elaboutinfounico.getElementsByTagName("Name").item(0).getTextContent();
+                String idasset = elaboutinfounico.getElementsByTagName("ID").item(0).getTextContent();
+                iaassetpai.jLabelNomeAnalisadorAsset.setText(nomeasset);
+                iaassetpai.id = idasset;
+                
+                // <editor-fold defaultstate="collapsed" desc="Recarregar Chart">
+                
+                // <editor-fold defaultstate="collapsed" desc="comecar recarregando o submodulo com o nome e simbolo desejado">
+                NodeList listchartmaininfo = document.getElementsByTagName("CMainInfo");
+                Node itemchartmaininfounico = listchartmaininfo.item(0);
+                Element elchartmaininfounico = (Element) itemchartmaininfounico;
+                String simbolochart = elchartmaininfounico.getElementsByTagName("Symbol").item(0).getTextContent();
+                String periodochart = elchartmaininfounico.getElementsByTagName("Period").item(0).getTextContent();
+                String escalachart = elchartmaininfounico.getElementsByTagName("Scale").item(0).getTextContent();
+                
+                subgrafico.jTextFieldNomeSimbolo.setText(simbolochart);
+                for (int i = 0; i < subgrafico.jComboBoxPeriodoSimbolo.getItemCount(); i++)
+                {
+                    String textoItemAtual = subgrafico.jComboBoxPeriodoSimbolo.getItemAt(i).toString();
+                    if (textoItemAtual.equals(periodochart))
+                    {
+                        subgrafico.jComboBoxPeriodoSimbolo.setSelectedIndex(i);
+                        break;
+                    }
+                }
+                subgrafico.alternartipoescala(escalachart);
+                //se faz necessario criar novamente o submodulo grafico ao carregar
+                subgrafico.recriarsubmodulografico();
+                // </editor-fold>
+                
+                // <editor-fold defaultstate="collapsed" desc="recarregar indicadores">
+                NodeList listaindicadores = document.getElementsByTagName("Indicator");
+                
+                for (int i = 0; i < listaindicadores.getLength(); i++)
+                {
+                    Node nodeindicador = listaindicadores.item(i);
+                    Element elindicador = (Element) nodeindicador;
+                    String nome_indicador = elindicador.getElementsByTagName("Name").item(0).getTextContent();
+                    String id_indicador = elindicador.getElementsByTagName("ID").item(0).getTextContent();
+                    String bcid_indicador = elindicador.getElementsByTagName("BCID").item(0).getTextContent();
+                    String parametrosbc_indicador = elindicador.getElementsByTagName("Parameters").item(0).getTextContent();
+                
+                    //public itemindicador(mierpanels.submodulografico mpsmg, String idind, String nome, String idbearcode, String parametrosbearcode)
+                    subgrafico.adicionarIndicadorLoad(nome_indicador,id_indicador,bcid_indicador,parametrosbc_indicador);
+                }
+                //mierclasses.mcfuncoeshelper.mostrarmensagem("carregou indicadores");
+                // </editor-fold>
+                
+                // <editor-fold defaultstate="collapsed" desc="recarregar anotacoes">
+                NodeList listaanotacoes = document.getElementsByTagName("Annotation");
+                
+                for (int i = 0; i < listaanotacoes.getLength(); i++)
+                {
+                    Node nodeanotacao = listaanotacoes.item(i);
+                    Element elanotacao = (Element) nodeanotacao;
+                    String nome_anotacao = elanotacao.getElementsByTagName("Name").item(0).getTextContent();
+                    String id_anotacao = elanotacao.getElementsByTagName("ID").item(0).getTextContent();
+                    String tipo_anotacao = elanotacao.getElementsByTagName("Type").item(0).getTextContent();
+                    String parameters_anotacao = elanotacao.getElementsByTagName("Parameters").item(0).getTextContent();
+                    Object objetos_subanotacoes_anotacao = null;
+                    java.util.List<org.jfree.chart.annotations.XYAnnotation> listasubanotacoesdaanotacao = null;
+                    try
+                    {
+                        byte [] data = java.util.Base64.getDecoder().decode(parameters_anotacao);
+                        java.io.ObjectInputStream ois = new java.io.ObjectInputStream(new java.io.ByteArrayInputStream(data));
+                        Object o = ois.readObject();
+                        ois.close();
+                        
+                        objetos_subanotacoes_anotacao = o;
+                        listasubanotacoesdaanotacao = (java.util.List<org.jfree.chart.annotations.XYAnnotation>)objetos_subanotacoes_anotacao;
+                    }
+                    catch (Exception ex)
+                    {
+                        //necessario
+                    }
+                    
+                    subgrafico.adicionarAnotacaoLoad(nome_anotacao,id_anotacao,tipo_anotacao,listasubanotacoesdaanotacao);
+                }
+                //mierclasses.mcfuncoeshelper.mostrarmensagem("carregou anotacoes");
+                // </editor-fold>
+                
+                //</editor-fold>
+                
+                // <editor-fold defaultstate="collapsed" desc="Recarregar Trader">
+                NodeList listotradermaininfo = document.getElementsByTagName("TOMainInfo");
+                Node itemotradermaininfounico = listotradermaininfo.item(0);
+                Element elotradermaininfounico = (Element) itemotradermaininfounico;
+                String simbolootrader = elotradermaininfounico.getElementsByTagName("Symbol").item(0).getTextContent();
+                String quantidademoedabase = elotradermaininfounico.getElementsByTagName("BaseCurrencyAmount").item(0).getTextContent();
+                String quantidademoedacotacao = elotradermaininfounico.getElementsByTagName("QuoteCurrencyAmount").item(0).getTextContent();
+                
+                subtrader.otrader.simbolo = simbolootrader;
+                subtrader.otrader.quantidademoedabase = Double.valueOf(quantidademoedabase);
+                subtrader.otrader.quantidademoedacotacao = Double.valueOf(quantidademoedacotacao);
+                
+                
+                // <editor-fold defaultstate="collapsed" desc="recarregar transacoes">
+                NodeList listatransacoes = document.getElementsByTagName("Transaction");
+                
+                for (int i = 0; i < listatransacoes.getLength(); i++)
+                {
+                    Node nodetransacao = listatransacoes.item(i);
+                    Element eltransacao = (Element) nodetransacao;
+                    String id_transacao = eltransacao.getElementsByTagName("ID").item(0).getTextContent();
+                    String tipo_transacao = eltransacao.getElementsByTagName("TypeTransaction").item(0).getTextContent();
+                    String preco_transacao = eltransacao.getElementsByTagName("PriceTransaction").item(0).getTextContent();
+                    String quantidade_transacao = eltransacao.getElementsByTagName("AmountTransaction").item(0).getTextContent();
+                    String timestamplongstr_transacao = eltransacao.getElementsByTagName("TimestamplongTransaction").item(0).getTextContent();
+                
+                    //public itemindicador(mierpanels.submodulografico mpsmg, String idind, String nome, String idbearcode, String parametrosbearcode)
+                    //subgrafico.adicionarIndicadorLoad(nome_indicador,id_indicador,bcid_indicador,parametrosbc_indicador);
+                    
+                    mierclasses.mcofflinetransaction mcotransacaoadicionar = new mierclasses.mcofflinetransaction
+                        (id_transacao, tipo_transacao, preco_transacao, quantidade_transacao, timestamplongstr_transacao);
+                    
+                    subtrader.otrader.transacoes.add(mcotransacaoadicionar);
+                }
+                // </editor-fold>
+                
+                
+                subtrader.recarregardadossubmoduloofflinetrader();
+                //</editor-fold>
+            }
+        //}
+        //catch (Exception ex)
+        //{
+        //    mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred when loading. Exception: " + ex.getMessage());
+        //}
+
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -124,7 +453,7 @@ public class analisadorasset extends javax.swing.JPanel
             }
         });
 
-        jButtonMostrarTrader.setText("Trader (WIP)");
+        jButtonMostrarTrader.setText("Offline Trader");
         jButtonMostrarTrader.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -155,7 +484,7 @@ public class analisadorasset extends javax.swing.JPanel
                 .addComponent(jButtonMostrarGrafico)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonMostrarTrader)
-                .addContainerGap(462, Short.MAX_VALUE))
+                .addContainerGap(458, Short.MAX_VALUE))
             .addComponent(jPanelSubmodulosHolder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanelEscolherSubmoduloLayout.setVerticalGroup(

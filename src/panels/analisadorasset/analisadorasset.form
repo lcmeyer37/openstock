@@ -41,7 +41,7 @@
                   <Component id="jButtonMostrarGrafico" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButtonMostrarTrader" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="462" max="32767" attributes="0"/>
+                  <EmptySpace pref="458" max="32767" attributes="0"/>
               </Group>
               <Component id="jPanelSubmodulosHolder" alignment="0" max="32767" attributes="0"/>
           </Group>
@@ -74,7 +74,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButtonMostrarTrader">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Trader (WIP)"/>
+            <Property name="text" type="java.lang.String" value="Offline Trader"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonMostrarTraderActionPerformed"/>

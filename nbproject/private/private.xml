@@ -3,32 +3,21 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/mierclasses/mcquote.java</file>
-            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/frames/configuracoes.java</file>
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/frames/analisadorasset/offlinetrader/adicionarremoverfundos.java</file>
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/mierclasses/mciexcomms.java</file>
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/mierclasses/mcofflinetransaction.java</file>
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/frames/analisadorasset/renomearitemanalisadorasset.java</file>
-            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/frames/analisadorasset/grafico/adicionarsimbolo.java</file>
-            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/mierclasses/mcwebcomms.java</file>
-            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/panels/analisadorasset/analisadorasset.java</file>
-            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/frames/analisadorasset/grafico/chartseparado.java</file>
-            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/frames/analisadorasset/grafico/renomearitemindicador.java</file>
-            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/panels/analisadorasset/offlinetrader/itemtransacao.java</file>
-            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/panels/analisadorasset/grafico/submodulografico.java</file>
-            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/panels/analisadorasset/grafico/itemanotacao.java</file>
-            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/mierclasses/mcbearcodeinterpreter.java</file>
-            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/nbproject/build-impl.xml</file>
-            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/frames/analisadorasset/grafico/adicionarindicador.java</file>
-            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/mierclasses/mcjtextareahandler.java</file>
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/panels/analisadorasset/itemanalisadorasset.java</file>
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/panels/analisadorasset/offlinetrader/submoduloofflinetrader.java</file>
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/frames/analisadorasset/grafico/renomearitemanotacao.java</file>
-            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/frames/license.java</file>
-            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/mierclasses/mcchartgenerator.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/panels/analisadorasset/analisadorasset.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/main/TelaPrincipal.java</file>
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/panels/analisadorasset/grafico/itemindicador.java</file>
-            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/frames/editorbearcode.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/panels/analisadorasset/offlinetrader/itemtransacao.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/frames/analisadorasset/grafico/renomearitemindicador.java</file>
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/mierclasses/mcofflinetrader.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/panels/analisadorasset/grafico/submodulografico.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/src/panels/analisadorasset/grafico/itemanotacao.java</file>
         </group>
     </open-files>
 </project-private>

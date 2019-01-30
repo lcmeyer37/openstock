@@ -62,8 +62,8 @@ public class renomearitemanotacao extends javax.swing.JFrame
             jPanelFundo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelFundo2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextFieldNovoNomeItemGrafico, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextFieldNovoNomeItemGrafico, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButtonConfirmarNovoNomeItemGrafico)
                 .addContainerGap())
         );

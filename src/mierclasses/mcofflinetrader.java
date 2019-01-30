@@ -26,7 +26,7 @@ public class mcofflinetrader
     panels.analisadorasset.offlinetrader.submoduloofflinetrader submodulooftraderpai;
     
     
-    public String simbolo; //simbolo relacionado a estre trader
+    public String simbolo; //simbolo relacionado a este trader
     
     public double quantidademoedabase; //quantidade de moeda base que este trader tem (fundos offline)
     public double quantidademoedacotacao; //quantidade de moeda cotacao que este trader tem (fundos offline)
@@ -68,9 +68,11 @@ public class mcofflinetrader
             java.util.List<Double> bidask = submodulooftraderpai.aassetpai.iaassetpai.tprincipalpai.miex.receberlastbidaskofflinetradingsample();
             double bid = bidask.get(0);
             double ask = bidask.get(1);
-            
+
             melhorbid = bid;
             melhorask = ask;
+            
+            //mierclasses.mcfuncoeshelper.mostrarmensagem("Bid: " + String.valueOf(bid) + " Ask: " + String.valueOf(ask));
         }
         else if ((simbolo.equals("testdata")) == false)
         {
@@ -80,6 +82,8 @@ public class mcofflinetrader
             
             melhorbid = bid;
             melhorask = ask;
+            
+            //mierclasses.mcfuncoeshelper.mostrarmensagem("Bid: " + String.valueOf(bid) + " Ask: " + String.valueOf(ask));
         }
     }
     

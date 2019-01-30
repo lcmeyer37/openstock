@@ -39,6 +39,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         aassetpai = aapai;
         otrader = new mierclasses.mcofflinetrader(this);
         
+        jPanelTraderbot.setVisible(false);
         inicializarsubmoduloofflinetrader();
     }
     
@@ -722,9 +723,9 @@ public class submoduloofflinetrader extends javax.swing.JPanel
 
         jPanelSubTraderbot.setBackground(new java.awt.Color(35, 35, 35));
 
-        jLabelTraderbot.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelTraderbot.setForeground(new java.awt.Color(255, 205, 205));
         jLabelTraderbot.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelTraderbot.setText("Trader Bot Controller");
+        jLabelTraderbot.setText("Trader Bot Controller (WIP)");
 
         javax.swing.GroupLayout jPanelSubTraderbotLayout = new javax.swing.GroupLayout(jPanelSubTraderbot);
         jPanelSubTraderbot.setLayout(jPanelSubTraderbotLayout);

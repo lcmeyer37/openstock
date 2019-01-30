@@ -842,10 +842,10 @@
             <Component class="javax.swing.JLabel" name="jLabelTraderbot">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                  <Color blue="cd" green="cd" red="ff" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="Trader Bot Controller"/>
+                <Property name="text" type="java.lang.String" value="Trader Bot Controller (WIP)"/>
               </Properties>
             </Component>
           </SubComponents>

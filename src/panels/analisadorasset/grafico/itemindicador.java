@@ -34,7 +34,7 @@ public class itemindicador extends javax.swing.JPanel
     public Boolean chartseparadoembottom;
     
     //id deste indicador
-    String id;
+    public String id;
     
     //construtor novo indicador
     public itemindicador(panels.analisadorasset.grafico.submodulografico mpsmg, String idbearcode, String parametrosbearcode)

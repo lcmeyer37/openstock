@@ -59,12 +59,12 @@ public class renomearitemanalisadorasset extends javax.swing.JFrame
         jPanelFundo2.setLayout(jPanelFundo2Layout);
         jPanelFundo2Layout.setHorizontalGroup(
             jPanelFundo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 331, Short.MAX_VALUE)
+            .addGap(0, 380, Short.MAX_VALUE)
             .addGroup(jPanelFundo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelFundo2Layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jTextFieldNovoNomeItemGrafico, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jTextFieldNovoNomeItemGrafico, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(jButtonConfirmarNovoNomeItemGrafico)
                     .addContainerGap()))
         );

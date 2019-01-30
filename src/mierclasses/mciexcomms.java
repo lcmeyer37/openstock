@@ -491,25 +491,13 @@ public class mciexcomms
     {
         //funcao para estimar um valor de ask e bid para o simbolo atual, para testar o trader bot
         mierclasses.mcquote quote = receberquote(simbolo);
-        
         double ultimoclose = quote.closed;
-        
         double rangebidaskestimado = 0.0025;
         
-        //os valores de bid e ask no momento serao estimados, ja que os valores de ask e bid reais nem sempre estao
-        //disponiveis pelo IEX API por conta de diversos fatores: indisponibilidade de servico, market closed, etc,
-        //e o interessante no modo offline eh sempre ter um valor para testar o bot em cima.
-        
-        //no momento o bid e ask serao estimados como -+ 0.25% do close final recebido
-        
-        double bidestimado = ultimoclose - (ultimoclose*rangebidaskestimado);
-        if (bidestimado < quote.lowd)
-            bidestimado = quote.lowd;
-        
-        double askestimado = ultimoclose + (ultimoclose*rangebidaskestimado);
-        if (askestimado > quote.highd)
-            askestimado = quote.highd;
-        
+        double variacao = ultimoclose*rangebidaskestimado;
+        double bidestimado = ultimoclose - variacao;
+        double askestimado = ultimoclose + variacao;
+
         //https://stackoverflow.com/questions/20039098/issue-creating-a-double-array-list
         java.util.List<Double> retorno = new java.util.ArrayList<>();
         retorno.add(bidestimado);
@@ -535,13 +523,9 @@ public class mciexcomms
         //no momento o bid e ask serao estimados como -+ 0.25% do close final recebido,
         //e eles nunca sairao do high low da candle
         
-        double bidestimado = ultimoclose - (ultimoclose*rangebidaskestimado);
-        if (bidestimado < ultimacandlesample.lowd)
-            bidestimado = ultimacandlesample.lowd;
-        
-        double askestimado = ultimoclose + (ultimoclose*rangebidaskestimado);
-        if (askestimado > ultimacandlesample.highd)
-            askestimado = ultimacandlesample.highd;
+        double variacao = ultimoclose*rangebidaskestimado;
+        double bidestimado = ultimoclose - variacao;
+        double askestimado = ultimoclose + variacao;
         
         //https://stackoverflow.com/questions/20039098/issue-creating-a-double-array-list
         java.util.List<Double> retorno = new java.util.ArrayList<>();
