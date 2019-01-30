@@ -143,6 +143,7 @@ public class TelaPrincipal extends javax.swing.JFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Open Stock");
+        setMinimumSize(new java.awt.Dimension(1200, 1000));
 
         jPanelHolderAnalisadorAsset.setBackground(new java.awt.Color(25, 25, 25));
 
@@ -150,11 +151,11 @@ public class TelaPrincipal extends javax.swing.JFrame
         jPanelHolderAnalisadorAsset.setLayout(jPanelHolderAnalisadorAssetLayout);
         jPanelHolderAnalisadorAssetLayout.setHorizontalGroup(
             jPanelHolderAnalisadorAssetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 745, Short.MAX_VALUE)
+            .addGap(0, 696, Short.MAX_VALUE)
         );
         jPanelHolderAnalisadorAssetLayout.setVerticalGroup(
             jPanelHolderAnalisadorAssetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 544, Short.MAX_VALUE)
+            .addGap(0, 575, Short.MAX_VALUE)
         );
 
         jLabelAdicionarAnalisadorAsset.setText("Assets");

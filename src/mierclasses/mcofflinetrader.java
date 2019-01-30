@@ -224,7 +224,7 @@ public class mcofflinetrader
             
             if (quantidadevendabase <= quantidademoedabase)
             {
-                quantidademoedabase = quantidademoedabase - quantidademoedabase;
+                quantidademoedabase = quantidademoedabase - quantidadevendabase;
                 quantidademoedacotacao = quantidademoedacotacao + ganhovenda;
 
                 mierclasses.mcofflinetransaction novatransacao = new
@@ -252,6 +252,7 @@ public class mcofflinetrader
     public double custototalcompra_basecotacao(double quantidade)
     {
         //funcao para retornar o custo total de compra de moeda base com moeda cotacao
+        atualizarbidask(); //sempre atualizar o bid ask com o ultimo valor antes de venda
         double custosemtaxa = quantidade*melhorask;
         double taxacompra = custosemtaxa*feecompra;
         double custototal = custosemtaxa + taxacompra;
@@ -262,11 +263,18 @@ public class mcofflinetrader
     public double ganhototalvenda_basecotacao(double quantidade)
     {
         //funcao para retornar o ganho total de venda de moeda base para moeda cotacao
+        atualizarbidask(); //sempre atualizar o bid ask com o ultimo valor antes de venda
         double ganhosemtaxa = quantidade*melhorbid;
         double taxavenda = ganhosemtaxa*feevenda;
         double ganhototal = ganhosemtaxa - taxavenda;
         
         return ganhototal;
+    }
+    
+    public double totalfundos_moedacotacao()
+    {
+        //funcao para retornar o total de fundos deste trader
+        return (quantidademoedabase*melhorbid + quantidademoedacotacao);
     }
     // </editor-fold>
 }

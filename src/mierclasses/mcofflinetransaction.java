@@ -41,7 +41,7 @@ public class mcofflinetransaction
         quantidadestr = quan;
         timestampstr = tm;
         
-        if (preco_tradestr.equals("NN") == false)
+        if (preco_tradestr.equals("(NN)") == false)
             preco_traded = Double.valueOf(preco_tradestr);
         
         quantidaded = Double.valueOf(quantidadestr);

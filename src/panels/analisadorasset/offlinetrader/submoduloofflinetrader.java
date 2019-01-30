@@ -59,8 +59,10 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jTextFieldMelhorBid.setText(String.format( "%.6f",otrader.melhorbid));
         jTextFieldMoedaBaseAtual.setText(String.format( "%.6f",otrader.quantidademoedabase));
         jTextFieldMoedaCotacaoAtual.setText(String.format( "%.6f",otrader.quantidademoedacotacao));
+        jLabelTotalFundos.setText("Total (Quote Value): " + String.format( "%.6f",otrader.totalfundos_moedacotacao()));
         jLabelFeeCompra.setText("Fee " + String.format( "%.2f",100*otrader.feecompra) + "%");
         jLabelFeeVenda.setText("Fee " + String.format( "%.2f",100*otrader.feevenda) + "%");
+        
         
         this.validate();
         this.repaint();
@@ -80,10 +82,12 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jTextFieldMelhorBid.setText(String.format( "%.6f",otrader.melhorbid));
         jTextFieldMoedaBaseAtual.setText(String.format( "%.6f",otrader.quantidademoedabase));
         jTextFieldMoedaCotacaoAtual.setText(String.format( "%.6f",otrader.quantidademoedacotacao));
+        jLabelTotalFundos.setText("Total (Quote Value): " + String.format( "%.6f",otrader.totalfundos_moedacotacao()));
         jLabelFeeCompra.setText("Fee " + String.format( "%.2f",100*otrader.feecompra) + "%");
         jLabelFeeVenda.setText("Fee " + String.format( "%.2f",100*otrader.feevenda) + "%");
         
         //atualizar lista de transacoes offline
+        jPanelLinhasTransacoes.removeAll();
         for (int i = 0; i < otrader.transacoes.size(); i++)
         {
             jPanelLinhasTransacoes.add(new panels.analisadorasset.offlinetrader.itemtransacao(otrader.transacoes.get(i)));
@@ -141,6 +145,84 @@ public class submoduloofflinetrader extends javax.swing.JPanel
             return "erro - " + ex.getMessage();
         }
     }
+    
+    void atualizarvalortotalprevisaocompra()
+    {
+        try
+        {
+            double quantidadecompra = Double.valueOf(jTextFieldComprarQuantidade.getText());
+            double custototal = otrader.custototalcompra_basecotacao(quantidadecompra);
+            jTextFieldComprarTotal.setText(String.format( "%.6f",custototal));
+        }
+        catch (Exception ex)
+        {
+                        jTextFieldComprarTotal.setText("");
+        }
+    }
+    
+    public void realizarcompra()
+    {
+        try
+        {
+            String resposta = "erro - desconhecido";
+            double valor = Double.valueOf(jTextFieldComprarQuantidade.getText());
+            resposta = otrader.realizarcompra_basecotacao(valor);
+
+            if (resposta.equals("ok") == true)
+            {
+                //considerando que a transacao foi bem sucedida, recarregar submodulo para mostrar nova linha de transacao
+                recarregardadossubmoduloofflinetrader();
+            }
+            else
+            {
+                mierclasses.mcfuncoeshelper.mostrarmensagem(resposta);
+            }
+        }
+        catch (Exception ex)
+        {
+            //caso aja algum problema, ignorar todo o processo de transacao
+            mierclasses.mcfuncoeshelper.mostrarmensagem("erro - " + ex.getMessage());
+        }
+    }
+    
+    void atualizarvalortotalprevisaovenda()
+    {
+        try
+        {
+            double quantidadevenda = Double.valueOf(jTextFieldVenderQuantidade.getText());
+            double ganhototal = otrader.ganhototalvenda_basecotacao(quantidadevenda);
+            jTextFieldVenderTotal.setText(String.format( "%.6f",ganhototal));
+        }
+        catch (Exception ex)
+        {
+            jTextFieldVenderTotal.setText("");
+        }
+    }
+    
+    public void realizarvenda()
+    {
+        try
+        {
+            String resposta = "erro - desconhecido";
+            double valor = Double.valueOf(jTextFieldVenderQuantidade.getText());
+            resposta = otrader.realizarvenda_basecotacao(valor);
+
+            if (resposta.equals("ok") == true)
+            {
+                //considerando que a transacao foi bem sucedida, recarregar submodulo para mostrar nova linha de transacao
+                recarregardadossubmoduloofflinetrader();
+            }
+            else
+            {
+                mierclasses.mcfuncoeshelper.mostrarmensagem(resposta);
+            }
+        }
+        catch (Exception ex)
+        {
+            //caso aja algum problema, ignorar todo o processo de transacao
+            mierclasses.mcfuncoeshelper.mostrarmensagem("erro - " + ex.getMessage());
+        }
+    }
     // </editor-fold>
     
     /**
@@ -183,11 +265,17 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jTextFieldMoedaBaseAtual = new javax.swing.JTextField();
         jTextFieldMoedaCotacaoAtual = new javax.swing.JTextField();
         jButtonAlterarFundos = new javax.swing.JButton();
+        jLabelTotalFundos = new javax.swing.JLabel();
         jPanelTransacoes = new javax.swing.JPanel();
+        jPanelHeaderTransacoes = new javax.swing.JPanel();
+        jPanelSub = new javax.swing.JPanel();
+        jLabelID = new javax.swing.JLabel();
+        jLabelTipoTransacao = new javax.swing.JLabel();
+        jLabelPrecoTransacao = new javax.swing.JLabel();
+        jLabelQuantidadeTransacao = new javax.swing.JLabel();
+        jLabelTimestampTransacao = new javax.swing.JLabel();
         jPanelSubTransacoes = new javax.swing.JPanel();
         jLabelTransacoes = new javax.swing.JLabel();
-        jPanelHeaderTransacoes = new javax.swing.JPanel();
-        jLabelHeaderTransacoes = new javax.swing.JLabel();
         jScrollPaneLinhasTransacoes = new javax.swing.JScrollPane();
         jPanelLinhasTransacoes = new javax.swing.JPanel();
         jPanelTraderbot = new javax.swing.JPanel();
@@ -203,12 +291,19 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jPanelCompraManual.setBackground(new java.awt.Color(120, 120, 120));
 
         jLabelComprarQuantidade.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelComprarQuantidade.setText("Amount:");
+        jLabelComprarQuantidade.setText("Base Amount:");
 
         jTextFieldComprarQuantidade.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jTextFieldComprarQuantidade.addCaretListener(new javax.swing.event.CaretListener()
+        {
+            public void caretUpdate(javax.swing.event.CaretEvent evt)
+            {
+                jTextFieldComprarQuantidadeCaretUpdate(evt);
+            }
+        });
 
         jLabelComprarTotal.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelComprarTotal.setText("Total:");
+        jLabelComprarTotal.setText("Quote Cost Estimate:");
 
         jTextFieldComprarTotal.setEditable(false);
         jTextFieldComprarTotal.setBackground(new java.awt.Color(120, 120, 120));
@@ -269,19 +364,17 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                 .addContainerGap()
                 .addGroup(jPanelCompraManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelCompraManualLayout.createSequentialGroup()
-                        .addComponent(jLabelFeeCompra, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
+                        .addComponent(jLabelFeeCompra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonComprarManual))
                     .addGroup(jPanelCompraManualLayout.createSequentialGroup()
-                        .addComponent(jLabelComprarTotal)
-                        .addGap(41, 41, 41)
-                        .addComponent(jTextFieldComprarTotal))
-                    .addGroup(jPanelCompraManualLayout.createSequentialGroup()
                         .addGroup(jPanelCompraManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelMelhorAsk)
-                            .addComponent(jLabelComprarQuantidade))
+                            .addComponent(jLabelComprarQuantidade)
+                            .addComponent(jLabelComprarTotal))
                         .addGap(23, 23, 23)
                         .addGroup(jPanelCompraManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextFieldComprarTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
                             .addComponent(jTextFieldMelhorAsk)
                             .addComponent(jTextFieldComprarQuantidade))))
                 .addContainerGap())
@@ -312,12 +405,19 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jPanelVendaManual.setBackground(new java.awt.Color(120, 120, 120));
 
         jLabelVenderQuantidade.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelVenderQuantidade.setText("Amount:");
+        jLabelVenderQuantidade.setText("Base Amount:");
 
         jTextFieldVenderQuantidade.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jTextFieldVenderQuantidade.addCaretListener(new javax.swing.event.CaretListener()
+        {
+            public void caretUpdate(javax.swing.event.CaretEvent evt)
+            {
+                jTextFieldVenderQuantidadeCaretUpdate(evt);
+            }
+        });
 
         jLabelVenderTotal.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelVenderTotal.setText("Total:");
+        jLabelVenderTotal.setText("Quote Gain Estimate:");
 
         jTextFieldVenderTotal.setEditable(false);
         jTextFieldVenderTotal.setBackground(new java.awt.Color(120, 120, 120));
@@ -325,6 +425,13 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jTextFieldVenderTotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         jButtonVenderManual.setText("Sell Market");
+        jButtonVenderManual.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonVenderManualActionPerformed(evt);
+            }
+        });
 
         jPanelSubVender.setBackground(new java.awt.Color(35, 35, 35));
 
@@ -364,7 +471,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                 .addContainerGap()
                 .addGroup(jPanelVendaManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelVendaManualLayout.createSequentialGroup()
-                        .addComponent(jLabelFeeVenda, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
+                        .addComponent(jLabelFeeVenda, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
                         .addGap(41, 41, 41)
                         .addComponent(jButtonVenderManual))
                     .addGroup(jPanelVendaManualLayout.createSequentialGroup()
@@ -374,9 +481,9 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                             .addComponent(jLabelVenderTotal))
                         .addGap(23, 23, 23)
                         .addGroup(jPanelVendaManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldVenderTotal)
                             .addComponent(jTextFieldMelhorBid)
-                            .addComponent(jTextFieldVenderQuantidade))))
+                            .addComponent(jTextFieldVenderQuantidade)
+                            .addComponent(jTextFieldVenderTotal, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
         jPanelVendaManualLayout.setVerticalGroup(
@@ -446,23 +553,28 @@ public class submoduloofflinetrader extends javax.swing.JPanel
             }
         });
 
+        jLabelTotalFundos.setFont(new java.awt.Font("Lucida Grande", 2, 12)); // NOI18N
+        jLabelTotalFundos.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelTotalFundos.setText("Total (Quote Value):");
+
         javax.swing.GroupLayout jPanelFundosLayout = new javax.swing.GroupLayout(jPanelFundos);
         jPanelFundos.setLayout(jPanelFundosLayout);
         jPanelFundosLayout.setHorizontalGroup(
             jPanelFundosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanelSubFundos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFundosLayout.createSequentialGroup()
+            .addGroup(jPanelFundosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelFundosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButtonAlterarFundos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanelFundosLayout.createSequentialGroup()
+                .addGroup(jPanelFundosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonAlterarFundos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFundosLayout.createSequentialGroup()
                         .addGroup(jPanelFundosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelMoedaBaseAtual)
                             .addComponent(jLabelMoedaCotacaoAtual))
                         .addGap(23, 23, 23)
                         .addGroup(jPanelFundosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextFieldMoedaBaseAtual)
-                            .addComponent(jTextFieldMoedaCotacaoAtual))))
+                            .addComponent(jTextFieldMoedaCotacaoAtual)))
+                    .addComponent(jLabelTotalFundos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanelFundosLayout.setVerticalGroup(
@@ -477,12 +589,79 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                 .addGroup(jPanelFundosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelMoedaCotacaoAtual)
                     .addComponent(jTextFieldMoedaCotacaoAtual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelTotalFundos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonAlterarFundos)
                 .addContainerGap())
         );
 
         jPanelTransacoes.setBackground(new java.awt.Color(120, 120, 120));
+
+        jPanelHeaderTransacoes.setBackground(new java.awt.Color(55, 55, 55));
+
+        jPanelSub.setBackground(new java.awt.Color(55, 55, 55));
+
+        jLabelID.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelID.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelID.setText("ID");
+
+        jLabelTipoTransacao.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelTipoTransacao.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelTipoTransacao.setText("Type");
+
+        jLabelPrecoTransacao.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelPrecoTransacao.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelPrecoTransacao.setText("Price");
+
+        jLabelQuantidadeTransacao.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelQuantidadeTransacao.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelQuantidadeTransacao.setText("Amount");
+
+        jLabelTimestampTransacao.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelTimestampTransacao.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelTimestampTransacao.setText("Timestamp");
+
+        javax.swing.GroupLayout jPanelSubLayout = new javax.swing.GroupLayout(jPanelSub);
+        jPanelSub.setLayout(jPanelSubLayout);
+        jPanelSubLayout.setHorizontalGroup(
+            jPanelSubLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelSubLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelID, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelTipoTransacao, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelPrecoTransacao, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelQuantidadeTransacao, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelTimestampTransacao, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanelSubLayout.setVerticalGroup(
+            jPanelSubLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelSubLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelSubLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelID, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelPrecoTransacao, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelTipoTransacao, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelTimestampTransacao, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelQuantidadeTransacao, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanelHeaderTransacoesLayout = new javax.swing.GroupLayout(jPanelHeaderTransacoes);
+        jPanelHeaderTransacoes.setLayout(jPanelHeaderTransacoesLayout);
+        jPanelHeaderTransacoesLayout.setHorizontalGroup(
+            jPanelHeaderTransacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanelSub, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanelHeaderTransacoesLayout.setVerticalGroup(
+            jPanelHeaderTransacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanelSub, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         jPanelSubTransacoes.setBackground(new java.awt.Color(35, 35, 35));
 
@@ -494,28 +673,11 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jPanelSubTransacoes.setLayout(jPanelSubTransacoesLayout);
         jPanelSubTransacoesLayout.setHorizontalGroup(
             jPanelSubTransacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabelTransacoes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabelTransacoes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 994, Short.MAX_VALUE)
         );
         jPanelSubTransacoesLayout.setVerticalGroup(
             jPanelSubTransacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabelTransacoes, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-        );
-
-        jPanelHeaderTransacoes.setBackground(new java.awt.Color(35, 35, 35));
-
-        jLabelHeaderTransacoes.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelHeaderTransacoes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelHeaderTransacoes.setText("ID / Type of Transaction / Price (trade) / Amount (trade/deposit/withdrawal) / Timestamp");
-
-        javax.swing.GroupLayout jPanelHeaderTransacoesLayout = new javax.swing.GroupLayout(jPanelHeaderTransacoes);
-        jPanelHeaderTransacoes.setLayout(jPanelHeaderTransacoesLayout);
-        jPanelHeaderTransacoesLayout.setHorizontalGroup(
-            jPanelHeaderTransacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabelHeaderTransacoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanelHeaderTransacoesLayout.setVerticalGroup(
-            jPanelHeaderTransacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabelHeaderTransacoes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
         );
 
         jPanelLinhasTransacoes.setBackground(new java.awt.Color(120, 120, 120));
@@ -524,11 +686,11 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jPanelLinhasTransacoes.setLayout(jPanelLinhasTransacoesLayout);
         jPanelLinhasTransacoesLayout.setHorizontalGroup(
             jPanelLinhasTransacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 784, Short.MAX_VALUE)
+            .addGap(0, 1119, Short.MAX_VALUE)
         );
         jPanelLinhasTransacoesLayout.setVerticalGroup(
             jPanelLinhasTransacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 273, Short.MAX_VALUE)
+            .addGap(0, 379, Short.MAX_VALUE)
         );
 
         jScrollPaneLinhasTransacoes.setViewportView(jPanelLinhasTransacoes);
@@ -538,11 +700,11 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jPanelTransacoesLayout.setHorizontalGroup(
             jPanelTransacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanelSubTransacoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTransacoesLayout.createSequentialGroup()
+            .addGroup(jPanelTransacoesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelTransacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanelHeaderTransacoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPaneLinhasTransacoes))
+                    .addComponent(jScrollPaneLinhasTransacoes, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanelTransacoesLayout.setVerticalGroup(
@@ -552,7 +714,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelHeaderTransacoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneLinhasTransacoes)
+                .addComponent(jScrollPaneLinhasTransacoes, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -671,8 +833,23 @@ public class submoduloofflinetrader extends javax.swing.JPanel
 
     private void jButtonComprarManualActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonComprarManualActionPerformed
     {//GEN-HEADEREND:event_jButtonComprarManualActionPerformed
-        // TODO add your handling code here:
+        realizarcompra();
     }//GEN-LAST:event_jButtonComprarManualActionPerformed
+
+    private void jTextFieldComprarQuantidadeCaretUpdate(javax.swing.event.CaretEvent evt)//GEN-FIRST:event_jTextFieldComprarQuantidadeCaretUpdate
+    {//GEN-HEADEREND:event_jTextFieldComprarQuantidadeCaretUpdate
+        atualizarvalortotalprevisaocompra();
+    }//GEN-LAST:event_jTextFieldComprarQuantidadeCaretUpdate
+
+    private void jTextFieldVenderQuantidadeCaretUpdate(javax.swing.event.CaretEvent evt)//GEN-FIRST:event_jTextFieldVenderQuantidadeCaretUpdate
+    {//GEN-HEADEREND:event_jTextFieldVenderQuantidadeCaretUpdate
+        atualizarvalortotalprevisaovenda();
+    }//GEN-LAST:event_jTextFieldVenderQuantidadeCaretUpdate
+
+    private void jButtonVenderManualActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonVenderManualActionPerformed
+    {//GEN-HEADEREND:event_jButtonVenderManualActionPerformed
+        realizarvenda();
+    }//GEN-LAST:event_jButtonVenderManualActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -687,13 +864,18 @@ public class submoduloofflinetrader extends javax.swing.JPanel
     private javax.swing.JLabel jLabelFeeCompra;
     private javax.swing.JLabel jLabelFeeVenda;
     private javax.swing.JLabel jLabelFundos;
-    private javax.swing.JLabel jLabelHeaderTransacoes;
+    public javax.swing.JLabel jLabelID;
     private javax.swing.JLabel jLabelMelhorAsk;
     private javax.swing.JLabel jLabelMelhorBid;
     private javax.swing.JLabel jLabelMoedaBaseAtual;
     private javax.swing.JLabel jLabelMoedaCotacaoAtual;
+    public javax.swing.JLabel jLabelPrecoTransacao;
+    public javax.swing.JLabel jLabelQuantidadeTransacao;
     private javax.swing.JLabel jLabelScriptAtualTraderbot;
     private javax.swing.JLabel jLabelStatusTrader;
+    public javax.swing.JLabel jLabelTimestampTransacao;
+    public javax.swing.JLabel jLabelTipoTransacao;
+    private javax.swing.JLabel jLabelTotalFundos;
     private javax.swing.JLabel jLabelTraderbot;
     private javax.swing.JLabel jLabelTransacoes;
     private javax.swing.JLabel jLabelVender;
@@ -703,6 +885,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
     private javax.swing.JPanel jPanelFundos;
     private javax.swing.JPanel jPanelHeaderTransacoes;
     private javax.swing.JPanel jPanelLinhasTransacoes;
+    private javax.swing.JPanel jPanelSub;
     private javax.swing.JPanel jPanelSubComprar;
     private javax.swing.JPanel jPanelSubFundos;
     private javax.swing.JPanel jPanelSubTraderbot;

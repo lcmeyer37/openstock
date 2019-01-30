@@ -35,6 +35,10 @@ public class itemtransacao extends javax.swing.JPanel
             jLabelTipoTransacao.setText("Base Withdraw");
         else if (offlinetransactionassociada.tipostr.equals("saquecotacao"))
             jLabelTipoTransacao.setText("Quote Withdraw");
+        else if (offlinetransactionassociada.tipostr.equals("compra")) 
+            jLabelTipoTransacao.setText("Buy");
+        else if (offlinetransactionassociada.tipostr.equals("venda")) 
+            jLabelTipoTransacao.setText("Sell");
         
         if (offlinetransactionassociada.preco_tradestr.equals("(NN)"))
             jLabelPrecoTransacao.setText("");
@@ -68,9 +72,16 @@ public class itemtransacao extends javax.swing.JPanel
 
         jPanelSub.setBackground(new java.awt.Color(55, 55, 55));
 
-        jLabelID.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelID.setForeground(new java.awt.Color(0, 153, 153));
         jLabelID.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelID.setText("IDTransascao");
+        jLabelID.setText("IDTransacao");
+        jLabelID.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mousePressed(java.awt.event.MouseEvent evt)
+            {
+                jLabelIDMousePressed(evt);
+            }
+        });
 
         jLabelTipoTransacao.setForeground(new java.awt.Color(255, 255, 255));
         jLabelTipoTransacao.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -94,15 +105,15 @@ public class itemtransacao extends javax.swing.JPanel
             jPanelSubLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelSubLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelID, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelID, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 219, Short.MAX_VALUE)
                 .addComponent(jLabelTipoTransacao, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelPrecoTransacao, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelQuantidadeTransacao, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabelTimestampTransacao, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                .addComponent(jLabelTimestampTransacao, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanelSubLayout.setVerticalGroup(
@@ -135,6 +146,12 @@ public class itemtransacao extends javax.swing.JPanel
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jLabelIDMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabelIDMousePressed
+    {//GEN-HEADEREND:event_jLabelIDMousePressed
+        mierclasses.mcfuncoeshelper.setarclipboard(jLabelID.getText());
+        mierclasses.mcfuncoeshelper.mostrarmensagem("Transaction ID copied to clipboard.");
+    }//GEN-LAST:event_jLabelIDMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
