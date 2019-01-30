@@ -12,7 +12,7 @@ Open Stock is a project [licensed under GNU GPLv3](https://github.com/lcmeyer37/
 - [x] Possibility to anaylise multiple charts at the same time
 - [x] Use of Annotations and Indicators for Technical Analysis
 - [x] To create your own Indicators to use with the software, making use of Bearcode Scripts (JavaScript files)
-- [x] Save/Load charts and its TAs
+- [x] Save/Load Charts and Offline Transactions
 - [x] OHLC and Separate Indicator charts
 - [x] Offline Trading
 - [ ] Trader Bot to test strategies
