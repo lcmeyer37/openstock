@@ -193,6 +193,23 @@ public class itemindicador extends javax.swing.JPanel
         //mierclasses.mcfuncoeshelper.mostrarmensagem("mbcodeinterpreter.parametrosbcodejs: " + mbcodeinterpreter.parametrosbcodejs);
         //mierclasses.mcfuncoeshelper.mostrarmensagem("mbcodeinterpreter.codigobcodejs: " + mbcodeinterpreter.codigobcodejs);
     }
+    
+    
+    //funcoes helper
+    double retornarpontoy_dadotimestamp(java.util.Date timestamppontoy)
+    {
+        double[] yvalues_double = (double[]) mbcodeinterpreter.pontosy_lastrun;
+        java.util.Date[] xvalues_date = (java.util.Date[]) mbcodeinterpreter.pontosx_lastrun;
+        
+        for (int i = 0; i < xvalues_date.length; i++)
+        {
+            if (xvalues_date[i] == timestamppontoy)
+            {
+                return yvalues_double[i];
+            }
+        }
+        return -30041993; //valor especifico double retornado caso nenhum valor seja encontrado
+    }
 
     
     /**

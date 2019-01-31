@@ -547,7 +547,7 @@ public class submodulografico extends javax.swing.JPanel
         jButtonAtivarSelecao.setForeground(Color.black);
         jButtonAtivarRegua.setForeground(Color.black);
         jButtonAtivarReta.setForeground(Color.black);
-        jButtonAtivarFibonacci.setForeground(Color.black);
+        jButtonExportarCsv.setForeground(Color.black);
         jButtonAtivarTexto.setForeground(Color.black);
     }
         
@@ -585,6 +585,88 @@ public class submodulografico extends javax.swing.JPanel
         }
   
     }
+    
+    void exportarcsvdados()
+    {
+        //funcao para exportar arquivo .csv com candles e indicadores
+        
+         try
+        {
+        
+            
+            String csvSave = "";
+            
+            //comecar escrevendo header do documento
+            csvSave = csvSave + "Timestamp (YYYY-MM-DD-HH-mm-ss);Open;High;Low;Close;Volume";
+            for (int j = 0; j < jPanelIndicadores.getComponentCount(); j++)
+            {
+                panels.analisadorasset.grafico.itemindicador indicadoratual = (panels.analisadorasset.grafico.itemindicador)jPanelIndicadores.getComponent(j);
+                
+                String nomeindicador = indicadoratual.mbcodeinterpreter.tituloscript_lastrun;
+                csvSave = csvSave + ";" + nomeindicador;
+            }
+            csvSave = csvSave + "\n";
+            
+            //escrever valores do documento
+            java.util.List<mierclasses.mccandle> candles = mcg.candlesatual;
+            for (int i = 0; i < candles.size(); i++)
+            {
+                mierclasses.mccandle candleatual = candles.get(i);
+                
+                java.util.Date timestampatual = candleatual.timestampdate;
+                String timestampstring = 
+                        (timestampatual.getYear()+1900) + "-" + 
+                        (timestampatual.getMonth()+1) + "-" + 
+                        timestampatual.getDate() + "-" + 
+                        timestampatual.getHours() + "-" +
+                        timestampatual.getMinutes()+ "-" +
+                        timestampatual.getSeconds();
+                
+                double openatual = candleatual.opend;
+                double highatual = candleatual.highd;
+                double lowatual = candleatual.lowd;
+                double closeatual = candleatual.closed;
+                double volumeatual = candleatual.volumed;
+                
+                csvSave = csvSave + timestampstring + ";" + String.valueOf(openatual)+ ";" + String.valueOf(highatual)+ ";" + String.valueOf(lowatual)+ ";" + String.valueOf(closeatual)+ ";" + String.valueOf(volumeatual);
+                
+                for (int j = 0; j < jPanelIndicadores.getComponentCount(); j++)
+                {
+                    panels.analisadorasset.grafico.itemindicador indicadoratual = (panels.analisadorasset.grafico.itemindicador)jPanelIndicadores.getComponent(j);
+                    double valoryindicador = indicadoratual.retornarpontoy_dadotimestamp(timestampatual);  
+
+                    if (valoryindicador != -30041993)
+                        csvSave = csvSave + ";" + String.valueOf(valoryindicador);
+                    else
+                        csvSave = csvSave + ";";
+                }
+                csvSave = csvSave + "\n";
+            }
+
+            //abrir dialog para criar arquivo de save
+            javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+            fileChooser.setDialogTitle("Please choose a location to export the .csv file");
+
+            int userSelection = fileChooser.showSaveDialog(this);
+
+            if (userSelection == javax.swing.JFileChooser.APPROVE_OPTION) 
+            {
+                java.io.File fileToSave = fileChooser.getSelectedFile();
+
+                java.io.PrintWriter writer = new java.io.PrintWriter(fileToSave + ".csv", "UTF-8");
+                writer.println(csvSave);
+                writer.close();
+            }
+            
+            mierclasses.mcfuncoeshelper.mostrarmensagem(".csv file exported.");
+        }
+        catch (Exception ex)
+        {
+            mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred when exporting. Exception: " + ex.getMessage());
+        }
+        
+    }
+    
     // </editor-fold>
 
 
@@ -601,10 +683,17 @@ public class submodulografico extends javax.swing.JPanel
         jPanelFerramentasInfo = new javax.swing.JPanel();
         jButtonAtivarSelecao = new javax.swing.JButton();
         jButtonAtivarReta = new javax.swing.JButton();
-        jButtonAtivarFibonacci = new javax.swing.JButton();
+        jButtonExportarCsv = new javax.swing.JButton();
         jButtonAtivarRegua = new javax.swing.JButton();
         jButtonAtivarTexto = new javax.swing.JButton();
-        jLabelFerramentas = new javax.swing.JLabel();
+        jButtonAtivarFibonacci1 = new javax.swing.JButton();
+        jPanelChartHolders = new javax.swing.JPanel();
+        jSplitPaneChartpanels = new javax.swing.JSplitPane();
+        jPanelOHLCChartpanel = new javax.swing.JPanel();
+        jPanelSecondaryChartPanel = new javax.swing.JPanel();
+        jLabelInfo = new javax.swing.JLabel();
+        jPanelPrincipalPai = new javax.swing.JPanel();
+        jLabelMain = new javax.swing.JLabel();
         jPanelPrincipal = new javax.swing.JPanel();
         jButtonEscolherSimbolo = new javax.swing.JButton();
         jLabelNomeSimbolo = new javax.swing.JLabel();
@@ -616,23 +705,19 @@ public class submodulografico extends javax.swing.JPanel
         jButtonAtualizarDadosGrafico = new javax.swing.JButton();
         jLabelLinearSwitch = new javax.swing.JLabel();
         jLabelLogaritmicaSwitch = new javax.swing.JLabel();
+        jPanelIndicadoresPai = new javax.swing.JPanel();
+        jButtonAdicionarIndicador = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanelIndicadores = new javax.swing.JPanel();
+        jLabelIndicadores = new javax.swing.JLabel();
+        jPanelMainHeader2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jPanelAnotacoes = new javax.swing.JPanel();
-        jLabelPrincipal = new javax.swing.JLabel();
-        jLabelIndicadores = new javax.swing.JLabel();
-        jButtonAdicionarIndicador = new javax.swing.JButton();
         jLabelAnotacoes = new javax.swing.JLabel();
-        jLabelInfo = new javax.swing.JLabel();
-        jPanelChartHolders = new javax.swing.JPanel();
-        jSplitPaneChartpanels = new javax.swing.JSplitPane();
-        jPanelOHLCChartpanel = new javax.swing.JPanel();
-        jPanelSecondaryChartPanel = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(55, 55, 55));
 
-        jPanelFerramentasInfo.setBackground(new java.awt.Color(120, 120, 120));
+        jPanelFerramentasInfo.setBackground(new java.awt.Color(35, 35, 35));
 
         jButtonAtivarSelecao.setForeground(new java.awt.Color(255, 0, 0));
         jButtonAtivarSelecao.setText("Select");
@@ -653,12 +738,12 @@ public class submodulografico extends javax.swing.JPanel
             }
         });
 
-        jButtonAtivarFibonacci.setText("Fibonacci");
-        jButtonAtivarFibonacci.addActionListener(new java.awt.event.ActionListener()
+        jButtonExportarCsv.setText("Export .csv");
+        jButtonExportarCsv.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jButtonAtivarFibonacciActionPerformed(evt);
+                jButtonExportarCsvActionPerformed(evt);
             }
         });
 
@@ -680,6 +765,15 @@ public class submodulografico extends javax.swing.JPanel
             }
         });
 
+        jButtonAtivarFibonacci1.setText("Fibonacci");
+        jButtonAtivarFibonacci1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonAtivarFibonacci1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelFerramentasInfoLayout = new javax.swing.GroupLayout(jPanelFerramentasInfo);
         jPanelFerramentasInfo.setLayout(jPanelFerramentasInfoLayout);
         jPanelFerramentasInfoLayout.setHorizontalGroup(
@@ -694,8 +788,10 @@ public class submodulografico extends javax.swing.JPanel
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonAtivarRegua)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonAtivarFibonacci)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jButtonAtivarFibonacci1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonExportarCsv)
+                .addContainerGap())
         );
         jPanelFerramentasInfoLayout.setVerticalGroup(
             jPanelFerramentasInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -704,14 +800,73 @@ public class submodulografico extends javax.swing.JPanel
                 .addGroup(jPanelFerramentasInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonAtivarSelecao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonAtivarReta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonAtivarFibonacci, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonExportarCsv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonAtivarRegua, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonAtivarTexto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButtonAtivarTexto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonAtivarFibonacci1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
-        jLabelFerramentas.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelFerramentas.setText("Tools");
+        jSplitPaneChartpanels.setBackground(new java.awt.Color(55, 55, 55));
+        jSplitPaneChartpanels.setDividerLocation(500);
+        jSplitPaneChartpanels.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jSplitPaneChartpanels.addComponentListener(new java.awt.event.ComponentAdapter()
+        {
+            public void componentResized(java.awt.event.ComponentEvent evt)
+            {
+                jSplitPaneChartpanelsComponentResized(evt);
+            }
+        });
+
+        jPanelOHLCChartpanel.setBackground(new java.awt.Color(0, 0, 0));
+        jPanelOHLCChartpanel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        javax.swing.GroupLayout jPanelOHLCChartpanelLayout = new javax.swing.GroupLayout(jPanelOHLCChartpanel);
+        jPanelOHLCChartpanel.setLayout(jPanelOHLCChartpanelLayout);
+        jPanelOHLCChartpanelLayout.setHorizontalGroup(
+            jPanelOHLCChartpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanelOHLCChartpanelLayout.setVerticalGroup(
+            jPanelOHLCChartpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jSplitPaneChartpanels.setTopComponent(jPanelOHLCChartpanel);
+
+        jPanelSecondaryChartPanel.setBackground(new java.awt.Color(45, 45, 45));
+
+        javax.swing.GroupLayout jPanelSecondaryChartPanelLayout = new javax.swing.GroupLayout(jPanelSecondaryChartPanel);
+        jPanelSecondaryChartPanel.setLayout(jPanelSecondaryChartPanelLayout);
+        jPanelSecondaryChartPanelLayout.setHorizontalGroup(
+            jPanelSecondaryChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanelSecondaryChartPanelLayout.setVerticalGroup(
+            jPanelSecondaryChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jSplitPaneChartpanels.setBottomComponent(jPanelSecondaryChartPanel);
+
+        javax.swing.GroupLayout jPanelChartHoldersLayout = new javax.swing.GroupLayout(jPanelChartHolders);
+        jPanelChartHolders.setLayout(jPanelChartHoldersLayout);
+        jPanelChartHoldersLayout.setHorizontalGroup(
+            jPanelChartHoldersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSplitPaneChartpanels)
+        );
+        jPanelChartHoldersLayout.setVerticalGroup(
+            jPanelChartHoldersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSplitPaneChartpanels, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+        );
+
+        jLabelInfo.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelInfo.setText("-");
+
+        jPanelPrincipalPai.setBackground(new java.awt.Color(35, 35, 35));
+
+        jLabelMain.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelMain.setText("Main");
 
         jPanelPrincipal.setBackground(new java.awt.Color(120, 120, 120));
 
@@ -804,13 +959,13 @@ public class submodulografico extends javax.swing.JPanel
                         .addComponent(jLabelLinearSwitch)
                         .addGap(18, 18, 18)
                         .addComponent(jLabelLogaritmicaSwitch)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonAtualizarDadosGrafico, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
-                    .addGroup(jPanelPrincipalLayout.createSequentialGroup()
-                        .addComponent(jButtonCarregarConfiguracao, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonSalvarConfiguracao)))
-                .addContainerGap())
+                        .addComponent(jButtonAtualizarDadosGrafico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanelPrincipalLayout.createSequentialGroup()
+                        .addComponent(jButtonCarregarConfiguracao, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonSalvarConfiguracao, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(6, 6, 6))
         );
         jPanelPrincipalLayout.setVerticalGroup(
             jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -829,12 +984,42 @@ public class submodulografico extends javax.swing.JPanel
                     .addComponent(jButtonAtualizarDadosGrafico)
                     .addComponent(jLabelLinearSwitch)
                     .addComponent(jLabelLogaritmicaSwitch))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonCarregarConfiguracao)
-                    .addComponent(jButtonSalvarConfiguracao))
+                    .addComponent(jButtonSalvarConfiguracao)
+                    .addComponent(jButtonCarregarConfiguracao))
                 .addContainerGap())
         );
+
+        javax.swing.GroupLayout jPanelPrincipalPaiLayout = new javax.swing.GroupLayout(jPanelPrincipalPai);
+        jPanelPrincipalPai.setLayout(jPanelPrincipalPaiLayout);
+        jPanelPrincipalPaiLayout.setHorizontalGroup(
+            jPanelPrincipalPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPrincipalPaiLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addComponent(jPanelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanelPrincipalPaiLayout.setVerticalGroup(
+            jPanelPrincipalPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelPrincipalPaiLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelMain, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanelIndicadoresPai.setBackground(new java.awt.Color(35, 35, 35));
+
+        jButtonAdicionarIndicador.setText("Add");
+        jButtonAdicionarIndicador.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonAdicionarIndicadorActionPerformed(evt);
+            }
+        });
 
         jPanelIndicadores.setBackground(new java.awt.Color(120, 120, 120));
 
@@ -842,14 +1027,42 @@ public class submodulografico extends javax.swing.JPanel
         jPanelIndicadores.setLayout(jPanelIndicadoresLayout);
         jPanelIndicadoresLayout.setHorizontalGroup(
             jPanelIndicadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 376, Short.MAX_VALUE)
+            .addGap(0, 381, Short.MAX_VALUE)
         );
         jPanelIndicadoresLayout.setVerticalGroup(
             jPanelIndicadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 196, Short.MAX_VALUE)
+            .addGap(0, 306, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(jPanelIndicadores);
+
+        jLabelIndicadores.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelIndicadores.setText("Indicators");
+
+        javax.swing.GroupLayout jPanelIndicadoresPaiLayout = new javax.swing.GroupLayout(jPanelIndicadoresPai);
+        jPanelIndicadoresPai.setLayout(jPanelIndicadoresPaiLayout);
+        jPanelIndicadoresPaiLayout.setHorizontalGroup(
+            jPanelIndicadoresPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelIndicadoresPaiLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelIndicadores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(78, 78, 78)
+                .addComponent(jButtonAdicionarIndicador)
+                .addContainerGap())
+        );
+        jPanelIndicadoresPaiLayout.setVerticalGroup(
+            jPanelIndicadoresPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelIndicadoresPaiLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelIndicadoresPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabelIndicadores, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                    .addComponent(jButtonAdicionarIndicador, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+        );
+
+        jPanelMainHeader2.setBackground(new java.awt.Color(35, 35, 35));
 
         jPanelAnotacoes.setBackground(new java.awt.Color(120, 120, 120));
 
@@ -861,114 +1074,50 @@ public class submodulografico extends javax.swing.JPanel
         );
         jPanelAnotacoesLayout.setVerticalGroup(
             jPanelAnotacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 196, Short.MAX_VALUE)
+            .addGap(0, 298, Short.MAX_VALUE)
         );
 
         jScrollPane2.setViewportView(jPanelAnotacoes);
 
-        jLabelPrincipal.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelPrincipal.setText("Main");
-
-        jLabelIndicadores.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelIndicadores.setText("Indicators");
-
-        jButtonAdicionarIndicador.setText("Add");
-        jButtonAdicionarIndicador.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                jButtonAdicionarIndicadorActionPerformed(evt);
-            }
-        });
-
         jLabelAnotacoes.setForeground(new java.awt.Color(255, 255, 255));
         jLabelAnotacoes.setText("Annotations");
 
-        jLabelInfo.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelInfo.setText("-");
-
-        jSplitPaneChartpanels.setBackground(new java.awt.Color(55, 55, 55));
-        jSplitPaneChartpanels.setDividerLocation(500);
-        jSplitPaneChartpanels.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        jSplitPaneChartpanels.addComponentListener(new java.awt.event.ComponentAdapter()
-        {
-            public void componentResized(java.awt.event.ComponentEvent evt)
-            {
-                jSplitPaneChartpanelsComponentResized(evt);
-            }
-        });
-
-        jPanelOHLCChartpanel.setBackground(new java.awt.Color(0, 0, 0));
-        jPanelOHLCChartpanel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
-        javax.swing.GroupLayout jPanelOHLCChartpanelLayout = new javax.swing.GroupLayout(jPanelOHLCChartpanel);
-        jPanelOHLCChartpanel.setLayout(jPanelOHLCChartpanelLayout);
-        jPanelOHLCChartpanelLayout.setHorizontalGroup(
-            jPanelOHLCChartpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+        javax.swing.GroupLayout jPanelMainHeader2Layout = new javax.swing.GroupLayout(jPanelMainHeader2);
+        jPanelMainHeader2.setLayout(jPanelMainHeader2Layout);
+        jPanelMainHeader2Layout.setHorizontalGroup(
+            jPanelMainHeader2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+            .addGroup(jPanelMainHeader2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelAnotacoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
-        jPanelOHLCChartpanelLayout.setVerticalGroup(
-            jPanelOHLCChartpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        jSplitPaneChartpanels.setTopComponent(jPanelOHLCChartpanel);
-
-        jPanelSecondaryChartPanel.setBackground(new java.awt.Color(45, 45, 45));
-
-        javax.swing.GroupLayout jPanelSecondaryChartPanelLayout = new javax.swing.GroupLayout(jPanelSecondaryChartPanel);
-        jPanelSecondaryChartPanel.setLayout(jPanelSecondaryChartPanelLayout);
-        jPanelSecondaryChartPanelLayout.setHorizontalGroup(
-            jPanelSecondaryChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanelSecondaryChartPanelLayout.setVerticalGroup(
-            jPanelSecondaryChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        jSplitPaneChartpanels.setBottomComponent(jPanelSecondaryChartPanel);
-
-        javax.swing.GroupLayout jPanelChartHoldersLayout = new javax.swing.GroupLayout(jPanelChartHolders);
-        jPanelChartHolders.setLayout(jPanelChartHoldersLayout);
-        jPanelChartHoldersLayout.setHorizontalGroup(
-            jPanelChartHoldersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPaneChartpanels)
-        );
-        jPanelChartHoldersLayout.setVerticalGroup(
-            jPanelChartHoldersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPaneChartpanels, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE)
+        jPanelMainHeader2Layout.setVerticalGroup(
+            jPanelMainHeader2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelMainHeader2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelAnotacoes, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanelFerramentasInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelPrincipal))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabelIndicadores)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButtonAdicionarIndicador)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabelAnotacoes)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabelFerramentas)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabelInfo))
+                    .addComponent(jPanelFerramentasInfo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jPanelPrincipalPai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanelIndicadoresPai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanelMainHeader2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jPanelChartHolders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -976,29 +1125,16 @@ public class submodulografico extends javax.swing.JPanel
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelFerramentas)
-                    .addComponent(jLabelInfo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanelFerramentasInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabelInfo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelChartHolders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabelAnotacoes)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelIndicadores)
-                            .addComponent(jButtonAdicionarIndicador))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabelPrincipal)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(jPanelFerramentasInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanelPrincipalPai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelIndicadoresPai, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelMainHeader2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -1054,12 +1190,11 @@ public class submodulografico extends javax.swing.JPanel
         alternartipoescala("logaritmica");
     }//GEN-LAST:event_jLabelLogaritmicaSwitchMouseClicked
 
-    private void jButtonAtivarFibonacciActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAtivarFibonacciActionPerformed
-    {//GEN-HEADEREND:event_jButtonAtivarFibonacciActionPerformed
-        mcg.trocarferramentaparafibonacci();
-        resetarcorbotoesferramentas();
-        jButtonAtivarFibonacci.setForeground(Color.red);
-    }//GEN-LAST:event_jButtonAtivarFibonacciActionPerformed
+    private void jButtonExportarCsvActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonExportarCsvActionPerformed
+    {//GEN-HEADEREND:event_jButtonExportarCsvActionPerformed
+
+        exportarcsvdados();
+    }//GEN-LAST:event_jButtonExportarCsvActionPerformed
 
     private void jButtonAtivarReguaActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAtivarReguaActionPerformed
     {//GEN-HEADEREND:event_jButtonAtivarReguaActionPerformed
@@ -1083,10 +1218,15 @@ public class submodulografico extends javax.swing.JPanel
         }
     }//GEN-LAST:event_jSplitPaneChartpanelsComponentResized
 
+    private void jButtonAtivarFibonacci1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAtivarFibonacci1ActionPerformed
+    {//GEN-HEADEREND:event_jButtonAtivarFibonacci1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonAtivarFibonacci1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdicionarIndicador;
-    private javax.swing.JButton jButtonAtivarFibonacci;
+    private javax.swing.JButton jButtonAtivarFibonacci1;
     private javax.swing.JButton jButtonAtivarRegua;
     private javax.swing.JButton jButtonAtivarReta;
     private javax.swing.JButton jButtonAtivarSelecao;
@@ -1094,23 +1234,26 @@ public class submodulografico extends javax.swing.JPanel
     private javax.swing.JButton jButtonAtualizarDadosGrafico;
     private javax.swing.JButton jButtonCarregarConfiguracao;
     private javax.swing.JButton jButtonEscolherSimbolo;
+    private javax.swing.JButton jButtonExportarCsv;
     private javax.swing.JButton jButtonSalvarConfiguracao;
     public javax.swing.JComboBox<String> jComboBoxPeriodoSimbolo;
     private javax.swing.JLabel jLabelAnotacoes;
-    private javax.swing.JLabel jLabelFerramentas;
     private javax.swing.JLabel jLabelIndicadores;
     private javax.swing.JLabel jLabelInfo;
     private javax.swing.JLabel jLabelLinearSwitch;
     private javax.swing.JLabel jLabelLogaritmicaSwitch;
+    private javax.swing.JLabel jLabelMain;
     private javax.swing.JLabel jLabelNomeSimbolo;
     private javax.swing.JLabel jLabelPeriodoSimbolo;
-    private javax.swing.JLabel jLabelPrincipal;
     public javax.swing.JPanel jPanelAnotacoes;
     private javax.swing.JPanel jPanelChartHolders;
     private javax.swing.JPanel jPanelFerramentasInfo;
     public javax.swing.JPanel jPanelIndicadores;
+    private javax.swing.JPanel jPanelIndicadoresPai;
+    private javax.swing.JPanel jPanelMainHeader2;
     private javax.swing.JPanel jPanelOHLCChartpanel;
     private javax.swing.JPanel jPanelPrincipal;
+    private javax.swing.JPanel jPanelPrincipalPai;
     private javax.swing.JPanel jPanelSecondaryChartPanel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
