@@ -280,8 +280,7 @@ public class submodulografico extends javax.swing.JPanel
         for (int i = 0; i < jPanelIndicadores.getComponentCount(); i++)
         {
             panels.analisadorasset.grafico.itemindicador miia = (panels.analisadorasset.grafico.itemindicador)jPanelIndicadores.getComponent(i);
-            String indicadorembottom = miia.jLabelEscolherGraficoParaBottom.getText();
-            if (indicadorembottom.equals("S"))
+            if (miia.chartseparadoembottom == true)
             {
                 //encontrado o indicador cujo grafico esta como secundario, tambem atualiza-lo
                 setarGraficoIndicadorSecundario(miia);

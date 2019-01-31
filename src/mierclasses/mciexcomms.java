@@ -487,11 +487,15 @@ public class mciexcomms
     
     //the values returned by these functions are not real and used for offline trading and testing only 
     
-    public java.util.List<Double> receberlastbidaskofflinetrading(String simbolo)
+    public java.util.List<Double> receberlastbidaskofflinetrading(java.util.List<mierclasses.mccandle> candlesatual)
     {
         //funcao para estimar um valor de ask e bid para o simbolo atual, para testar o trader bot
-        mierclasses.mcquote quote = receberquote(simbolo);
-        double ultimoclose = quote.closed;
+        //mierclasses.mcquote quote = receberquote(simbolo);
+        //double ultimoclose = quote.closed;
+        //double rangebidaskestimado = 0.0025;
+        java.util.List<mierclasses.mccandle> candlessample = candlesatual;
+        mierclasses.mccandle ultimacandlesample = candlessample.get(candlessample.size()-1);
+        double ultimoclose = ultimacandlesample.closed;
         double rangebidaskestimado = 0.0025;
         
         double variacao = ultimoclose*rangebidaskestimado;

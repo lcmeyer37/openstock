@@ -76,7 +76,7 @@ public class mcofflinetrader
         }
         else if ((simbolo.equals("testdata")) == false)
         {
-            java.util.List<Double> bidask = submodulooftraderpai.aassetpai.iaassetpai.tprincipalpai.miex.receberlastbidaskofflinetrading(simbolo);
+            java.util.List<Double> bidask = submodulooftraderpai.aassetpai.iaassetpai.tprincipalpai.miex.receberlastbidaskofflinetrading(submodulooftraderpai.aassetpai.subgrafico.mcg.candlesatual);
             double bid = bidask.get(0);
             double ask = bidask.get(1);
             

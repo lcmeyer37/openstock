@@ -46,6 +46,9 @@ public class analisadorasset extends javax.swing.JPanel
     //asset associado
     public String assetsimbolo;
     
+    //timer para atualizar dados do asset automaticamente
+    java.util.TimerTask timeratualizardados;
+    
     /**
      * Creates new form mpanalisadorasset
      */
@@ -53,6 +56,12 @@ public class analisadorasset extends javax.swing.JPanel
     {
         initComponents();
         
+        inicializar(iaapai);
+    }
+    
+    void inicializar(panels.analisadorasset.itemanalisadorasset iaapai)
+    {
+        //setar panel para mostrar submodulos
         jPanelSubmodulosHolder.setLayout(new java.awt.GridLayout(1,1));
         
         //associar o item analisador asset a este analisador asset
@@ -63,8 +72,78 @@ public class analisadorasset extends javax.swing.JPanel
         subgrafico = new panels.analisadorasset.grafico.submodulografico(this);
         subtrader = new panels.analisadorasset.offlinetrader.submoduloofflinetrader(this);
         
-        
+        //mostrar submodulo grafico
         mostrarsubmodulografico();
+        
+        //popular o timer para atualizacao automatica de dados do asset
+        setartimeratualizacao();
+    }
+    
+    void setartimeratualizacao()
+    {
+        String tempotimer = jComboBoxTempoAtualizacao.getSelectedItem().toString();
+        
+        if (tempotimer.equals("Off") == true)
+        {
+            //nao ligar timer
+            timeratualizardados = null;
+            atualizardadosasset();
+        }
+        else
+        {   
+
+            long segundo = 1000L; //1000L = 1000ms = 1s
+            long minuto = segundo*60;
+            long hora = minuto*60;
+            long dia = hora*24;
+            long mes = dia*30;
+            long ano = mes*12;
+            
+            long period = mes; //vai ser setado
+            if (tempotimer.equals("1 minute") == true)
+                period = 1*minuto;
+            else if (tempotimer.equals("5 minute") == true)
+                period = 5*minuto;
+            else if (tempotimer.equals("15 minutes") == true)
+                period = 15*minuto;
+            else if (tempotimer.equals("30 minutes") == true)
+                period = 30*minuto;
+            else if (tempotimer.equals("1 hour") == true)
+                period = 1*hora;
+            else if (tempotimer.equals("3 hours") == true)
+                period = 3*hora;
+            else if (tempotimer.equals("6 hours") == true)
+                period = 6*hora;
+            else if (tempotimer.equals("12 hours") == true)
+                period = 12*hora;
+            else if (tempotimer.equals("1 day") == true)
+                period = 1*dia;
+            else if (tempotimer.equals("2 days") == true)
+                period = 2*dia;
+            else if (tempotimer.equals("5 days") == true)
+                period = 5*dia;
+            else if (tempotimer.equals("15 days") == true)
+                period = 15*dia;
+            else if (tempotimer.equals("1 month") == true)
+                period = 1*mes;
+            else if (tempotimer.equals("3 months") == true)
+                period = 3*mes;
+            else if (tempotimer.equals("6 months") == true)
+                period = 6*mes;
+
+            timeratualizardados = new java.util.TimerTask() 
+            {
+                public void run() 
+                {
+                    atualizardadosasset();
+                }
+            };
+            java.util.Timer timer_timeratualizardados = new java.util.Timer("timeratualizardados");
+
+            //apos atualizar o timer, ja realizar uma atualizacao um segundo depois
+            timer_timeratualizardados.scheduleAtFixedRate(timeratualizardados, 100L, period);
+        }
+
     }
     
     void mostrarsubmodulografico()
@@ -101,6 +180,7 @@ public class analisadorasset extends javax.swing.JPanel
         //funcao para recarregar dados dos submodulos relacionados a este asset
         subgrafico.recarregardadossubmodulografico();
         subtrader.recarregardadossubmoduloofflinetrader();
+        jLabelUltimaAtualizacao.setText("Updated at " + new java.util.Date(System.currentTimeMillis()));
     }
 
     public void salvardadosasset()
@@ -262,8 +342,8 @@ public class analisadorasset extends javax.swing.JPanel
     
     public void carregardadosasset()
     {
-        //try
-        //{
+        try
+        {
             //abrir janela para selecionar arquivo de save para carregar
             javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
             fileChooser.setDialogTitle("Please choose an Open Stock file to load");
@@ -418,11 +498,11 @@ public class analisadorasset extends javax.swing.JPanel
                 subtrader.recarregardadossubmoduloofflinetrader();
                 //</editor-fold>
             }
-        //}
-        //catch (Exception ex)
-        //{
-        //    mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred when loading. Exception: " + ex.getMessage());
-        //}
+        }
+        catch (Exception ex)
+        {
+            mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred when loading. Exception: " + ex.getMessage());
+        }
 
     }
     
@@ -440,6 +520,10 @@ public class analisadorasset extends javax.swing.JPanel
         jButtonMostrarGrafico = new javax.swing.JButton();
         jButtonMostrarTrader = new javax.swing.JButton();
         jPanelSubmodulosHolder = new javax.swing.JPanel();
+        jLabelTimer = new javax.swing.JLabel();
+        jComboBoxTempoAtualizacao = new javax.swing.JComboBox<>();
+        jLabelTempoAtualizacao = new javax.swing.JLabel();
+        jLabelUltimaAtualizacao = new javax.swing.JLabel();
 
         jPanelEscolherSubmodulo.setBackground(new java.awt.Color(25, 25, 25));
 
@@ -472,30 +556,68 @@ public class analisadorasset extends javax.swing.JPanel
         );
         jPanelSubmodulosHolderLayout.setVerticalGroup(
             jPanelSubmodulosHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 431, Short.MAX_VALUE)
+            .addGap(0, 404, Short.MAX_VALUE)
         );
+
+        jLabelTimer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/timer.png"))); // NOI18N
+
+        jComboBoxTempoAtualizacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Off", "1 minute", "5 minutes", "15 minutes", "30 minutes", "1 hour", "3 hours", "6 hours", "12 hours", "1 day", "2 days", "5 days", "15 days", "1 month", "3 months", "6 months" }));
+        jComboBoxTempoAtualizacao.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jComboBoxTempoAtualizacaoActionPerformed(evt);
+            }
+        });
+
+        jLabelTempoAtualizacao.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelTempoAtualizacao.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabelTempoAtualizacao.setText("Update Frequency:");
+
+        jLabelUltimaAtualizacao.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelUltimaAtualizacao.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabelUltimaAtualizacao.setText("Updated at TIME");
 
         javax.swing.GroupLayout jPanelEscolherSubmoduloLayout = new javax.swing.GroupLayout(jPanelEscolherSubmodulo);
         jPanelEscolherSubmodulo.setLayout(jPanelEscolherSubmoduloLayout);
         jPanelEscolherSubmoduloLayout.setHorizontalGroup(
             jPanelEscolherSubmoduloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanelSubmodulosHolder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanelEscolherSubmoduloLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButtonMostrarGrafico)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonMostrarTrader)
-                .addContainerGap(458, Short.MAX_VALUE))
-            .addComponent(jPanelSubmodulosHolder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelEscolherSubmoduloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelEscolherSubmoduloLayout.createSequentialGroup()
+                        .addComponent(jButtonMostrarGrafico)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonMostrarTrader)
+                        .addGap(213, 447, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelEscolherSubmoduloLayout.createSequentialGroup()
+                        .addComponent(jLabelUltimaAtualizacao)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabelTimer)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelTempoAtualizacao)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jComboBoxTempoAtualizacao, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         jPanelEscolherSubmoduloLayout.setVerticalGroup(
             jPanelEscolherSubmoduloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelEscolherSubmoduloLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelEscolherSubmoduloLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelEscolherSubmoduloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanelEscolherSubmoduloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
                     .addComponent(jButtonMostrarGrafico)
-                    .addComponent(jButtonMostrarTrader))
+                    .addComponent(jButtonMostrarTrader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanelSubmodulosHolder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanelSubmodulosHolder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(14, 14, 14)
+                .addGroup(jPanelEscolherSubmoduloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelEscolherSubmoduloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jComboBoxTempoAtualizacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabelTempoAtualizacao))
+                    .addComponent(jLabelTimer)
+                    .addComponent(jLabelUltimaAtualizacao))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -520,10 +642,19 @@ public class analisadorasset extends javax.swing.JPanel
        mostrarsubmodulotrader();
     }//GEN-LAST:event_jButtonMostrarTraderActionPerformed
 
+    private void jComboBoxTempoAtualizacaoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jComboBoxTempoAtualizacaoActionPerformed
+    {//GEN-HEADEREND:event_jComboBoxTempoAtualizacaoActionPerformed
+        setartimeratualizacao();
+    }//GEN-LAST:event_jComboBoxTempoAtualizacaoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonMostrarGrafico;
     private javax.swing.JButton jButtonMostrarTrader;
+    private javax.swing.JComboBox<String> jComboBoxTempoAtualizacao;
+    private javax.swing.JLabel jLabelTempoAtualizacao;
+    private javax.swing.JLabel jLabelTimer;
+    private javax.swing.JLabel jLabelUltimaAtualizacao;
     private javax.swing.JPanel jPanelEscolherSubmodulo;
     private javax.swing.JPanel jPanelSubmodulosHolder;
     // End of variables declaration//GEN-END:variables
