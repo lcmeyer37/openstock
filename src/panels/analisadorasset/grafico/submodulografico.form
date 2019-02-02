@@ -83,7 +83,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButtonAtivarRegua" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jButtonAtivarFibonacci1" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonAtivarFibonacci" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="jButtonExportarCsv" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -100,7 +100,7 @@
                       <Component id="jButtonExportarCsv" alignment="3" max="32767" attributes="0"/>
                       <Component id="jButtonAtivarRegua" alignment="3" max="32767" attributes="0"/>
                       <Component id="jButtonAtivarTexto" alignment="3" max="32767" attributes="0"/>
-                      <Component id="jButtonAtivarFibonacci1" alignment="3" max="32767" attributes="0"/>
+                      <Component id="jButtonAtivarFibonacci" alignment="3" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -151,12 +151,12 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAtivarTextoActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButtonAtivarFibonacci1">
+        <Component class="javax.swing.JButton" name="jButtonAtivarFibonacci">
           <Properties>
             <Property name="text" type="java.lang.String" value="Fibonacci"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAtivarFibonacci1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAtivarFibonacciActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
@@ -196,7 +196,7 @@
                   <Color blue="0" green="0" red="0" type="rgb"/>
                 </Property>
                 <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                  <Color id="Cursor Padr&#xe3;o"/>
+                  <Color id="Default Cursor"/>
                 </Property>
               </Properties>
               <Constraints>

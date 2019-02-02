@@ -686,7 +686,7 @@ public class submodulografico extends javax.swing.JPanel
         jButtonExportarCsv = new javax.swing.JButton();
         jButtonAtivarRegua = new javax.swing.JButton();
         jButtonAtivarTexto = new javax.swing.JButton();
-        jButtonAtivarFibonacci1 = new javax.swing.JButton();
+        jButtonAtivarFibonacci = new javax.swing.JButton();
         jPanelChartHolders = new javax.swing.JPanel();
         jSplitPaneChartpanels = new javax.swing.JSplitPane();
         jPanelOHLCChartpanel = new javax.swing.JPanel();
@@ -765,12 +765,12 @@ public class submodulografico extends javax.swing.JPanel
             }
         });
 
-        jButtonAtivarFibonacci1.setText("Fibonacci");
-        jButtonAtivarFibonacci1.addActionListener(new java.awt.event.ActionListener()
+        jButtonAtivarFibonacci.setText("Fibonacci");
+        jButtonAtivarFibonacci.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jButtonAtivarFibonacci1ActionPerformed(evt);
+                jButtonAtivarFibonacciActionPerformed(evt);
             }
         });
 
@@ -788,7 +788,7 @@ public class submodulografico extends javax.swing.JPanel
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonAtivarRegua)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonAtivarFibonacci1)
+                .addComponent(jButtonAtivarFibonacci)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonExportarCsv)
                 .addContainerGap())
@@ -803,7 +803,7 @@ public class submodulografico extends javax.swing.JPanel
                     .addComponent(jButtonExportarCsv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonAtivarRegua, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonAtivarTexto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonAtivarFibonacci1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButtonAtivarFibonacci, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -1218,15 +1218,17 @@ public class submodulografico extends javax.swing.JPanel
         }
     }//GEN-LAST:event_jSplitPaneChartpanelsComponentResized
 
-    private void jButtonAtivarFibonacci1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAtivarFibonacci1ActionPerformed
-    {//GEN-HEADEREND:event_jButtonAtivarFibonacci1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonAtivarFibonacci1ActionPerformed
+    private void jButtonAtivarFibonacciActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAtivarFibonacciActionPerformed
+    {//GEN-HEADEREND:event_jButtonAtivarFibonacciActionPerformed
+        mcg.trocarferramentaparafibonacci();
+        resetarcorbotoesferramentas();
+        jButtonAtivarFibonacci.setForeground(Color.red);
+    }//GEN-LAST:event_jButtonAtivarFibonacciActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdicionarIndicador;
-    private javax.swing.JButton jButtonAtivarFibonacci1;
+    private javax.swing.JButton jButtonAtivarFibonacci;
     private javax.swing.JButton jButtonAtivarRegua;
     private javax.swing.JButton jButtonAtivarReta;
     private javax.swing.JButton jButtonAtivarSelecao;
