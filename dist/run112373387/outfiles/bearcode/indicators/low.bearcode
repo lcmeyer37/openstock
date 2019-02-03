@@ -1,0 +1,13 @@
+var candlesinput = candles;
+
+var valoreslow = [];
+var valorestimestamp = [];
+for (i = 0; i < candlesinput.length; i++)
+{
+    valoreslow.push(candlesinput[i].lowd);
+    valorestimestamp.push(candlesinput[i].timestampdate);
+}
+
+var scriptdescription = "Low;drawoncandles";
+var yvalues = Java.to(valoreslow,"double[]");
+var xvalues = Java.to(valorestimestamp,"java.util.Date[]");

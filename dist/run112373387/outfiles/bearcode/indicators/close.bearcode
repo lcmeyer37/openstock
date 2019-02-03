@@ -1,0 +1,18 @@
+//Script Bear Code, para retornar uma list com x values e y values para closes
+//Script Bear Code utiliza JavaScript
+
+//exemplo basico de bear code, utilzando as candles dadas pelo programa, sera retornado os valores de close para pontosx1 e timestamp para pontosy
+var candlesinput = candles;
+
+var valoresclose = []; //array que recebera valores de close das candles
+var valorestimestamp = []; //array que recebera valores de timestamp das candles
+for (i = 0; i < candlesinput.length; i++)
+{
+    valoresclose.push(candlesinput[i].closed);
+    valorestimestamp.push(candlesinput[i].timestampdate);
+}
+
+var scriptdescription = "Close;drawoncandles"; //descreve que tipo de script bearcode eh este, para ser interpretado de forma correta pelo OpenStock
+var yvalues = Java.to(valoresclose,"double[]");
+var xvalues = Java.to(valorestimestamp,"java.util.Date[]");
+
