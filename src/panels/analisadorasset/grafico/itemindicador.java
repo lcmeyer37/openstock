@@ -25,7 +25,7 @@ public class itemindicador extends javax.swing.JPanel
     public panels.analisadorasset.grafico.submodulografico submodulografico;
     
     //classe interpretadora de bearcode (contem o codigo relacionado a este indicador)
-    public mierclasses.mcbearcodeinterpreter mbcodeinterpreter;
+    public mierclasses.mcbcindicatorinterpreter mbcodeinterpreter;
 
     //grafico separado deste item indicador
     public frames.analisadorasset.grafico.chartseparado mfcs;
@@ -105,8 +105,8 @@ public class itemindicador extends javax.swing.JPanel
     
     void criarcodeengine(String idbearcode, String parametrosbearcode)
     {
-        //public mcbearcodeinterpreter(String tipo, String id, String nome, String codbcjs, String paramsbcjs)
-        //funcao para criar um novo mcbearcodeinterpreter, que sera utilizado para
+        //public mcbcindicatorinterpreter(String tipo, String id, String nome, String codbcjs, String paramsbcjs)
+        //funcao para criar um novo mcbcindicatorinterpreter, que sera utilizado para
         //interpretar o codigo bearcode e gerar os valores x e y relacionados a este indicador
         
         //String tipobci = "indicador";
@@ -186,7 +186,7 @@ public class itemindicador extends javax.swing.JPanel
         } 
         
         
-        mbcodeinterpreter = new mierclasses.mcbearcodeinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode);
+        mbcodeinterpreter = new mierclasses.mcbcindicatorinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode);
         //mierclasses.mcfuncoeshelper.mostrarmensagem("mbcodeinterpreter.tipobcode: " + mbcodeinterpreter.tipobcode);
         //mierclasses.mcfuncoeshelper.mostrarmensagem("mbcodeinterpreter.idbcode: " + mbcodeinterpreter.idbcode);
         //mierclasses.mcfuncoeshelper.mostrarmensagem("mbcodeinterpreter.nomebcode: " + mbcodeinterpreter.nomebcode);

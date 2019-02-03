@@ -19,33 +19,38 @@ import javax.script.ScriptException;
  *
  * @author lucasmeyer
  */
-public class mcbearcodeinterpreter
+public class mcbcindicatorinterpreter
 {
-    public String idbcode = ""; //id unico dado para este codigo, ex: close
+    //classe utilizada para interpretar scripts bearcode de indicadores
     
-    public String nomebcode = ""; //nome dado para este codigo, ex: Close Moving Average
-    
-    public String codigobcodejs = ""; //codigo em javascript com o algoritmo deste indicador ou regra
-    
-    public String parametrosbcodejs = ""; 
-    //parametros utilizados pelo codigo sao passados neste variavel, e os parametros estao formatados nesta variavel
+    //id unico dado para este codigo, ex: close
+    public String idbcode = ""; 
+    //nome dado para este codigo, ex: Close Moving Average
+    public String nomebcode = "";
+     //codigo em javascript com o algoritmo deste indicador ou regra
+    public String codigobcodejs = "";
+    //os parametros de input do script do indicador estao formatados nesta variavel
     //da seguinte forma: nome_param_1=valor_param_1;nome_param_2=valor_param_2;etc...
-    //eh possivel tambem que parametros nao sejam necessarios para um certo script, entao esta variavel pode vir
-    //com texto vazio ""
+    public String parametrosbcodejs = ""; 
     
-    //parametros de get utilizados pelo script em sua ultima run
+    //parametros de envio para o script
+    //ultimas candles utilizadas como input ao processar o script
     public java.util.List<mierclasses.mccandle> candles_lastrun;
     
-    //parametros de put
-    public Object pontosx_lastrun; //deve conter o retorno de pontos para o eixo x
-    public Object pontosy_lastrun; //deve conter o retorno de pontos para o eixo y
-    public Object outro_lastrun; //pode conter alguma outra informacao que pode ser retornada para o codigo (a ver utilidade)
-    public Object descricaoscript_lastrun; //string que explica titulo do indicador e como printar grafico
-    public String tituloscript_lastrun; //titulo indicador
-    public String tipoplot_lastrun; //tipo de print do plot
+    //parametros de retorno do script
+    //deve conter o retorno de pontos para o eixo x
+    public Object pontosx_lastrun; 
+    //deve conter o retorno de pontos para o eixo y
+    public Object pontosy_lastrun;
+    //string que explica titulo do indicador e como printar grafico
+    public Object descricaoscript_lastrun; 
+    //um titulo que o criador do script pode associar para apresentacao na plotagem de grafico
+    public String tituloscript_lastrun; 
+    //tipo de print do plot
+    public String tipoplot_lastrun; 
     
-    //classe utilizada para intepretacao de codigo bear code
-    public mcbearcodeinterpreter(String id, String nome, String codbcjs, String paramsbcjs)
+    //construtor
+    public mcbcindicatorinterpreter(String id, String nome, String codbcjs, String paramsbcjs)
     {
         idbcode = id;
         nomebcode = nome;
@@ -53,9 +58,9 @@ public class mcbearcodeinterpreter
         parametrosbcodejs = paramsbcjs;
     }
     
+    //funcao para reatualizar codigo e parametros (utilizado pelo editor)
     public void atualizarscriptparametros(String codnovo, String paramsnovo)
     {
-        //funcao para reatualizar codigo e parametros (utilizado pelo editor)
         codigobcodejs = codnovo;
         parametrosbcodejs = paramsnovo;
     }
@@ -120,15 +125,6 @@ public class mcbearcodeinterpreter
             try
             {
                 pontosy_lastrun = engine.get("yvalues");
-            }
-            catch (Exception e)
-            {
-                //ignorar caso null etc
-            }
-
-            try
-            {
-                outro_lastrun = engine.get("other");
             }
             catch (Exception e)
             {

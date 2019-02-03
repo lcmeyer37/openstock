@@ -24,9 +24,7 @@ public static main.TelaPrincipal telappai;
         initComponents();
         
         telappai = tppai;
-        
-        //adicionar
-        jButtonAddRemoveIndicators.setVisible(false);
+
     }
 
     /**
@@ -42,8 +40,8 @@ public static main.TelaPrincipal telappai;
         jPanel2 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanelMore = new javax.swing.JPanel();
-        jButtonAddRemoveIndicators = new javax.swing.JButton();
-        jButtonOpenBearcodeEditor = new javax.swing.JButton();
+        jButtonOpenBearcodeIndicatorEditor = new javax.swing.JButton();
+        jButtonOpenBearcodeBotEditor = new javax.swing.JButton();
         jPanelAbout = new javax.swing.JPanel();
         jLabelOpenStock = new javax.swing.JLabel();
         jLabelLastBuild = new javax.swing.JLabel();
@@ -70,21 +68,21 @@ public static main.TelaPrincipal telappai;
 
         jPanelMore.setBackground(new java.awt.Color(55, 55, 55));
 
-        jButtonAddRemoveIndicators.setText("Add and Remove Indicators");
-        jButtonAddRemoveIndicators.addActionListener(new java.awt.event.ActionListener()
+        jButtonOpenBearcodeIndicatorEditor.setText("Indicators Editor");
+        jButtonOpenBearcodeIndicatorEditor.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jButtonAddRemoveIndicatorsActionPerformed(evt);
+                jButtonOpenBearcodeIndicatorEditorActionPerformed(evt);
             }
         });
 
-        jButtonOpenBearcodeEditor.setText("Bearcode Editor");
-        jButtonOpenBearcodeEditor.addActionListener(new java.awt.event.ActionListener()
+        jButtonOpenBearcodeBotEditor.setText("Bots Editor");
+        jButtonOpenBearcodeBotEditor.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jButtonOpenBearcodeEditorActionPerformed(evt);
+                jButtonOpenBearcodeBotEditorActionPerformed(evt);
             }
         });
 
@@ -95,17 +93,17 @@ public static main.TelaPrincipal telappai;
             .addGroup(jPanelMoreLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelMoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonOpenBearcodeEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonAddRemoveIndicators, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE))
+                    .addComponent(jButtonOpenBearcodeIndicatorEditor, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE)
+                    .addComponent(jButtonOpenBearcodeBotEditor, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanelMoreLayout.setVerticalGroup(
             jPanelMoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMoreLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButtonOpenBearcodeEditor)
+                .addComponent(jButtonOpenBearcodeIndicatorEditor)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonAddRemoveIndicators)
+                .addComponent(jButtonOpenBearcodeBotEditor)
                 .addContainerGap(107, Short.MAX_VALUE))
         );
 
@@ -171,7 +169,7 @@ public static main.TelaPrincipal telappai;
                             .addComponent(jLabelLastBuild))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabelBear, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabelAPIAttribution, javax.swing.GroupLayout.PREFERRED_SIZE, 423, Short.MAX_VALUE)
+                    .addComponent(jLabelAPIAttribution, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanelAboutLayout.createSequentialGroup()
                         .addComponent(jButtonLicense)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -247,21 +245,23 @@ public static main.TelaPrincipal telappai;
         }
     }//GEN-LAST:event_jButtonIEXActionPerformed
 
-    private void jButtonAddRemoveIndicatorsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddRemoveIndicatorsActionPerformed
-        //open interface to add and remove indicators
-    }//GEN-LAST:event_jButtonAddRemoveIndicatorsActionPerformed
-
-    private void jButtonOpenBearcodeEditorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOpenBearcodeEditorActionPerformed
+    private void jButtonOpenBearcodeIndicatorEditorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOpenBearcodeIndicatorEditorActionPerformed
         //open interface to edit bearcode scripts
-        frames.editorbearcode mfebc = new frames.editorbearcode(telappai);
+        frames.editorbearcodeindicador mfebc = new frames.editorbearcodeindicador(telappai);
         mfebc.show();
-    }//GEN-LAST:event_jButtonOpenBearcodeEditorActionPerformed
+    }//GEN-LAST:event_jButtonOpenBearcodeIndicatorEditorActionPerformed
 
     private void jButtonLicenseActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonLicenseActionPerformed
     {//GEN-HEADEREND:event_jButtonLicenseActionPerformed
         frames.license mfl = new frames.license();
         mfl.show();
     }//GEN-LAST:event_jButtonLicenseActionPerformed
+
+    private void jButtonOpenBearcodeBotEditorActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonOpenBearcodeBotEditorActionPerformed
+    {//GEN-HEADEREND:event_jButtonOpenBearcodeBotEditorActionPerformed
+        frames.editorbearcodetraderbot mfebc = new frames.editorbearcodetraderbot(telappai);
+        mfebc.show();
+    }//GEN-LAST:event_jButtonOpenBearcodeBotEditorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -316,11 +316,11 @@ public static main.TelaPrincipal telappai;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonAddRemoveIndicators;
     private javax.swing.JButton jButtonGithub;
     private javax.swing.JButton jButtonIEX;
     private javax.swing.JButton jButtonLicense;
-    private javax.swing.JButton jButtonOpenBearcodeEditor;
+    private javax.swing.JButton jButtonOpenBearcodeBotEditor;
+    private javax.swing.JButton jButtonOpenBearcodeIndicatorEditor;
     private javax.swing.JLabel jLabelAPIAttribution;
     private javax.swing.JLabel jLabelBear;
     private javax.swing.JLabel jLabelLastBuild;

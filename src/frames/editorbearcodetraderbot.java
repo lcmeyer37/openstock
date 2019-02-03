@@ -16,7 +16,7 @@ import org.w3c.dom.NodeList;
  *
  * @author meyerlu
  */
-public class editorbearcode extends javax.swing.JFrame 
+public class editorbearcodetraderbot extends javax.swing.JFrame 
 {
 
     //janela utilizada para edicao de bearcode scripts
@@ -24,22 +24,30 @@ public class editorbearcode extends javax.swing.JFrame
     //tela principal pai
     public static main.TelaPrincipal telappai;
     
-    //classe interpretadora de bearcode (contem o codigo relacionado a este indicador)
-    mierclasses.mcbearcodeinterpreter mbcodeinterpreter;
+    //classe interpretadora de bearcode (contem o codigo relacionado a este trader bot)
+    mierclasses.mcbctradingbotinterpreter mcbctraderbot;
     
     //candles de teste utilizadas pelo editor
     java.util.List<mierclasses.mccandle> candlessample;
     
+    //quantidade de moedas base de exemplo
+    double quantidadebasesample;
+    
+    //quantidade de moedas quote de exemplo
+    double quantidadequotesample;
+    
     //handler para o output do jtextareaoutput
     mierclasses.mcjtextareahandler mcjtah;
     
-    public editorbearcode(main.TelaPrincipal tppai) 
+    public editorbearcodetraderbot(main.TelaPrincipal tppai) 
     {
         initComponents();
         
         telappai = tppai;
-        mbcodeinterpreter = new mierclasses.mcbearcodeinterpreter("testbearcode", "Teste", "", "");
+        mcbctraderbot = new mierclasses.mcbctradingbotinterpreter("testbctraderbot", "Teste Trader Bot", "", "");
         candlessample = tppai.miex.receberstockchartsample();
+        quantidadebasesample = 50;
+        quantidadequotesample = 1000;
         mcjtah = new mierclasses.mcjtextareahandler(jTextAreaOutput);
         
         resetarscripteditor();
@@ -48,11 +56,15 @@ public class editorbearcode extends javax.swing.JFrame
     void resetarscripteditor()
     {
         //funcao para resetar script editor
-        String scriptdefault = "//bearcode sample\n" +
+        String scriptdefault = "//bearcode trader bot sample\n" +
                 "runoutput.print(\"sample code\");\n" +
                 "\n" +
                 "//sample candles for processing (data at /outfiles/samples/apple5y.json)\n" +
                 "var candlesinput = candles;\n" +
+                "\n" +
+                "//sample values for funds in base and quote currency\n" +
+                "var baseamountinput = basefunds;\n" +
+                "var quoteamountinput = quotefunds;\n" +
                 "\n" +
                 "//parameters expected for processing\n" +
                 "//var periodinput = parseInt(period);\n" +
@@ -74,14 +86,11 @@ public class editorbearcode extends javax.swing.JFrame
                 "var timestamp_date = candlesinput[0].timestampdate; \n" +
                 "*/\n" +
                 "\n" +
-                "//mandatory description for the script\n" +
-                "//in the line below there is an example of \"name of script\" indicator, that uses for the\n" +
-                "//X-axis timestamps, and that it should be drawn on top of the candles chart as a line\n" +
-                "var scriptdescription = \"name of script;timestamp;drawoncandles;line\";\n" +
-                "\n" +
-                "//mandatory return values for the script\n" +
-                "var yvalues = Java.to(yvalues_indicator,\"double[]\");\n" +
-                "var xvalues = Java.to(xvaluestimestamp_indicator,\"java.util.Date[]\");";
+                "//mandatory return value for the script\n" +
+                "//var traderanswerdouble = [0] //don't do anything\n" +
+                "//var traderanswerdouble = [-50] //sell 50 base currency\n" +
+                "var traderanswerdouble = [60] //buy 60 base currency\n" +
+                "var traderdecision = Java.to(traderanswerdouble,\"double[]\");";
                 
         jTextAreaScript.setText(scriptdefault);
         jTextAreaScript.setCaretPosition(0);
@@ -117,9 +126,10 @@ public class editorbearcode extends javax.swing.JFrame
         jTextAreaOutput.setText("");
         
         //funcao para repopular 
-        //mbcodeinterpreter = new mierclasses.mcbearcodeinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode,this);
-        mbcodeinterpreter.atualizarscriptparametros(jTextAreaScript.getText(), jTextFieldParameters.getText());
-        String result = mbcodeinterpreter.rodarscript(candlessample,true,mcjtah);
+        //mbcodeinterpreter = new mierclasses.mcbcindicatorinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode,this);
+        mcbctraderbot.atualizarscriptparametros(jTextAreaScript.getText(), jTextFieldParameters.getText());
+        //String result = mcbctraderbot.rodarscript(candlessample,true,mcjtah);
+        String result = mcbctraderbot.rodarscript(candlessample, quantidadebasesample, quantidadequotesample,true, mcjtah);
         
         if (result.equals("ok"))
         {
@@ -221,7 +231,7 @@ public class editorbearcode extends javax.swing.JFrame
         jTextFieldParameters = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Bearcode Editor");
+        setTitle("Bearcode Trader Bot Editor");
 
         jPanelPai.setBackground(new java.awt.Color(55, 55, 55));
 
@@ -414,21 +424,27 @@ public class editorbearcode extends javax.swing.JFrame
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(editorbearcode.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(editorbearcodetraderbot.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(editorbearcode.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(editorbearcodetraderbot.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(editorbearcode.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(editorbearcodetraderbot.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(editorbearcode.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(editorbearcodetraderbot.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new editorbearcode(telappai).setVisible(true);
+                new editorbearcodetraderbot(telappai).setVisible(true);
             }
         });
     }

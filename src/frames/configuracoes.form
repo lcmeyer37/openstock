@@ -83,8 +83,8 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jButtonOpenBearcodeEditor" max="32767" attributes="0"/>
-                          <Component id="jButtonAddRemoveIndicators" pref="423" max="32767" attributes="0"/>
+                          <Component id="jButtonOpenBearcodeIndicatorEditor" pref="513" max="32767" attributes="0"/>
+                          <Component id="jButtonOpenBearcodeBotEditor" alignment="0" pref="513" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -94,29 +94,29 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButtonOpenBearcodeEditor" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonOpenBearcodeIndicatorEditor" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButtonAddRemoveIndicators" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonOpenBearcodeBotEditor" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="107" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="jButtonAddRemoveIndicators">
+            <Component class="javax.swing.JButton" name="jButtonOpenBearcodeIndicatorEditor">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Add and Remove Indicators"/>
+                <Property name="text" type="java.lang.String" value="Indicators Editor"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAddRemoveIndicatorsActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonOpenBearcodeIndicatorEditorActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="jButtonOpenBearcodeEditor">
+            <Component class="javax.swing.JButton" name="jButtonOpenBearcodeBotEditor">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Bearcode Editor"/>
+                <Property name="text" type="java.lang.String" value="Bots Editor"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonOpenBearcodeEditorActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonOpenBearcodeBotEditorActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -153,7 +153,7 @@
                               <EmptySpace max="32767" attributes="0"/>
                               <Component id="jLabelBear" min="-2" pref="70" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="jLabelAPIAttribution" alignment="0" pref="423" max="32767" attributes="0"/>
+                          <Component id="jLabelAPIAttribution" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jButtonLicense" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>

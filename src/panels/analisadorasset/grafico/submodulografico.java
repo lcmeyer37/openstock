@@ -547,7 +547,7 @@ public class submodulografico extends javax.swing.JPanel
         jButtonAtivarSelecao.setForeground(Color.black);
         jButtonAtivarRegua.setForeground(Color.black);
         jButtonAtivarReta.setForeground(Color.black);
-        jButtonExportarCsv.setForeground(Color.black);
+        jButtonAtivarFibonacci.setForeground(Color.black);
         jButtonAtivarTexto.setForeground(Color.black);
     }
         
