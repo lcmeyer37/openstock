@@ -206,8 +206,8 @@ public class analisadorasset extends javax.swing.JPanel
                         "<Indicator>" +
                             "<Name>" + miia.jLabelNomeItemIndicador.getText() + "</Name>" +
                             "<ID>" + miia.id + "</ID>" +
-                            "<BCID>" + miia.mbcodeinterpreter.idbcode + "</BCID>" +
-                            "<Parameters>" + miia.mbcodeinterpreter.parametrosbcodejs + "</Parameters>" +
+                            "<BCID>" + miia.mcbcindicador.idbcode + "</BCID>" +
+                            "<Parameters>" + miia.mcbcindicador.parametrosbcodejs + "</Parameters>" +
                         "</Indicator>";
 
             }

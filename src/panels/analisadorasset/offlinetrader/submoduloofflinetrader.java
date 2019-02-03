@@ -16,6 +16,15 @@
  */
 package panels.analisadorasset.offlinetrader;
 
+import static frames.analisadorasset.grafico.adicionarindicador.submodulopai;
+import java.io.File;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 /**
  *
  * @author lucasmeyer
@@ -27,6 +36,9 @@ public class submoduloofflinetrader extends javax.swing.JPanel
     public panels.analisadorasset.analisadorasset aassetpai; //analisador de asset pai, contem modulos para analises do asset (ateh o momento grafico e trader)
     
     public mierclasses.mcofflinetrader otrader; //offline trader utilizado por este submodulo
+    
+    //classe interpretadora de bearcode (contem o codigo relacionado ao bot trader em uso)
+    public mierclasses.mcbctradingbotinterpreter mcbctradingbot;
     
     
     /**
@@ -51,9 +63,16 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         //associar o simbolo utilizado pelo trader
         otrader.recriarofflinetrader(aassetpai.assetsimbolo);
         
+        //auto-selecionar o primeiro algoritmo de traderbot disponivel para o offline trader
+        //popularcomboboxtraderbotsdisponiveis();
+        //String tbotselecionadostring = (String)jComboBoxScriptAtualTraderbot.getSelectedItem();
+        //String idbc = (tbotselecionadostring.split("\\[")[1]).split("\\]")[0];
+        //String parametrosbc = jTextFieldParametrosTraderbot.getText();
+        //submodulopai.adicionarIndicadorNovo(idbc, parametrosbc);
+        
         //atualizar informacoes de bid ask atual
         otrader.atualizarbidask();
-        
+        //atualizar informacoes das janelas de buy/sell/funds
         jLabelComprar.setText("Buy " + otrader.simbolo.toUpperCase());
         jLabelVender.setText("Sell " + otrader.simbolo.toUpperCase());
         jTextFieldMelhorAsk.setText(String.format( "%.6f",otrader.melhorask));
@@ -63,7 +82,6 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jLabelTotalFundos.setText("Total (Quote Value): " + String.format( "%.6f",otrader.totalfundos_moedacotacao()));
         jLabelFeeCompra.setText("Fee " + String.format( "%.2f",100*otrader.feecompra) + "%");
         jLabelFeeVenda.setText("Fee " + String.format( "%.2f",100*otrader.feevenda) + "%");
-        
         
         this.validate();
         this.repaint();
@@ -77,6 +95,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         
         //atualizar informacoes de bid ask atual
         otrader.atualizarbidask();
+        //atualizar informacoes das janelas de buy/sell/funds
         jLabelComprar.setText("Buy " + otrader.simbolo.toUpperCase());
         jLabelVender.setText("Sell " + otrader.simbolo.toUpperCase());
         jTextFieldMelhorAsk.setText(String.format( "%.6f",otrader.melhorask));
@@ -98,7 +117,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         this.repaint();
     }
 
-    // <editor-fold defaultstate="collapsed" desc="Implementação para Realização de Transações">
+    // <editor-fold defaultstate="collapsed" desc="Implementação para Realização de Transações Manuais">
     public String realizardepositoousaque(String tipomoeda, String depositoousaque, String valortransacao)
     {
         try
@@ -226,6 +245,139 @@ public class submoduloofflinetrader extends javax.swing.JPanel
     }
     // </editor-fold>
     
+    // <editor-fold defaultstate="collapsed" desc="Implementação para Realização de Transações com Trader Bot">
+    void popularcomboboxtraderbotsdisponiveis()
+    {
+        //abrir documento /arquivosconfig/indicadores.mfxconfig para ler indicadores disponiveis para uso
+        //e criar itens com indicadores disponiveis no jComboBoxIndicadoresDisponiveis
+        
+        try
+        {
+            jComboBoxScriptAtualTraderbot.removeAllItems();
+            
+            String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
+            String cindicconfig = rootjar + "/outfiles/bearcode/traderbots/traderbots.mfxconfig";
+            //mierclasses.mcfuncoeshelper.mostrarmensagem(cindicconfig);
+            
+            File xmlArquivo = new File(cindicconfig);
+            DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
+        
+            DocumentBuilder dbuilder = dbfactory.newDocumentBuilder();
+        
+            Document document = dbuilder.parse(xmlArquivo);
+            
+            NodeList listaIndicadoresDisponiveis = document.getElementsByTagName("Traderbot");
+            
+            for (int i = 0; i < listaIndicadoresDisponiveis.getLength(); i++)
+            {
+                Node nodeIndicador = listaIndicadoresDisponiveis.item(i);
+                
+                if (nodeIndicador.getNodeType() == Node.ELEMENT_NODE)
+                {
+                    Element elIndicador = (Element) nodeIndicador;
+                    
+                    String id =  elIndicador.getElementsByTagName("BCID").item(0).getTextContent();
+                    String nome = elIndicador.getElementsByTagName("Name").item(0).getTextContent();
+                    String caminhobcode = elIndicador.getElementsByTagName("BearcodeFile").item(0).getTextContent();
+                    
+                    jComboBoxScriptAtualTraderbot.addItem(nome + " [" + id + "]");
+                }
+            }
+        }
+        catch (Exception e) 
+        {
+            mierclasses.mcfuncoeshelper.mostrarmensagem("Uma exceção ocorreu: " + e.toString());
+        }
+    }
+    
+    void popularbearcodetraderbot(String idbearcode, String parametrosbearcode)
+    {
+        //funcao para popular mcbctradingbotinterpreter beacode trader bot engine utilizado por este submodulo
+        
+        //public mcbcindicatorinterpreter(String tipo, String id, String nome, String codbcjs, String paramsbcjs)
+        //funcao para criar um novo mcbcindicatorinterpreter, que sera utilizado para
+        //interpretar o codigo bearcode e gerar os valores x e y relacionados a este indicador
+        
+        //String tipobci = "indicador";
+        //mierclasses.mcfuncoeshelper.mostrarmensagem("tipobci: " + tipobci);
+        String idbci = idbearcode;
+        //mierclasses.mcfuncoeshelper.mostrarmensagem("idbci: " + idbci);
+        String nomebci = "";
+        String caminhoarquivobci = "";
+        // <editor-fold defaultstate="collapsed" desc="encontrar caminho e nome deste bearcode utilizando o id">
+    
+        try
+        {
+            String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
+            String cindicconfig = rootjar + "/outfiles/bearcode/traderbots/traderbots.mfxconfig";
+            //mierclasses.mcfuncoeshelper.mostrarmensagem(cindicconfig);
+            
+            File xmlArquivo = new File(cindicconfig);
+            DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
+        
+            DocumentBuilder dbuilder = dbfactory.newDocumentBuilder();
+        
+            Document document = dbuilder.parse(xmlArquivo);
+            
+            NodeList listaIndicadoresDisponiveis = document.getElementsByTagName("Traderbot");
+            
+            for (int i = 0; i < listaIndicadoresDisponiveis.getLength(); i++)
+            {
+                Node nodeIndicador = listaIndicadoresDisponiveis.item(i);
+
+                if (nodeIndicador.getNodeType() == Node.ELEMENT_NODE)
+                {
+                    Element elIndicador = (Element) nodeIndicador;
+                    
+                    String id =  elIndicador.getElementsByTagName("BCID").item(0).getTextContent();
+                    //mierclasses.mcfuncoeshelper.mostrarmensagem("id: " + id);
+                    
+                    if (id.equals(idbci) == true)
+                    {
+                        String nome = elIndicador.getElementsByTagName("Name").item(0).getTextContent();
+                        nomebci = nome;
+                        //mierclasses.mcfuncoeshelper.mostrarmensagem("nome: " + nome);
+                        String arquivobcode = elIndicador.getElementsByTagName("BearcodeFile").item(0).getTextContent();
+                        //mierclasses.mcfuncoeshelper.mostrarmensagem("arquivobcode: " + arquivobcode);
+                        caminhoarquivobci = rootjar + "/outfiles/bearcode/traderbots/" + arquivobcode;
+                        //mierclasses.mcfuncoeshelper.mostrarmensagem("caminhoarquivobci: " + caminhoarquivobci);
+                        break;
+                    }
+                    
+                }
+            }
+        }
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+            mierclasses.mcfuncoeshelper.mostrarmensagem("Uma exceção ocorreu: " + e.getLocalizedMessage());
+        }
+        //</editor-fold>
+        
+        String conteudoscriptbci = "";
+        //passar para conteudoscriptbci o codigo javascript bearcode
+        java.util.List<String> lines = java.util.Collections.emptyList(); 
+        try
+        { 
+            lines = java.nio.file.Files.readAllLines(java.nio.file.Paths.get(caminhoarquivobci), java.nio.charset.StandardCharsets.UTF_8); 
+        
+            for (int i = 0; i < lines.size(); i++)
+            {
+                conteudoscriptbci = conteudoscriptbci + "\n" + lines.get(i);
+                
+            }
+            //mierclasses.mcfuncoeshelper.mostrarmensagem("conteudoscriptbci: " + conteudoscriptbci);
+        } 
+        catch (Exception e) 
+        { 
+            e.printStackTrace();
+            mierclasses.mcfuncoeshelper.mostrarmensagem("Uma exceção ocorreu: " + e.toString());
+        } 
+        
+        mcbctradingbot = new mierclasses.mcbctradingbotinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode);
+    }
+    //</editor-fold>
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -286,6 +438,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jComboBoxScriptAtualTraderbot = new javax.swing.JComboBox<>();
         jButtonAtivarDesativarTrader = new javax.swing.JButton();
         jLabelStatusTrader = new javax.swing.JLabel();
+        jLabelScriptAtualTraderbot1 = new javax.swing.JLabel();
+        jTextFieldParametrosTraderbot = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(55, 55, 55));
 
@@ -674,7 +828,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jPanelSubTransacoes.setLayout(jPanelSubTransacoesLayout);
         jPanelSubTransacoesLayout.setHorizontalGroup(
             jPanelSubTransacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabelTransacoes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 994, Short.MAX_VALUE)
+            .addComponent(jLabelTransacoes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 964, Short.MAX_VALUE)
         );
         jPanelSubTransacoesLayout.setVerticalGroup(
             jPanelSubTransacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -715,7 +869,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelHeaderTransacoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneLinhasTransacoes, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
+                .addComponent(jScrollPaneLinhasTransacoes, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -754,6 +908,18 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jLabelStatusTrader.setForeground(new java.awt.Color(255, 255, 255));
         jLabelStatusTrader.setText("Status: (not running)");
 
+        jLabelScriptAtualTraderbot1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelScriptAtualTraderbot1.setText("Parameters:");
+
+        jTextFieldParametrosTraderbot.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jTextFieldParametrosTraderbot.addCaretListener(new javax.swing.event.CaretListener()
+        {
+            public void caretUpdate(javax.swing.event.CaretEvent evt)
+            {
+                jTextFieldParametrosTraderbotCaretUpdate(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelTraderbotLayout = new javax.swing.GroupLayout(jPanelTraderbot);
         jPanelTraderbot.setLayout(jPanelTraderbotLayout);
         jPanelTraderbotLayout.setHorizontalGroup(
@@ -763,8 +929,12 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                 .addContainerGap()
                 .addComponent(jLabelScriptAtualTraderbot)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBoxScriptAtualTraderbot, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jComboBoxScriptAtualTraderbot, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelScriptAtualTraderbot1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextFieldParametrosTraderbot)
+                .addGap(18, 18, 18)
                 .addComponent(jLabelStatusTrader)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonAtivarDesativarTrader)
@@ -779,7 +949,9 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                     .addComponent(jLabelScriptAtualTraderbot)
                     .addComponent(jComboBoxScriptAtualTraderbot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonAtivarDesativarTrader)
-                    .addComponent(jLabelStatusTrader))
+                    .addComponent(jLabelStatusTrader)
+                    .addComponent(jLabelScriptAtualTraderbot1)
+                    .addComponent(jTextFieldParametrosTraderbot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -852,6 +1024,11 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         realizarvenda();
     }//GEN-LAST:event_jButtonVenderManualActionPerformed
 
+    private void jTextFieldParametrosTraderbotCaretUpdate(javax.swing.event.CaretEvent evt)//GEN-FIRST:event_jTextFieldParametrosTraderbotCaretUpdate
+    {//GEN-HEADEREND:event_jTextFieldParametrosTraderbotCaretUpdate
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldParametrosTraderbotCaretUpdate
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAlterarFundos;
@@ -873,6 +1050,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
     public javax.swing.JLabel jLabelPrecoTransacao;
     public javax.swing.JLabel jLabelQuantidadeTransacao;
     private javax.swing.JLabel jLabelScriptAtualTraderbot;
+    private javax.swing.JLabel jLabelScriptAtualTraderbot1;
     private javax.swing.JLabel jLabelStatusTrader;
     public javax.swing.JLabel jLabelTimestampTransacao;
     public javax.swing.JLabel jLabelTipoTransacao;
@@ -902,6 +1080,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
     private javax.swing.JTextField jTextFieldMelhorBid;
     private javax.swing.JTextField jTextFieldMoedaBaseAtual;
     private javax.swing.JTextField jTextFieldMoedaCotacaoAtual;
+    private javax.swing.JTextField jTextFieldParametrosTraderbot;
     private javax.swing.JTextField jTextFieldVenderQuantidade;
     private javax.swing.JTextField jTextFieldVenderTotal;
     // End of variables declaration//GEN-END:variables

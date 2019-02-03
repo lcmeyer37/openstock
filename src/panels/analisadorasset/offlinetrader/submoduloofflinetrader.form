@@ -586,7 +586,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jPanelHeaderTransacoes" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPaneLinhasTransacoes" pref="325" max="32767" attributes="0"/>
+                  <Component id="jScrollPaneLinhasTransacoes" pref="313" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -729,7 +729,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabelTransacoes" alignment="1" pref="994" max="32767" attributes="0"/>
+                  <Component id="jLabelTransacoes" alignment="1" pref="964" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -793,8 +793,12 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabelScriptAtualTraderbot" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jComboBoxScriptAtualTraderbot" max="32767" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="jComboBoxScriptAtualTraderbot" min="-2" pref="310" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jLabelScriptAtualTraderbot1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jTextFieldParametrosTraderbot" max="32767" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jLabelStatusTrader" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButtonAtivarDesativarTrader" min="-2" max="-2" attributes="0"/>
@@ -812,6 +816,8 @@
                       <Component id="jComboBoxScriptAtualTraderbot" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jButtonAtivarDesativarTrader" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabelStatusTrader" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabelScriptAtualTraderbot1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jTextFieldParametrosTraderbot" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -883,6 +889,22 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Status: (not running)"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabelScriptAtualTraderbot1">
+          <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Parameters:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="jTextFieldParametrosTraderbot">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+          </Properties>
+          <Events>
+            <EventHandler event="caretUpdate" listener="javax.swing.event.CaretListener" parameters="javax.swing.event.CaretEvent" handler="jTextFieldParametrosTraderbotCaretUpdate"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

@@ -25,7 +25,7 @@ public class itemindicador extends javax.swing.JPanel
     public panels.analisadorasset.grafico.submodulografico submodulografico;
     
     //classe interpretadora de bearcode (contem o codigo relacionado a este indicador)
-    public mierclasses.mcbcindicatorinterpreter mbcodeinterpreter;
+    public mierclasses.mcbcindicatorinterpreter mcbcindicador;
 
     //grafico separado deste item indicador
     public frames.analisadorasset.grafico.chartseparado mfcs;
@@ -46,7 +46,7 @@ public class itemindicador extends javax.swing.JPanel
         
         submodulografico = mpsmg;
         
-        criarcodeengine(idbearcode,parametrosbearcode);
+        popularbearcodeindicador(idbearcode,parametrosbearcode);
 
     }
     
@@ -62,7 +62,7 @@ public class itemindicador extends javax.swing.JPanel
         
         submodulografico = mpsmg;
         
-        criarcodeengine(idbearcode,parametrosbearcode);
+        popularbearcodeindicador(idbearcode,parametrosbearcode);
 
     }
     
@@ -74,7 +74,7 @@ public class itemindicador extends javax.swing.JPanel
     public String rodarscriptindicador()
     {
         //funcao para rodar script relacionado a este item indicador
-        String statusrun = mbcodeinterpreter.rodarscript(submodulografico.mcg.candlesatual,false,null);
+        String statusrun = mcbcindicador.rodarscript(submodulografico.mcg.candlesatual,false,null);
         
         return statusrun;
     }
@@ -91,19 +91,18 @@ public class itemindicador extends javax.swing.JPanel
     public void recarregargraficoseparadoindicador()
     {
         /*
-            novoindicador.mbcodeinterpreter.pontosx_lastrun,
-            novoindicador.mbcodeinterpreter.pontosy_lastrun,
-            novoindicador.mbcodeinterpreter.tituloscript_lastrun,
-            novoindicador.mbcodeinterpreter.tipodesenho_lastrun
+            novoindicador.mcbcindicador.pontosx_lastrun,
+            novoindicador.mcbcindicador.pontosy_lastrun,
+            novoindicador.mcbcindicador.tituloscript_lastrun,
+            novoindicador.mcbcindicador.tipodesenho_lastrun
         */
         mfcs.associarplotchartpaneljanela
-        (
-                mfcs.retornarnovoplot_indicador(mbcodeinterpreter.pontosx_lastrun, mbcodeinterpreter.pontosy_lastrun, mbcodeinterpreter.tituloscript_lastrun, mbcodeinterpreter.tipoplot_lastrun)
+        (mfcs.retornarnovoplot_indicador(mcbcindicador.pontosx_lastrun, mcbcindicador.pontosy_lastrun, mcbcindicador.tituloscript_lastrun, mcbcindicador.tipoplot_lastrun)
         );
         
     }
     
-    void criarcodeengine(String idbearcode, String parametrosbearcode)
+    void popularbearcodeindicador(String idbearcode, String parametrosbearcode)
     {
         //public mcbcindicatorinterpreter(String tipo, String id, String nome, String codbcjs, String paramsbcjs)
         //funcao para criar um novo mcbcindicatorinterpreter, que sera utilizado para
@@ -120,7 +119,7 @@ public class itemindicador extends javax.swing.JPanel
         try
         {
             String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
-            String cindicconfig = rootjar + "/outfiles/bearcode/indicators.mfxconfig";
+            String cindicconfig = rootjar + "/outfiles/bearcode/indicators/indicators.mfxconfig";
             //mierclasses.mcfuncoeshelper.mostrarmensagem(cindicconfig);
             
             File xmlArquivo = new File(cindicconfig);
@@ -150,7 +149,7 @@ public class itemindicador extends javax.swing.JPanel
                         //mierclasses.mcfuncoeshelper.mostrarmensagem("nome: " + nome);
                         String arquivobcode = elIndicador.getElementsByTagName("BearcodeFile").item(0).getTextContent();
                         //mierclasses.mcfuncoeshelper.mostrarmensagem("arquivobcode: " + arquivobcode);
-                        caminhoarquivobci = rootjar + "/outfiles/bearcode/" + arquivobcode;
+                        caminhoarquivobci = rootjar + "/outfiles/bearcode/indicators/" + arquivobcode;
                         //mierclasses.mcfuncoeshelper.mostrarmensagem("caminhoarquivobci: " + caminhoarquivobci);
                         break;
                     }
@@ -186,20 +185,20 @@ public class itemindicador extends javax.swing.JPanel
         } 
         
         
-        mbcodeinterpreter = new mierclasses.mcbcindicatorinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode);
-        //mierclasses.mcfuncoeshelper.mostrarmensagem("mbcodeinterpreter.tipobcode: " + mbcodeinterpreter.tipobcode);
-        //mierclasses.mcfuncoeshelper.mostrarmensagem("mbcodeinterpreter.idbcode: " + mbcodeinterpreter.idbcode);
-        //mierclasses.mcfuncoeshelper.mostrarmensagem("mbcodeinterpreter.nomebcode: " + mbcodeinterpreter.nomebcode);
-        //mierclasses.mcfuncoeshelper.mostrarmensagem("mbcodeinterpreter.parametrosbcodejs: " + mbcodeinterpreter.parametrosbcodejs);
-        //mierclasses.mcfuncoeshelper.mostrarmensagem("mbcodeinterpreter.codigobcodejs: " + mbcodeinterpreter.codigobcodejs);
+        mcbcindicador = new mierclasses.mcbcindicatorinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode);
+        //mierclasses.mcfuncoeshelper.mostrarmensagem("mcbcindicador.tipobcode: " + mcbcindicador.tipobcode);
+        //mierclasses.mcfuncoeshelper.mostrarmensagem("mcbcindicador.idbcode: " + mcbcindicador.idbcode);
+        //mierclasses.mcfuncoeshelper.mostrarmensagem("mcbcindicador.nomebcode: " + mcbcindicador.nomebcode);
+        //mierclasses.mcfuncoeshelper.mostrarmensagem("mcbcindicador.parametrosbcodejs: " + mcbcindicador.parametrosbcodejs);
+        //mierclasses.mcfuncoeshelper.mostrarmensagem("mcbcindicador.codigobcodejs: " + mcbcindicador.codigobcodejs);
     }
     
     
     //funcoes helper
     double retornarpontoy_dadotimestamp(java.util.Date timestamppontoy)
     {
-        double[] yvalues_double = (double[]) mbcodeinterpreter.pontosy_lastrun;
-        java.util.Date[] xvalues_date = (java.util.Date[]) mbcodeinterpreter.pontosx_lastrun;
+        double[] yvalues_double = (double[]) mcbcindicador.pontosy_lastrun;
+        java.util.Date[] xvalues_date = (java.util.Date[]) mcbcindicador.pontosx_lastrun;
         
         for (int i = 0; i < xvalues_date.length; i++)
         {

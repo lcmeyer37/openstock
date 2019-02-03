@@ -25,7 +25,6 @@ public class mcofflinetrader
     //classe utilizada pelo submoduloofflinetrader para realizar transacoes
     panels.analisadorasset.offlinetrader.submoduloofflinetrader submodulooftraderpai;
     
-    
     public String simbolo; //simbolo relacionado a este trader
     
     public double quantidademoedabase; //quantidade de moeda base que este trader tem (fundos offline)

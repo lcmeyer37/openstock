@@ -249,15 +249,15 @@ public class submodulografico extends javax.swing.JPanel
             String statusrunindicador = novoindicador.rodarscriptindicador();
             if (statusrunindicador.equals("ok"))
             {
-                if (novoindicador.mbcodeinterpreter.tipoplot_lastrun.equals("drawoncandles"))
+                if (novoindicador.mcbcindicador.tipoplot_lastrun.equals("drawoncandles"))
                 {
                     //considerando que o indicador rodou com sucesso, e que ele deve ser desenhado no ohlc,
                     //adicionar dados do indicador no grafico
                     mcg.adicionarplotohlc_indicador
                     (
-                        novoindicador.mbcodeinterpreter.pontosx_lastrun,
-                        novoindicador.mbcodeinterpreter.pontosy_lastrun,
-                        novoindicador.mbcodeinterpreter.tituloscript_lastrun
+                        novoindicador.mcbcindicador.pontosx_lastrun,
+                        novoindicador.mcbcindicador.pontosy_lastrun,
+                        novoindicador.mcbcindicador.tituloscript_lastrun
                     );
 
                     //recarregar grafico separado do indicador
@@ -319,15 +319,15 @@ public class submodulografico extends javax.swing.JPanel
         String statusrunindicador = novoindicador.rodarscriptindicador();
         if (statusrunindicador.equals("ok"))
         {
-            if (novoindicador.mbcodeinterpreter.tipoplot_lastrun.equals("drawoncandles"))
+            if (novoindicador.mcbcindicador.tipoplot_lastrun.equals("drawoncandles"))
             {
                 //considerando que o indicador rodou com sucesso, e que ele deve ser desenhado no ohlc,
                 //adicionar dados do indicador no grafico
                 mcg.adicionarplotohlc_indicador
                 (
-                    novoindicador.mbcodeinterpreter.pontosx_lastrun,
-                    novoindicador.mbcodeinterpreter.pontosy_lastrun,
-                    novoindicador.mbcodeinterpreter.tituloscript_lastrun
+                    novoindicador.mcbcindicador.pontosx_lastrun,
+                    novoindicador.mcbcindicador.pontosy_lastrun,
+                    novoindicador.mcbcindicador.tituloscript_lastrun
                 );
                 //adicionar id de controle no chart generator
                 mcg.adicionarplotohlc_indicadorid(novoindicador.id);
@@ -363,15 +363,15 @@ public class submodulografico extends javax.swing.JPanel
         String statusrunindicador = novoindicador.rodarscriptindicador();
         if (statusrunindicador.equals("ok"))
         {
-            if (novoindicador.mbcodeinterpreter.tipoplot_lastrun.equals("drawoncandles"))
+            if (novoindicador.mcbcindicador.tipoplot_lastrun.equals("drawoncandles"))
             {
                 //considerando que o indicador rodou com sucesso, e que ele deve ser desenhado no ohlc,
                 //adicionar dados do indicador no grafico
                 mcg.adicionarplotohlc_indicador
                 (
-                    novoindicador.mbcodeinterpreter.pontosx_lastrun,
-                    novoindicador.mbcodeinterpreter.pontosy_lastrun,
-                    novoindicador.mbcodeinterpreter.tituloscript_lastrun
+                    novoindicador.mcbcindicador.pontosx_lastrun,
+                    novoindicador.mcbcindicador.pontosy_lastrun,
+                    novoindicador.mcbcindicador.tituloscript_lastrun
                 );
                 mcg.adicionarplotohlc_indicadorid(novoindicador.id);
                 
@@ -399,7 +399,7 @@ public class submodulografico extends javax.swing.JPanel
 
     public void removerIndicador(panels.analisadorasset.grafico.itemindicador mpiiremover)
     {
-        if (mpiiremover.mbcodeinterpreter.tipoplot_lastrun.equals("drawoncandles"))
+        if (mpiiremover.mcbcindicador.tipoplot_lastrun.equals("drawoncandles"))
         {
             mcg.removerplotohlc_indicador(mpiiremover.id);
             mcg.removerplotohlc_indicadorid(mpiiremover.id);
@@ -432,10 +432,10 @@ public class submodulografico extends javax.swing.JPanel
         (
             mpiidestacarabaixo.mfcs.retornarnovoplot_indicador
             (
-                     mpiidestacarabaixo.mbcodeinterpreter.pontosx_lastrun, 
-                     mpiidestacarabaixo.mbcodeinterpreter.pontosy_lastrun, 
-                     mpiidestacarabaixo.mbcodeinterpreter.tituloscript_lastrun,
-                     mpiidestacarabaixo.mbcodeinterpreter.tipoplot_lastrun
+                     mpiidestacarabaixo.mcbcindicador.pontosx_lastrun, 
+                     mpiidestacarabaixo.mcbcindicador.pontosy_lastrun, 
+                     mpiidestacarabaixo.mcbcindicador.tituloscript_lastrun,
+                     mpiidestacarabaixo.mcbcindicador.tipoplot_lastrun
              )       
         );
         String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
@@ -602,7 +602,7 @@ public class submodulografico extends javax.swing.JPanel
             {
                 panels.analisadorasset.grafico.itemindicador indicadoratual = (panels.analisadorasset.grafico.itemindicador)jPanelIndicadores.getComponent(j);
                 
-                String nomeindicador = indicadoratual.mbcodeinterpreter.tituloscript_lastrun;
+                String nomeindicador = indicadoratual.mcbcindicador.tituloscript_lastrun;
                 csvSave = csvSave + ";" + nomeindicador;
             }
             csvSave = csvSave + "\n";
