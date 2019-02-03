@@ -1,5 +1,5 @@
 # Open Stock
-Open Source Technical Analysis Software
+Open Source Technical Analysis and Offline Trading Software
 
 ![Bear Logo](sblogo.png)
 
