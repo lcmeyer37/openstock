@@ -1,23 +1,30 @@
-//MACD Script
-//MACD Line = (EMA_close t-12) - (EMA_close t-26)
-//MACD Signal Line = (EMA_MACD t-9)
-//MACD Histogram = MACD Line - MACD Signal Line
+//MACD Trader Script Sample
+//buy all you can if macd_tm1 > 0 and macd_tm2 < 0
+//sell all you can if macd_tm1 < 0 and macd_tm2 > 0
 
-//candles OpenStock
+//inputs
 var candlesinput = candles;
+var baseamountinput = basefunds;
+//runoutput.print("baseamountinput: " + baseamountinput);
+var quoteamountinput = quotefunds;
+//runoutput.print("\nquoteamountinput: " + quoteamountinput);
+var bidinput = lastbid;
+//runoutput.print("\nbidinput: " + bidinput);
+var askinput = lastask;
+//runoutput.print("\naskinput: " + askinput);
+var buyfeeinput = buyfee;
+//runoutput.print("\nbuyfeeinput: " + buyfeeinput);
+var sellfeeinput = sellfee;
+//runoutput.print("\nsellfeeinput: " + sellfeeinput);
 
-//parametrosinput
+//no parameters
 
-//receber valores de close e timestamp
+//calculate macd histogram
 var closes_timestamps = retornarclosestimestamp();
 var closes = closes_timestamps[0];
 var timestamps = closes_timestamps[1];
-
-//calcular ema_close t-12 e ema_close t-26
 var ema_timestamps_ta = calculate_ema(12,closes,timestamps);
 var ema_timestamps_tb = calculate_ema(26,closes,timestamps);
-
-//calcular macdline
 var macdline = calculate_difference
 (
     ema_timestamps_ta[0],
@@ -26,12 +33,7 @@ var macdline = calculate_difference
     ema_timestamps_tb[1],
     (26-12)
 );
-
-
-//calcular signalline
 var signalline = calculate_ema(9,macdline[0],macdline[1]);
-
-//calcular histogram
 var macdhistogram = calculate_difference
 (
     macdline[0],
@@ -41,8 +43,31 @@ var macdhistogram = calculate_difference
     9
 )
 
+//trader answer
+var macdhistogramvalores = macdhistogram[0];
+var macdhist_tm1 = macdhistogramvalores[macdhistogramvalores.length-1];
+//runoutput.print("\nmacdhist_tm1: " + macdhist_tm1);
+var macdhist_tm2 = macdhistogramvalores[macdhistogramvalores.length-2];
+//runoutput.print("\nmacdhist_tm2: " + macdhist_tm2);
 
-//funcao para retornar valores de close das candles
+var tradermove = "hold";
+if ((macdhist_tm1 > 0) && ((macdhist_tm2 < 0)))
+    tradermove = "buyall";
+else if ((macdhist_tm1 < 0) && ((macdhist_tm2 > 0)))
+    tradermove = "sellall";
+
+var amountbase = [0];
+
+//runoutput.print("\ntradermove: " + tradermove);
+//runoutput.print("\nsupportamount: " + supportamount);
+
+var supportamount = Java.to(amountbase,"double[]");
+
+
+
+
+
+//SUPPORT MACD ALGORITHM FUNCTIONS
 function retornarclosestimestamp()
 {
     var valoresclose = [];
@@ -64,8 +89,6 @@ function retornarclosestimestamp()
     return retornoclose;
 }
 
-
-//funcao para calcular EMA
 function calculate_ema(periodo,valoresx,valorestimestamp)
 {
     var valormultiplierema = (2.0/(periodo+1.0));
@@ -108,7 +131,6 @@ function calculate_ema(periodo,valoresx,valorestimestamp)
     return retornoema;
 }
 
-//funcao para calcular diferenca entre valoresa - valoresb
 function calculate_difference(valores_a,valores_b,timestamps_a,timestamps_b,gapindex)
 {
     //suposicao
@@ -138,7 +160,3 @@ function calculate_difference(valores_a,valores_b,timestamps_a,timestamps_b,gapi
 
     return retornodiff;
 }
-
-var scriptdescription = "MACD (12,26,9);drawseparatebar"; 
-var yvalues = Java.to(macdhistogram[0],"double[]");
-var xvalues = Java.to(macdhistogram[1],"java.util.Date[]");

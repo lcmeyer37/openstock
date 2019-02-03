@@ -195,7 +195,7 @@ public class mcofflinetrader
         {
             double custocompra = custototalcompra_basecotacao(quantidadecomprabase);
             
-            if (custocompra <= quantidademoedacotacao)
+            if ((custocompra <= quantidademoedacotacao) && (quantidademoedacotacao > 0.000001))
             {
                 quantidademoedacotacao = quantidademoedacotacao - custocompra;
                 quantidademoedabase = quantidademoedabase + quantidadecomprabase;
@@ -219,6 +219,7 @@ public class mcofflinetrader
         }
     }
     
+    //funcao para realizar venda de moeda base, utilizando moeda cotacao
     public String realizarvenda_basecotacao(double quantidadevendabase)
     {
         if (quantidadevendabase > 0)
@@ -249,25 +250,58 @@ public class mcofflinetrader
         }
     }
     
+    //funcao para comprar o maximo possivel de moeda base com moeda cotacao disponivel
+    public String realizarcompratudo_basecotacao()
+    {
+        //na verdade existe um limite de venda total de moeda cotacao
+        //ele eh controlado dizendo que o maximo que se pode comprar de moeda base eh o total possivel * 0.99999
+        double quantidadebasecomprar = quantidademoedabasedadocotacao(quantidademoedacotacao);
+        String resposta = realizarcompra_basecotacao(quantidadebasecomprar*0.99999);
+        return resposta;
+    }
+    
+    //funcao para vender o maximo possivel de moeda base disponivel
+    public String realizarvendatudo_basecotacao()
+    {
+        String resposta = realizarvenda_basecotacao(quantidademoedabase);
+        return resposta;
+    }
     //</editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Funcoes de Ajuda">
-    public double custototalcompra_basecotacao(double quantidade)
+    public double quantidademoedabasedadocotacao(double quantidadecotacao)
+    {
+        //funcao para retornar a quantidade de moeda base possivel de comprar
+        //dado a quantidade de moeda cotacao de entrada
+        //custo total = quantidade cotacao
+        //custototal = custosemtaxa + taxacompra
+        //custototal = (quantidadebasecomprar*melhorask) + (quantidadebasecomprar*melhorask)*feecompra
+        //custototal = quantidadebasecomprar * melhorask + quantidadebasecomprar * melhorask * feecompra
+        //custototal = quantidadebasecomprar * (melhorask + 1 * melhorask * feecompra)
+        //quantidadebasecomprar = custototal / (melhorask + 1 * melhorask * feecompra)
+        
+        double custototal = quantidadecotacao;
+        double quantidadebasemaxima = custototal/(melhorask + (melhorask*feecompra));
+        //mierclasses.mcfuncoeshelper.mostrarmensagem(String.valueOf(quantidadebasemaxima));
+        return quantidadebasemaxima;
+    }
+    
+    public double custototalcompra_basecotacao(double quantidadebasecomprar)
     {
         //funcao para retornar o custo total de compra de moeda base com moeda cotacao
         atualizarbidask(); //sempre atualizar o bid ask com o ultimo valor antes de venda
-        double custosemtaxa = quantidade*melhorask;
+        double custosemtaxa = quantidadebasecomprar*melhorask;
         double taxacompra = custosemtaxa*feecompra;
         double custototal = custosemtaxa + taxacompra;
         
         return custototal;
     }
     
-    public double ganhototalvenda_basecotacao(double quantidade)
+    public double ganhototalvenda_basecotacao(double quantidadebasevender)
     {
         //funcao para retornar o ganho total de venda de moeda base para moeda cotacao
         atualizarbidask(); //sempre atualizar o bid ask com o ultimo valor antes de venda
-        double ganhosemtaxa = quantidade*melhorbid;
+        double ganhosemtaxa = quantidadebasevender*melhorbid;
         double taxavenda = ganhosemtaxa*feevenda;
         double ganhototal = ganhosemtaxa - taxavenda;
         

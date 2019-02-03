@@ -52,10 +52,22 @@ public class mcbctradingbotinterpreter
     public double quantidadebase_lastrun;
     //valor moeda cotacao disponivel utilizada como input ao processar o script
     public double quantidadecotacao_lastrun;
+    //valor de bid utilizada como input ao processar o script
+    public double bid_lastrun;
+    //valor de ask como input ao processar o script
+    public double ask_lastrun;
+    //valor de fee de compra utilizada como input ao processar o script
+    public double feecompra_lastrun;
+    //valor de fee de venda utilizada como input ao processar o script
+    public double feevenda_lastrun;
+    
     
     //parametros de retorno do script
-    //variavel de resposta do trader na ultima vez que rodou
-    public Object respostatrader_lastrun;
+    //variavel que diz qual a operacao desejada para o trader
+    public Object respostatradermove_lastrun;
+    //variavel que recebe um valor de suporte para compra ou venda
+    //exemplos: +30 ou -30 pode ser moeda base ou cotacao
+    public Object respostaquantidadesuporte_lastrun;
 
     
     
@@ -80,6 +92,10 @@ public class mcbctradingbotinterpreter
             java.util.List<mierclasses.mccandle> candlesscript,
             double qmbasescript,
             double qmcotacaoscript,
+            double bidscript,
+            double askscript,
+            double feecomprascript,
+            double feevendascript,
             Boolean adicionarouthandler, 
             mierclasses.mcjtextareahandler runoutput
         )
@@ -122,6 +138,18 @@ public class mcbctradingbotinterpreter
             engine.put("basefunds", quantidadebase_lastrun);
             quantidadecotacao_lastrun = qmcotacaoscript;
             engine.put("quotefunds", quantidadecotacao_lastrun);
+            
+            //adicionar ultimo bid e ask disponivel
+            bid_lastrun = bidscript;
+            engine.put("lastbid", bid_lastrun);
+            ask_lastrun = askscript;
+            engine.put("lastask", ask_lastrun);
+            
+            //adicionar fees de compra e venda
+            feecompra_lastrun = feecomprascript;
+            engine.put("buyfee", feecompra_lastrun);
+            feevenda_lastrun = feevendascript;
+            engine.put("sellfee", feevenda_lastrun);
 
             //debugoutput e utilizado para output no system.out e debug em dev
             engine.put("debugoutput",System.out);
@@ -138,7 +166,16 @@ public class mcbctradingbotinterpreter
 
             try
             {
-                respostatrader_lastrun = engine.get("traderdecision");  
+                respostatradermove_lastrun = engine.get("tradermove");  
+            }
+            catch (Exception e)
+            {
+                //ignorar caso null etc
+            }
+            
+            try
+            {
+                respostaquantidadesuporte_lastrun = engine.get("supportamount");  
             }
             catch (Exception e)
             {

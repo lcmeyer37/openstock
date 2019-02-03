@@ -72,7 +72,9 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Component id="jLabelFeeCompra" max="32767" attributes="0"/>
+                          <Component id="jLabelFeeCompra" min="-2" pref="100" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jButtonComprarManualTudo" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jButtonComprarManual" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -84,7 +86,7 @@
                           </Group>
                           <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jTextFieldComprarTotal" pref="125" max="32767" attributes="0"/>
+                              <Component id="jTextFieldComprarTotal" max="32767" attributes="0"/>
                               <Component id="jTextFieldMelhorAsk" max="32767" attributes="0"/>
                               <Component id="jTextFieldComprarQuantidade" max="32767" attributes="0"/>
                           </Group>
@@ -117,6 +119,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jButtonComprarManual" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabelFeeCompra" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonComprarManualTudo" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -233,6 +236,14 @@
             <Property name="text" type="java.lang.String" value="Fee"/>
           </Properties>
         </Component>
+        <Component class="javax.swing.JButton" name="jButtonComprarManualTudo">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Buy All"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonComprarManualTudoActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="jPanelVendaManual">
@@ -250,8 +261,10 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Component id="jLabelFeeVenda" pref="125" max="32767" attributes="0"/>
-                          <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+                          <Component id="jLabelFeeVenda" min="-2" pref="99" max="-2" attributes="0"/>
+                          <EmptySpace pref="78" max="32767" attributes="0"/>
+                          <Component id="jButtonVenderManualTudo" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="jButtonVenderManual" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
@@ -291,10 +304,11 @@
                       <Component id="jLabelVenderTotal" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jTextFieldVenderTotal" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="12" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jButtonVenderManual" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabelFeeVenda" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonVenderManualTudo" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -407,6 +421,14 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Fee"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButtonVenderManualTudo">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Sell All"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonVenderManualTudoActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -848,10 +870,10 @@
             <Component class="javax.swing.JLabel" name="jLabelTraderbot">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="cd" green="cd" red="ff" type="rgb"/>
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="Trader Bot Controller (WIP)"/>
+                <Property name="text" type="java.lang.String" value="Trader Bot Controller"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -881,6 +903,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Activate"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAtivarDesativarTraderActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelStatusTrader">
           <Properties>

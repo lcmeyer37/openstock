@@ -32,9 +32,17 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
     
     //quantidade de moedas base de exemplo
     double quantidadebasesample;
-    
     //quantidade de moedas quote de exemplo
     double quantidadequotesample;
+    
+    //bid de exemplo
+    double bidsample;
+    //as de exemplo
+    double asksample;
+    
+    //fees de compra e venda de exemplo
+    double feecomprasample;
+    double feevendasample;
     
     //handler para o output do jtextareaoutput
     mierclasses.mcjtextareahandler mcjtah;
@@ -45,9 +53,19 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         
         telappai = tppai;
         mcbctraderbot = new mierclasses.mcbctradingbotinterpreter("testbctraderbot", "Teste Trader Bot", "", "");
+        
         candlessample = tppai.miex.receberstockchartsample();
+        
         quantidadebasesample = 50;
         quantidadequotesample = 1000;
+        
+        java.util.List<Double> bidask = tppai.miex.receberlastbidaskofflinetradingsample();
+        bidsample = bidask.get(0);
+        asksample = bidask.get(1);
+        
+        feecomprasample = 0.001;
+        feevendasample = 0.001;
+        
         mcjtah = new mierclasses.mcjtextareahandler(jTextAreaOutput);
         
         resetarscripteditor();
@@ -65,6 +83,10 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                 "//sample values for funds in base and quote currency\n" +
                 "var baseamountinput = basefunds;\n" +
                 "var quoteamountinput = quotefunds;\n" +
+                "var bidinput = lastbid;\n" +
+                "var askinput = lastask;\n" +
+                "var buyfeeinput = buyfee;\n" +
+                "var sellfeeinput = sellfee;\n" +
                 "\n" +
                 "//parameters expected for processing\n" +
                 "//var periodinput = parseInt(period);\n" +
@@ -86,11 +108,10 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                 "var timestamp_date = candlesinput[0].timestampdate; \n" +
                 "*/\n" +
                 "\n" +
-                "//mandatory return value for the script\n" +
-                "//var traderanswerdouble = [0] //don't do anything\n" +
-                "//var traderanswerdouble = [-50] //sell 50 base currency\n" +
-                "var traderanswerdouble = [60] //buy 60 base currency\n" +
-                "var traderdecision = Java.to(traderanswerdouble,\"double[]\");";
+                "//example of return values for the script if decision is to buy 60 base currency\n" +
+                "var tradermove = \"buybase\"; //don't do anything\n" +
+                "var amountbase = [60]; //buy 60 base currency\n" +
+                "var supportamount = Java.to(amountbase,\"double[]\");";
                 
         jTextAreaScript.setText(scriptdefault);
         jTextAreaScript.setCaretPosition(0);
@@ -129,7 +150,18 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         //mbcodeinterpreter = new mierclasses.mcbcindicatorinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode,this);
         mcbctraderbot.atualizarscriptparametros(jTextAreaScript.getText(), jTextFieldParameters.getText());
         //String result = mcbctraderbot.rodarscript(candlessample,true,mcjtah);
-        String result = mcbctraderbot.rodarscript(candlessample, quantidadebasesample, quantidadequotesample,true, mcjtah);
+        String result = mcbctraderbot.rodarscript
+        (
+                candlessample,
+                quantidadebasesample, 
+                quantidadequotesample, 
+                bidsample,
+                asksample,
+                feecomprasample,
+                feevendasample,
+                true,
+                mcjtah
+        );
         
         if (result.equals("ok"))
         {

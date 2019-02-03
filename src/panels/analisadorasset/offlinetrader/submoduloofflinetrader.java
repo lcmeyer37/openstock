@@ -40,7 +40,6 @@ public class submoduloofflinetrader extends javax.swing.JPanel
     //classe interpretadora de bearcode (contem o codigo relacionado ao bot trader em uso)
     public mierclasses.mcbctradingbotinterpreter mcbctradingbot;
     
-    
     /**
      * Creates new form submodulotrader
      */
@@ -51,7 +50,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         aassetpai = aapai;
         otrader = new mierclasses.mcofflinetrader(this);
         
-        jPanelTraderbot.setVisible(false);
+        //jPanelTraderbot.setVisible(false);
         inicializarsubmoduloofflinetrader();
     }
     
@@ -63,12 +62,15 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         //associar o simbolo utilizado pelo trader
         otrader.recriarofflinetrader(aassetpai.assetsimbolo);
         
-        //auto-selecionar o primeiro algoritmo de traderbot disponivel para o offline trader
-        //popularcomboboxtraderbotsdisponiveis();
-        //String tbotselecionadostring = (String)jComboBoxScriptAtualTraderbot.getSelectedItem();
-        //String idbc = (tbotselecionadostring.split("\\[")[1]).split("\\]")[0];
-        //String parametrosbc = jTextFieldParametrosTraderbot.getText();
-        //submodulopai.adicionarIndicadorNovo(idbc, parametrosbc);
+        //o usuario pode alterar os parametros do trader bot quando desativado
+        jTextFieldParametrosTraderbot.setEditable(false);
+            
+        //popular o trader bot pela primeira vez com primeiro script disponivel
+        popularcomboboxtraderbotsdisponiveis();
+        String tbotselecionadostring = (String)jComboBoxScriptAtualTraderbot.getSelectedItem();
+        String idbc = (tbotselecionadostring.split("\\[")[1]).split("\\]")[0];
+        String parametrosbc = jTextFieldParametrosTraderbot.getText();
+        repopularbearcodetraderbot(idbc,parametrosbc);
         
         //atualizar informacoes de bid ask atual
         otrader.atualizarbidask();
@@ -82,6 +84,16 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jLabelTotalFundos.setText("Total (Quote Value): " + String.format( "%.6f",otrader.totalfundos_moedacotacao()));
         jLabelFeeCompra.setText("Fee " + String.format( "%.2f",100*otrader.feecompra) + "%");
         jLabelFeeVenda.setText("Fee " + String.format( "%.2f",100*otrader.feevenda) + "%");
+        
+        //rodar o trader (caso ativado)
+        rodartraderbot();
+
+        //atualizar lista de transacoes offline
+        jPanelLinhasTransacoes.removeAll();
+        for (int i = 0; i < otrader.transacoes.size(); i++)
+        {
+            jPanelLinhasTransacoes.add(new panels.analisadorasset.offlinetrader.itemtransacao(otrader.transacoes.get(i)));
+        }
         
         this.validate();
         this.repaint();
@@ -106,6 +118,9 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jLabelFeeCompra.setText("Fee " + String.format( "%.2f",100*otrader.feecompra) + "%");
         jLabelFeeVenda.setText("Fee " + String.format( "%.2f",100*otrader.feevenda) + "%");
         
+        //rodar o trader (caso ativado)
+        rodartraderbot();
+
         //atualizar lista de transacoes offline
         jPanelLinhasTransacoes.removeAll();
         for (int i = 0; i < otrader.transacoes.size(); i++)
@@ -176,16 +191,16 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         }
         catch (Exception ex)
         {
-                        jTextFieldComprarTotal.setText("");
+            jTextFieldComprarTotal.setText("");
         }
     }
     
-    public void realizarcompra()
+    public void realizarcompra(double qbasecomprar, boolean mostrarmensagem)
     {
         try
         {
             String resposta = "erro - desconhecido";
-            double valor = Double.valueOf(jTextFieldComprarQuantidade.getText());
+            double valor = Double.valueOf(qbasecomprar);
             resposta = otrader.realizarcompra_basecotacao(valor);
 
             if (resposta.equals("ok") == true)
@@ -201,7 +216,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         catch (Exception ex)
         {
             //caso aja algum problema, ignorar todo o processo de transacao
-            mierclasses.mcfuncoeshelper.mostrarmensagem("erro - " + ex.getMessage());
+            if (mostrarmensagem == true)
+                mierclasses.mcfuncoeshelper.mostrarmensagem("erro - " + ex.getMessage());
         }
     }
     
@@ -219,7 +235,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         }
     }
     
-    public void realizarvenda()
+    public void realizarvenda(double qbasevender, boolean mostrarmensagem)
     {
         try
         {
@@ -240,7 +256,61 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         catch (Exception ex)
         {
             //caso aja algum problema, ignorar todo o processo de transacao
-            mierclasses.mcfuncoeshelper.mostrarmensagem("erro - " + ex.getMessage());
+            if (mostrarmensagem == true)
+                mierclasses.mcfuncoeshelper.mostrarmensagem("erro - " + ex.getMessage());
+
+        }
+    }
+    
+    public void realizarcompratudo(boolean mostrarmensagem)
+    {
+        try
+        {
+            String resposta = "erro - desconhecido";
+            resposta = otrader.realizarcompratudo_basecotacao();
+
+            if (resposta.equals("ok") == true)
+            {
+                //considerando que a transacao foi bem sucedida, recarregar submodulo para mostrar nova linha de transacao
+                recarregardadossubmoduloofflinetrader();
+            }
+            else
+            {
+                mierclasses.mcfuncoeshelper.mostrarmensagem(resposta);
+            }
+        }
+        catch (Exception ex)
+        {
+            //caso aja algum problema, ignorar todo o processo de transacao
+            if (mostrarmensagem == true)
+                mierclasses.mcfuncoeshelper.mostrarmensagem("erro - " + ex.getMessage());
+
+        }
+    }
+    
+    public void realizarvendatudo(boolean mostrarmensagem)
+    {
+        try
+        {
+            String resposta = "erro - desconhecido";
+            resposta = otrader.realizarvendatudo_basecotacao();
+
+            if (resposta.equals("ok") == true)
+            {
+                //considerando que a transacao foi bem sucedida, recarregar submodulo para mostrar nova linha de transacao
+                recarregardadossubmoduloofflinetrader();
+            }
+            else
+            {
+                mierclasses.mcfuncoeshelper.mostrarmensagem(resposta);
+            }
+        }
+        catch (Exception ex)
+        {
+            //caso aja algum problema, ignorar todo o processo de transacao
+            if (mostrarmensagem == true)
+                mierclasses.mcfuncoeshelper.mostrarmensagem("erro - " + ex.getMessage());
+
         }
     }
     // </editor-fold>
@@ -290,7 +360,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         }
     }
     
-    void popularbearcodetraderbot(String idbearcode, String parametrosbearcode)
+    void repopularbearcodetraderbot(String idbearcode, String parametrosbearcode)
     {
         //funcao para popular mcbctradingbotinterpreter beacode trader bot engine utilizado por este submodulo
         
@@ -376,6 +446,103 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         
         mcbctradingbot = new mierclasses.mcbctradingbotinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode);
     }
+    
+    //variavel que diz se o traderbot esta rodando ou nao
+    boolean botativado = false;
+    void ativardesativartraderbot()
+    {
+        botativado = !botativado;
+        
+        if (botativado == false)
+        {
+            //o usuario pode alterar os parametros do trader bot quando desativado
+            jTextFieldParametrosTraderbot.setEditable(true);
+            
+            jLabelStatusTrader.setText("Status: (not running)");
+            jLabelTraderbot.setText("Trader Bot Controller");
+            jButtonAtivarDesativarTrader.setText("Activate");
+        }
+        else if (botativado == true)
+        {
+            //o usuario pode alterar os parametros do trader bot quando desativado
+            jTextFieldParametrosTraderbot.setEditable(false);
+            
+            //repopular o trader bot
+            popularcomboboxtraderbotsdisponiveis();
+            String tbotselecionadostring = (String)jComboBoxScriptAtualTraderbot.getSelectedItem();
+            String idbc = (tbotselecionadostring.split("\\[")[1]).split("\\]")[0];
+            String parametrosbc = jTextFieldParametrosTraderbot.getText();
+            repopularbearcodetraderbot(idbc,parametrosbc);
+        
+            jLabelStatusTrader.setText("Status: (running)");
+            jButtonAtivarDesativarTrader.setText("Deactivate");
+        }
+            
+    }
+    
+    java.util.List<mierclasses.mccandle> candlesrunanterior;
+    void rodartraderbot()
+    {
+        //o trader bot soh roda quando esta ativado E quando percebe
+        //que a lista de candles foi atualizada
+        
+        if (botativado == true)
+        {
+            java.util.List<mierclasses.mccandle> candlesusar = aassetpai.subgrafico.mcg.candlesatual;
+            
+            if (candlesusar != candlesrunanterior)
+            {
+                candlesrunanterior = candlesusar;
+                
+                mcbctradingbot.rodarscript
+                    (
+                        candlesrunanterior,
+                        otrader.quantidademoedabase, 
+                        otrader.quantidademoedacotacao, 
+                        otrader.melhorbid,
+                        otrader.melhorask,
+                        otrader.feecompra,
+                        otrader.feevenda,
+                        false,
+                        null
+                    );
+
+                String traderbot_move = (String)mcbctradingbot.respostatradermove_lastrun; 
+                double traderbot_supportamount = ((double[]) mcbctradingbot.respostaquantidadesuporte_lastrun)[0];
+
+                if (traderbot_move.equals("hold"))
+                {
+                    //significa que nada deve ser feito
+                    jLabelTraderbot.setText("Trader Bot Controller (last decision: HOLD)");
+                }
+                else if (traderbot_move.equals("buyall"))
+                {
+                    //quer dizer que o bot deve comprar o maximo de moeda base que puder
+                    realizarcompratudo(false);
+                    jLabelTraderbot.setText("Trader Bot Controller (last decision: BUY ALL)");
+                }
+                else if (traderbot_move.equals("sellall"))
+                {
+                    //quer dizer que o bot deve vender o maximo de moeda base que puder
+                    realizarvendatudo(false);
+                    jLabelTraderbot.setText("Trader Bot Controller (last decision: SELL ALL)");
+                }
+                else if (traderbot_move.equals("buyamount"))
+                {
+                    //significa que o bot deve comprar uma quantidade especifica de moeda base
+                    realizarcompra(traderbot_supportamount,false);   
+                    jLabelTraderbot.setText("Trader Bot Controller (last decision: BUY AMOUNT)");
+                }
+                else if (traderbot_move.equals("sellamount"))
+                {
+                    //significa que o bot deve comprar uma quantidade especifica de moeda base
+                    realizarvenda(traderbot_supportamount,false); 
+                    jLabelTraderbot.setText("Trader Bot Controller (last decision: SELL AMOUNT)");
+                }
+            }
+            
+        }
+    }
     //</editor-fold>
     
     /**
@@ -399,6 +566,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jLabelMelhorAsk = new javax.swing.JLabel();
         jTextFieldMelhorAsk = new javax.swing.JTextField();
         jLabelFeeCompra = new javax.swing.JLabel();
+        jButtonComprarManualTudo = new javax.swing.JButton();
         jPanelVendaManual = new javax.swing.JPanel();
         jLabelVenderQuantidade = new javax.swing.JLabel();
         jTextFieldVenderQuantidade = new javax.swing.JTextField();
@@ -410,6 +578,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jLabelMelhorBid = new javax.swing.JLabel();
         jTextFieldMelhorBid = new javax.swing.JTextField();
         jLabelFeeVenda = new javax.swing.JLabel();
+        jButtonVenderManualTudo = new javax.swing.JButton();
         jPanelFundos = new javax.swing.JPanel();
         jPanelSubFundos = new javax.swing.JPanel();
         jLabelFundos = new javax.swing.JLabel();
@@ -510,6 +679,15 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jLabelFeeCompra.setForeground(new java.awt.Color(255, 255, 255));
         jLabelFeeCompra.setText("Fee");
 
+        jButtonComprarManualTudo.setText("Buy All");
+        jButtonComprarManualTudo.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonComprarManualTudoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelCompraManualLayout = new javax.swing.GroupLayout(jPanelCompraManual);
         jPanelCompraManual.setLayout(jPanelCompraManualLayout);
         jPanelCompraManualLayout.setHorizontalGroup(
@@ -519,7 +697,9 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                 .addContainerGap()
                 .addGroup(jPanelCompraManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelCompraManualLayout.createSequentialGroup()
-                        .addComponent(jLabelFeeCompra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabelFeeCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonComprarManualTudo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonComprarManual))
                     .addGroup(jPanelCompraManualLayout.createSequentialGroup()
@@ -529,7 +709,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                             .addComponent(jLabelComprarTotal))
                         .addGap(23, 23, 23)
                         .addGroup(jPanelCompraManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldComprarTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+                            .addComponent(jTextFieldComprarTotal)
                             .addComponent(jTextFieldMelhorAsk)
                             .addComponent(jTextFieldComprarQuantidade))))
                 .addContainerGap())
@@ -553,7 +733,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(jPanelCompraManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonComprarManual)
-                    .addComponent(jLabelFeeCompra))
+                    .addComponent(jLabelFeeCompra)
+                    .addComponent(jButtonComprarManualTudo))
                 .addContainerGap())
         );
 
@@ -617,6 +798,15 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jLabelFeeVenda.setForeground(new java.awt.Color(255, 255, 255));
         jLabelFeeVenda.setText("Fee");
 
+        jButtonVenderManualTudo.setText("Sell All");
+        jButtonVenderManualTudo.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonVenderManualTudoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelVendaManualLayout = new javax.swing.GroupLayout(jPanelVendaManual);
         jPanelVendaManual.setLayout(jPanelVendaManualLayout);
         jPanelVendaManualLayout.setHorizontalGroup(
@@ -626,8 +816,10 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                 .addContainerGap()
                 .addGroup(jPanelVendaManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelVendaManualLayout.createSequentialGroup()
-                        .addComponent(jLabelFeeVenda, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
-                        .addGap(41, 41, 41)
+                        .addComponent(jLabelFeeVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
+                        .addComponent(jButtonVenderManualTudo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonVenderManual))
                     .addGroup(jPanelVendaManualLayout.createSequentialGroup()
                         .addGroup(jPanelVendaManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -657,10 +849,11 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                 .addGroup(jPanelVendaManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelVenderTotal)
                     .addComponent(jTextFieldVenderTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(jPanelVendaManualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonVenderManual)
-                    .addComponent(jLabelFeeVenda))
+                    .addComponent(jLabelFeeVenda)
+                    .addComponent(jButtonVenderManualTudo))
                 .addContainerGap())
         );
 
@@ -877,9 +1070,9 @@ public class submoduloofflinetrader extends javax.swing.JPanel
 
         jPanelSubTraderbot.setBackground(new java.awt.Color(35, 35, 35));
 
-        jLabelTraderbot.setForeground(new java.awt.Color(255, 205, 205));
+        jLabelTraderbot.setForeground(new java.awt.Color(255, 255, 255));
         jLabelTraderbot.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelTraderbot.setText("Trader Bot Controller (WIP)");
+        jLabelTraderbot.setText("Trader Bot Controller");
 
         javax.swing.GroupLayout jPanelSubTraderbotLayout = new javax.swing.GroupLayout(jPanelSubTraderbot);
         jPanelSubTraderbot.setLayout(jPanelSubTraderbotLayout);
@@ -904,6 +1097,13 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         });
 
         jButtonAtivarDesativarTrader.setText("Activate");
+        jButtonAtivarDesativarTrader.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonAtivarDesativarTraderActionPerformed(evt);
+            }
+        });
 
         jLabelStatusTrader.setForeground(new java.awt.Color(255, 255, 255));
         jLabelStatusTrader.setText("Status: (not running)");
@@ -1006,7 +1206,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
 
     private void jButtonComprarManualActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonComprarManualActionPerformed
     {//GEN-HEADEREND:event_jButtonComprarManualActionPerformed
-        realizarcompra();
+        realizarcompra(Double.valueOf(jTextFieldComprarQuantidade.getText()),true);
     }//GEN-LAST:event_jButtonComprarManualActionPerformed
 
     private void jTextFieldComprarQuantidadeCaretUpdate(javax.swing.event.CaretEvent evt)//GEN-FIRST:event_jTextFieldComprarQuantidadeCaretUpdate
@@ -1021,7 +1221,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
 
     private void jButtonVenderManualActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonVenderManualActionPerformed
     {//GEN-HEADEREND:event_jButtonVenderManualActionPerformed
-        realizarvenda();
+        realizarcompra(Double.valueOf(jTextFieldVenderQuantidade.getText()),true);
     }//GEN-LAST:event_jButtonVenderManualActionPerformed
 
     private void jTextFieldParametrosTraderbotCaretUpdate(javax.swing.event.CaretEvent evt)//GEN-FIRST:event_jTextFieldParametrosTraderbotCaretUpdate
@@ -1029,12 +1229,29 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldParametrosTraderbotCaretUpdate
 
+    private void jButtonAtivarDesativarTraderActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAtivarDesativarTraderActionPerformed
+    {//GEN-HEADEREND:event_jButtonAtivarDesativarTraderActionPerformed
+        ativardesativartraderbot();
+    }//GEN-LAST:event_jButtonAtivarDesativarTraderActionPerformed
+
+    private void jButtonVenderManualTudoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonVenderManualTudoActionPerformed
+    {//GEN-HEADEREND:event_jButtonVenderManualTudoActionPerformed
+        realizarvendatudo(true);
+    }//GEN-LAST:event_jButtonVenderManualTudoActionPerformed
+
+    private void jButtonComprarManualTudoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonComprarManualTudoActionPerformed
+    {//GEN-HEADEREND:event_jButtonComprarManualTudoActionPerformed
+        realizarcompratudo(true);
+    }//GEN-LAST:event_jButtonComprarManualTudoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAlterarFundos;
     private javax.swing.JButton jButtonAtivarDesativarTrader;
     private javax.swing.JButton jButtonComprarManual;
+    private javax.swing.JButton jButtonComprarManualTudo;
     private javax.swing.JButton jButtonVenderManual;
+    private javax.swing.JButton jButtonVenderManualTudo;
     private javax.swing.JComboBox<String> jComboBoxScriptAtualTraderbot;
     private javax.swing.JLabel jLabelComprar;
     private javax.swing.JLabel jLabelComprarQuantidade;
