@@ -44,7 +44,7 @@ public class adicionarindicador extends javax.swing.JFrame
             jComboBoxIndicadoresDisponiveis.removeAllItems();
             
             String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
-            String cindicconfig = rootjar + "/outfiles/bearcode/indicators.mfxconfig";
+            String cindicconfig = rootjar + "/outfiles/bearcode/indicators/indicators.mfxconfig";
             //mierclasses.mcfuncoeshelper.mostrarmensagem(cindicconfig);
             
             File xmlArquivo = new File(cindicconfig);

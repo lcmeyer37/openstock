@@ -26,7 +26,7 @@ public class mcstocksapicomms
     }
     
     // <editor-fold defaultstate="collapsed" desc="Alpha Vantage API">
-    String chavealphavantage = "INSIRAAQUIUMACHAVEALPHAVANTAGE";
+    String chavealphavantage = "";
     public void alterarchaveav(String novachaveav)
     {
         chavealphavantage = novachaveav;

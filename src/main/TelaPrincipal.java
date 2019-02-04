@@ -9,6 +9,9 @@ import java.io.File;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  *
@@ -55,6 +58,28 @@ public class TelaPrincipal extends javax.swing.JFrame
     {
         //funcao para popular stocks api, que permite comunicacao do programa com diferentes APIs
         msapicomms = new mierclasses.mcstocksapicomms();
+        
+        // <editor-fold defaultstate="collapsed" desc="carregar general.mfxconfig para associar chave alpha vantage">
+         try
+        {
+            String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
+            String cindicconfig = rootjar + "/outfiles/general.mfxconfig";
+            //mierclasses.mcfuncoeshelper.mostrarmensagem(cindicconfig);
+            
+            File xmlArquivo = new File(cindicconfig);
+            DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
+        
+            DocumentBuilder dbuilder = dbfactory.newDocumentBuilder();
+        
+            Document document = dbuilder.parse(xmlArquivo);
+            String alphavantagekey = document.getElementsByTagName("AVKEY").item(0).getTextContent();
+            msapicomms.alterarchaveav(alphavantagekey);
+        }
+        catch (Exception e) 
+        {
+            mierclasses.mcfuncoeshelper.mostrarmensagem("Uma exceção ocorreu: " + e.toString());
+        }
+        //</editor-fold>
     }
     
     

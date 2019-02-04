@@ -31,18 +31,20 @@ import org.w3c.dom.NodeList;
  */
 public class submoduloofflinetrader extends javax.swing.JPanel
 {
-    //frame que vai conter controles para trading e customizacao e scripts para bot trader
+     /*
+    submodulo offline trader, utilizado para manual trading tests e algotrading tests
+    */
     
-    public panels.analisadorasset.analisadorasset aassetpai; //analisador de asset pai, contem modulos para analises do asset (ateh o momento grafico e trader)
-    
-    public mierclasses.mcofflinetrader otrader; //offline trader utilizado por este submodulo
-    
+    // <editor-fold defaultstate="collapsed" desc="Variáveis Públicas">
+    //analisador de asset pai, contem modulos para analises do asset (ateh o momento grafico e trader)
+    public panels.analisadorasset.analisadorasset aassetpai; 
+    //offline trader utilizado por este submodulo
+    public mierclasses.mcofflinetrader otrader; 
     //classe interpretadora de bearcode (contem o codigo relacionado ao bot trader em uso)
     public mierclasses.mcbctradingbotinterpreter mcbctradingbot;
+    //</editor-fold>
     
-    /**
-     * Creates new form submodulotrader
-     */
+    // <editor-fold defaultstate="collapsed" desc="CONSTRUTOR">
     public submoduloofflinetrader(panels.analisadorasset.analisadorasset aapai)
     {
         initComponents();
@@ -53,7 +55,9 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         //jPanelTraderbot.setVisible(false);
         inicializarsubmoduloofflinetrader();
     }
+    //</editor-fold>
     
+    // <editor-fold defaultstate="collapsed" desc="Inicialização e Recarregamento">
     void inicializarsubmoduloofflinetrader()
     {
         //set jPanel de transacoes
@@ -131,6 +135,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         this.validate();
         this.repaint();
     }
+    //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Implementação para Realização de Transações Manuais">
     public String realizardepositoousaque(String tipomoeda, String depositoousaque, String valortransacao)

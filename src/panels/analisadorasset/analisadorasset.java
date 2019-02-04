@@ -30,35 +30,33 @@ import org.w3c.dom.NodeList;
  */
 public class analisadorasset extends javax.swing.JPanel
 {
-    //classe que segura os subitens do analisador de asset, ateh o momento estes itens sao
-    //grafico (para analise tecnica)
-    //trader, traderbot e interface para trades offlines
+    /*
+    classe que segura os subitens do analisador de asset, ateh o momento estes itens sao
+    grafico (para analise tecnica)
+    trader, traderbot e interface para trades offlines
+    */
     
+    // <editor-fold defaultstate="collapsed" desc="Variáveis Públicas">
     //item analisador de asset ao qual este analisador esta associado
     public panels.analisadorasset.itemanalisadorasset iaassetpai;
-    
     //submobulo grafico
     public panels.analisadorasset.grafico.submodulografico subgrafico;
     //submodulo trader
     public panels.analisadorasset.offlinetrader.submoduloofflinetrader subtrader;
-    
-    //recebe o simbolo do asset atual em uso
-    //asset associado
+    //recebe o simbolo deste asset
     public String assetsimbolo;
-    
-    //timer para atualizar dados do asset automaticamente
-    java.util.TimerTask timeratualizardados;
-    
-    /**
-     * Creates new form mpanalisadorasset
-     */
+    //</editor-fold>
+ 
+    // <editor-fold defaultstate="collapsed" desc="CONSTRUTOR">
     public analisadorasset(panels.analisadorasset.itemanalisadorasset iaapai)
     {
         initComponents();
         
         inicializar(iaapai);
     }
+    //</editor-fold>
     
+    // <editor-fold defaultstate="collapsed" desc="Inicialização, Atualização do Asset e Timer">
     void inicializar(panels.analisadorasset.itemanalisadorasset iaapai)
     {
         //setar panel para mostrar submodulos
@@ -79,6 +77,8 @@ public class analisadorasset extends javax.swing.JPanel
         setartimeratualizacao();
     }
     
+    //timer para atualizar dados do asset automaticamente
+    java.util.TimerTask timeratualizardados;
     void setartimeratualizacao()
     {
         String tempotimer = jComboBoxTempoAtualizacao.getSelectedItem().toString();
@@ -145,7 +145,17 @@ public class analisadorasset extends javax.swing.JPanel
         }
 
     }
+             
+    public void atualizardadosasset()
+    {
+        //funcao para recarregar dados dos submodulos relacionados a este asset
+        subgrafico.recarregardadossubmoduloofflinetrader(false);
+        subtrader.recarregardadossubmoduloofflinetrader();
+        jLabelUltimaAtualizacao.setText("Updated at " + new java.util.Date(System.currentTimeMillis()));
+    }
+    // </editor-fold>
     
+    // <editor-fold defaultstate="collapsed" desc="Mostrar Submodulos">
     void mostrarsubmodulografico()
     {
         jPanelSubmodulosHolder.removeAll();
@@ -169,27 +179,16 @@ public class analisadorasset extends javax.swing.JPanel
         this.validate();
         this.repaint();
     }
-    
-    public void alterarasset(String novosimbolo)
-    {
-        assetsimbolo = novosimbolo;
-    }
-    
-    public void atualizardadosasset()
-    {
-        //funcao para recarregar dados dos submodulos relacionados a este asset
-        subgrafico.recarregardadossubmodulografico();
-        subtrader.recarregardadossubmoduloofflinetrader();
-        jLabelUltimaAtualizacao.setText("Updated at " + new java.util.Date(System.currentTimeMillis()));
-    }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="Salvar e Carregar Dados do Asset">
+    
     public void salvardadosasset()
     {
         //funcao para salvar dados do asset: chart e trader offline
-        
+       
         try
         {
-        
             // <editor-fold defaultstate="collapsed" desc="Chart">
             
             //funcao para salvar as configuracoes de
@@ -339,7 +338,6 @@ public class analisadorasset extends javax.swing.JPanel
         
     }
     
-    
     public void carregardadosasset()
     {
         try
@@ -403,7 +401,7 @@ public class analisadorasset extends javax.swing.JPanel
                 }
                 subgrafico.alternartipoescala(escalachart);
                 //se faz necessario criar novamente o submodulo grafico ao carregar
-                subgrafico.recriarsubmodulografico();
+                subgrafico.recarregardadossubmoduloofflinetrader(true);
                 // </editor-fold>
                 
                 // <editor-fold defaultstate="collapsed" desc="recarregar indicadores">
@@ -507,6 +505,8 @@ public class analisadorasset extends javax.swing.JPanel
 
     }
     
+    //</editor-fold>
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -606,9 +606,9 @@ public class analisadorasset extends javax.swing.JPanel
             jPanelEscolherSubmoduloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelEscolherSubmoduloLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelEscolherSubmoduloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
-                    .addComponent(jButtonMostrarGrafico)
-                    .addComponent(jButtonMostrarTrader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanelEscolherSubmoduloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButtonMostrarTrader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonMostrarGrafico))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelSubmodulosHolder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(14, 14, 14)

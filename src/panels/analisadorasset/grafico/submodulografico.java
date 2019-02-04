@@ -23,15 +23,18 @@ import java.io.File;
  */
 public class submodulografico extends javax.swing.JPanel
 {
-    //jpanel que vai conter um grafico para analise
+    /*
+    submodulo grafico, utilizado para análise técnica
+    */
 
-    public panels.analisadorasset.analisadorasset aassetpai; //analisador de asset pai, contem modulos para analises do asset (ateh o momento grafico e trader)
+    // <editor-fold defaultstate="collapsed" desc="Variáveis Públicas">
+    //analisador de asset pai, contem modulos para analises do asset (ateh o momento grafico e trader)
+    public panels.analisadorasset.analisadorasset aassetpai; 
+    //classe utilizada para desenhar graficos
+    public mierclasses.mcchartgenerator mcg; 
+    // </editor-fold>
     
-    public mierclasses.mcchartgenerator mcg; //classe utilizada para desenhar graficos
-    
-    // <editor-fold defaultstate="collapsed" desc="Construtores Submodulo Grafico">
-    
-    //construtor novo submodulo grafico
+    // <editor-fold defaultstate="collapsed" desc="CONSTRUTOR">
     public submodulografico(panels.analisadorasset.analisadorasset aapai)
     {
         initComponents();
@@ -40,7 +43,9 @@ public class submodulografico extends javax.swing.JPanel
         
         inicializarsubmodulografico();
     }
+    // </editor-fold>
     
+    // <editor-fold defaultstate="collapsed" desc="Inicialização e Recarregamento">
     void inicializarsubmodulografico()
     {
         //popular objeto utilizado para desenho de graficos
@@ -67,28 +72,19 @@ public class submodulografico extends javax.swing.JPanel
         
         //comecar mostrando dataset de teste e criar pela primeira vez o grafico
         jTextFieldNomeSimbolo.setText(aassetpai.assetsimbolo);
-        recriarsubmodulografico();
+        recarregardadossubmoduloofflinetrader(true);
         
         this.validate();
         this.repaint();
     }
-     
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Main Section">
-    
-    public void adicionarsimboloaotextboxsubmodulo(String simboloadicionar)
-    {
-        //funcao para adicionar o codigo do simbolo no textbox de simbolo
-        jTextFieldNomeSimbolo.setText(simboloadicionar);
-    }
-    
     
     //funcao responsavel por criar o grafico com o simbolo e periodo desejado pela primeira vez
-    public void recriarsubmodulografico()
+    public void recarregardadossubmoduloofflinetrader(boolean resetaranotacoesindicadores)
     {
-        //receber informacoes de candles de acordo com os paremetros principais
-        aassetpai.alterarasset(jTextFieldNomeSimbolo.getText());
+        //funcao para carregar submodulo grafico, pode ser necessario resetar anotacoes e indicadores
+        
+        //<editor-fold defaultstate="collapsed" desc="Receber Candles do Asset Desejado">
+        aassetpai.assetsimbolo = jTextFieldNomeSimbolo.getText();
         String sourcesimboloescolhido = aassetpai.assetsimbolo;
         String periodoescolhido = jComboBoxPeriodoSimbolo.getSelectedItem().toString();
         String escalagrafico = escalagraficoescolhido;
@@ -103,7 +99,7 @@ public class submodulografico extends javax.swing.JPanel
         }
         else if ((sourcesimboloescolhido.equals("testdata")) == false)
         {
-            if ((sourcesimboloescolhido.split(":")[0]).equals("IEX"))
+            if (((sourcesimboloescolhido.split(":")[0]).toLowerCase()).equals("iex"))
             {
                 if (periodoescolhido.equals("1 Day"))
                     candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithminutes((sourcesimboloescolhido.split(":")[1]), "1d");
@@ -122,7 +118,7 @@ public class submodulografico extends javax.swing.JPanel
                 else if (periodoescolhido.equals("5 Years"))
                     candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "5y");
             } 
-            else if ((sourcesimboloescolhido.split(":")[0]).equals("AV"))
+            else if (((sourcesimboloescolhido.split(":")[0]).toLowerCase()).equals("av"))
             {
                 if (periodoescolhido.equals("1 minute"))
                     candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"1min","200");
@@ -142,11 +138,11 @@ public class submodulografico extends javax.swing.JPanel
                     candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesmonthly((sourcesimboloescolhido.split(":")[1]), "200");
             } 
         }
+        //</editor-fold>
         
+        //<editor-fold defaultstate="collapsed" desc="Utilizar Candles para Recarregar OHLC">
         
-        //recriar grafico OHLC resetando anotacoes e indicadores atuais
-        mcg.recriarohlc(candles,sourcesimboloescolhido + " (" + periodoescolhido + ")",escalagrafico);
-        //receber cpanel OHLC pos-atualizacao para adicionar ao panel
+        mcg.carregarohlc(candles,sourcesimboloescolhido + " (" + periodoescolhido + ")",escalagrafico,resetaranotacoesindicadores);
         org.jfree.chart.ChartPanel chartpanel = mcg.retornarcpanelohlc();
         chartpanel.addChartMouseListener(new org.jfree.chart.ChartMouseListener()
         {
@@ -161,126 +157,23 @@ public class submodulografico extends javax.swing.JPanel
             }
         });
         
-        //mostrar cpanel OHLC (deletar qualquer outro panel antes presente)
-        jPanelIndicadores.removeAll();
-        jPanelAnotacoes.removeAll();
         jPanelOHLCChartpanel.removeAll();
         jPanelOHLCChartpanel.setLayout(new java.awt.BorderLayout());
         jPanelOHLCChartpanel.add(chartpanel);
-        //setVisible(true);
-        this.validate();
-    }
-
-   
-    
-    public String escalagraficoescolhido = "linear";
-    public void alternartipoescala(String escalaalternar)
-    {
-        if (escalaalternar.equals("linear"))
+        //</editor-fold>
+        
+        //<editor-fold defaultstate="collapsed" desc="Remover Todas Anotações e Indicadores para o OHLC Novo - CASO RESET">
+        if (resetaranotacoesindicadores == true)
         {
-            escalagraficoescolhido = "linear";
-            jLabelLinearSwitch.setForeground(Color.blue);
-            jLabelLogaritmicaSwitch.setForeground(Color.white);
+            jPanelIndicadores.removeAll();
+            jPanelAnotacoes.removeAll();
         }
-        else if (escalaalternar.equals("logaritmica"))
+        //</editor-fold>
+        
+        //<editor-fold defaultstate="collapsed" desc="Recarregar Anotações e Indicadores para o OHLC Novo - CASO NAO RESET">
+        else if (resetaranotacoesindicadores == false)
         {
-            escalagraficoescolhido = "logaritmica";
-            jLabelLinearSwitch.setForeground(Color.white);
-            jLabelLogaritmicaSwitch.setForeground(Color.blue);
-        }
-    }
-    
-
-    public void recarregardadossubmodulografico()
-    {
-        //funcao para recarregar dados ohlc e de indicadores
-        //e recarregar os desenhos graficos no chart OHLC
-        //ou seja, recarregar o submodulo grafico
-        
-        // <editor-fold defaultstate="collapsed" desc="Recarregar Chartpanel OHLC">
-        
-        //receber informacoes de candles de acordo com os paremetros principais
-        aassetpai.alterarasset(jTextFieldNomeSimbolo.getText());
-        String sourcesimboloescolhido = aassetpai.assetsimbolo;
-        String periodoescolhido = jComboBoxPeriodoSimbolo.getSelectedItem().toString();
-        String escalagrafico = escalagraficoescolhido;
-        
-        
-        java.util.List<mierclasses.mccandle> candles = null;
-        
-        if ((sourcesimboloescolhido.equals("testdata")) == true)
-        {
-            //codigo para criar um dataset offline para teste
-            candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartsample();
-        }
-        else if ((sourcesimboloescolhido.equals("testdata")) == false)
-        {
-            if ((sourcesimboloescolhido.split(":")[0]).equals("IEX"))
-            {
-                if (periodoescolhido.equals("1 Day"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithminutes((sourcesimboloescolhido.split(":")[1]), "1d");
-                else if (periodoescolhido.equals("1 Month"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "1m");
-                else if (periodoescolhido.equals("3 Months"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "3m");
-                else if (periodoescolhido.equals("6 Months"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "6m");
-                else if (periodoescolhido.equals("Year-to-date"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "ytd");
-                else if (periodoescolhido.equals("1 Year"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "1y");
-                else if (periodoescolhido.equals("2 Years"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "2y");
-                else if (periodoescolhido.equals("5 Years"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "5y");
-            } 
-            else if ((sourcesimboloescolhido.split(":")[0]).equals("AV"))
-            {
-                if (periodoescolhido.equals("1 minute"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"1min","200");
-                else if (periodoescolhido.equals("5 minutes"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"5min","200");
-                else if (periodoescolhido.equals("15 minutes"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"15min","200");
-                else if (periodoescolhido.equals("30 minutes"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"30min","200");
-                else if (periodoescolhido.equals("60 minutes"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"60min","200");
-                else if (periodoescolhido.equals("Daily"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesdaily((sourcesimboloescolhido.split(":")[1]), "200");
-                else if (periodoescolhido.equals("Weekly"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesweekly((sourcesimboloescolhido.split(":")[1]), "200");
-                else if (periodoescolhido.equals("Monthly"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesmonthly((sourcesimboloescolhido.split(":")[1]), "200");
-            } 
-        }
-        
-        
-        //recarregar grafico OHLC
-        mcg.recarregarohlc(candles,sourcesimboloescolhido + " (" + periodoescolhido + ")",escalagrafico);
-        //receber cpanel OHLC pos-atualizacao para adicionar ao panel
-        org.jfree.chart.ChartPanel chartpanel = mcg.retornarcpanelohlc();
-        chartpanel.addChartMouseListener(new org.jfree.chart.ChartMouseListener()
-        {
-            public void chartMouseClicked(org.jfree.chart.ChartMouseEvent e)
-            {
-                interpretarmouseclickchart(e);
-            }
-
-            public void chartMouseMoved(org.jfree.chart.ChartMouseEvent e) 
-            {
-                interpretarmousemovechart(e);
-            }
-        });
-        
-        //atualizar cpanel OHLC
-        jPanelOHLCChartpanel.removeAll();
-        jPanelOHLCChartpanel.setLayout(new java.awt.BorderLayout());
-        jPanelOHLCChartpanel.add(chartpanel);
-
-        // </editor-fold>
-        
-        // <editor-fold defaultstate="collapsed" desc="Recarregar Dados e Plots dos Indicadores">
+            // <editor-fold defaultstate="collapsed" desc="Recarregar Dados e Plots dos Indicadores">
         
         //comecar limpando graficamente os timeseries dos indicadores
         mcg.removerplotohlc_indicadores();
@@ -334,7 +227,7 @@ public class submodulografico extends javax.swing.JPanel
         
         //</editor-fold>
         
-        // <editor-fold defaultstate="collapsed" desc="Recarregar Dados e Plots das Anotacoes">
+            // <editor-fold defaultstate="collapsed" desc="Recarregar Dados e Plots das Anotacoes">
         //remover todos subannotations
         mcg.removerplotohlc_todossubannotations();
         
@@ -344,10 +237,40 @@ public class submodulografico extends javax.swing.JPanel
             mcg.adicionarplotohlc_subannotationsobjectbase64type(novoanotacao.subannotationsanotacao);
         }
         // </editor-fold>
+        }
+        //</editor-fold>
         
         this.validate();
         this.repaint(); 
     }
+    //</editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Main Section">
+    
+    public void adicionarsimboloaotextboxsubmodulo(String simboloadicionar)
+    {
+        //funcao para adicionar o codigo do simbolo no textbox de simbolo
+        jTextFieldNomeSimbolo.setText(simboloadicionar);
+    }
+    
+    public String escalagraficoescolhido = "linear";
+    public void alternartipoescala(String escalaalternar)
+    {
+        if (escalaalternar.equals("linear"))
+        {
+            escalagraficoescolhido = "linear";
+            jLabelLinearSwitch.setForeground(Color.blue);
+            jLabelLogaritmicaSwitch.setForeground(Color.white);
+        }
+        else if (escalaalternar.equals("logaritmica"))
+        {
+            escalagraficoescolhido = "logaritmica";
+            jLabelLinearSwitch.setForeground(Color.white);
+            jLabelLogaritmicaSwitch.setForeground(Color.blue);
+        }
+    }
+    
+
     
     public void atualizaropcoescomboboxperiodo()
     {
@@ -363,7 +286,7 @@ public class submodulografico extends javax.swing.JPanel
         {
             jComboBoxPeriodoSimbolo.removeAllItems();
 
-            if ((textoatualsimbolo.split(":")[0]).equals("IEX"))
+            if (((textoatualsimbolo.split(":")[0]).toLowerCase()).equals("iex"))
             {
                 jComboBoxPeriodoSimbolo.addItem("1 Day");
                 jComboBoxPeriodoSimbolo.addItem("1 Month");
@@ -374,7 +297,7 @@ public class submodulografico extends javax.swing.JPanel
                 jComboBoxPeriodoSimbolo.addItem("2 Years");
                 jComboBoxPeriodoSimbolo.addItem("5 Years");
             }
-            else if ((textoatualsimbolo.split(":")[0]).equals("AV"))
+            else if (((textoatualsimbolo.split(":")[0]).toLowerCase()).equals("av"))
             {                
                 jComboBoxPeriodoSimbolo.addItem("1 minute");
                 jComboBoxPeriodoSimbolo.addItem("5 minutes");
@@ -631,6 +554,7 @@ public class submodulografico extends javax.swing.JPanel
     }
     //</editor-fold>
     
+    // <editor-fold defaultstate="collapsed" desc="Funções de Suporte">
     void resetarcorbotoesferramentas()
     {
         jButtonAtivarSelecao.setForeground(Color.black);
@@ -674,7 +598,9 @@ public class submodulografico extends javax.swing.JPanel
         }
   
     }
+    //</editor-fold>
     
+    // <editor-fold defaultstate="collapsed" desc="Exportar Dados CSV">
     void exportarcsvdados()
     {
         //funcao para exportar arquivo .csv com candles e indicadores
@@ -755,6 +681,7 @@ public class submodulografico extends javax.swing.JPanel
         }
         
     }
+    //</editor-fold>
     
     // </editor-fold>
 
