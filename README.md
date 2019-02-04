@@ -9,7 +9,7 @@ Open Stock is a project [licensed under GNU GPLv3](https://github.com/lcmeyer37/
 ![Chart](example1.png)
 ![Offline Trader](example2.png)
 
-- [x] Real-time stocks data
+- [x] Real-time data for multiple assets: stocks, dividends, indexes, cryptocurrency
 - [x] Possibility to analyze multiple charts at the same time
 - [x] Use of Annotations and Indicators for Technical Analysis
 - [x] Use of Robots to test automatic Algorithmic Trading 
@@ -19,7 +19,6 @@ Open Stock is a project [licensed under GNU GPLv3](https://github.com/lcmeyer37/
 - [x] Export .csv files for spreadsheets tracking
 - [x] OHLC and Separate Indicator charts
 - [x] Offline Trading
-- [x] Real-time cryptocurrency and other assets data
 
 This project has a similar counterpart made in C# .NET. Connected to the HitBTC Exchange, this other project presents Tickers, Orderbooks, Buy and Sell panels, simulation panels for Offline training trading and also a section to work with multiple trader bots configuring specific TA events and rules. The idea is also to use this project as reference to add new features. And this project also invites anyone interested to contribute with it.
 
