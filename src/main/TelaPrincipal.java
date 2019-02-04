@@ -21,7 +21,7 @@ public class TelaPrincipal extends javax.swing.JFrame
     //ele cria varios graficos, e todos tem a sua propria instancia de grafico com anotacoes, indicadores, e pode ser salvo ou carregado
     
     //public mierclasses.mcavcomms mav; //classe utilizada para comunicacao com alpha vantage
-    public mierclasses.mciexcomms miex; //classe utilizada para comunicacao com IEX API
+    public mierclasses.mcstocksapicomms msapicomms; //classe utilizada para comunicacao com IEX API
     
     /**
      * Creates new form TelaPrincipal
@@ -43,12 +43,18 @@ public class TelaPrincipal extends javax.swing.JFrame
         //holder do grafico eh um grid com um unico item
         jPanelHolderAnalisadorAsset.setLayout(new java.awt.GridLayout(1,1));
 
-        //popular miex, utilizando para comunicar com IEX API
-        miex = new mierclasses.mciexcomms();
+        //popular msapicomms, utilizando para comunicar com diferentes APIs de stock
+        popularstocksapi();
         
         //revalidar componentes apos alteracoes graficas e criacoes
         this.validate();
         this.repaint();
+    }
+    
+    void popularstocksapi()
+    {
+        //funcao para popular stocks api, que permite comunicacao do programa com diferentes APIs
+        msapicomms = new mierclasses.mcstocksapicomms();
     }
     
     

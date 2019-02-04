@@ -89,41 +89,63 @@ public class submodulografico extends javax.swing.JPanel
     {
         //receber informacoes de candles de acordo com os paremetros principais
         aassetpai.alterarasset(jTextFieldNomeSimbolo.getText());
-        String simboloescolhido = aassetpai.assetsimbolo;
+        String sourcesimboloescolhido = aassetpai.assetsimbolo;
         String periodoescolhido = jComboBoxPeriodoSimbolo.getSelectedItem().toString();
         String escalagrafico = escalagraficoescolhido;
         
         
         java.util.List<mierclasses.mccandle> candles = null;
         
-        if ((simboloescolhido.equals("testdata")) == true)
+        if ((sourcesimboloescolhido.equals("testdata")) == true)
         {
             //codigo para criar um dataset offline para teste
-            candles = aassetpai.iaassetpai.tprincipalpai.miex.receberstockchartsample();
+            candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartsample();
         }
-        else if ((simboloescolhido.equals("testdata")) == false)
+        else if ((sourcesimboloescolhido.equals("testdata")) == false)
         {
-            if (periodoescolhido.equals("1 Day"))
-                candles = aassetpai.iaassetpai.tprincipalpai.miex.receberstockchartwithminutes(simboloescolhido, "1d");
-            else if (periodoescolhido.equals("1 Month"))
-                candles = aassetpai.iaassetpai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "1m");
-            else if (periodoescolhido.equals("3 Months"))
-                candles = aassetpai.iaassetpai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "3m");
-            else if (periodoescolhido.equals("6 Months"))
-                candles = aassetpai.iaassetpai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "6m");
-            else if (periodoescolhido.equals("Year-to-date"))
-                candles = aassetpai.iaassetpai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "ytd");
-            else if (periodoescolhido.equals("1 Year"))
-                candles = aassetpai.iaassetpai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "1y");
-            else if (periodoescolhido.equals("2 Years"))
-                candles = aassetpai.iaassetpai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "2y");
-            else if (periodoescolhido.equals("5 Years"))
-                candles = aassetpai.iaassetpai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "5y");
+            if ((sourcesimboloescolhido.split(":")[0]).equals("IEX"))
+            {
+                if (periodoescolhido.equals("1 Day"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithminutes((sourcesimboloescolhido.split(":")[1]), "1d");
+                else if (periodoescolhido.equals("1 Month"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "1m");
+                else if (periodoescolhido.equals("3 Months"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "3m");
+                else if (periodoescolhido.equals("6 Months"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "6m");
+                else if (periodoescolhido.equals("Year-to-date"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "ytd");
+                else if (periodoescolhido.equals("1 Year"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "1y");
+                else if (periodoescolhido.equals("2 Years"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "2y");
+                else if (periodoescolhido.equals("5 Years"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "5y");
+            } 
+            else if ((sourcesimboloescolhido.split(":")[0]).equals("AV"))
+            {
+                if (periodoescolhido.equals("1 minute"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"1min","200");
+                else if (periodoescolhido.equals("5 minutes"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"5min","200");
+                else if (periodoescolhido.equals("15 minutes"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"15min","200");
+                else if (periodoescolhido.equals("30 minutes"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"30min","200");
+                else if (periodoescolhido.equals("60 minutes"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"60min","200");
+                else if (periodoescolhido.equals("Daily"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesdaily((sourcesimboloescolhido.split(":")[1]), "200");
+                else if (periodoescolhido.equals("Weekly"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesweekly((sourcesimboloescolhido.split(":")[1]), "200");
+                else if (periodoescolhido.equals("Monthly"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesmonthly((sourcesimboloescolhido.split(":")[1]), "200");
+            } 
         }
         
         
         //recriar grafico OHLC resetando anotacoes e indicadores atuais
-        mcg.recriarohlc(candles,simboloescolhido + " (" + periodoescolhido + ")",escalagrafico);
+        mcg.recriarohlc(candles,sourcesimboloescolhido + " (" + periodoescolhido + ")",escalagrafico);
         //receber cpanel OHLC pos-atualizacao para adicionar ao panel
         org.jfree.chart.ChartPanel chartpanel = mcg.retornarcpanelohlc();
         chartpanel.addChartMouseListener(new org.jfree.chart.ChartMouseListener()
@@ -179,41 +201,63 @@ public class submodulografico extends javax.swing.JPanel
         
         //receber informacoes de candles de acordo com os paremetros principais
         aassetpai.alterarasset(jTextFieldNomeSimbolo.getText());
-        String simboloescolhido = aassetpai.assetsimbolo;
+        String sourcesimboloescolhido = aassetpai.assetsimbolo;
         String periodoescolhido = jComboBoxPeriodoSimbolo.getSelectedItem().toString();
         String escalagrafico = escalagraficoescolhido;
         
         
         java.util.List<mierclasses.mccandle> candles = null;
         
-        if ((simboloescolhido.equals("testdata")) == true)
+        if ((sourcesimboloescolhido.equals("testdata")) == true)
         {
             //codigo para criar um dataset offline para teste
-            candles = aassetpai.iaassetpai.tprincipalpai.miex.receberstockchartsample();
+            candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartsample();
         }
-        else if ((simboloescolhido.equals("testdata")) == false)
+        else if ((sourcesimboloescolhido.equals("testdata")) == false)
         {
-            if (periodoescolhido.equals("1 Day"))
-                candles = aassetpai.iaassetpai.tprincipalpai.miex.receberstockchartwithminutes(simboloescolhido, "1d");
-            else if (periodoescolhido.equals("1 Month"))
-                candles = aassetpai.iaassetpai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "1m");
-            else if (periodoescolhido.equals("3 Months"))
-                candles = aassetpai.iaassetpai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "3m");
-            else if (periodoescolhido.equals("6 Months"))
-                candles = aassetpai.iaassetpai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "6m");
-            else if (periodoescolhido.equals("Year-to-date"))
-                candles = aassetpai.iaassetpai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "ytd");
-            else if (periodoescolhido.equals("1 Year"))
-                candles = aassetpai.iaassetpai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "1y");
-            else if (periodoescolhido.equals("2 Years"))
-                candles = aassetpai.iaassetpai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "2y");
-            else if (periodoescolhido.equals("5 Years"))
-                candles = aassetpai.iaassetpai.tprincipalpai.miex.receberstockchartwithoutminutes(simboloescolhido, "5y");
+            if ((sourcesimboloescolhido.split(":")[0]).equals("IEX"))
+            {
+                if (periodoescolhido.equals("1 Day"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithminutes((sourcesimboloescolhido.split(":")[1]), "1d");
+                else if (periodoescolhido.equals("1 Month"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "1m");
+                else if (periodoescolhido.equals("3 Months"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "3m");
+                else if (periodoescolhido.equals("6 Months"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "6m");
+                else if (periodoescolhido.equals("Year-to-date"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "ytd");
+                else if (periodoescolhido.equals("1 Year"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "1y");
+                else if (periodoescolhido.equals("2 Years"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "2y");
+                else if (periodoescolhido.equals("5 Years"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartwithoutminutes((sourcesimboloescolhido.split(":")[1]), "5y");
+            } 
+            else if ((sourcesimboloescolhido.split(":")[0]).equals("AV"))
+            {
+                if (periodoescolhido.equals("1 minute"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"1min","200");
+                else if (periodoescolhido.equals("5 minutes"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"5min","200");
+                else if (periodoescolhido.equals("15 minutes"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"15min","200");
+                else if (periodoescolhido.equals("30 minutes"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"30min","200");
+                else if (periodoescolhido.equals("60 minutes"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"60min","200");
+                else if (periodoescolhido.equals("Daily"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesdaily((sourcesimboloescolhido.split(":")[1]), "200");
+                else if (periodoescolhido.equals("Weekly"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesweekly((sourcesimboloescolhido.split(":")[1]), "200");
+                else if (periodoescolhido.equals("Monthly"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesmonthly((sourcesimboloescolhido.split(":")[1]), "200");
+            } 
         }
         
         
         //recarregar grafico OHLC
-        mcg.recarregarohlc(candles,simboloescolhido + " (" + periodoescolhido + ")",escalagrafico);
+        mcg.recarregarohlc(candles,sourcesimboloescolhido + " (" + periodoescolhido + ")",escalagrafico);
         //receber cpanel OHLC pos-atualizacao para adicionar ao panel
         org.jfree.chart.ChartPanel chartpanel = mcg.retornarcpanelohlc();
         chartpanel.addChartMouseListener(new org.jfree.chart.ChartMouseListener()
@@ -303,6 +347,51 @@ public class submodulografico extends javax.swing.JPanel
         
         this.validate();
         this.repaint(); 
+    }
+    
+    public void atualizaropcoescomboboxperiodo()
+    {
+        //dependendo da source, iex, av, etc, o periodo muda na lista de periodos disponiveis
+        String textoatualsimbolo = jTextFieldNomeSimbolo.getText();
+        
+        if ((textoatualsimbolo.equals("testdata")) == true)
+        {
+            jComboBoxPeriodoSimbolo.removeAllItems();
+            jComboBoxPeriodoSimbolo.addItem("No options");
+        }
+        else if ((textoatualsimbolo.equals("testdata")) == false)
+        {
+            jComboBoxPeriodoSimbolo.removeAllItems();
+
+            if ((textoatualsimbolo.split(":")[0]).equals("IEX"))
+            {
+                jComboBoxPeriodoSimbolo.addItem("1 Day");
+                jComboBoxPeriodoSimbolo.addItem("1 Month");
+                jComboBoxPeriodoSimbolo.addItem("3 Months");
+                jComboBoxPeriodoSimbolo.addItem("6 Months");
+                jComboBoxPeriodoSimbolo.addItem("Year-to-date");
+                jComboBoxPeriodoSimbolo.addItem("1 Year");
+                jComboBoxPeriodoSimbolo.addItem("2 Years");
+                jComboBoxPeriodoSimbolo.addItem("5 Years");
+            }
+            else if ((textoatualsimbolo.split(":")[0]).equals("AV"))
+            {                
+                jComboBoxPeriodoSimbolo.addItem("1 minute");
+                jComboBoxPeriodoSimbolo.addItem("5 minutes");
+                jComboBoxPeriodoSimbolo.addItem("15 minutes");
+                jComboBoxPeriodoSimbolo.addItem("30 minutes");
+                jComboBoxPeriodoSimbolo.addItem("60 minutes");
+                jComboBoxPeriodoSimbolo.addItem("Daily");
+                jComboBoxPeriodoSimbolo.addItem("Weekly");
+                jComboBoxPeriodoSimbolo.addItem("Monthly");
+            }
+            else
+            {
+                jComboBoxPeriodoSimbolo.addItem("No options");
+            }
+        }
+        
+        jComboBoxPeriodoSimbolo.setSelectedIndex(0);
     }
     
     // </editor-fold>
@@ -884,11 +973,18 @@ public class submodulografico extends javax.swing.JPanel
 
         jTextFieldNomeSimbolo.setBackground(new java.awt.Color(125, 125, 125));
         jTextFieldNomeSimbolo.setForeground(new java.awt.Color(255, 255, 255));
+        jTextFieldNomeSimbolo.addCaretListener(new javax.swing.event.CaretListener()
+        {
+            public void caretUpdate(javax.swing.event.CaretEvent evt)
+            {
+                jTextFieldNomeSimboloCaretUpdate(evt);
+            }
+        });
 
         jLabelPeriodoSimbolo.setForeground(new java.awt.Color(255, 255, 255));
         jLabelPeriodoSimbolo.setText("Period:");
 
-        jComboBoxPeriodoSimbolo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1 Day", "1 Month", "3 Months", "6 Months", "Year-to-date", "1 Year", "2 Years", "5 Years" }));
+        jComboBoxPeriodoSimbolo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No options" }));
 
         jButtonCarregarConfiguracao.setText("Load Asset");
         jButtonCarregarConfiguracao.addActionListener(new java.awt.event.ActionListener()
@@ -1224,6 +1320,11 @@ public class submodulografico extends javax.swing.JPanel
         resetarcorbotoesferramentas();
         jButtonAtivarFibonacci.setForeground(Color.red);
     }//GEN-LAST:event_jButtonAtivarFibonacciActionPerformed
+
+    private void jTextFieldNomeSimboloCaretUpdate(javax.swing.event.CaretEvent evt)//GEN-FIRST:event_jTextFieldNomeSimboloCaretUpdate
+    {//GEN-HEADEREND:event_jTextFieldNomeSimboloCaretUpdate
+        atualizaropcoescomboboxperiodo();
+    }//GEN-LAST:event_jTextFieldNomeSimboloCaretUpdate
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

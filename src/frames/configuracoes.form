@@ -97,7 +97,7 @@
                       <Component id="jButtonOpenBearcodeIndicatorEditor" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jButtonOpenBearcodeBotEditor" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="107" max="32767" attributes="0"/>
+                      <EmptySpace pref="151" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -138,7 +138,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
+                  <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
@@ -155,12 +155,20 @@
                           </Group>
                           <Component id="jLabelAPIAttribution" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               <Component id="jButtonLicense" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jButtonGithub" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabelAPIAttributionIEX" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jButtonIEX" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="jLabelAPIAttributionAV" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jButtonAV" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -182,12 +190,21 @@
                               <Component id="jLabelLastBuild" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="35" max="32767" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jLabelAPIAttribution" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jButtonGithub" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabelAPIAttributionIEX" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButtonIEX" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabelAPIAttributionAV" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonAV" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jButtonGithub" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButtonLicense" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -209,7 +226,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="(Lucas Meyer build - January 2019)"/>
+                <Property name="text" type="java.lang.String" value="(Lucas Meyer build - February 2019)"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelBear">
@@ -225,7 +242,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Version: iex1.02a"/>
+                <Property name="text" type="java.lang.String" value="Version: 1.031"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelAPIAttribution">
@@ -233,16 +250,16 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="API Attribution: Data provided for free by IEX. View IEX&#x2019;s Terms of Use."/>
+                <Property name="text" type="java.lang.String" value="API Attributions:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="jButtonGithub">
+            <Component class="javax.swing.JLabel" name="jLabelAPIAttributionIEX">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Open Stock&apos;s GitHub"/>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Data provided for free by IEX."/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonGithubActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jButtonIEX">
               <Properties>
@@ -252,12 +269,36 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonIEXActionPerformed"/>
               </Events>
             </Component>
+            <Component class="javax.swing.JLabel" name="jLabelAPIAttributionAV">
+              <Properties>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Data provided for free by Alpha Vantage."/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButtonAV">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Alpha Vantage&apos;s Terms of Service"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAVActionPerformed"/>
+              </Events>
+            </Component>
             <Component class="javax.swing.JButton" name="jButtonLicense">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Open Stock License"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonLicenseActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButtonGithub">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Open Stock&apos;s GitHub"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonGithubActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

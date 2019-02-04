@@ -51,12 +51,12 @@ public class mccandle
         java.util.Date timestampretornar;
         
         //parser caso 2018-12-21 16:00:00
-        Integer ano = -1;
-        Integer mes = -1;
-        Integer dia = -1;
-        Integer hora = -1;
-        Integer minuto = -1;
-        Integer segundo = -1;
+        Integer ano = 1900;
+        Integer mes = 1;
+        Integer dia = 0;
+        Integer hora = 0;
+        Integer minuto = 0;
+        Integer segundo = 0;
         
         try
         {
@@ -64,7 +64,7 @@ public class mccandle
         }
         catch (java.lang.ArrayIndexOutOfBoundsException excecao)
         {
-            ano = -1;
+            ano = 1900;
         }
         
         try
@@ -73,7 +73,7 @@ public class mccandle
         }
         catch (java.lang.ArrayIndexOutOfBoundsException excecao)
         {
-            mes = -1;
+            mes = 1;
         }
         
         try
@@ -82,7 +82,7 @@ public class mccandle
         }
         catch (java.lang.ArrayIndexOutOfBoundsException excecao)
         {
-            dia = -1;
+            dia = 0;
         }
         
         try
@@ -92,7 +92,7 @@ public class mccandle
         }
         catch (java.lang.ArrayIndexOutOfBoundsException excecao)
         {
-            hora = -1;
+            hora = 0;
         }
         
         try
@@ -102,7 +102,7 @@ public class mccandle
         }
         catch (java.lang.ArrayIndexOutOfBoundsException excecao)
         {
-            minuto = -1;
+            minuto = 0;
         }
         
         try
@@ -112,7 +112,7 @@ public class mccandle
         }
         catch (java.lang.ArrayIndexOutOfBoundsException excecao)
         {
-            segundo = -1;
+            segundo = 0;
         }
 
         timestampretornar = new java.util.Date(ano-1900,mes-1,dia,hora,minuto,segundo);

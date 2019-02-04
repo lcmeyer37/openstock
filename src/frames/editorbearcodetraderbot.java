@@ -54,12 +54,12 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         telappai = tppai;
         mcbctraderbot = new mierclasses.mcbctradingbotinterpreter("testbctraderbot", "Teste Trader Bot", "", "");
         
-        candlessample = tppai.miex.receberstockchartsample();
+        candlessample = tppai.msapicomms.receberstockchartsample();
         
         quantidadebasesample = 50;
         quantidadequotesample = 1000;
         
-        java.util.List<Double> bidask = tppai.miex.receberlastbidaskofflinetradingsample();
+        java.util.List<Double> bidask = tppai.msapicomms.receberlastbidaskofflinetradingsample();
         bidsample = bidask.get(0);
         asksample = bidask.get(1);
         

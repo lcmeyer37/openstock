@@ -12,7 +12,7 @@ package frames.analisadorasset.grafico;
  */
 public class adicionarsimbolo extends javax.swing.JFrame
 {
-    public static panels.analisadorasset.grafico.submodulografico submodulopai;
+    public static panels.analisadorasset.grafico.submodulografico submodulograficopai;
     
     /**
      * Creates new form WindowAdicionarSimbolo
@@ -21,7 +21,7 @@ public class adicionarsimbolo extends javax.swing.JFrame
     {
         initComponents();
         
-        submodulopai = smodpai;
+        submodulograficopai = smodpai;
         
         modellistasimbolosencontrados = new javax.swing.DefaultListModel();
         jlistSimbolosEncontrados.setModel(modellistasimbolosencontrados);
@@ -30,15 +30,22 @@ public class adicionarsimbolo extends javax.swing.JFrame
     javax.swing.DefaultListModel modellistasimbolosencontrados;
     void procurarsimbolosemostrarnalista()
     {
-        //listaatualbm = submodulopai.mtgraficopai.tprincipalpai.mav.receberstocksearchbestmatches(jtfProcurarSimbolo.getText());
-        java.util.List<String> simbolosencontrados = 
-                submodulopai.aassetpai.iaassetpai.tprincipalpai.miex.receberlistasimbolosprocura(jtfProcurarSimbolo.getText());
-        
         modellistasimbolosencontrados.removeAllElements();
-        for (int i = 0; i < simbolosencontrados.size(); i++)
+        
+        java.util.List<String> simbolosencontradosiex = 
+                submodulograficopai.aassetpai.iaassetpai.tprincipalpai.msapicomms.receberlistasimbolosiexprocura(jtfProcurarSimbolo.getText());
+        for (int i = 0; i < simbolosencontradosiex.size(); i++)
         {
-            modellistasimbolosencontrados.addElement(simbolosencontrados.get(i));
+            modellistasimbolosencontrados.addElement(simbolosencontradosiex.get(i));
         }
+        
+        java.util.List<String> simbolosencontradosav = 
+                submodulograficopai.aassetpai.iaassetpai.tprincipalpai.msapicomms.receberlistasimbolosavprocura(jtfProcurarSimbolo.getText());
+        for (int i = 0; i < simbolosencontradosav.size(); i++)
+        {
+            modellistasimbolosencontrados.addElement(simbolosencontradosav.get(i));
+        }
+        
         jlistSimbolosEncontrados.setSelectedIndex(0);
     }
     
@@ -46,7 +53,7 @@ public class adicionarsimbolo extends javax.swing.JFrame
     {
         String simboloatual = ((String)modellistasimbolosencontrados.getElementAt(jlistSimbolosEncontrados.getSelectedIndex())).split(" - ")[0];
         
-        submodulopai.adicionarsimboloaotextboxsubmodulo(simboloatual);
+        submodulograficopai.adicionarsimboloaotextboxsubmodulo(simboloatual);
         this.dispose();
     }
     
@@ -220,7 +227,7 @@ public class adicionarsimbolo extends javax.swing.JFrame
         {
             public void run()
             {
-                new adicionarsimbolo(submodulopai).setVisible(true);
+                new adicionarsimbolo(submodulograficopai).setVisible(true);
             }
         });
     }

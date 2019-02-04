@@ -62,9 +62,9 @@ public class mcofflinetrader
         if ((simbolo.equals("testdata")) == true)
         {
             //codigo para criar um dataset offline para teste
-            //candles = aassetpai.iaassetpai.tprincipalpai.miex.receberstockchartsample();
+            //candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartsample();
             
-            java.util.List<Double> bidask = submodulooftraderpai.aassetpai.iaassetpai.tprincipalpai.miex.receberlastbidaskofflinetradingsample();
+            java.util.List<Double> bidask = submodulooftraderpai.aassetpai.iaassetpai.tprincipalpai.msapicomms.receberlastbidaskofflinetradingsample();
             double bid = bidask.get(0);
             double ask = bidask.get(1);
 
@@ -75,7 +75,7 @@ public class mcofflinetrader
         }
         else if ((simbolo.equals("testdata")) == false)
         {
-            java.util.List<Double> bidask = submodulooftraderpai.aassetpai.iaassetpai.tprincipalpai.miex.receberlastbidaskofflinetrading(submodulooftraderpai.aassetpai.subgrafico.mcg.candlesatual);
+            java.util.List<Double> bidask = submodulooftraderpai.aassetpai.iaassetpai.tprincipalpai.msapicomms.receberlastbidaskofflinetrading(submodulooftraderpai.aassetpai.subgrafico.mcg.candlesatual);
             double bid = bidask.get(0);
             double ask = bidask.get(1);
             

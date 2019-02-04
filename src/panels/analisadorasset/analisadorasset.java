@@ -391,6 +391,7 @@ public class analisadorasset extends javax.swing.JPanel
                 String escalachart = elchartmaininfounico.getElementsByTagName("Scale").item(0).getTextContent();
                 
                 subgrafico.jTextFieldNomeSimbolo.setText(simbolochart);
+                subgrafico.atualizaropcoescomboboxperiodo();
                 for (int i = 0; i < subgrafico.jComboBoxPeriodoSimbolo.getItemCount(); i++)
                 {
                     String textoItemAtual = subgrafico.jComboBoxPeriodoSimbolo.getItemAt(i).toString();

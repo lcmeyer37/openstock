@@ -26,6 +26,7 @@ public static main.TelaPrincipal telappai;
         telappai = tppai;
 
     }
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -48,9 +49,12 @@ public static main.TelaPrincipal telappai;
         jLabelBear = new javax.swing.JLabel();
         jLabelVersion = new javax.swing.JLabel();
         jLabelAPIAttribution = new javax.swing.JLabel();
-        jButtonGithub = new javax.swing.JButton();
+        jLabelAPIAttributionIEX = new javax.swing.JLabel();
         jButtonIEX = new javax.swing.JButton();
+        jLabelAPIAttributionAV = new javax.swing.JLabel();
+        jButtonAV = new javax.swing.JButton();
         jButtonLicense = new javax.swing.JButton();
+        jButtonGithub = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -104,7 +108,7 @@ public static main.TelaPrincipal telappai;
                 .addComponent(jButtonOpenBearcodeIndicatorEditor)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonOpenBearcodeBotEditor)
-                .addContainerGap(107, Short.MAX_VALUE))
+                .addContainerGap(151, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("More", jPanelMore);
@@ -115,25 +119,19 @@ public static main.TelaPrincipal telappai;
         jLabelOpenStock.setText("Open Stock");
 
         jLabelLastBuild.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelLastBuild.setText("(Lucas Meyer build - January 2019)");
+        jLabelLastBuild.setText("(Lucas Meyer build - February 2019)");
 
         jLabelBear.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelBear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/bear70.png"))); // NOI18N
 
         jLabelVersion.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelVersion.setText("Version: iex1.02a");
+        jLabelVersion.setText("Version: 1.031");
 
         jLabelAPIAttribution.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelAPIAttribution.setText("API Attribution: Data provided for free by IEX. View IEX’s Terms of Use.");
+        jLabelAPIAttribution.setText("API Attributions:");
 
-        jButtonGithub.setText("Open Stock's GitHub");
-        jButtonGithub.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                jButtonGithubActionPerformed(evt);
-            }
-        });
+        jLabelAPIAttributionIEX.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelAPIAttributionIEX.setText("Data provided for free by IEX.");
 
         jButtonIEX.setText("IEX's Terms of Use");
         jButtonIEX.addActionListener(new java.awt.event.ActionListener()
@@ -144,12 +142,33 @@ public static main.TelaPrincipal telappai;
             }
         });
 
+        jLabelAPIAttributionAV.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelAPIAttributionAV.setText("Data provided for free by Alpha Vantage.");
+
+        jButtonAV.setText("Alpha Vantage's Terms of Service");
+        jButtonAV.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonAVActionPerformed(evt);
+            }
+        });
+
         jButtonLicense.setText("Open Stock License");
         jButtonLicense.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
                 jButtonLicenseActionPerformed(evt);
+            }
+        });
+
+        jButtonGithub.setText("Open Stock's GitHub");
+        jButtonGithub.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonGithubActionPerformed(evt);
             }
         });
 
@@ -171,12 +190,18 @@ public static main.TelaPrincipal telappai;
                         .addComponent(jLabelBear, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabelAPIAttribution, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanelAboutLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButtonLicense)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonGithub)
+                        .addComponent(jButtonGithub))
+                    .addGroup(jPanelAboutLayout.createSequentialGroup()
+                        .addComponent(jLabelAPIAttributionIEX, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonIEX)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jButtonIEX))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAboutLayout.createSequentialGroup()
+                        .addComponent(jLabelAPIAttributionAV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonAV)))
                 .addContainerGap())
         );
         jPanelAboutLayout.setVerticalGroup(
@@ -191,12 +216,19 @@ public static main.TelaPrincipal telappai;
                             .addComponent(jLabelVersion))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabelLastBuild)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabelAPIAttribution)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelAboutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelAPIAttributionIEX)
+                    .addComponent(jButtonIEX))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelAboutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelAPIAttributionAV)
+                    .addComponent(jButtonAV))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelAboutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonGithub)
-                    .addComponent(jButtonIEX)
                     .addComponent(jButtonLicense))
                 .addContainerGap())
         );
@@ -263,6 +295,18 @@ public static main.TelaPrincipal telappai;
         mfebc.show();
     }//GEN-LAST:event_jButtonOpenBearcodeBotEditorActionPerformed
 
+    private void jButtonAVActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAVActionPerformed
+    {//GEN-HEADEREND:event_jButtonAVActionPerformed
+        try
+        {
+            java.awt.Desktop.getDesktop().browse(new java.net.URI("https://www.alphavantage.co/terms_of_service/"));
+        }
+        catch (Exception ex)
+        {
+            mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred. Exception: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_jButtonAVActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -316,12 +360,15 @@ public static main.TelaPrincipal telappai;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonAV;
     private javax.swing.JButton jButtonGithub;
     private javax.swing.JButton jButtonIEX;
     private javax.swing.JButton jButtonLicense;
     private javax.swing.JButton jButtonOpenBearcodeBotEditor;
     private javax.swing.JButton jButtonOpenBearcodeIndicatorEditor;
     private javax.swing.JLabel jLabelAPIAttribution;
+    private javax.swing.JLabel jLabelAPIAttributionAV;
+    private javax.swing.JLabel jLabelAPIAttributionIEX;
     private javax.swing.JLabel jLabelBear;
     private javax.swing.JLabel jLabelLastBuild;
     private javax.swing.JLabel jLabelOpenStock;
