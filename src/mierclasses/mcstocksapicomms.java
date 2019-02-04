@@ -274,6 +274,170 @@ public class mcstocksapicomms
     
     // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="CryptoCompare API">
+    String chavecryptocompare = "";
+    public void alterarchavecc(String novachavecc)
+    {
+        chavecryptocompare = novachavecc;
+    }
+    
+     public java.util.List<String> receberlistasimboloscryptocompareprocura(String parametrobusca)
+    {
+        /*
+        {
+            "Response": "Success",
+            "Message": "Coin list succesfully returned!",
+            "Data": {
+                "42": {
+                    "Id": "4321",
+                    "Url": "/coins/42/overview",
+                    "ImageUrl": "/media/12318415/42.png",
+                    "Name": "42",
+                    "Symbol": "42",
+                    "CoinName": "42 Coin",
+                    "FullName": "42 Coin (42)",
+                    "Algorithm": "Scrypt",
+                    "ProofType": "PoW/PoS",
+                    "FullyPremined": "0",
+                    "TotalCoinSupply": "42",
+                    "BuiltOn": "N/A",
+                    "SmartContractAddress": "N/A",
+                    "PreMinedValue": "N/A",
+                    "TotalCoinsFreeFloat": "N/A",
+                    "SortOrder": "34",
+                    "Sponsored": false,
+                    "IsTrading": true,
+                    "TotalCoinsMined": 41.99995653,
+                    "BlockNumber": 0,
+                    "NetHashesPerSecond": 0,
+                    "BlockReward": 0,
+                    "BlockTime": 0
+                },
+                "ETH": {
+                    "Id": "7605",
+                    "Url": "/coins/eth/overview",
+                    "ImageUrl": "/media/20646/eth_logo.png",
+                    "Name": "ETH",
+                    "Symbol": "ETH",
+                    "CoinName": "Ethereum",
+                    "FullName": "Ethereum (ETH)",
+                    "Algorithm": "Ethash",
+                    "ProofType": "PoW",
+                    "FullyPremined": "0",
+                    "TotalCoinSupply": "0",
+                    "BuiltOn": "N/A",
+                    "SmartContractAddress": "N/A",
+                    "PreMinedValue": "N/A",
+                    "TotalCoinsFreeFloat": "N/A",
+                    "SortOrder": "2",
+                    "Sponsored": false,
+                    "IsTrading": true,
+                    "TotalCoinsMined": 104716377.6866,
+                    "BlockNumber": 7174858,
+                    "NetHashesPerSecond": 140129872071527,
+                    "BlockReward": 3,
+                    "BlockTime": 15
+                }
+            },
+            "BaseImageUrl": "https://www.cryptocompare.com",
+            "BaseLinkUrl": "https://www.cryptocompare.com",
+            "RateLimit": {},
+            "HasWarning": false,
+            "Type": 100
+        }
+        */
+        
+        String jsonconteudo = "";
+        jsonconteudo = mwcomms.receberconteudopagina("https://min-api.cryptocompare.com/data/all/coinlist");
+        //mierclasses.mcfuncoeshelper.mostrarmensagem(jsonconteudo);
+        //mierclasses.mcfuncoeshelper.setarclipboard(jsonconteudo);
+        
+        JSONObject obj = new JSONObject(jsonconteudo);
+        
+        JSONObject todossimbolos = obj.getJSONObject("Data");
+        JSONArray todossimbolosarray = todossimbolos.names();
+        
+        java.util.List<String> listasimbolosencontrada = new java.util.ArrayList<>();
+        for (int i = 0; i < todossimbolosarray.length(); i++)
+        {
+            String simboloatual = todossimbolosarray.getString(i);
+            //System.out.println(timestampcandle);
+
+            String symbol = todossimbolos.getJSONObject(simboloatual).getString("Symbol");
+            String name = todossimbolos.getJSONObject(simboloatual).getString("CoinName");
+            
+            if ((symbol.toLowerCase()).contains(parametrobusca.toLowerCase()))
+            {
+                String simboloadd = "CRYCOM:" + symbol + " - " + name + " (USD)";
+                listasimbolosencontrada.add(simboloadd);
+            }
+            else if ((name.toLowerCase()).contains(parametrobusca.toLowerCase()))
+            {
+                String simboloadd = "CRYCOM:" + symbol + " - " + name+ " (USD)";
+                listasimbolosencontrada.add(simboloadd);
+            }
+        }
+        
+        return listasimbolosencontrada;
+    }
+    
+    public java.util.List<mccandle> recebercryptochartusd(String simbolo, String limite, String periodo)
+    {
+        
+        String caminhourl = "";
+        if (periodo.equals("Daily"))
+            caminhourl = "https://min-api.cryptocompare.com/data/histoday?fsym="+simbolo.toUpperCase()+"&tsym=USD&limit=" + limite + "&api_key=" + chavecryptocompare;
+        else if (periodo.equals("Hourly"))
+            caminhourl = "https://min-api.cryptocompare.com/data/histohour?fsym="+simbolo.toUpperCase()+"&tsym=USD&limit=" + limite + "&api_key=" + chavecryptocompare;
+        else if (periodo.equals("Minute"))
+            caminhourl = "https://min-api.cryptocompare.com/data/histominute?fsym="+simbolo.toUpperCase()+"&tsym=USD&limit=" + limite + "&api_key=" + chavecryptocompare;
+        
+        //mierclasses.mcfuncoeshelper.setarclipboard(caminhourl);
+        //mierclasses.mcfuncoeshelper.mostrarmensagem(caminhourl);
+        
+        String jsonconteudo = mwcomms.receberconteudopagina(caminhourl);
+        //mierclasses.mcfuncoeshelper.mostrarmensagem(jsonconteudo);
+        mierclasses.mcfuncoeshelper.setarclipboard(jsonconteudo);
+        JSONObject obj = new JSONObject(jsonconteudo);
+        
+        JSONArray datacandles = obj.getJSONArray("Data");
+        java.util.List<mccandle> listacandlesretornar = new java.util.ArrayList<>();
+        for (int i = 0; i < datacandles.length(); i++)
+        {
+            JSONObject candleobjectatual = datacandles.getJSONObject(i);
+            String cjson_date = String.valueOf(candleobjectatual.getLong("time"));
+            String cjson_open = String.valueOf(candleobjectatual.getDouble("open"));
+            String cjson_high = String.valueOf(candleobjectatual.getDouble("high"));
+            String cjson_close = String.valueOf(candleobjectatual.getDouble("close"));
+            String cjson_low = String.valueOf(candleobjectatual.getDouble("low"));
+            String cjson_volume = String.valueOf(candleobjectatual.getDouble("volumefrom"));
+            
+            
+            java.util.Date timestampdate = new java.util.Date(Long.parseLong(cjson_date) * 1000);
+            //mierclasses.mcfuncoeshelper.mostrarmensagem(timestampdate.toString());
+            
+            String timestampcandle = 
+                    (timestampdate.getYear()+1900) + "-" +
+                    (timestampdate.getMonth()+1) + "-" +
+                    (timestampdate.getDate()) + "-" +
+                    (timestampdate.getHours()) + "-" +
+                    (timestampdate.getMinutes()) + "-" +
+                    (timestampdate.getSeconds()); 
+            
+
+            
+            mierclasses.mccandle candleadd = new mierclasses.mccandle
+        (timestampcandle, cjson_open, cjson_high, cjson_close, cjson_low, cjson_volume);
+            
+            listacandlesretornar.add(candleadd);
+            
+        }
+        
+        return listacandlesretornar;
+        
+    }
+    //</editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="IEX API">
     
     public void testecomunicacaoiex()
@@ -697,7 +861,7 @@ public class mcstocksapicomms
     }
     //</editor-fold>
     
-    // </editor-fold>
+    // </editor-fold> 
     
     // <editor-fold defaultstate="collapsed" desc="OFFLINE VALUES">
     

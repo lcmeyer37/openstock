@@ -59,7 +59,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         //funcao para popular stocks api, que permite comunicacao do programa com diferentes APIs
         msapicomms = new mierclasses.mcstocksapicomms();
         
-        // <editor-fold defaultstate="collapsed" desc="carregar general.mfxconfig para associar chave alpha vantage">
+        // <editor-fold defaultstate="collapsed" desc="carregar general.mfxconfig para associar chaves">
          try
         {
             String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
@@ -71,9 +71,28 @@ public class TelaPrincipal extends javax.swing.JFrame
         
             DocumentBuilder dbuilder = dbfactory.newDocumentBuilder();
         
+            
             Document document = dbuilder.parse(xmlArquivo);
-            String alphavantagekey = document.getElementsByTagName("AVKEY").item(0).getTextContent();
-            msapicomms.alterarchaveav(alphavantagekey);
+            try
+            {
+                String alphavantagekey = document.getElementsByTagName("AVKEY").item(0).getTextContent();
+                msapicomms.alterarchaveav(alphavantagekey);
+            }
+            catch (Exception e) 
+            {
+                mierclasses.mcfuncoeshelper.mostrarmensagem("Alpha Vantage API key missing. Please aqcuire one for use at https://www.alphavantage.co/.");
+            }
+
+            try
+            {
+                String cryptocomparekey = document.getElementsByTagName("CCKEY").item(0).getTextContent();
+                msapicomms.alterarchavecc(cryptocomparekey);
+            }
+            catch (Exception e) 
+            {
+                mierclasses.mcfuncoeshelper.mostrarmensagem("CryptoCompare API key missing. Please aqcuire one for use at https://www.cryptocompare.com/.");
+            }
+
         }
         catch (Exception e) 
         {

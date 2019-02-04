@@ -55,6 +55,8 @@ public static main.TelaPrincipal telappai;
         jButtonAV = new javax.swing.JButton();
         jButtonLicense = new javax.swing.JButton();
         jButtonGithub = new javax.swing.JButton();
+        jLabelAPIAttributionCC = new javax.swing.JLabel();
+        jButtonCC = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -108,7 +110,7 @@ public static main.TelaPrincipal telappai;
                 .addComponent(jButtonOpenBearcodeIndicatorEditor)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonOpenBearcodeBotEditor)
-                .addContainerGap(151, Short.MAX_VALUE))
+                .addContainerGap(193, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("More", jPanelMore);
@@ -125,7 +127,7 @@ public static main.TelaPrincipal telappai;
         jLabelBear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/bear70.png"))); // NOI18N
 
         jLabelVersion.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelVersion.setText("Version: 1.031");
+        jLabelVersion.setText("Version: 1.032");
 
         jLabelAPIAttribution.setForeground(new java.awt.Color(255, 255, 255));
         jLabelAPIAttribution.setText("API Attributions:");
@@ -172,6 +174,18 @@ public static main.TelaPrincipal telappai;
             }
         });
 
+        jLabelAPIAttributionCC.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelAPIAttributionCC.setText("Data provided for free by CryptoCompare.");
+
+        jButtonCC.setText("CryptoCompare's License Agreement");
+        jButtonCC.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonCCActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelAboutLayout = new javax.swing.GroupLayout(jPanelAbout);
         jPanelAbout.setLayout(jPanelAboutLayout);
         jPanelAboutLayout.setHorizontalGroup(
@@ -199,9 +213,13 @@ public static main.TelaPrincipal telappai;
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonIEX))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAboutLayout.createSequentialGroup()
-                        .addComponent(jLabelAPIAttributionAV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabelAPIAttributionAV, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonAV)))
+                        .addComponent(jButtonAV))
+                    .addGroup(jPanelAboutLayout.createSequentialGroup()
+                        .addComponent(jLabelAPIAttributionCC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonCC)))
                 .addContainerGap())
         );
         jPanelAboutLayout.setVerticalGroup(
@@ -226,6 +244,10 @@ public static main.TelaPrincipal telappai;
                 .addGroup(jPanelAboutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelAPIAttributionAV)
                     .addComponent(jButtonAV))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelAboutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelAPIAttributionCC)
+                    .addComponent(jButtonCC))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanelAboutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonGithub)
@@ -307,6 +329,18 @@ public static main.TelaPrincipal telappai;
         }
     }//GEN-LAST:event_jButtonAVActionPerformed
 
+    private void jButtonCCActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonCCActionPerformed
+    {//GEN-HEADEREND:event_jButtonCCActionPerformed
+        try
+        {
+            java.awt.Desktop.getDesktop().browse(new java.net.URI("https://www.cryptocompare.com/api-licence-agreement/"));
+        }
+        catch (Exception ex)
+        {
+            mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred. Exception: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_jButtonCCActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -361,6 +395,7 @@ public static main.TelaPrincipal telappai;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAV;
+    private javax.swing.JButton jButtonCC;
     private javax.swing.JButton jButtonGithub;
     private javax.swing.JButton jButtonIEX;
     private javax.swing.JButton jButtonLicense;
@@ -368,6 +403,7 @@ public static main.TelaPrincipal telappai;
     private javax.swing.JButton jButtonOpenBearcodeIndicatorEditor;
     private javax.swing.JLabel jLabelAPIAttribution;
     private javax.swing.JLabel jLabelAPIAttributionAV;
+    private javax.swing.JLabel jLabelAPIAttributionCC;
     private javax.swing.JLabel jLabelAPIAttributionIEX;
     private javax.swing.JLabel jLabelBear;
     private javax.swing.JLabel jLabelLastBuild;

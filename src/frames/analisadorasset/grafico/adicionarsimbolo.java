@@ -32,18 +32,34 @@ public class adicionarsimbolo extends javax.swing.JFrame
     {
         modellistasimbolosencontrados.removeAllElements();
         
-        java.util.List<String> simbolosencontradosiex = 
+        if (jCheckBoxIEXSearch.isSelected() == true)
+        {
+            java.util.List<String> simbolosencontradosiex = 
                 submodulograficopai.aassetpai.iaassetpai.tprincipalpai.msapicomms.receberlistasimbolosiexprocura(jtfProcurarSimbolo.getText());
-        for (int i = 0; i < simbolosencontradosiex.size(); i++)
-        {
-            modellistasimbolosencontrados.addElement(simbolosencontradosiex.get(i));
+            for (int i = 0; i < simbolosencontradosiex.size(); i++)
+            {
+                modellistasimbolosencontrados.addElement(simbolosencontradosiex.get(i));
+            }  
         }
-        
-        java.util.List<String> simbolosencontradosav = 
-                submodulograficopai.aassetpai.iaassetpai.tprincipalpai.msapicomms.receberlistasimbolosavprocura(jtfProcurarSimbolo.getText());
-        for (int i = 0; i < simbolosencontradosav.size(); i++)
+
+        if (jCheckBoxAlphaVantageSearch.isSelected() == true)
         {
-            modellistasimbolosencontrados.addElement(simbolosencontradosav.get(i));
+            java.util.List<String> simbolosencontradosav = 
+                submodulograficopai.aassetpai.iaassetpai.tprincipalpai.msapicomms.receberlistasimbolosavprocura(jtfProcurarSimbolo.getText());
+            for (int i = 0; i < simbolosencontradosav.size(); i++)
+            {
+                modellistasimbolosencontrados.addElement(simbolosencontradosav.get(i));
+            }
+        }        
+
+        if (jCheckBoxCryptoCompareSearch.isSelected() == true)
+        {
+            java.util.List<String> simbolosencontradoscc = 
+                    submodulograficopai.aassetpai.iaassetpai.tprincipalpai.msapicomms.receberlistasimboloscryptocompareprocura(jtfProcurarSimbolo.getText());
+            for (int i = 0; i < simbolosencontradoscc.size(); i++)
+            {
+                modellistasimbolosencontrados.addElement(simbolosencontradoscc.get(i));
+            }
         }
         
         jlistSimbolosEncontrados.setSelectedIndex(0);
@@ -75,6 +91,9 @@ public class adicionarsimbolo extends javax.swing.JFrame
         jbAdicionarSimbolo = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jlistSimbolosEncontrados = new javax.swing.JList<>();
+        jCheckBoxIEXSearch = new javax.swing.JCheckBox();
+        jCheckBoxAlphaVantageSearch = new javax.swing.JCheckBox();
+        jCheckBoxCryptoCompareSearch = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Search for Symbol");
@@ -106,6 +125,42 @@ public class adicionarsimbolo extends javax.swing.JFrame
 
         jScrollPane1.setViewportView(jlistSimbolosEncontrados);
 
+        jCheckBoxIEXSearch.setBackground(new java.awt.Color(120, 120, 120));
+        jCheckBoxIEXSearch.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBoxIEXSearch.setSelected(true);
+        jCheckBoxIEXSearch.setText("IEX");
+        jCheckBoxIEXSearch.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jCheckBoxIEXSearchActionPerformed(evt);
+            }
+        });
+
+        jCheckBoxAlphaVantageSearch.setBackground(new java.awt.Color(120, 120, 120));
+        jCheckBoxAlphaVantageSearch.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBoxAlphaVantageSearch.setSelected(true);
+        jCheckBoxAlphaVantageSearch.setText("Alpha Vantage");
+        jCheckBoxAlphaVantageSearch.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jCheckBoxAlphaVantageSearchActionPerformed(evt);
+            }
+        });
+
+        jCheckBoxCryptoCompareSearch.setBackground(new java.awt.Color(120, 120, 120));
+        jCheckBoxCryptoCompareSearch.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBoxCryptoCompareSearch.setSelected(true);
+        jCheckBoxCryptoCompareSearch.setText("CryptoCompare");
+        jCheckBoxCryptoCompareSearch.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jCheckBoxCryptoCompareSearchActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelFundo2Layout = new javax.swing.GroupLayout(jPanelFundo2);
         jPanelFundo2.setLayout(jPanelFundo2Layout);
         jPanelFundo2Layout.setHorizontalGroup(
@@ -117,11 +172,16 @@ public class adicionarsimbolo extends javax.swing.JFrame
                     .addGroup(jPanelFundo2Layout.createSequentialGroup()
                         .addComponent(jLabelProcurar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtfProcurarSimbolo, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtfProcurarSimbolo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jbProcurarSimbolo))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFundo2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jCheckBoxIEXSearch)
+                        .addGap(18, 18, 18)
+                        .addComponent(jCheckBoxAlphaVantageSearch)
+                        .addGap(18, 18, 18)
+                        .addComponent(jCheckBoxCryptoCompareSearch)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
                         .addComponent(jbAdicionarSimbolo)))
                 .addContainerGap())
         );
@@ -134,9 +194,14 @@ public class adicionarsimbolo extends javax.swing.JFrame
                     .addComponent(jtfProcurarSimbolo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbProcurarSimbolo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jbAdicionarSimbolo)
+                .addGroup(jPanelFundo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jbAdicionarSimbolo)
+                    .addGroup(jPanelFundo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jCheckBoxIEXSearch)
+                        .addComponent(jCheckBoxAlphaVantageSearch)
+                        .addComponent(jCheckBoxCryptoCompareSearch)))
                 .addContainerGap())
         );
 
@@ -180,6 +245,21 @@ public class adicionarsimbolo extends javax.swing.JFrame
     {//GEN-HEADEREND:event_jbAdicionarSimboloActionPerformed
         adicionarsimboloprograma();
     }//GEN-LAST:event_jbAdicionarSimboloActionPerformed
+
+    private void jCheckBoxIEXSearchActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jCheckBoxIEXSearchActionPerformed
+    {//GEN-HEADEREND:event_jCheckBoxIEXSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBoxIEXSearchActionPerformed
+
+    private void jCheckBoxAlphaVantageSearchActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jCheckBoxAlphaVantageSearchActionPerformed
+    {//GEN-HEADEREND:event_jCheckBoxAlphaVantageSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBoxAlphaVantageSearchActionPerformed
+
+    private void jCheckBoxCryptoCompareSearchActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jCheckBoxCryptoCompareSearchActionPerformed
+    {//GEN-HEADEREND:event_jCheckBoxCryptoCompareSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBoxCryptoCompareSearchActionPerformed
 
     /**
      * @param args the command line arguments
@@ -230,6 +310,9 @@ public class adicionarsimbolo extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox jCheckBoxAlphaVantageSearch;
+    private javax.swing.JCheckBox jCheckBoxCryptoCompareSearch;
+    private javax.swing.JCheckBox jCheckBoxIEXSearch;
     private javax.swing.JLabel jLabelProcurar;
     private javax.swing.JPanel jPanelFundo;
     private javax.swing.JPanel jPanelFundo2;

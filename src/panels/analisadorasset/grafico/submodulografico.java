@@ -137,6 +137,21 @@ public class submodulografico extends javax.swing.JPanel
                 else if (periodoescolhido.equals("Monthly"))
                     candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesmonthly((sourcesimboloescolhido.split(":")[1]), "200");
             } 
+            else if (((sourcesimboloescolhido.split(":")[0]).toLowerCase()).equals("crycom"))
+            {
+                if (periodoescolhido.equals("Minute (200)"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.recebercryptochartusd((sourcesimboloescolhido.split(":")[1]), "200", "Minute");
+                else if (periodoescolhido.equals("Minute (1500)"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.recebercryptochartusd((sourcesimboloescolhido.split(":")[1]), "1500", "Minute");
+                if (periodoescolhido.equals("Hourly (200)"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.recebercryptochartusd((sourcesimboloescolhido.split(":")[1]), "200", "Hourly");
+                else if (periodoescolhido.equals("Hourly (1500)"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.recebercryptochartusd((sourcesimboloescolhido.split(":")[1]), "1500", "Hourly");
+                if (periodoescolhido.equals("Daily (200)"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.recebercryptochartusd((sourcesimboloescolhido.split(":")[1]), "200", "Daily");
+                else if (periodoescolhido.equals("Daily (1500)"))
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.recebercryptochartusd((sourcesimboloescolhido.split(":")[1]), "1500", "Daily");
+            } 
         }
         //</editor-fold>
         
@@ -307,6 +322,15 @@ public class submodulografico extends javax.swing.JPanel
                 jComboBoxPeriodoSimbolo.addItem("Daily");
                 jComboBoxPeriodoSimbolo.addItem("Weekly");
                 jComboBoxPeriodoSimbolo.addItem("Monthly");
+            }
+            else if (((textoatualsimbolo.split(":")[0]).toLowerCase()).equals("crycom"))
+            {                
+                jComboBoxPeriodoSimbolo.addItem("Minute (200)");
+                jComboBoxPeriodoSimbolo.addItem("Minute (1500)");
+                jComboBoxPeriodoSimbolo.addItem("Hourly (200)");
+                jComboBoxPeriodoSimbolo.addItem("Hourly (1500)");
+                jComboBoxPeriodoSimbolo.addItem("Daily (200)");
+                jComboBoxPeriodoSimbolo.addItem("Daily (1500)");
             }
             else
             {

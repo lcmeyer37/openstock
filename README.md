@@ -19,13 +19,14 @@ Open Stock is a project [licensed under GNU GPLv3](https://github.com/lcmeyer37/
 - [x] Export .csv files for spreadsheets tracking
 - [x] OHLC and Separate Indicator charts
 - [x] Offline Trading
-- [ ] Real-time cryptocurrency and other assets data
+- [x] Real-time cryptocurrency and other assets data
 
 This project has a similar counterpart made in C# .NET. Connected to the HitBTC Exchange, this other project presents Tickers, Orderbooks, Buy and Sell panels, simulation panels for Offline training trading and also a section to work with multiple trader bots configuring specific TA events and rules. The idea is also to use this project as reference to add new features. And this project also invites anyone interested to contribute with it.
 
 Data provided for free by:
 * [IEX](https://iextrading.com/api-exhibit-a/)
 * [Alpha Vantage](https://www.alphavantage.co/terms_of_service/)
+* [CryptoCompare](https://www.cryptocompare.com/api-licence-agreement/)
 
 ## Usage
 To use the software you can download the [Current Release ZIP file](https://github.com/lcmeyer37/openstock/releases) or the latest contents of https://github.com/lcmeyer37/openstock/tree/master/dist and run the .jar file.

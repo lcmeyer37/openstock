@@ -97,7 +97,7 @@
                       <Component id="jButtonOpenBearcodeIndicatorEditor" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jButtonOpenBearcodeBotEditor" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="151" max="32767" attributes="0"/>
+                      <EmptySpace pref="193" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -166,9 +166,14 @@
                               <Component id="jButtonIEX" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <Component id="jLabelAPIAttributionAV" max="32767" attributes="0"/>
+                              <Component id="jLabelAPIAttributionAV" pref="316" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jButtonAV" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabelAPIAttributionCC" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jButtonCC" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -201,6 +206,11 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabelAPIAttributionAV" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButtonAV" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabelAPIAttributionCC" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonCC" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -242,7 +252,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Version: 1.031"/>
+                <Property name="text" type="java.lang.String" value="Version: 1.032"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelAPIAttribution">
@@ -299,6 +309,22 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonGithubActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabelAPIAttributionCC">
+              <Properties>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Data provided for free by CryptoCompare."/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButtonCC">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="CryptoCompare&apos;s License Agreement"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCCActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

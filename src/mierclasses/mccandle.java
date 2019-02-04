@@ -26,6 +26,7 @@ public class mccandle
     public double volumed;
     public java.util.Date timestampdate;
     
+    //construtor com timestamp em string
     public mccandle(String tsstr, String ostr, String hstr, String cstr, String lstr, String vstr)
     {
         timestampstr = tsstr;
@@ -49,8 +50,7 @@ public class mccandle
     java.util.Date interpretartimestamp(String timestampstr)
     {
         java.util.Date timestampretornar;
-        
-        //parser caso 2018-12-21 16:00:00
+
         Integer ano = 1900;
         Integer mes = 1;
         Integer dia = 0;

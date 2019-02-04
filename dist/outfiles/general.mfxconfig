@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
 <OpenstockConfiguration>
-	<AVKEY>INSIRAAQUIUMACHAVEALPHAVANTAGE</AVKEY>
+	<AVKEY>AVKEYMISSING</AVKEY>
+	<CCKEY>CCKEYMISSING</CCKEY>
 </OpenstockConfiguration>
