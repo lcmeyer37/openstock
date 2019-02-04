@@ -215,7 +215,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
             }
             else
             {
-                mierclasses.mcfuncoeshelper.mostrarmensagem(resposta);
+                if (mostrarmensagem == true)
+                    mierclasses.mcfuncoeshelper.mostrarmensagem(resposta);
             }
         }
         catch (Exception ex)
@@ -255,7 +256,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
             }
             else
             {
-                mierclasses.mcfuncoeshelper.mostrarmensagem(resposta);
+                if (mostrarmensagem == true)
+                    mierclasses.mcfuncoeshelper.mostrarmensagem(resposta);
             }
         }
         catch (Exception ex)
@@ -281,7 +283,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
             }
             else
             {
-                mierclasses.mcfuncoeshelper.mostrarmensagem(resposta);
+                if (mostrarmensagem == true)
+                    mierclasses.mcfuncoeshelper.mostrarmensagem(resposta);
             }
         }
         catch (Exception ex)
@@ -307,7 +310,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
             }
             else
             {
-                mierclasses.mcfuncoeshelper.mostrarmensagem(resposta);
+                if (mostrarmensagem == true)
+                    mierclasses.mcfuncoeshelper.mostrarmensagem(resposta);
             }
         }
         catch (Exception ex)
