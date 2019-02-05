@@ -1230,7 +1230,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
 
     private void jButtonVenderManualActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonVenderManualActionPerformed
     {//GEN-HEADEREND:event_jButtonVenderManualActionPerformed
-        realizarcompra(Double.valueOf(jTextFieldVenderQuantidade.getText()),true);
+        realizarvenda(Double.valueOf(jTextFieldVenderQuantidade.getText()),true);
     }//GEN-LAST:event_jButtonVenderManualActionPerformed
 
     private void jTextFieldParametrosTraderbotCaretUpdate(javax.swing.event.CaretEvent evt)//GEN-FIRST:event_jTextFieldParametrosTraderbotCaretUpdate
