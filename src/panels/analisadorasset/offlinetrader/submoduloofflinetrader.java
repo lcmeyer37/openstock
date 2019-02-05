@@ -490,6 +490,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
     }
     
     java.util.List<mierclasses.mccandle> candlesrunanterior;
+    String traderbot_moveanterior = ""; //variavel que segura o ultimo move do trader bot
     void rodartraderbot()
     {
         //o trader bot soh roda quando esta ativado E quando percebe
@@ -518,7 +519,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
 
                 String traderbot_move = (String)mcbctradingbot.respostatradermove_lastrun; 
                 double traderbot_supportamount = ((double[]) mcbctradingbot.respostaquantidadesuporte_lastrun)[0];
-
+                
                 if (traderbot_move.equals("hold"))
                 {
                     //significa que nada deve ser feito
@@ -548,6 +549,16 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                     realizarvenda(traderbot_supportamount,false); 
                     jLabelTraderbot.setText("Trader Bot Controller (last decision: SELL AMOUNT)");
                 }
+                
+                //verificar envio de comunicacao via telegram
+                //uma mensagem sera enviada via telegram caso a nova move seja diferente da move anterior
+                if ((traderbot_moveanterior.equals(traderbot_move) == false) && (aassetpai.iaassetpai.tprincipalpai.mstelegramcomms.ativo == true))
+                {
+                    String mensagemenviar = aassetpai.iaassetpai.jLabelNomeAnalisadorAsset.getText() + " (" + aassetpai.assetsimbolo + "): " + traderbot_move + " [" + traderbot_supportamount + "]";
+                    aassetpai.iaassetpai.tprincipalpai.mstelegramcomms.enviarmensagemtelegramcombot(mensagemenviar);
+                }
+                traderbot_moveanterior = traderbot_move;
+                
             }
             
         }

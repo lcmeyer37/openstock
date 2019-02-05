@@ -25,8 +25,38 @@ public static main.TelaPrincipal telappai;
         
         telappai = tppai;
 
+        inicializar();
     }
    
+    void inicializar()
+    {
+        boolean telegramstatus = telappai.mstelegramcomms.ativo;
+        
+        if (telegramstatus == true)
+        {
+            jLabelTelegramCommsStatus.setText("Telegram Bots Communication: activated");
+            jButtonTestarTelegramComms.setEnabled(true);
+        }
+        else if (telegramstatus == false)
+        {
+            jLabelTelegramCommsStatus.setText("Telegram Bots Communication: deactivated");
+            jButtonTestarTelegramComms.setEnabled(false);
+        }
+
+    }
+    
+    void enviarmensagemtestetelegram()
+    {
+        try
+        {
+            telappai.mstelegramcomms.enviarmensagemtelegramcombot("Test message from Open Stock at " + new java.util.Date(System.currentTimeMillis()));
+            mierclasses.mcfuncoeshelper.mostrarmensagem("Test message sent!");
+        }
+        catch (Exception e)
+        {
+            mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred when trying to send a test Telegram Bot API message." + e.getMessage());
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -43,6 +73,11 @@ public static main.TelaPrincipal telappai;
         jPanelMore = new javax.swing.JPanel();
         jButtonOpenBearcodeIndicatorEditor = new javax.swing.JButton();
         jButtonOpenBearcodeBotEditor = new javax.swing.JButton();
+        jPanelOutrasInformacoes = new javax.swing.JPanel();
+        jPanelOIHeader = new javax.swing.JPanel();
+        jLabelOITitle = new javax.swing.JLabel();
+        jLabelTelegramCommsStatus = new javax.swing.JLabel();
+        jButtonTestarTelegramComms = new javax.swing.JButton();
         jPanelAbout = new javax.swing.JPanel();
         jLabelOpenStock = new javax.swing.JLabel();
         jLabelLastBuild = new javax.swing.JLabel();
@@ -57,6 +92,8 @@ public static main.TelaPrincipal telappai;
         jButtonGithub = new javax.swing.JButton();
         jLabelAPIAttributionCC = new javax.swing.JLabel();
         jButtonCC = new javax.swing.JButton();
+        jLabelAPITelegram = new javax.swing.JLabel();
+        jButtonTelegram = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -92,6 +129,71 @@ public static main.TelaPrincipal telappai;
             }
         });
 
+        jPanelOutrasInformacoes.setBackground(new java.awt.Color(35, 35, 35));
+
+        jPanelOIHeader.setBackground(new java.awt.Color(55, 55, 55));
+
+        jLabelOITitle.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabelOITitle.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelOITitle.setText("Other Information");
+        jLabelOITitle.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        javax.swing.GroupLayout jPanelOIHeaderLayout = new javax.swing.GroupLayout(jPanelOIHeader);
+        jPanelOIHeader.setLayout(jPanelOIHeaderLayout);
+        jPanelOIHeaderLayout.setHorizontalGroup(
+            jPanelOIHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelOIHeaderLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelOITitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanelOIHeaderLayout.setVerticalGroup(
+            jPanelOIHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelOIHeaderLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelOITitle, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jLabelTelegramCommsStatus.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelTelegramCommsStatus.setText("Telegram Bots Communication: deactivated");
+
+        jButtonTestarTelegramComms.setText("Send Test Message");
+        jButtonTestarTelegramComms.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonTestarTelegramCommsActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelOutrasInformacoesLayout = new javax.swing.GroupLayout(jPanelOutrasInformacoes);
+        jPanelOutrasInformacoes.setLayout(jPanelOutrasInformacoesLayout);
+        jPanelOutrasInformacoesLayout.setHorizontalGroup(
+            jPanelOutrasInformacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelOutrasInformacoesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelOutrasInformacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelOIHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelOutrasInformacoesLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabelTelegramCommsStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonTestarTelegramComms)))
+                .addContainerGap())
+        );
+        jPanelOutrasInformacoesLayout.setVerticalGroup(
+            jPanelOutrasInformacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelOutrasInformacoesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelOIHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelOutrasInformacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelTelegramCommsStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonTestarTelegramComms))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanelMoreLayout = new javax.swing.GroupLayout(jPanelMore);
         jPanelMore.setLayout(jPanelMoreLayout);
         jPanelMoreLayout.setHorizontalGroup(
@@ -99,8 +201,9 @@ public static main.TelaPrincipal telappai;
             .addGroup(jPanelMoreLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelMoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonOpenBearcodeIndicatorEditor, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE)
-                    .addComponent(jButtonOpenBearcodeBotEditor, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE))
+                    .addComponent(jButtonOpenBearcodeIndicatorEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelOutrasInformacoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonOpenBearcodeBotEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanelMoreLayout.setVerticalGroup(
@@ -110,7 +213,9 @@ public static main.TelaPrincipal telappai;
                 .addComponent(jButtonOpenBearcodeIndicatorEditor)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonOpenBearcodeBotEditor)
-                .addContainerGap(193, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
+                .addComponent(jPanelOutrasInformacoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("More", jPanelMore);
@@ -127,7 +232,7 @@ public static main.TelaPrincipal telappai;
         jLabelBear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/bear70.png"))); // NOI18N
 
         jLabelVersion.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelVersion.setText("Version: 1.032");
+        jLabelVersion.setText("Version: 1.033");
 
         jLabelAPIAttribution.setForeground(new java.awt.Color(255, 255, 255));
         jLabelAPIAttribution.setText("API Attributions:");
@@ -186,6 +291,18 @@ public static main.TelaPrincipal telappai;
             }
         });
 
+        jLabelAPITelegram.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelAPITelegram.setText("Notifications provided by Telegram API.");
+
+        jButtonTelegram.setText("Telegram API's Terms of Service");
+        jButtonTelegram.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonTelegramActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelAboutLayout = new javax.swing.GroupLayout(jPanelAbout);
         jPanelAbout.setLayout(jPanelAboutLayout);
         jPanelAboutLayout.setHorizontalGroup(
@@ -213,13 +330,17 @@ public static main.TelaPrincipal telappai;
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonIEX))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAboutLayout.createSequentialGroup()
-                        .addComponent(jLabelAPIAttributionAV, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
+                        .addComponent(jLabelAPIAttributionAV, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonAV))
                     .addGroup(jPanelAboutLayout.createSequentialGroup()
                         .addComponent(jLabelAPIAttributionCC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonCC)))
+                        .addComponent(jButtonCC))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAboutLayout.createSequentialGroup()
+                        .addComponent(jLabelAPITelegram, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonTelegram)))
                 .addContainerGap())
         );
         jPanelAboutLayout.setVerticalGroup(
@@ -248,6 +369,10 @@ public static main.TelaPrincipal telappai;
                 .addGroup(jPanelAboutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelAPIAttributionCC)
                     .addComponent(jButtonCC))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelAboutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelAPITelegram)
+                    .addComponent(jButtonTelegram))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanelAboutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonGithub)
@@ -341,6 +466,23 @@ public static main.TelaPrincipal telappai;
         }
     }//GEN-LAST:event_jButtonCCActionPerformed
 
+    private void jButtonTelegramActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonTelegramActionPerformed
+    {//GEN-HEADEREND:event_jButtonTelegramActionPerformed
+        try
+        {
+            java.awt.Desktop.getDesktop().browse(new java.net.URI("https://core.telegram.org/api/terms"));
+        }
+        catch (Exception ex)
+        {
+            mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred. Exception: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_jButtonTelegramActionPerformed
+
+    private void jButtonTestarTelegramCommsActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonTestarTelegramCommsActionPerformed
+    {//GEN-HEADEREND:event_jButtonTestarTelegramCommsActionPerformed
+        enviarmensagemtestetelegram();
+    }//GEN-LAST:event_jButtonTestarTelegramCommsActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -401,17 +543,24 @@ public static main.TelaPrincipal telappai;
     private javax.swing.JButton jButtonLicense;
     private javax.swing.JButton jButtonOpenBearcodeBotEditor;
     private javax.swing.JButton jButtonOpenBearcodeIndicatorEditor;
+    private javax.swing.JButton jButtonTelegram;
+    private javax.swing.JButton jButtonTestarTelegramComms;
     private javax.swing.JLabel jLabelAPIAttribution;
     private javax.swing.JLabel jLabelAPIAttributionAV;
     private javax.swing.JLabel jLabelAPIAttributionCC;
     private javax.swing.JLabel jLabelAPIAttributionIEX;
+    private javax.swing.JLabel jLabelAPITelegram;
     private javax.swing.JLabel jLabelBear;
     private javax.swing.JLabel jLabelLastBuild;
+    private javax.swing.JLabel jLabelOITitle;
     private javax.swing.JLabel jLabelOpenStock;
+    private javax.swing.JLabel jLabelTelegramCommsStatus;
     private javax.swing.JLabel jLabelVersion;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanelAbout;
     private javax.swing.JPanel jPanelMore;
+    private javax.swing.JPanel jPanelOIHeader;
+    private javax.swing.JPanel jPanelOutrasInformacoes;
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
 }

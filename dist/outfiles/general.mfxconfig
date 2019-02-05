@@ -2,4 +2,9 @@
 <OpenstockConfiguration>
 	<AVKEY>AVKEYMISSING</AVKEY>
 	<CCKEY>CCKEYMISSING</CCKEY>
+	<TelegramComms>
+		<TelegramActivate>true</TelegramActivate>
+		<TelegramBotToken>774871113:AAE_sn9w1esZHvPsuUTj1X279uJwqvTW6UI</TelegramBotToken>
+		<TelegramUserID>734244252</TelegramUserID>
+	</TelegramComms>
 </OpenstockConfiguration>

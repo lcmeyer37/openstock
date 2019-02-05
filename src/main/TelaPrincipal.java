@@ -19,12 +19,11 @@ import org.w3c.dom.NodeList;
  */
 public class TelaPrincipal extends javax.swing.JFrame 
 {
-
-    //novo layout do mierstockfx
-    //ele cria varios graficos, e todos tem a sua propria instancia de grafico com anotacoes, indicadores, e pode ser salvo ou carregado
+    //classe utilizada para comunicacao com diferentes Stocks APIs
+    public mierclasses.mcstocksapicomms msapicomms; 
+    //classe utilizada para comunicacao com Bot do Telegram
+    public mierclasses.mctelegramcomms mstelegramcomms;
     
-    //public mierclasses.mcavcomms mav; //classe utilizada para comunicacao com alpha vantage
-    public mierclasses.mcstocksapicomms msapicomms; //classe utilizada para comunicacao com IEX API
     
     /**
      * Creates new form TelaPrincipal
@@ -47,20 +46,25 @@ public class TelaPrincipal extends javax.swing.JFrame
         jPanelHolderAnalisadorAsset.setLayout(new java.awt.GridLayout(1,1));
 
         //popular msapicomms, utilizando para comunicar com diferentes APIs de stock
-        popularstocksapi();
+        popularapis();
         
         //revalidar componentes apos alteracoes graficas e criacoes
         this.validate();
         this.repaint();
     }
     
-    void popularstocksapi()
+    void popularapis()
     {
-        //funcao para popular stocks api, que permite comunicacao do programa com diferentes APIs
+        //funcao para popular api utilizadas pelo programa
+        //iex
+        //alpha vantage
+        //crypto compare
+        //telegram api
         msapicomms = new mierclasses.mcstocksapicomms();
+        mstelegramcomms = new mierclasses.mctelegramcomms();
         
-        // <editor-fold defaultstate="collapsed" desc="carregar general.mfxconfig para associar chaves">
-         try
+        // <editor-fold defaultstate="collapsed" desc="carregar general.mfxconfig para associar chaves de Stocks APIs e do Telegram">
+        try
         {
             String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
             String cindicconfig = rootjar + "/outfiles/general.mfxconfig";
@@ -93,12 +97,33 @@ public class TelaPrincipal extends javax.swing.JFrame
                 mierclasses.mcfuncoeshelper.mostrarmensagem("CryptoCompare API key missing. Please aqcuire one for use at https://www.cryptocompare.com/.");
             }
 
+            try
+            {
+                String telegramativar = document.getElementsByTagName("TelegramActivate").item(0).getTextContent();
+                String telegrambottoken = document.getElementsByTagName("TelegramBotToken").item(0).getTextContent();
+                String telegramuserid = document.getElementsByTagName("TelegramUserID").item(0).getTextContent();
+                mstelegramcomms.setarboteusuario(telegrambottoken, telegramuserid);
+                
+                if (telegramativar.equals("true") == true)
+                {
+                    mstelegramcomms.ativo = true;
+                }
+                else
+                {
+                    mstelegramcomms.ativo = false;
+                }
+            }
+            catch (Exception e) 
+            {
+                mierclasses.mcfuncoeshelper.mostrarmensagem("Telegram parameters missing. Please find the relevant information from https://telegram.org/.");
+            }
         }
         catch (Exception e) 
         {
             mierclasses.mcfuncoeshelper.mostrarmensagem("Uma exceção ocorreu: " + e.toString());
         }
         //</editor-fold>
+    
     }
     
     
