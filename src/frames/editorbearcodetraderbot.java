@@ -56,16 +56,6 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         
         candlessample = tppai.msapicomms.receberstockchartsample();
         
-        quantidadebasesample = 50;
-        quantidadequotesample = 1000;
-        
-        java.util.List<Double> bidask = tppai.msapicomms.receberlastbidaskofflinetradingsample();
-        bidsample = bidask.get(0);
-        asksample = bidask.get(1);
-        
-        feecomprasample = 0.001;
-        feevendasample = 0.001;
-        
         mcjtah = new mierclasses.mcjtextareahandler(jTextAreaOutput);
         
         resetarscripteditor();
@@ -145,6 +135,14 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
     void reconfigurarbearcodeinterpretererodar()
     {
         jTextAreaOutput.setText("");
+        
+        java.util.List<Double> bidask = telappai.msapicomms.receberlastbidaskofflinetradingsample();
+        bidsample = bidask.get(0);
+        asksample = bidask.get(1);
+        quantidadebasesample = Double.valueOf(jTextFieldBaseAmount.getText());
+        quantidadequotesample = Double.valueOf(jTextFieldQuoteAmount.getText());
+        feecomprasample = Double.valueOf(jTextFieldBuyFee.getText());
+        feevendasample = Double.valueOf(jTextFieldSellFee.getText());
         
         //funcao para repopular 
         //mbcodeinterpreter = new mierclasses.mcbcindicatorinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode,this);
@@ -259,8 +257,17 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         jLabelCurrentFile = new javax.swing.JLabel();
         jButtonResetEditor = new javax.swing.JButton();
         jLabelCaretPosition = new javax.swing.JLabel();
-        jLabelTestParameters = new javax.swing.JLabel();
+        jLabelBuyFee = new javax.swing.JLabel();
+        jTextFieldBuyFee = new javax.swing.JTextField();
+        jLabelParameters = new javax.swing.JLabel();
         jTextFieldParameters = new javax.swing.JTextField();
+        jLabelSellFee = new javax.swing.JLabel();
+        jTextFieldSellFee = new javax.swing.JTextField();
+        jLabelTestParameters3 = new javax.swing.JLabel();
+        jTextFieldBaseAmount = new javax.swing.JTextField();
+        jLabelBaseAmount = new javax.swing.JLabel();
+        jLabelQuoteAmount = new javax.swing.JLabel();
+        jTextFieldQuoteAmount = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Bearcode Trader Bot Editor");
@@ -339,12 +346,53 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         jLabelCaretPosition.setForeground(new java.awt.Color(255, 255, 255));
         jLabelCaretPosition.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
 
-        jLabelTestParameters.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelTestParameters.setText("Test Parameters:");
+        jLabelBuyFee.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelBuyFee.setText("Buy Fee:");
+
+        jTextFieldBuyFee.setBackground(new java.awt.Color(0, 0, 0));
+        jTextFieldBuyFee.setForeground(new java.awt.Color(255, 255, 255));
+        jTextFieldBuyFee.setText("0.001");
+        jTextFieldBuyFee.setCaretColor(new java.awt.Color(125, 125, 125));
+        jTextFieldBuyFee.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jTextFieldBuyFeeActionPerformed(evt);
+            }
+        });
+
+        jLabelParameters.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelParameters.setText("Test Parameters:");
 
         jTextFieldParameters.setBackground(new java.awt.Color(0, 0, 0));
         jTextFieldParameters.setForeground(new java.awt.Color(255, 255, 255));
         jTextFieldParameters.setCaretColor(new java.awt.Color(125, 125, 125));
+
+        jLabelSellFee.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelSellFee.setText("Sell Fee:");
+
+        jTextFieldSellFee.setBackground(new java.awt.Color(0, 0, 0));
+        jTextFieldSellFee.setForeground(new java.awt.Color(255, 255, 255));
+        jTextFieldSellFee.setText("0.001");
+        jTextFieldSellFee.setCaretColor(new java.awt.Color(125, 125, 125));
+
+        jLabelTestParameters3.setForeground(new java.awt.Color(255, 255, 255));
+
+        jTextFieldBaseAmount.setBackground(new java.awt.Color(0, 0, 0));
+        jTextFieldBaseAmount.setForeground(new java.awt.Color(255, 255, 255));
+        jTextFieldBaseAmount.setText("1000");
+        jTextFieldBaseAmount.setCaretColor(new java.awt.Color(125, 125, 125));
+
+        jLabelBaseAmount.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelBaseAmount.setText("Current Base Amount:");
+
+        jLabelQuoteAmount.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelQuoteAmount.setText("Current Quote Amount:");
+
+        jTextFieldQuoteAmount.setBackground(new java.awt.Color(0, 0, 0));
+        jTextFieldQuoteAmount.setForeground(new java.awt.Color(255, 255, 255));
+        jTextFieldQuoteAmount.setText("15550");
+        jTextFieldQuoteAmount.setCaretColor(new java.awt.Color(125, 125, 125));
 
         javax.swing.GroupLayout jPanelPaiLayout = new javax.swing.GroupLayout(jPanelPai);
         jPanelPai.setLayout(jPanelPaiLayout);
@@ -353,12 +401,11 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
             .addGroup(jPanelPaiLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane2)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
                         .addComponent(jButtonResetEditor)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelCurrentFile, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+                        .addComponent(jLabelCurrentFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButtonLoadFile)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -370,12 +417,34 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                     .addGroup(jPanelPaiLayout.createSequentialGroup()
                         .addComponent(jLabelOutput)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanelPaiLayout.createSequentialGroup()
-                        .addComponent(jLabelTestParameters)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldParameters)
+                        .addComponent(jLabelTestParameters3))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
+                        .addComponent(jLabelParameters)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonTestRun, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jTextFieldParameters))
+                    .addGroup(jPanelPaiLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 231, Short.MAX_VALUE)
+                        .addComponent(jLabelBuyFee)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextFieldBuyFee, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelSellFee)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextFieldSellFee, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelBaseAmount)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextFieldBaseAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelQuoteAmount)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextFieldQuoteAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonTestRun, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanelPaiLayout.setVerticalGroup(
@@ -385,14 +454,31 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                 .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelScript)
                     .addComponent(jLabelCaretPosition))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelPaiLayout.createSequentialGroup()
+                        .addGap(416, 416, 416)
+                        .addComponent(jLabelTestParameters3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanelPaiLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonTestRun)
-                    .addComponent(jLabelTestParameters)
+                    .addComponent(jLabelParameters)
                     .addComponent(jTextFieldParameters, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
+                .addGap(8, 8, 8)
+                .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelBuyFee)
+                    .addComponent(jLabelSellFee)
+                    .addComponent(jTextFieldSellFee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldBuyFee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldBaseAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelBaseAmount)
+                    .addComponent(jTextFieldQuoteAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelQuoteAmount))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonTestRun)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelOutput)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -438,6 +524,11 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
     private void jButtonTestRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTestRunActionPerformed
         reconfigurarbearcodeinterpretererodar();
     }//GEN-LAST:event_jButtonTestRunActionPerformed
+
+    private void jTextFieldBuyFeeActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jTextFieldBuyFeeActionPerformed
+    {//GEN-HEADEREND:event_jTextFieldBuyFeeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldBuyFeeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -486,16 +577,25 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
     private javax.swing.JButton jButtonResetEditor;
     private javax.swing.JButton jButtonSaveFile;
     private javax.swing.JButton jButtonTestRun;
+    private javax.swing.JLabel jLabelBaseAmount;
+    private javax.swing.JLabel jLabelBuyFee;
     private javax.swing.JLabel jLabelCaretPosition;
     private javax.swing.JLabel jLabelCurrentFile;
     private javax.swing.JLabel jLabelOutput;
+    private javax.swing.JLabel jLabelParameters;
+    private javax.swing.JLabel jLabelQuoteAmount;
     private javax.swing.JLabel jLabelScript;
-    private javax.swing.JLabel jLabelTestParameters;
+    private javax.swing.JLabel jLabelSellFee;
+    private javax.swing.JLabel jLabelTestParameters3;
     private javax.swing.JPanel jPanelPai;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextAreaOutput;
     private javax.swing.JTextArea jTextAreaScript;
+    private javax.swing.JTextField jTextFieldBaseAmount;
+    private javax.swing.JTextField jTextFieldBuyFee;
     private javax.swing.JTextField jTextFieldParameters;
+    private javax.swing.JTextField jTextFieldQuoteAmount;
+    private javax.swing.JTextField jTextFieldSellFee;
     // End of variables declaration//GEN-END:variables
 }
