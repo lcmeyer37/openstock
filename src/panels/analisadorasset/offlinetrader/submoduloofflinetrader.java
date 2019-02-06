@@ -63,6 +63,9 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         //set jPanel de transacoes
         jPanelLinhasTransacoes.setLayout(new java.awt.GridLayout(500,1));
         
+        //ativar ou desativar checkbox do telegram se a funcionalidade estiver disponivel ou nao
+        jCheckBoxSendTelegram.setEnabled(aassetpai.iaassetpai.tprincipalpai.mstelegramcomms.ativo);
+
         //associar o simbolo utilizado pelo trader
         otrader.recriarofflinetrader(aassetpai.assetsimbolo);
         
@@ -528,33 +531,45 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                 else if (traderbot_move.equals("buyall"))
                 {
                     //quer dizer que o bot deve comprar o maximo de moeda base que puder
-                    realizarcompratudo(false);
+                    if(jCheckBoxAutoTrade.isSelected() == true)
+                        realizarcompratudo(false);
+                    
                     jLabelTraderbot.setText("Trader Bot Controller (last decision: BUY ALL)");
                 }
                 else if (traderbot_move.equals("sellall"))
                 {
                     //quer dizer que o bot deve vender o maximo de moeda base que puder
-                    realizarvendatudo(false);
+                    if(jCheckBoxAutoTrade.isSelected() == true)
+                        realizarvendatudo(false);
+                    
                     jLabelTraderbot.setText("Trader Bot Controller (last decision: SELL ALL)");
                 }
                 else if (traderbot_move.equals("buyamount"))
                 {
                     //significa que o bot deve comprar uma quantidade especifica de moeda base
-                    realizarcompra(traderbot_supportamount,false);   
+                    if(jCheckBoxAutoTrade.isSelected() == true)
+                        realizarcompra(traderbot_supportamount,false);   
+                    
                     jLabelTraderbot.setText("Trader Bot Controller (last decision: BUY AMOUNT)");
                 }
                 else if (traderbot_move.equals("sellamount"))
                 {
                     //significa que o bot deve comprar uma quantidade especifica de moeda base
-                    realizarvenda(traderbot_supportamount,false); 
+                    if(jCheckBoxAutoTrade.isSelected() == true)
+                        realizarvenda(traderbot_supportamount,false); 
+                    
                     jLabelTraderbot.setText("Trader Bot Controller (last decision: SELL AMOUNT)");
                 }
                 
                 //verificar envio de comunicacao via telegram
                 //uma mensagem sera enviada via telegram caso a nova move seja diferente da move anterior
-                if ((traderbot_moveanterior.equals(traderbot_move) == false) && (aassetpai.iaassetpai.tprincipalpai.mstelegramcomms.ativo == true))
+                if ((traderbot_moveanterior.equals(traderbot_move) == false) && (jCheckBoxSendTelegram.isSelected() == true))
                 {
-                    String mensagemenviar = aassetpai.iaassetpai.jLabelNomeAnalisadorAsset.getText() + " (" + aassetpai.assetsimbolo + "): " + traderbot_move + " [" + traderbot_supportamount + "]";
+                    String mensagemenviar = 
+                            aassetpai.iaassetpai.jLabelNomeAnalisadorAsset.getText() + " (" + aassetpai.assetsimbolo + "): " + "[" + traderbot_move.toUpperCase() + " " + traderbot_supportamount + "]" +
+                            " Current Base: " + String.valueOf(otrader.quantidademoedabase) + 
+                            " Current Quote: " + String.valueOf(otrader.quantidademoedacotacao) + " Total: " + String.valueOf(otrader.totalfundos_moedacotacao());
+                            
                     aassetpai.iaassetpai.tprincipalpai.mstelegramcomms.enviarmensagemtelegramcombot(mensagemenviar);
                 }
                 traderbot_moveanterior = traderbot_move;
@@ -629,6 +644,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jLabelStatusTrader = new javax.swing.JLabel();
         jLabelScriptAtualTraderbot1 = new javax.swing.JLabel();
         jTextFieldParametrosTraderbot = new javax.swing.JTextField();
+        jCheckBoxSendTelegram = new javax.swing.JCheckBox();
+        jCheckBoxAutoTrade = new javax.swing.JCheckBox();
 
         setBackground(new java.awt.Color(55, 55, 55));
 
@@ -1041,7 +1058,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jPanelSubTransacoes.setLayout(jPanelSubTransacoesLayout);
         jPanelSubTransacoesLayout.setHorizontalGroup(
             jPanelSubTransacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabelTransacoes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 964, Short.MAX_VALUE)
+            .addComponent(jLabelTransacoes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 948, Short.MAX_VALUE)
         );
         jPanelSubTransacoesLayout.setVerticalGroup(
             jPanelSubTransacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1082,7 +1099,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelHeaderTransacoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneLinhasTransacoes, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
+                .addComponent(jScrollPaneLinhasTransacoes, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1140,24 +1157,40 @@ public class submoduloofflinetrader extends javax.swing.JPanel
             }
         });
 
+        jCheckBoxSendTelegram.setBackground(new java.awt.Color(120, 120, 120));
+        jCheckBoxSendTelegram.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBoxSendTelegram.setText("Send Telegram");
+
+        jCheckBoxAutoTrade.setBackground(new java.awt.Color(120, 120, 120));
+        jCheckBoxAutoTrade.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBoxAutoTrade.setSelected(true);
+        jCheckBoxAutoTrade.setText("Auto Trade");
+
         javax.swing.GroupLayout jPanelTraderbotLayout = new javax.swing.GroupLayout(jPanelTraderbot);
         jPanelTraderbot.setLayout(jPanelTraderbotLayout);
         jPanelTraderbotLayout.setHorizontalGroup(
             jPanelTraderbotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanelSubTraderbot, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanelTraderbotLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTraderbotLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelScriptAtualTraderbot)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBoxScriptAtualTraderbot, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelScriptAtualTraderbot1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextFieldParametrosTraderbot)
-                .addGap(18, 18, 18)
-                .addComponent(jLabelStatusTrader)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonAtivarDesativarTrader)
+                .addGroup(jPanelTraderbotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelTraderbotLayout.createSequentialGroup()
+                        .addComponent(jLabelScriptAtualTraderbot)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBoxScriptAtualTraderbot, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelScriptAtualTraderbot1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldParametrosTraderbot, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabelStatusTrader)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonAtivarDesativarTrader))
+                    .addGroup(jPanelTraderbotLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jCheckBoxSendTelegram)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jCheckBoxAutoTrade)))
                 .addContainerGap())
         );
         jPanelTraderbotLayout.setVerticalGroup(
@@ -1172,7 +1205,11 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                     .addComponent(jLabelStatusTrader)
                     .addComponent(jLabelScriptAtualTraderbot1)
                     .addComponent(jTextFieldParametrosTraderbot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addGroup(jPanelTraderbotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBoxSendTelegram)
+                    .addComponent(jCheckBoxAutoTrade))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -1272,6 +1309,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
     private javax.swing.JButton jButtonComprarManualTudo;
     private javax.swing.JButton jButtonVenderManual;
     private javax.swing.JButton jButtonVenderManualTudo;
+    private javax.swing.JCheckBox jCheckBoxAutoTrade;
+    private javax.swing.JCheckBox jCheckBoxSendTelegram;
     private javax.swing.JComboBox<String> jComboBoxScriptAtualTraderbot;
     private javax.swing.JLabel jLabelComprar;
     private javax.swing.JLabel jLabelComprarQuantidade;
