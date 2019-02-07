@@ -52,16 +52,25 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         initComponents();
         
         telappai = tppai;
-        mcbctraderbot = new mierclasses.mcbctradingbotinterpreter("testbctraderbot", "Teste Trader Bot", "", "");
-        
-        candlessample = tppai.msapicomms.receberstockchartsample();
-        
-        mcjtah = new mierclasses.mcjtextareahandler(jTextAreaOutput);
-        
-        resetarscripteditor();
+
+        inicializar();
     }
     
-    void resetarscripteditor()
+    void inicializar()
+    {
+        //popular traderbot interpretador de script
+        mcbctraderbot = new mierclasses.mcbctradingbotinterpreter("testbctraderbot", "Teste Trader Bot", "", "");
+        //adicionar handler para print de output pelo script
+        mcjtah = new mierclasses.mcjtextareahandler(jTextAreaOutput);
+        
+        //receber as candles de teste
+        candlessample = telappai.msapicomms.receberstockchartsample();
+        
+        //resetar campos de edicao do editor com informacoes padrao
+        resetarcamposeditor();
+    }
+    
+    void resetarcamposeditor()
     {
         //funcao para resetar script editor
         String scriptdefault = "//bearcode trader bot sample\n" +
@@ -107,6 +116,15 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         jTextAreaScript.setCaretPosition(0);
         jTextAreaOutput.setText("");
         jTextAreaOutput.setCaretPosition(0);
+        
+        jTextFieldParameters.setText("");
+        jTextFieldBuyFee.setText("0.001");
+        jTextFieldSellFee.setText("0.001");
+        jTextFieldBaseAmount.setText("1000");
+        jTextFieldQuoteAmount.setText("15550");
+        jTextFieldSimulationInterval.setText("once/all");
+        jLabelCandlesDataSize.setText("Candles Data Size: " + candlessample.size());
+        
         jLabelCurrentFile.setText("Current File: (new)");
     }
     
@@ -132,43 +150,292 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         }
     }
     
-    void reconfigurarbearcodeinterpretererodar()
+
+    void rodarsimulacao()
     {
+        //esta funcao pega as informacoes inputadas pelo usuario, e roda de acordo com o intervalo de simulacao
+        //once|all -> rodar o script uma unica vez com todas as candles
+        //multiple|5-7 -> rodar o script 3 vezes, utilizando desde um subset das candles[0-5] ate candles[0-7]
+        
         jTextAreaOutput.setText("");
+        String tiposimulacao = jTextFieldSimulationInterval.getText();
         
-        java.util.List<Double> bidask = telappai.msapicomms.receberlastbidaskofflinetradingsample();
-        bidsample = bidask.get(0);
-        asksample = bidask.get(1);
-        quantidadebasesample = Double.valueOf(jTextFieldBaseAmount.getText());
-        quantidadequotesample = Double.valueOf(jTextFieldQuoteAmount.getText());
-        feecomprasample = Double.valueOf(jTextFieldBuyFee.getText());
-        feevendasample = Double.valueOf(jTextFieldSellFee.getText());
-        
-        //funcao para repopular 
-        //mbcodeinterpreter = new mierclasses.mcbcindicatorinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode,this);
-        mcbctraderbot.atualizarscriptparametros(jTextAreaScript.getText(), jTextFieldParameters.getText());
-        //String result = mcbctraderbot.rodarscript(candlessample,true,mcjtah);
-        String result = mcbctraderbot.rodarscript
-        (
-                candlessample,
-                quantidadebasesample, 
-                quantidadequotesample, 
-                bidsample,
-                asksample,
-                feecomprasample,
-                feevendasample,
-                true,
-                mcjtah
-        );
-        
-        if (result.equals("ok"))
+        if (tiposimulacao.equals("once/all"))
         {
-            mcjtah.print("\n======\nOK");
+            jTextAreaOutput.setText("Simulation ONCE/ALL");
+            
+            java.util.List<Double> bidask = telappai.msapicomms.receberlastbidaskofflinetradingsample();
+            bidsample = bidask.get(0);
+            asksample = bidask.get(1);
+            quantidadebasesample = Double.valueOf(jTextFieldBaseAmount.getText());
+            quantidadequotesample = Double.valueOf(jTextFieldQuoteAmount.getText());
+            feecomprasample = Double.valueOf(jTextFieldBuyFee.getText());
+            feevendasample = Double.valueOf(jTextFieldSellFee.getText());
+
+            //funcao para repopular 
+            //mbcodeinterpreter = new mierclasses.mcbcindicatorinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode,this);
+            mcbctraderbot.atualizarscriptparametros(jTextAreaScript.getText(), jTextFieldParameters.getText());
+            //String result = mcbctraderbot.rodarscript(candlessample,true,mcjtah);
+            String result = mcbctraderbot.rodarscript
+            (
+                    candlessample,
+                    quantidadebasesample, 
+                    quantidadequotesample, 
+                    bidsample,
+                    asksample,
+                    feecomprasample,
+                    feevendasample,
+                    true,
+                    mcjtah
+            );
+
+            if (result.equals("ok"))
+            {
+                mcjtah.print("\n======\nOK");
+            }
+            else
+            {
+                mcjtah.print("\n======\n" + "Exception: " + result);
+            }
         }
         else
         {
-            mcjtah.print("\n======\n" + "Exception: " + result);
+            //mierclasses.mcfuncoeshelper.mostrarmensagem(tiposimulacao);
+            String intervalosimulacao = tiposimulacao.split("/")[1];
+            //mierclasses.mcfuncoeshelper.mostrarmensagem(intervalosimulacao);
+            Integer numerominimo_sim = Integer.valueOf(intervalosimulacao.split("-")[0]);
+            //mierclasses.mcfuncoeshelper.mostrarmensagem(String.valueOf(numerominimo_sim));
+            Integer numeromaximo_sim = Integer.valueOf(intervalosimulacao.split("-")[1]);
+            //mierclasses.mcfuncoeshelper.mostrarmensagem(String.valueOf(numeromaximo_sim));
+            
+            Integer numero_de_simulacoes = numeromaximo_sim - numerominimo_sim + 1;
+            
+            //rodar o algoritmo de simulacao varias vezes
+            for (int i = 0; i < numero_de_simulacoes; i++)
+            {
+                Integer subsetmax_indice = i + numerominimo_sim;
+                
+                if (i == 0)
+                    jTextAreaOutput.setText("Simulation MULTIPLE/CANDLESSUBSET [0 to " + subsetmax_indice + "]");
+                else
+                    jTextAreaOutput.append("\n\nSimulation MULTIPLE/CANDLESSUBSET [0 to " + subsetmax_indice + "]");
+           
+                java.util.List<mierclasses.mccandle> candlesubset = candlessample.subList(0, subsetmax_indice);
+                
+                java.util.List<Double> bidask = telappai.msapicomms.receberlastbidaskofflinetradingsample();
+                bidsample = bidask.get(0);
+                asksample = bidask.get(1);
+                quantidadebasesample = Double.valueOf(jTextFieldBaseAmount.getText());
+                quantidadequotesample = Double.valueOf(jTextFieldQuoteAmount.getText());
+                feecomprasample = Double.valueOf(jTextFieldBuyFee.getText());
+                feevendasample = Double.valueOf(jTextFieldSellFee.getText());
+
+                //funcao para repopular 
+                //mbcodeinterpreter = new mierclasses.mcbcindicatorinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode,this);
+                mcbctraderbot.atualizarscriptparametros(jTextAreaScript.getText(), jTextFieldParameters.getText());
+                //String result = mcbctraderbot.rodarscript(candlessample,true,mcjtah);
+                String result = mcbctraderbot.rodarscript
+                (
+                        candlesubset,
+                        quantidadebasesample, 
+                        quantidadequotesample, 
+                        bidsample,
+                        asksample,
+                        feecomprasample,
+                        feevendasample,
+                        true,
+                        mcjtah
+                );
+
+                if (result.equals("ok"))
+                {
+                    mcjtah.print("\n======\nOK");
+                }
+                else
+                {
+                    mcjtah.print("\n======\n" + "Exception: " + result);
+                }
+            }
         }
+
+    }
+    
+    void rodarsimulacaoeexportar()
+    {
+        //esta funcao alem de rodar a simulacao, tambem salva os seus resultados em um .csv no formato
+        //Timestamp (YYYY-MM-DD-HH-mm-ss);Open;High;Low;Close;Volume;Decision;Support Amount
+        
+        String csvSave = ""; //arquivo que sera exportado
+        
+        //comecar criando o header do csv
+        csvSave = csvSave + 
+                "First Timestamp (YYYY-MM-DD-HH-mm-ss);Last Timestamp (YYYY-MM-DD-HH-mm-ss);Last Close;Decision;Support Amount";
+        
+        
+        jTextAreaOutput.setText("");
+        String tiposimulacao = jTextFieldSimulationInterval.getText();
+        
+        if (tiposimulacao.equals("once/all"))
+        {
+            //rodar simulacao caso once/all
+            jTextAreaOutput.setText("Simulation ONCE/ALL");
+            
+            java.util.List<Double> bidask = telappai.msapicomms.receberlastbidaskofflinetradingsample();
+            bidsample = bidask.get(0);
+            asksample = bidask.get(1);
+            quantidadebasesample = Double.valueOf(jTextFieldBaseAmount.getText());
+            quantidadequotesample = Double.valueOf(jTextFieldQuoteAmount.getText());
+            feecomprasample = Double.valueOf(jTextFieldBuyFee.getText());
+            feevendasample = Double.valueOf(jTextFieldSellFee.getText());
+
+            //funcao para repopular 
+            //mbcodeinterpreter = new mierclasses.mcbcindicatorinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode,this);
+            mcbctraderbot.atualizarscriptparametros(jTextAreaScript.getText(), jTextFieldParameters.getText());
+            //String result = mcbctraderbot.rodarscript(candlessample,true,mcjtah);
+            String result = mcbctraderbot.rodarscript
+            (
+                    candlessample,
+                    quantidadebasesample, 
+                    quantidadequotesample, 
+                    bidsample,
+                    asksample,
+                    feecomprasample,
+                    feevendasample,
+                    true,
+                    mcjtah
+            );
+
+            if (result.equals("ok"))
+            {
+                mcjtah.print("\n======\nOK");
+            }
+            else
+            {
+                mcjtah.print("\n======\n" + "Exception: " + result);
+            }
+            
+            
+            //adicionar o intervalo utilizado na planilha e o resultado da simulacao
+
+            String primeira_ts = retornartimestampcsv(candlessample.get(0).timestampdate);
+            String ultima_ts = retornartimestampcsv(candlessample.get(candlessample.size()-1).timestampdate);
+            String ultimo_close = String.valueOf(candlessample.get(candlessample.size()-1).closed);
+            String traderbot_move = (String)mcbctraderbot.respostatradermove_lastrun; 
+            String traderbot_supportamount = String.valueOf(((double[]) mcbctraderbot.respostaquantidadesuporte_lastrun)[0]);
+            
+            csvSave = csvSave + "\n" +
+                primeira_ts + ";" + ultima_ts + ";" + ultimo_close + ";" + traderbot_move + ";" + traderbot_supportamount;
+                    
+        }
+        else
+        {
+            //rodar simulacao caso multiple/inicio-fim
+            
+            //mierclasses.mcfuncoeshelper.mostrarmensagem(tiposimulacao);
+            String intervalosimulacao = tiposimulacao.split("/")[1];
+            //mierclasses.mcfuncoeshelper.mostrarmensagem(intervalosimulacao);
+            Integer numerominimo_sim = Integer.valueOf(intervalosimulacao.split("-")[0]);
+            //mierclasses.mcfuncoeshelper.mostrarmensagem(String.valueOf(numerominimo_sim));
+            Integer numeromaximo_sim = Integer.valueOf(intervalosimulacao.split("-")[1]);
+            //mierclasses.mcfuncoeshelper.mostrarmensagem(String.valueOf(numeromaximo_sim));
+            
+            Integer numero_de_simulacoes = numeromaximo_sim - numerominimo_sim + 1;
+            
+            //rodar o algoritmo de simulacao varias vezes
+            for (int i = 0; i < numero_de_simulacoes; i++)
+            {
+                Integer subsetmax_indice = i + numerominimo_sim;
+                
+                if (i == 0)
+                    jTextAreaOutput.setText("Simulation MULTIPLE/CANDLESSUBSET [0 to " + subsetmax_indice + "]");
+                else
+                    jTextAreaOutput.append("\n\nSimulation MULTIPLE/CANDLESSUBSET [0 to " + subsetmax_indice + "]");
+           
+                java.util.List<mierclasses.mccandle> candlesubset = candlessample.subList(0, subsetmax_indice);
+                
+                java.util.List<Double> bidask = telappai.msapicomms.receberlastbidaskofflinetradingsample();
+                bidsample = bidask.get(0);
+                asksample = bidask.get(1);
+                quantidadebasesample = Double.valueOf(jTextFieldBaseAmount.getText());
+                quantidadequotesample = Double.valueOf(jTextFieldQuoteAmount.getText());
+                feecomprasample = Double.valueOf(jTextFieldBuyFee.getText());
+                feevendasample = Double.valueOf(jTextFieldSellFee.getText());
+
+                //funcao para repopular 
+                //mbcodeinterpreter = new mierclasses.mcbcindicatorinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode,this);
+                mcbctraderbot.atualizarscriptparametros(jTextAreaScript.getText(), jTextFieldParameters.getText());
+                //String result = mcbctraderbot.rodarscript(candlessample,true,mcjtah);
+                String result = mcbctraderbot.rodarscript
+                (
+                        candlesubset,
+                        quantidadebasesample, 
+                        quantidadequotesample, 
+                        bidsample,
+                        asksample,
+                        feecomprasample,
+                        feevendasample,
+                        true,
+                        mcjtah
+                );
+
+                if (result.equals("ok"))
+                {
+                    mcjtah.print("\n======\nOK");
+                }
+                else
+                {
+                    mcjtah.print("\n======\n" + "Exception: " + result);
+                }
+                
+                 //adicionar o intervalo utilizado na planilha e o resultado da simulacao
+                 
+                String primeira_ts = retornartimestampcsv(candlesubset.get(0).timestampdate);
+                String ultima_ts = retornartimestampcsv(candlesubset.get(candlesubset.size()-1).timestampdate);
+                String ultimo_close = String.valueOf(candlesubset.get(candlesubset.size()-1).closed);
+                String traderbot_move = (String)mcbctraderbot.respostatradermove_lastrun; 
+                String traderbot_supportamount = String.valueOf(((double[]) mcbctraderbot.respostaquantidadesuporte_lastrun)[0]);
+            
+                csvSave = csvSave + "\n" +
+                    primeira_ts + ";" + ultima_ts + ";" + ultimo_close + ";" + traderbot_move + ";" + traderbot_supportamount;
+            }
+        }
+        
+        try
+        {
+            javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+            fileChooser.setDialogTitle("Please choose a location to export the .csv file");
+
+            int userSelection = fileChooser.showSaveDialog(this);
+
+            if (userSelection == javax.swing.JFileChooser.APPROVE_OPTION) 
+            {
+                java.io.File fileToSave = fileChooser.getSelectedFile();
+
+                java.io.PrintWriter writer = new java.io.PrintWriter(fileToSave + ".csv", "UTF-8");
+                writer.println(csvSave);
+                writer.close();
+            }
+            
+            mierclasses.mcfuncoeshelper.mostrarmensagem(".csv file exported.");
+        }
+        catch (Exception ex)
+        {
+            mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred when exporting. Exception: " + ex.getMessage());
+        }
+
+    }
+
+    String retornartimestampcsv(java.util.Date timestampDate)
+    {
+        String timestampstring = 
+                        (timestampDate.getYear()+1900) + "-" + 
+                        (timestampDate.getMonth()+1) + "-" + 
+                        timestampDate.getDate() + "-" + 
+                        timestampDate.getHours() + "-" +
+                        timestampDate.getMinutes()+ "-" +
+                        timestampDate.getSeconds();
+        
+        return timestampstring;
     }
     
     void salvararquivobcodeedicao()
@@ -268,6 +535,10 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         jLabelBaseAmount = new javax.swing.JLabel();
         jLabelQuoteAmount = new javax.swing.JLabel();
         jTextFieldQuoteAmount = new javax.swing.JTextField();
+        jButtonTestRunExportcsv = new javax.swing.JButton();
+        jLabelSimulationInterval = new javax.swing.JLabel();
+        jTextFieldSimulationInterval = new javax.swing.JTextField();
+        jLabelCandlesDataSize = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Bearcode Trader Bot Editor");
@@ -394,6 +665,27 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         jTextFieldQuoteAmount.setText("15550");
         jTextFieldQuoteAmount.setCaretColor(new java.awt.Color(125, 125, 125));
 
+        jButtonTestRunExportcsv.setForeground(new java.awt.Color(0, 0, 255));
+        jButtonTestRunExportcsv.setText("Run and Export Results");
+        jButtonTestRunExportcsv.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonTestRunExportcsvActionPerformed(evt);
+            }
+        });
+
+        jLabelSimulationInterval.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelSimulationInterval.setText("Simulation Interval:");
+
+        jTextFieldSimulationInterval.setBackground(new java.awt.Color(0, 0, 0));
+        jTextFieldSimulationInterval.setForeground(new java.awt.Color(255, 255, 255));
+        jTextFieldSimulationInterval.setText("once|all");
+        jTextFieldSimulationInterval.setCaretColor(new java.awt.Color(125, 125, 125));
+
+        jLabelCandlesDataSize.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelCandlesDataSize.setText("Candles Data Size:");
+
         javax.swing.GroupLayout jPanelPaiLayout = new javax.swing.GroupLayout(jPanelPai);
         jPanelPai.setLayout(jPanelPaiLayout);
         jPanelPaiLayout.setHorizontalGroup(
@@ -414,9 +706,6 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                         .addComponent(jLabelScript)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabelCaretPosition, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanelPaiLayout.createSequentialGroup()
-                        .addComponent(jLabelOutput)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
                         .addComponent(jScrollPane1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -426,25 +715,37 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jTextFieldParameters))
                     .addGroup(jPanelPaiLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 231, Short.MAX_VALUE)
-                        .addComponent(jLabelBuyFee)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFieldBuyFee, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelSellFee)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFieldSellFee, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelBaseAmount)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFieldBaseAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelQuoteAmount)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFieldQuoteAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabelOutput)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonTestRun, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 52, Short.MAX_VALUE)
+                        .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
+                                .addComponent(jLabelSimulationInterval)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextFieldSimulationInterval, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonTestRun)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButtonTestRunExportcsv))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
+                                .addComponent(jLabelCandlesDataSize)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabelBuyFee)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextFieldBuyFee, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(jLabelSellFee)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextFieldSellFee, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabelBaseAmount)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextFieldBaseAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabelQuoteAmount)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextFieldQuoteAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         jPanelPaiLayout.setVerticalGroup(
@@ -458,7 +759,7 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                     .addGroup(jPanelPaiLayout.createSequentialGroup()
                         .addGap(416, 416, 416)
                         .addComponent(jLabelTestParameters3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE))
                     .addGroup(jPanelPaiLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1)
@@ -475,9 +776,14 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                     .addComponent(jTextFieldBaseAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelBaseAmount)
                     .addComponent(jTextFieldQuoteAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelQuoteAmount))
+                    .addComponent(jLabelQuoteAmount)
+                    .addComponent(jLabelCandlesDataSize))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonTestRun)
+                .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonTestRun)
+                    .addComponent(jLabelSimulationInterval)
+                    .addComponent(jButtonTestRunExportcsv)
+                    .addComponent(jTextFieldSimulationInterval, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelOutput)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -510,7 +816,7 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
     }//GEN-LAST:event_jTextAreaScriptCaretUpdate
 
     private void jButtonResetEditorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonResetEditorActionPerformed
-        resetarscripteditor();
+        resetarcamposeditor();
     }//GEN-LAST:event_jButtonResetEditorActionPerformed
 
     private void jButtonLoadFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoadFileActionPerformed
@@ -522,13 +828,18 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
     }//GEN-LAST:event_jButtonSaveFileActionPerformed
 
     private void jButtonTestRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTestRunActionPerformed
-        reconfigurarbearcodeinterpretererodar();
+        rodarsimulacao();
     }//GEN-LAST:event_jButtonTestRunActionPerformed
 
     private void jTextFieldBuyFeeActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jTextFieldBuyFeeActionPerformed
     {//GEN-HEADEREND:event_jTextFieldBuyFeeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldBuyFeeActionPerformed
+
+    private void jButtonTestRunExportcsvActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonTestRunExportcsvActionPerformed
+    {//GEN-HEADEREND:event_jButtonTestRunExportcsvActionPerformed
+        rodarsimulacaoeexportar();
+    }//GEN-LAST:event_jButtonTestRunExportcsvActionPerformed
 
     /**
      * @param args the command line arguments
@@ -577,8 +888,10 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
     private javax.swing.JButton jButtonResetEditor;
     private javax.swing.JButton jButtonSaveFile;
     private javax.swing.JButton jButtonTestRun;
+    private javax.swing.JButton jButtonTestRunExportcsv;
     private javax.swing.JLabel jLabelBaseAmount;
     private javax.swing.JLabel jLabelBuyFee;
+    private javax.swing.JLabel jLabelCandlesDataSize;
     private javax.swing.JLabel jLabelCaretPosition;
     private javax.swing.JLabel jLabelCurrentFile;
     private javax.swing.JLabel jLabelOutput;
@@ -586,6 +899,7 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
     private javax.swing.JLabel jLabelQuoteAmount;
     private javax.swing.JLabel jLabelScript;
     private javax.swing.JLabel jLabelSellFee;
+    private javax.swing.JLabel jLabelSimulationInterval;
     private javax.swing.JLabel jLabelTestParameters3;
     private javax.swing.JPanel jPanelPai;
     private javax.swing.JScrollPane jScrollPane1;
@@ -597,5 +911,6 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
     private javax.swing.JTextField jTextFieldParameters;
     private javax.swing.JTextField jTextFieldQuoteAmount;
     private javax.swing.JTextField jTextFieldSellFee;
+    private javax.swing.JTextField jTextFieldSimulationInterval;
     // End of variables declaration//GEN-END:variables
 }
