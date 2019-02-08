@@ -191,7 +191,8 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         return statustrade;
     }
 
-    void rodarsimulacao()
+    
+    void rodarsimulacao(boolean exportarcsv)
     {
         //esta funcao pega as informacoes inputadas pelo usuario, e roda de acordo com o intervalo de simulacao
         //once|all -> rodar o script uma unica vez com todas as candles
@@ -199,124 +200,6 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         
         //atualizar informacoes do trader com os campos do editor antes de iniciar simulacao
         atualizarinformacoes_editor_para_offlinetrader();
-        
-        jTextAreaOutput.setText("");
-        String tiposimulacao = jTextFieldSimulationInterval.getText();
-        
-        if (tiposimulacao.equals("once/all"))
-        {
-            jTextAreaOutput.setText("Simulation ONCE/ALL");
-            
-            //atualizar o subset de candles utilizado pela simulacao (neste caso o subset eh igual a todas as candles)
-            candlessimulacao = candlessample;
-            
-            //atualizar bid ask antes de rodar script
-            otrader.atualizarbidask();
-
-            //repopular parametros e codigo do script
-            mcbctraderbot.atualizarscriptparametros(jTextAreaScript.getText(), jTextFieldParameters.getText());
-            //rodar script
-            String result = mcbctraderbot.rodarscript
-            (
-                    candlessimulacao,
-                    otrader.quantidademoedabase, 
-                    otrader.quantidademoedacotacao, 
-                    otrader.melhorbid,
-                    otrader.melhorask,
-                    otrader.feecompra,
-                    otrader.feevenda,
-                    true,
-                    mcjtah
-            );
-
-            if (result.equals("ok"))
-            {
-                mcjtah.print("\n======\nOK");
-                
-                //considerando que o script rodou ok, caso auto trade esteja checado, rodar transacao automatica
-                if (jCheckBoxAutoTrade.isSelected() == true)
-                {
-                    String traderbot_move = (String)mcbctraderbot.respostatradermove_lastrun; 
-                    String traderbot_supportamount = String.valueOf(((double[]) mcbctraderbot.respostaquantidadesuporte_lastrun)[0]);
-                    rodarautotrade(traderbot_move,traderbot_supportamount);
-                }
-            }
-            else
-            {
-                mcjtah.print("\n======\n" + "Exception: " + result);
-            }
-        }
-        else
-        {
-            //mierclasses.mcfuncoeshelper.mostrarmensagem(tiposimulacao);
-            String intervalosimulacao = tiposimulacao.split("/")[1];
-            //mierclasses.mcfuncoeshelper.mostrarmensagem(intervalosimulacao);
-            Integer numerominimo_sim = Integer.valueOf(intervalosimulacao.split("-")[0]);
-            //mierclasses.mcfuncoeshelper.mostrarmensagem(String.valueOf(numerominimo_sim));
-            Integer numeromaximo_sim = Integer.valueOf(intervalosimulacao.split("-")[1]);
-            //mierclasses.mcfuncoeshelper.mostrarmensagem(String.valueOf(numeromaximo_sim));
-            
-            Integer numero_de_simulacoes = numeromaximo_sim - numerominimo_sim + 1;
-            
-            //rodar o algoritmo de simulacao varias vezes
-            for (int i = 0; i < numero_de_simulacoes; i++)
-            {
-                Integer subsetmax_indice = i + numerominimo_sim;
-                
-                if (i == 0)
-                    jTextAreaOutput.setText("Simulation MULTIPLE/CANDLESSUBSET [0 to " + subsetmax_indice + "]");
-                else
-                    jTextAreaOutput.append("\n\nSimulation MULTIPLE/CANDLESSUBSET [0 to " + subsetmax_indice + "]");
-           
-                
-                //atualizar o subset de candles utilizado pela simulacao (neste caso o subset eh igual a todas as candles)
-                candlessimulacao = candlessample.subList(0, subsetmax_indice);
-
-                //atualizar bid ask antes de rodar script
-                otrader.atualizarbidask();
-
-                //repopular parametros e codigo do script
-                mcbctraderbot.atualizarscriptparametros(jTextAreaScript.getText(), jTextFieldParameters.getText());
-                //rodar script
-                String result = mcbctraderbot.rodarscript
-                (
-                        candlessimulacao,
-                        otrader.quantidademoedabase, 
-                        otrader.quantidademoedacotacao, 
-                        otrader.melhorbid,
-                        otrader.melhorask,
-                        otrader.feecompra,
-                        otrader.feevenda,
-                        true,
-                        mcjtah
-                );
-                  
-
-                if (result.equals("ok"))
-                {
-                    mcjtah.print("\n======\nOK");
-                    
-                    //considerando que o script rodou ok, caso auto trade esteja checado, rodar transacao automatica
-                    if (jCheckBoxAutoTrade.isSelected() == true)
-                    {
-                        String traderbot_move = (String)mcbctraderbot.respostatradermove_lastrun; 
-                        String traderbot_supportamount = String.valueOf(((double[]) mcbctraderbot.respostaquantidadesuporte_lastrun)[0]);
-                        rodarautotrade(traderbot_move,traderbot_supportamount);
-                    }
-                }
-                else
-                {
-                    mcjtah.print("\n======\n" + "Exception: " + result);
-                }
-            }
-        }
-
-    }
-    
-    void rodarsimulacaoeexportar()
-    {
-        //esta funcao alem de rodar a simulacao, tambem salva os seus resultados em um .csv no formato
-        //Timestamp (YYYY-MM-DD-HH-mm-ss);Open;High;Low;Close;Volume;Decision;Support Amount
         
         String csvSave = ""; //arquivo que sera exportado
         
@@ -470,28 +353,31 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                     traderbot_supportamount + ";" + postrade_baseamount + ";" + postrade_quoteamount + ";" + postrade_total + ";" + ultimo_logtrade;    }
         }
         
-        try
+        if (exportarcsv == true)
         {
-            javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
-            fileChooser.setDialogTitle("Please choose a location to export the .csv file");
-
-            int userSelection = fileChooser.showSaveDialog(this);
-
-            if (userSelection == javax.swing.JFileChooser.APPROVE_OPTION) 
+            try
             {
-                java.io.File fileToSave = fileChooser.getSelectedFile();
+                javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+                fileChooser.setDialogTitle("Please choose a location to export the .csv file");
 
-                java.io.PrintWriter writer = new java.io.PrintWriter(fileToSave + ".csv", "UTF-8");
-                writer.println(csvSave);
-                writer.close();
+                int userSelection = fileChooser.showSaveDialog(this);
+
+                if (userSelection == javax.swing.JFileChooser.APPROVE_OPTION) 
+                {
+                    java.io.File fileToSave = fileChooser.getSelectedFile();
+
+                    java.io.PrintWriter writer = new java.io.PrintWriter(fileToSave + ".csv", "UTF-8");
+                    writer.println(csvSave);
+                    writer.close();
+                    mierclasses.mcfuncoeshelper.mostrarmensagem(".csv file exported.");
+                }
             }
-            
-            mierclasses.mcfuncoeshelper.mostrarmensagem(".csv file exported.");
+            catch (Exception ex)
+            {
+                mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred when exporting. Exception: " + ex.getMessage());
+            }   
         }
-        catch (Exception ex)
-        {
-            mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred when exporting. Exception: " + ex.getMessage());
-        }
+
 
     }
 
@@ -905,7 +791,7 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
     }//GEN-LAST:event_jButtonSaveFileActionPerformed
 
     private void jButtonTestRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTestRunActionPerformed
-        rodarsimulacao();
+        rodarsimulacao(false);
         atualizarinformacoes_offlinetrader_para_editor();
     }//GEN-LAST:event_jButtonTestRunActionPerformed
 
@@ -916,7 +802,7 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
 
     private void jButtonTestRunExportcsvActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonTestRunExportcsvActionPerformed
     {//GEN-HEADEREND:event_jButtonTestRunExportcsvActionPerformed
-        rodarsimulacaoeexportar();
+        rodarsimulacao(true);
         atualizarinformacoes_offlinetrader_para_editor();
     }//GEN-LAST:event_jButtonTestRunExportcsvActionPerformed
 

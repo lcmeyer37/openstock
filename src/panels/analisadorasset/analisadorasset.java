@@ -327,9 +327,9 @@ public class analisadorasset extends javax.swing.JPanel
                 java.io.PrintWriter writer = new java.io.PrintWriter(fileToSave + ".ossave", "UTF-8");
                 writer.println(xmlSave);
                 writer.close();
+                mierclasses.mcfuncoeshelper.mostrarmensagem("Asset file saved.");
             }
             
-            mierclasses.mcfuncoeshelper.mostrarmensagem("Asset file saved.");
         }
         catch (Exception ex)
         {

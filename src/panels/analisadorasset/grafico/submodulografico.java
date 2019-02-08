@@ -695,9 +695,9 @@ public class submodulografico extends javax.swing.JPanel
                 java.io.PrintWriter writer = new java.io.PrintWriter(fileToSave + ".csv", "UTF-8");
                 writer.println(csvSave);
                 writer.close();
+                mierclasses.mcfuncoeshelper.mostrarmensagem(".csv file exported.");
             }
             
-            mierclasses.mcfuncoeshelper.mostrarmensagem(".csv file exported.");
         }
         catch (Exception ex)
         {
