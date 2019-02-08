@@ -15,6 +15,7 @@ Open Stock is a project [licensed under GNU GPLv3](https://github.com/lcmeyer37/
 - [x] Use of Robots to test automatic Algorithmic Trading 
 - [x] To create your own Indicators to use with the software (Bearcode Scripts)
 - [x] To create your own Trader Bots algorithms to use with the software (Bearcode Scripts)
+- [x] To test the efficacy of trading algorithms with the Editor Trader and Simulator
 - [x] Save/Load Charts and Offline Transactions
 - [x] Export .csv files for spreadsheets tracking
 - [x] OHLC and Separate Indicator charts
