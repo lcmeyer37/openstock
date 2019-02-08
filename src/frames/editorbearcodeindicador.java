@@ -221,7 +221,7 @@ public class editorbearcodeindicador extends javax.swing.JFrame
         jTextFieldParameters = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Bearcode Indicator Editor");
+        setTitle("Indicator Editor");
 
         jPanelPai.setBackground(new java.awt.Color(55, 55, 55));
 
