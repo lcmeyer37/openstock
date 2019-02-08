@@ -121,21 +121,21 @@ public class submodulografico extends javax.swing.JPanel
             else if (((sourcesimboloescolhido.split(":")[0]).toLowerCase()).equals("av"))
             {
                 if (periodoescolhido.equals("1 minute"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"1min","200");
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"1min");
                 else if (periodoescolhido.equals("5 minutes"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"5min","200");
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"5min");
                 else if (periodoescolhido.equals("15 minutes"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"15min","200");
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"15min");
                 else if (periodoescolhido.equals("30 minutes"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"30min","200");
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"30min");
                 else if (periodoescolhido.equals("60 minutes"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"60min","200");
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"60min");
                 else if (periodoescolhido.equals("Daily"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesdaily((sourcesimboloescolhido.split(":")[1]), "200");
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesdaily((sourcesimboloescolhido.split(":")[1]));
                 else if (periodoescolhido.equals("Weekly"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesweekly((sourcesimboloescolhido.split(":")[1]), "200");
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesweekly((sourcesimboloescolhido.split(":")[1]));
                 else if (periodoescolhido.equals("Monthly"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesmonthly((sourcesimboloescolhido.split(":")[1]), "200");
+                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockcandlesmonthly((sourcesimboloescolhido.split(":")[1]));
             } 
             else if (((sourcesimboloescolhido.split(":")[0]).toLowerCase()).equals("crycom"))
             {

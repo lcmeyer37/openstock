@@ -79,7 +79,7 @@ public class mcstocksapicomms
     }
     
     // <editor-fold defaultstate="collapsed" desc="Stock Time Series">
-    public java.util.List<mccandle> receberstockcandlesintraday(String simbolo, String intervalo, String outputsize)
+    public java.util.List<mccandle> receberstockcandlesintraday(String simbolo, String intervalo)
     {
                     /*
         {
@@ -107,11 +107,10 @@ public class mcstocksapicomms
         },
         */
         
-        String jsonconteudo = "";
-        if (outputsize.length() == 0)
-            jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol="+simbolo+"&interval="+intervalo+"&apikey=" + chavealphavantage);
-        else if (outputsize.length() > 0)
-            jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol="+simbolo+"&interval="+intervalo+"&outputsize="+outputsize+"&apikey=" + chavealphavantage);
+        String urlquery = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol="+simbolo+"&interval="+intervalo+"&outputsize=full&apikey=" + chavealphavantage;
+        //mierclasses.mcfuncoeshelper.setarclipboard(urlquery);
+        //mierclasses.mcfuncoeshelper.mostrarmensagem(urlquery);
+        String jsonconteudo = mwcomms.receberconteudopagina(urlquery);
         
         JSONObject obj = new JSONObject(jsonconteudo);
         
@@ -131,33 +130,41 @@ public class mcstocksapicomms
         
         for (int i = 0; i < candlesjsontimestamparray.length(); i++)
         {
-            String timestampcandle = candlesjsontimestamparray.getString(i);
+            String timestampcandleoriginal = candlesjsontimestamparray.getString(i);
+            
             //System.out.println(timestampcandle);
             
-            String opencandle = candlesjson.getJSONObject(timestampcandle).getString("1. open");
+            String opencandle = candlesjson.getJSONObject(timestampcandleoriginal).getString("1. open");
             //System.out.println(opencandle);
-            String highcandle = candlesjson.getJSONObject(timestampcandle).getString("2. high");
-            String lowcandle = candlesjson.getJSONObject(timestampcandle).getString("3. low");
-            String closecandle = candlesjson.getJSONObject(timestampcandle).getString("4. close");
-            String volumecandle = candlesjson.getJSONObject(timestampcandle).getString("5. volume");
+            String highcandle = candlesjson.getJSONObject(timestampcandleoriginal).getString("2. high");
+            String lowcandle = candlesjson.getJSONObject(timestampcandleoriginal).getString("3. low");
+            String closecandle = candlesjson.getJSONObject(timestampcandleoriginal).getString("4. close");
+            String volumecandle = candlesjson.getJSONObject(timestampcandleoriginal).getString("5. volume");
+            
+            String data = timestampcandleoriginal.split(" ")[0];
+            String ano = data.split("-")[0];
+            String mes = data.split("-")[1];
+            String dia = data.split("-")[2];
+            
+            String horario = timestampcandleoriginal.split(" ")[1];
+            String hora = horario.split(":")[0];
+            String minuto = horario.split(":")[1];
+            String segundo = horario.split(":")[2];
+            
+            String timestampcandleparaclasse = ano + "-" + mes + "-" + dia + "-" + hora + "-" + minuto + "-" + segundo;
             
             // public mccandle(String tsstr, String ostr, String hstr, String cstr, String lstr, String vstr)
-            mccandle candleatual = new mccandle(timestampcandle,opencandle,highcandle,closecandle,lowcandle,volumecandle);
+            mccandle candleatual = new mccandle(timestampcandleparaclasse,opencandle,highcandle,closecandle,lowcandle,volumecandle);
             listacandlesretornar.add(candleatual);
         }
    
         return listacandlesretornar;
     }
     
-    public java.util.List<mccandle> receberstockcandlesdaily(String simbolo, String outputsize)
+    public java.util.List<mccandle> receberstockcandlesdaily(String simbolo)
     {
+        String jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="+simbolo+"&outputsize=full&apikey=" + chavealphavantage);
 
-        String jsonconteudo = "";
-        if (outputsize.length() == 0)
-            jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="+simbolo+"&apikey=" + chavealphavantage);
-        else if (outputsize.length() > 0)
-            jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="+simbolo+"&outputsize="+outputsize+"&apikey=" + chavealphavantage);
-        
         JSONObject obj = new JSONObject(jsonconteudo);
         
         String md_information = obj.getJSONObject("Meta Data").getString("1. Information");
@@ -190,15 +197,11 @@ public class mcstocksapicomms
         return listacandlesretornar;
     }
     
-    public java.util.List<mccandle> receberstockcandlesweekly(String simbolo, String outputsize)
+    public java.util.List<mccandle> receberstockcandlesweekly(String simbolo)
     {
 
-        String jsonconteudo = "";
-        if (outputsize.length() == 0)
-            jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol="+simbolo+"&apikey=" + chavealphavantage);
-        else if (outputsize.length() > 0)
-            jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol="+simbolo+"&outputsize="+outputsize+"&apikey=" + chavealphavantage);
-        
+        String jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol="+simbolo+"&outputsize=full&apikey=" + chavealphavantage);
+
         JSONObject obj = new JSONObject(jsonconteudo);
         
         String md_information = obj.getJSONObject("Meta Data").getString("1. Information");
@@ -230,14 +233,10 @@ public class mcstocksapicomms
         return listacandlesretornar;
     }
     
-    public java.util.List<mccandle> receberstockcandlesmonthly(String simbolo, String outputsize)
+    public java.util.List<mccandle> receberstockcandlesmonthly(String simbolo)
     {
 
-        String jsonconteudo = "";
-        if (outputsize.length() == 0)
-            jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol="+simbolo+"&apikey=" + chavealphavantage);
-        else if (outputsize.length() > 0)
-            jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol="+simbolo+"&outputsize="+outputsize+"&apikey=" + chavealphavantage);
+        String jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol="+simbolo+"&outputsize=full&apikey=" + chavealphavantage);
         
         JSONObject obj = new JSONObject(jsonconteudo);
         
@@ -269,7 +268,6 @@ public class mcstocksapicomms
    
         return listacandlesretornar;
     }
-
     // </editor-fold>
     
     // </editor-fold>
