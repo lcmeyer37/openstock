@@ -108,7 +108,7 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="jButtonOpenBearcodeIndicatorEditor">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Indicators Editor"/>
+                <Property name="text" type="java.lang.String" value="Indicator Editor"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonOpenBearcodeIndicatorEditorActionPerformed"/>
@@ -116,7 +116,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="jButtonOpenBearcodeBotEditor">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Bots Editor"/>
+                <Property name="text" type="java.lang.String" value="Bot Editor and Simulator"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonOpenBearcodeBotEditorActionPerformed"/>

@@ -22,8 +22,10 @@ package mierclasses;
  */
 public class mcofflinetrader
 {
-    //classe utilizada pelo submoduloofflinetrader para realizar transacoes
+    //classe utilizada pelo submoduloofflinetrader ou editor bearcode para realizar transacoes
     panels.analisadorasset.offlinetrader.submoduloofflinetrader submodulooftraderpai;
+    frames.editorbearcodetraderbot editorbctraderbotpai;
+    String tipopai = ""; //diz se o tipo de pai deste offline trader eh o subm ou o editor
     
     public String simbolo; //simbolo relacionado a este trader
     
@@ -38,10 +40,18 @@ public class mcofflinetrader
     
     public java.util.List<mierclasses.mcofflinetransaction> transacoes; //lista de transacoes feitar por este trader
     
-    //construtor, o offline trader ao ser criado soh tem um simbolo associado a ele, e nenhuma transacao ou dinheiro
+    //construtores
+    //quando associado a um submoduloofflinetrader
     public mcofflinetrader(panels.analisadorasset.offlinetrader.submoduloofflinetrader sopai)
     {
         submodulooftraderpai = sopai;
+        tipopai = "submoduloofflinetrader";
+    }
+    //quando associado a um editor
+    public mcofflinetrader(frames.editorbearcodetraderbot epai)
+    {
+        editorbctraderbotpai = epai;
+        tipopai = "editorbearcodetraderbot";
     }
     
     public void recriarofflinetrader(String simb)
@@ -56,33 +66,24 @@ public class mcofflinetrader
     
     public void atualizarbidask()
     {
-        //funcao para atualizar bid e ask atual deste offline trader
-        
-        //funcao soh para carregar pela primeira vez os valores do asset atual
-        if ((simbolo.equals("testdata")) == true)
-        {
-            //codigo para criar um dataset offline para teste
-            //candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.receberstockchartsample();
-            
-            java.util.List<Double> bidask = submodulooftraderpai.aassetpai.iaassetpai.tprincipalpai.msapicomms.receberlastbidaskofflinetradingsample();
-            double bid = bidask.get(0);
-            double ask = bidask.get(1);
-
-            melhorbid = bid;
-            melhorask = ask;
-            
-            //mierclasses.mcfuncoeshelper.mostrarmensagem("Bid: " + String.valueOf(bid) + " Ask: " + String.valueOf(ask));
-        }
-        else if ((simbolo.equals("testdata")) == false)
+        if (tipopai.equals("submoduloofflinetrader") == true)
         {
             java.util.List<Double> bidask = submodulooftraderpai.aassetpai.iaassetpai.tprincipalpai.msapicomms.receberlastbidaskofflinetrading(submodulooftraderpai.aassetpai.subgrafico.mcg.candlesatual);
             double bid = bidask.get(0);
             double ask = bidask.get(1);
             
             melhorbid = bid;
-            melhorask = ask;
+            melhorask = ask;  
+        }
+        else if (tipopai.equals("editorbearcodetraderbot") == true)
+        {
             
-            //mierclasses.mcfuncoeshelper.mostrarmensagem("Bid: " + String.valueOf(bid) + " Ask: " + String.valueOf(ask));
+            java.util.List<Double> bidask = editorbctraderbotpai.telappai.msapicomms.receberlastbidaskofflinetrading(editorbctraderbotpai.candlessimulacao);
+            double bid = bidask.get(0);
+            double ask = bidask.get(1);
+            
+            melhorbid = bid;
+            melhorask = ask; 
         }
     }
     

@@ -925,34 +925,5 @@ public class mcstocksapicomms
         
         return retorno;
     }
-    
-    public java.util.List<Double> receberlastbidaskofflinetradingsample()
-    {
-        //funcao para receber o ultimo ask bid para o sample
-        java.util.List<mierclasses.mccandle> candlessample = receberstockchartsample();
-        mierclasses.mccandle ultimacandlesample = candlessample.get(candlessample.size()-1);
-        
-        double ultimoclose = ultimacandlesample.closed;
-        
-        double rangebidaskestimado = 0.0025;
-        
-        //os valores de bid e ask no momento serao estimados, ja que os valores de ask e bid reais nem sempre estao
-        //disponiveis pelo IEX API por conta de diversos fatores: indisponibilidade de servico, market closed, etc,
-        //e o interessante no modo offline eh sempre ter um valor para testar o bot em cima.
-        
-        //no momento o bid e ask serao estimados como -+ 0.25% do close final recebido,
-        //e eles nunca sairao do high low da candle
-        
-        double variacao = ultimoclose*rangebidaskestimado;
-        double bidestimado = ultimoclose - variacao;
-        double askestimado = ultimoclose + variacao;
-        
-        //https://stackoverflow.com/questions/20039098/issue-creating-a-double-array-list
-        java.util.List<Double> retorno = new java.util.ArrayList<>();
-        retorno.add(bidestimado);
-        retorno.add(askestimado);
-        
-        return retorno;
-    }
     // </editor-fold>
 }

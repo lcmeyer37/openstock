@@ -111,7 +111,7 @@ public static main.TelaPrincipal telappai;
 
         jPanelMore.setBackground(new java.awt.Color(55, 55, 55));
 
-        jButtonOpenBearcodeIndicatorEditor.setText("Indicators Editor");
+        jButtonOpenBearcodeIndicatorEditor.setText("Indicator Editor");
         jButtonOpenBearcodeIndicatorEditor.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -120,7 +120,7 @@ public static main.TelaPrincipal telappai;
             }
         });
 
-        jButtonOpenBearcodeBotEditor.setText("Bots Editor");
+        jButtonOpenBearcodeBotEditor.setText("Bot Editor and Simulator");
         jButtonOpenBearcodeBotEditor.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)

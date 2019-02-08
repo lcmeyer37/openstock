@@ -25,24 +25,15 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
     public static main.TelaPrincipal telappai;
     
     //classe interpretadora de bearcode (contem o codigo relacionado a este trader bot)
-    mierclasses.mcbctradingbotinterpreter mcbctraderbot;
+    public mierclasses.mcbctradingbotinterpreter mcbctraderbot;
     
-    //candles de teste utilizadas pelo editor
+    //offline trader utilizado por este submodulo
+    public mierclasses.mcofflinetrader otrader; 
+    
+    //todas o set de candles de teste utilizado pelo editor
     java.util.List<mierclasses.mccandle> candlessample;
-    
-    //quantidade de moedas base de exemplo
-    double quantidadebasesample;
-    //quantidade de moedas quote de exemplo
-    double quantidadequotesample;
-    
-    //bid de exemplo
-    double bidsample;
-    //as de exemplo
-    double asksample;
-    
-    //fees de compra e venda de exemplo
-    double feecomprasample;
-    double feevendasample;
+    //o subset de candles utilizados ao rodar a simulacao
+    public java.util.List<mierclasses.mccandle> candlessimulacao;
     
     //handler para o output do jtextareaoutput
     mierclasses.mcjtextareahandler mcjtah;
@@ -66,13 +57,25 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         //receber as candles de teste
         candlessample = telappai.msapicomms.receberstockchartsample();
         
+        //associar um offlinetrader para este editor (para realizar trades de simulacao)
+        otrader = new mierclasses.mcofflinetrader(this);
+        
         //resetar campos de edicao do editor com informacoes padrao
         resetarcamposeditor();
+        
     }
     
     void resetarcamposeditor()
     {
-        //funcao para resetar script editor
+        //recriar offline trader
+        otrader.recriarofflinetrader("testdata");
+        //setar alguns valores default para o otrader
+        otrader.feecompra = 0.001;
+        otrader.feevenda = 0.001;
+        otrader.quantidademoedabase = 0;
+        otrader.quantidademoedacotacao = 100000;
+        
+        //funcao para resetar script editor e associar os valores do offline trader com a gui
         String scriptdefault = "//bearcode trader bot sample\n" +
                 "runoutput.print(\"sample code\");\n" +
                 "\n" +
@@ -108,8 +111,8 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                 "*/\n" +
                 "\n" +
                 "//example of return values for the script if decision is to buy 60 base currency\n" +
-                "var tradermove = \"buybase\"; //don't do anything\n" +
-                "var amountbase = [60]; //buy 60 base currency\n" +
+                "var tradermove = \"buyamount\"; //buy amount of base currency\n" +
+                "var amountbase = [60]; //60 is the amount to buy\n" +
                 "var supportamount = Java.to(amountbase,\"double[]\");";
                 
         jTextAreaScript.setText(scriptdefault);
@@ -118,14 +121,30 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         jTextAreaOutput.setCaretPosition(0);
         
         jTextFieldParameters.setText("");
-        jTextFieldBuyFee.setText("0.001");
-        jTextFieldSellFee.setText("0.001");
-        jTextFieldBaseAmount.setText("1000");
-        jTextFieldQuoteAmount.setText("15550");
         jTextFieldSimulationInterval.setText("once/all");
         jLabelCandlesDataSize.setText("Candles Data Size: " + candlessample.size());
-        
         jLabelCurrentFile.setText("Current File: (new)");
+        
+        //atualizar informacoes relacionadas ao status atual do trader com a gui
+        atualizarinformacoes_offlinetrader_para_editor();
+    }
+    
+    void atualizarinformacoes_editor_para_offlinetrader()
+    {
+        //funcao para atualizar informacoes do offline trader com campos de edicao do editor
+        otrader.feecompra = Double.valueOf(jTextFieldBuyFee.getText());
+        otrader.feevenda = Double.valueOf(jTextFieldSellFee.getText());
+        otrader.quantidademoedabase = Double.valueOf(jTextFieldBaseAmount.getText());
+        otrader.quantidademoedacotacao = Double.valueOf(jTextFieldQuoteAmount.getText());
+    }
+    
+    void atualizarinformacoes_offlinetrader_para_editor()
+    {
+        //funcao para atualizar informacoes do offline trader com campos de edicao do editor
+        jTextFieldBuyFee.setText(String.valueOf(otrader.feecompra));
+        jTextFieldSellFee.setText(String.valueOf(otrader.feevenda));
+        jTextFieldBaseAmount.setText(String.valueOf(otrader.quantidademoedabase));
+        jTextFieldQuoteAmount.setText(String.valueOf(otrader.quantidademoedacotacao));
     }
     
     String retornarstringposicaocaret()
@@ -150,12 +169,36 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         }
     }
     
+    String rodarautotrade(String tradermove, String supportamount)
+    {
+        //mierclasses.mcfuncoeshelper.mostrarmensagem(tradermove + " " + supportamount);
+        String statustrade = "erro - desconhecido";
+        
+        if (tradermove.equals("hold"))
+        {
+            //significa que nada deve ser feito
+            statustrade = "ok";
+        }
+        else if (tradermove.equals("buyall"))
+            statustrade =otrader.realizarcompratudo_basecotacao();
+        else if (tradermove.equals("sellall"))
+            statustrade = otrader.realizarvendatudo_basecotacao();
+        else if (tradermove.equals("buyamount"))
+            statustrade = otrader.realizarcompra_basecotacao(Double.valueOf(supportamount));
+        else if (tradermove.equals("sellamount"))
+            statustrade = otrader.realizarvenda_basecotacao(Double.valueOf(supportamount));
+        
+        return statustrade;
+    }
 
     void rodarsimulacao()
     {
         //esta funcao pega as informacoes inputadas pelo usuario, e roda de acordo com o intervalo de simulacao
         //once|all -> rodar o script uma unica vez com todas as candles
         //multiple|5-7 -> rodar o script 3 vezes, utilizando desde um subset das candles[0-5] ate candles[0-7]
+        
+        //atualizar informacoes do trader com os campos do editor antes de iniciar simulacao
+        atualizarinformacoes_editor_para_offlinetrader();
         
         jTextAreaOutput.setText("");
         String tiposimulacao = jTextFieldSimulationInterval.getText();
@@ -164,27 +207,24 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         {
             jTextAreaOutput.setText("Simulation ONCE/ALL");
             
-            java.util.List<Double> bidask = telappai.msapicomms.receberlastbidaskofflinetradingsample();
-            bidsample = bidask.get(0);
-            asksample = bidask.get(1);
-            quantidadebasesample = Double.valueOf(jTextFieldBaseAmount.getText());
-            quantidadequotesample = Double.valueOf(jTextFieldQuoteAmount.getText());
-            feecomprasample = Double.valueOf(jTextFieldBuyFee.getText());
-            feevendasample = Double.valueOf(jTextFieldSellFee.getText());
+            //atualizar o subset de candles utilizado pela simulacao (neste caso o subset eh igual a todas as candles)
+            candlessimulacao = candlessample;
+            
+            //atualizar bid ask antes de rodar script
+            otrader.atualizarbidask();
 
-            //funcao para repopular 
-            //mbcodeinterpreter = new mierclasses.mcbcindicatorinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode,this);
+            //repopular parametros e codigo do script
             mcbctraderbot.atualizarscriptparametros(jTextAreaScript.getText(), jTextFieldParameters.getText());
-            //String result = mcbctraderbot.rodarscript(candlessample,true,mcjtah);
+            //rodar script
             String result = mcbctraderbot.rodarscript
             (
-                    candlessample,
-                    quantidadebasesample, 
-                    quantidadequotesample, 
-                    bidsample,
-                    asksample,
-                    feecomprasample,
-                    feevendasample,
+                    candlessimulacao,
+                    otrader.quantidademoedabase, 
+                    otrader.quantidademoedacotacao, 
+                    otrader.melhorbid,
+                    otrader.melhorask,
+                    otrader.feecompra,
+                    otrader.feevenda,
                     true,
                     mcjtah
             );
@@ -192,6 +232,14 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
             if (result.equals("ok"))
             {
                 mcjtah.print("\n======\nOK");
+                
+                //considerando que o script rodou ok, caso auto trade esteja checado, rodar transacao automatica
+                if (jCheckBoxAutoTrade.isSelected() == true)
+                {
+                    String traderbot_move = (String)mcbctraderbot.respostatradermove_lastrun; 
+                    String traderbot_supportamount = String.valueOf(((double[]) mcbctraderbot.respostaquantidadesuporte_lastrun)[0]);
+                    rodarautotrade(traderbot_move,traderbot_supportamount);
+                }
             }
             else
             {
@@ -220,36 +268,41 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                 else
                     jTextAreaOutput.append("\n\nSimulation MULTIPLE/CANDLESSUBSET [0 to " + subsetmax_indice + "]");
            
-                java.util.List<mierclasses.mccandle> candlesubset = candlessample.subList(0, subsetmax_indice);
                 
-                java.util.List<Double> bidask = telappai.msapicomms.receberlastbidaskofflinetradingsample();
-                bidsample = bidask.get(0);
-                asksample = bidask.get(1);
-                quantidadebasesample = Double.valueOf(jTextFieldBaseAmount.getText());
-                quantidadequotesample = Double.valueOf(jTextFieldQuoteAmount.getText());
-                feecomprasample = Double.valueOf(jTextFieldBuyFee.getText());
-                feevendasample = Double.valueOf(jTextFieldSellFee.getText());
+                //atualizar o subset de candles utilizado pela simulacao (neste caso o subset eh igual a todas as candles)
+                candlessimulacao = candlessample.subList(0, subsetmax_indice);
 
-                //funcao para repopular 
-                //mbcodeinterpreter = new mierclasses.mcbcindicatorinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode,this);
+                //atualizar bid ask antes de rodar script
+                otrader.atualizarbidask();
+
+                //repopular parametros e codigo do script
                 mcbctraderbot.atualizarscriptparametros(jTextAreaScript.getText(), jTextFieldParameters.getText());
-                //String result = mcbctraderbot.rodarscript(candlessample,true,mcjtah);
+                //rodar script
                 String result = mcbctraderbot.rodarscript
                 (
-                        candlesubset,
-                        quantidadebasesample, 
-                        quantidadequotesample, 
-                        bidsample,
-                        asksample,
-                        feecomprasample,
-                        feevendasample,
+                        candlessimulacao,
+                        otrader.quantidademoedabase, 
+                        otrader.quantidademoedacotacao, 
+                        otrader.melhorbid,
+                        otrader.melhorask,
+                        otrader.feecompra,
+                        otrader.feevenda,
                         true,
                         mcjtah
                 );
+                  
 
                 if (result.equals("ok"))
                 {
                     mcjtah.print("\n======\nOK");
+                    
+                    //considerando que o script rodou ok, caso auto trade esteja checado, rodar transacao automatica
+                    if (jCheckBoxAutoTrade.isSelected() == true)
+                    {
+                        String traderbot_move = (String)mcbctraderbot.respostatradermove_lastrun; 
+                        String traderbot_supportamount = String.valueOf(((double[]) mcbctraderbot.respostaquantidadesuporte_lastrun)[0]);
+                        rodarautotrade(traderbot_move,traderbot_supportamount);
+                    }
                 }
                 else
                 {
@@ -269,7 +322,7 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         
         //comecar criando o header do csv
         csvSave = csvSave + 
-                "First Timestamp (YYYY-MM-DD-HH-mm-ss);Last Timestamp (YYYY-MM-DD-HH-mm-ss);Last Close;Decision;Support Amount";
+                "First Timestamp (YYYY-MM-DD-HH-mm-ss);Last Timestamp (YYYY-MM-DD-HH-mm-ss);Last Close;Simulated Last Bid;Simulated Last Ask;Decision Now;Support Amount to Decision;Base Amount After Trade;Quote Amount After Trade;Total After Trade;Auto Trader Log (pt)";
         
         
         jTextAreaOutput.setText("");
@@ -277,37 +330,42 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         
         if (tiposimulacao.equals("once/all"))
         {
-            //rodar simulacao caso once/all
             jTextAreaOutput.setText("Simulation ONCE/ALL");
             
-            java.util.List<Double> bidask = telappai.msapicomms.receberlastbidaskofflinetradingsample();
-            bidsample = bidask.get(0);
-            asksample = bidask.get(1);
-            quantidadebasesample = Double.valueOf(jTextFieldBaseAmount.getText());
-            quantidadequotesample = Double.valueOf(jTextFieldQuoteAmount.getText());
-            feecomprasample = Double.valueOf(jTextFieldBuyFee.getText());
-            feevendasample = Double.valueOf(jTextFieldSellFee.getText());
+            //atualizar o subset de candles utilizado pela simulacao (neste caso o subset eh igual a todas as candles)
+            candlessimulacao = candlessample;
+            
+            //atualizar bid ask antes de rodar script
+            otrader.atualizarbidask();
 
-            //funcao para repopular 
-            //mbcodeinterpreter = new mierclasses.mcbcindicatorinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode,this);
+            //repopular parametros e codigo do script
             mcbctraderbot.atualizarscriptparametros(jTextAreaScript.getText(), jTextFieldParameters.getText());
-            //String result = mcbctraderbot.rodarscript(candlessample,true,mcjtah);
+            //rodar script
             String result = mcbctraderbot.rodarscript
             (
-                    candlessample,
-                    quantidadebasesample, 
-                    quantidadequotesample, 
-                    bidsample,
-                    asksample,
-                    feecomprasample,
-                    feevendasample,
+                    candlessimulacao,
+                    otrader.quantidademoedabase, 
+                    otrader.quantidademoedacotacao, 
+                    otrader.melhorbid,
+                    otrader.melhorask,
+                    otrader.feecompra,
+                    otrader.feevenda,
                     true,
                     mcjtah
             );
 
+            //string utilizada para log do trader
+            String ultimo_logtrade = "nao ativo";
             if (result.equals("ok"))
             {
                 mcjtah.print("\n======\nOK");
+                
+                if (jCheckBoxAutoTrade.isSelected() == true)
+                {
+                    String traderbot_move = (String)mcbctraderbot.respostatradermove_lastrun; 
+                    String traderbot_supportamount = String.valueOf(((double[]) mcbctraderbot.respostaquantidadesuporte_lastrun)[0]);
+                    ultimo_logtrade = rodarautotrade(traderbot_move,traderbot_supportamount);
+                }
             }
             else
             {
@@ -317,14 +375,19 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
             
             //adicionar o intervalo utilizado na planilha e o resultado da simulacao
 
-            String primeira_ts = retornartimestampcsv(candlessample.get(0).timestampdate);
-            String ultima_ts = retornartimestampcsv(candlessample.get(candlessample.size()-1).timestampdate);
-            String ultimo_close = String.valueOf(candlessample.get(candlessample.size()-1).closed);
+            String primeiro_ts = retornartimestampcsv(candlessimulacao.get(0).timestampdate);
+            String ultimo_ts = retornartimestampcsv(candlessimulacao.get(candlessimulacao.size()-1).timestampdate);
+            String ultimo_close = String.valueOf(candlessimulacao.get(candlessimulacao.size()-1).closed);
+            String ultimo_bid = String.valueOf(otrader.melhorbid);
+            String ultimo_ask = String.valueOf(otrader.melhorask);
             String traderbot_move = (String)mcbctraderbot.respostatradermove_lastrun; 
             String traderbot_supportamount = String.valueOf(((double[]) mcbctraderbot.respostaquantidadesuporte_lastrun)[0]);
-            
+            String postrade_baseamount = String.valueOf(otrader.quantidademoedabase);
+            String postrade_quoteamount = String.valueOf(otrader.quantidademoedacotacao);
+            String postrade_total = String.valueOf(otrader.totalfundos_moedacotacao());
             csvSave = csvSave + "\n" +
-                primeira_ts + ";" + ultima_ts + ";" + ultimo_close + ";" + traderbot_move + ";" + traderbot_supportamount;
+                primeiro_ts + ";" + ultimo_ts + ";" + ultimo_close + ";" + ultimo_bid + ";" + ultimo_ask + ";" + traderbot_move + ";" +
+                    traderbot_supportamount + ";" + postrade_baseamount + ";" + postrade_quoteamount + ";" + postrade_total + ";" + ultimo_logtrade;
                     
         }
         else
@@ -351,53 +414,60 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                 else
                     jTextAreaOutput.append("\n\nSimulation MULTIPLE/CANDLESSUBSET [0 to " + subsetmax_indice + "]");
            
-                java.util.List<mierclasses.mccandle> candlesubset = candlessample.subList(0, subsetmax_indice);
                 
-                java.util.List<Double> bidask = telappai.msapicomms.receberlastbidaskofflinetradingsample();
-                bidsample = bidask.get(0);
-                asksample = bidask.get(1);
-                quantidadebasesample = Double.valueOf(jTextFieldBaseAmount.getText());
-                quantidadequotesample = Double.valueOf(jTextFieldQuoteAmount.getText());
-                feecomprasample = Double.valueOf(jTextFieldBuyFee.getText());
-                feevendasample = Double.valueOf(jTextFieldSellFee.getText());
+                //atualizar o subset de candles utilizado pela simulacao (neste caso o subset eh igual a todas as candles)
+                candlessimulacao = candlessample.subList(0, subsetmax_indice);
 
-                //funcao para repopular 
-                //mbcodeinterpreter = new mierclasses.mcbcindicatorinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode,this);
+                //atualizar bid ask antes de rodar script
+                otrader.atualizarbidask();
+
+                //repopular parametros e codigo do script
                 mcbctraderbot.atualizarscriptparametros(jTextAreaScript.getText(), jTextFieldParameters.getText());
-                //String result = mcbctraderbot.rodarscript(candlessample,true,mcjtah);
+                //rodar script
                 String result = mcbctraderbot.rodarscript
                 (
-                        candlesubset,
-                        quantidadebasesample, 
-                        quantidadequotesample, 
-                        bidsample,
-                        asksample,
-                        feecomprasample,
-                        feevendasample,
+                        candlessimulacao,
+                        otrader.quantidademoedabase, 
+                        otrader.quantidademoedacotacao, 
+                        otrader.melhorbid,
+                        otrader.melhorask,
+                        otrader.feecompra,
+                        otrader.feevenda,
                         true,
                         mcjtah
                 );
+                  
 
+                String ultimo_logtrade = "nao ativo";
                 if (result.equals("ok"))
                 {
                     mcjtah.print("\n======\nOK");
+                    
+                    if (jCheckBoxAutoTrade.isSelected() == true)
+                    {
+                    String traderbot_move = (String)mcbctraderbot.respostatradermove_lastrun; 
+                    String traderbot_supportamount = String.valueOf(((double[]) mcbctraderbot.respostaquantidadesuporte_lastrun)[0]);
+                    ultimo_logtrade = rodarautotrade(traderbot_move,traderbot_supportamount);
+                    }
                 }
                 else
                 {
                     mcjtah.print("\n======\n" + "Exception: " + result);
                 }
                 
-                 //adicionar o intervalo utilizado na planilha e o resultado da simulacao
-                 
-                String primeira_ts = retornartimestampcsv(candlesubset.get(0).timestampdate);
-                String ultima_ts = retornartimestampcsv(candlesubset.get(candlesubset.size()-1).timestampdate);
-                String ultimo_close = String.valueOf(candlesubset.get(candlesubset.size()-1).closed);
-                String traderbot_move = (String)mcbctraderbot.respostatradermove_lastrun; 
-                String traderbot_supportamount = String.valueOf(((double[]) mcbctraderbot.respostaquantidadesuporte_lastrun)[0]);
-            
-                csvSave = csvSave + "\n" +
-                    primeira_ts + ";" + ultima_ts + ";" + ultimo_close + ";" + traderbot_move + ";" + traderbot_supportamount;
-            }
+                      String primeiro_ts = retornartimestampcsv(candlessimulacao.get(0).timestampdate);
+            String ultimo_ts = retornartimestampcsv(candlessimulacao.get(candlessimulacao.size()-1).timestampdate);
+            String ultimo_close = String.valueOf(candlessimulacao.get(candlessimulacao.size()-1).closed);
+            String ultimo_bid = String.valueOf(otrader.melhorbid);
+            String ultimo_ask = String.valueOf(otrader.melhorask);
+            String traderbot_move = (String)mcbctraderbot.respostatradermove_lastrun; 
+            String traderbot_supportamount = String.valueOf(((double[]) mcbctraderbot.respostaquantidadesuporte_lastrun)[0]);
+            String postrade_baseamount = String.valueOf(otrader.quantidademoedabase);
+            String postrade_quoteamount = String.valueOf(otrader.quantidademoedacotacao);
+            String postrade_total = String.valueOf(otrader.totalfundos_moedacotacao());
+            csvSave = csvSave + "\n" +
+                primeiro_ts + ";" + ultimo_ts + ";" + ultimo_close + ";" + ultimo_bid + ";" + ultimo_ask + ";" + traderbot_move + ";" +
+                    traderbot_supportamount + ";" + postrade_baseamount + ";" + postrade_quoteamount + ";" + postrade_total + ";" + ultimo_logtrade;    }
         }
         
         try
@@ -539,6 +609,7 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         jLabelSimulationInterval = new javax.swing.JLabel();
         jTextFieldSimulationInterval = new javax.swing.JTextField();
         jLabelCandlesDataSize = new javax.swing.JLabel();
+        jCheckBoxAutoTrade = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Bearcode Trader Bot Editor");
@@ -651,7 +722,7 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
 
         jTextFieldBaseAmount.setBackground(new java.awt.Color(0, 0, 0));
         jTextFieldBaseAmount.setForeground(new java.awt.Color(255, 255, 255));
-        jTextFieldBaseAmount.setText("1000");
+        jTextFieldBaseAmount.setText("0");
         jTextFieldBaseAmount.setCaretColor(new java.awt.Color(125, 125, 125));
 
         jLabelBaseAmount.setForeground(new java.awt.Color(255, 255, 255));
@@ -662,7 +733,7 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
 
         jTextFieldQuoteAmount.setBackground(new java.awt.Color(0, 0, 0));
         jTextFieldQuoteAmount.setForeground(new java.awt.Color(255, 255, 255));
-        jTextFieldQuoteAmount.setText("15550");
+        jTextFieldQuoteAmount.setText("100000");
         jTextFieldQuoteAmount.setCaretColor(new java.awt.Color(125, 125, 125));
 
         jButtonTestRunExportcsv.setForeground(new java.awt.Color(0, 0, 255));
@@ -685,6 +756,10 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
 
         jLabelCandlesDataSize.setForeground(new java.awt.Color(255, 255, 255));
         jLabelCandlesDataSize.setText("Candles Data Size:");
+
+        jCheckBoxAutoTrade.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBoxAutoTrade.setSelected(true);
+        jCheckBoxAutoTrade.setText("Auto Trade");
 
         javax.swing.GroupLayout jPanelPaiLayout = new javax.swing.GroupLayout(jPanelPai);
         jPanelPai.setLayout(jPanelPaiLayout);
@@ -719,33 +794,34 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
                         .addGap(0, 52, Short.MAX_VALUE)
-                        .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
-                                .addComponent(jLabelSimulationInterval)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextFieldSimulationInterval, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonTestRun)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButtonTestRunExportcsv))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
-                                .addComponent(jLabelCandlesDataSize)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabelBuyFee)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextFieldBuyFee, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(jLabelSellFee)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextFieldSellFee, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabelBaseAmount)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextFieldBaseAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabelQuoteAmount)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextFieldQuoteAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(jLabelCandlesDataSize)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelBuyFee)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextFieldBuyFee, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(jLabelSellFee)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextFieldSellFee, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelBaseAmount)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextFieldBaseAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelQuoteAmount)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextFieldQuoteAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabelSimulationInterval)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldSimulationInterval, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jCheckBoxAutoTrade)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonTestRun)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonTestRunExportcsv)))
                 .addContainerGap())
         );
         jPanelPaiLayout.setVerticalGroup(
@@ -783,7 +859,8 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                     .addComponent(jButtonTestRun)
                     .addComponent(jLabelSimulationInterval)
                     .addComponent(jButtonTestRunExportcsv)
-                    .addComponent(jTextFieldSimulationInterval, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldSimulationInterval, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCheckBoxAutoTrade))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelOutput)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -829,6 +906,7 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
 
     private void jButtonTestRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTestRunActionPerformed
         rodarsimulacao();
+        atualizarinformacoes_offlinetrader_para_editor();
     }//GEN-LAST:event_jButtonTestRunActionPerformed
 
     private void jTextFieldBuyFeeActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jTextFieldBuyFeeActionPerformed
@@ -839,6 +917,7 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
     private void jButtonTestRunExportcsvActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonTestRunExportcsvActionPerformed
     {//GEN-HEADEREND:event_jButtonTestRunExportcsvActionPerformed
         rodarsimulacaoeexportar();
+        atualizarinformacoes_offlinetrader_para_editor();
     }//GEN-LAST:event_jButtonTestRunExportcsvActionPerformed
 
     /**
@@ -889,6 +968,7 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
     private javax.swing.JButton jButtonSaveFile;
     private javax.swing.JButton jButtonTestRun;
     private javax.swing.JButton jButtonTestRunExportcsv;
+    private javax.swing.JCheckBox jCheckBoxAutoTrade;
     private javax.swing.JLabel jLabelBaseAmount;
     private javax.swing.JLabel jLabelBuyFee;
     private javax.swing.JLabel jLabelCandlesDataSize;
