@@ -79,14 +79,25 @@ public class analisadorasset extends javax.swing.JPanel
     
     //timer para atualizar dados do asset automaticamente
     java.util.TimerTask timeratualizardados;
+    java.util.Timer timer_timeratualizardados;
     void setartimeratualizacao()
     {
         String tempotimer = jComboBoxTempoAtualizacao.getSelectedItem().toString();
         
+        try
+        {
+            timeratualizardados.cancel();
+            timer_timeratualizardados.cancel();
+            timeratualizardados = null;
+            timer_timeratualizardados = null;
+        }
+        catch (Exception ex)
+        {}
+        
+
         if (tempotimer.equals("Off") == true)
         {
             //nao ligar timer
-            timeratualizardados = null;
             atualizardadosasset();
         }
         else
@@ -138,8 +149,7 @@ public class analisadorasset extends javax.swing.JPanel
                     atualizardadosasset();
                 }
             };
-            java.util.Timer timer_timeratualizardados = new java.util.Timer("timeratualizardados");
-
+            timer_timeratualizardados = new java.util.Timer("timeratualizardados");
             //apos atualizar o timer, ja realizar uma atualizacao um segundo depois
             timer_timeratualizardados.scheduleAtFixedRate(timeratualizardados, 100L, period);
         }
@@ -596,10 +606,10 @@ public class analisadorasset extends javax.swing.JPanel
                         .addComponent(jLabelUltimaAtualizacao)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabelTimer)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabelTempoAtualizacao)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBoxTempoAtualizacao, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBoxTempoAtualizacao, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
         );
         jPanelEscolherSubmoduloLayout.setVerticalGroup(
