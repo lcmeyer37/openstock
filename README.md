@@ -6,9 +6,9 @@ Open Source Technical Analysis and Offline Trading Software
 ## About
 Open Stock is a project [licensed under GNU GPLv3](https://github.com/lcmeyer37/openstock/blob/master/LICENSE), being created making use of NetBeans and Java. Some of its features include:
 
-![Chart](example1.png)
-![Offline Trader](example2.png)
-![Bot Editor and Simulator](example3.png)
+![Chart](exampleim1.png)
+![Offline Trader](exampleim2.png)
+![Bot Editor and Simulator](exampleim3.png)
 
 - [x] Real-time data for multiple assets: stocks, dividends, indexes, cryptocurrency
 - [x] Possibility to analyze multiple charts at the same time
