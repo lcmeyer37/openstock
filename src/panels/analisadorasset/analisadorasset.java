@@ -158,10 +158,10 @@ public class analisadorasset extends javax.swing.JPanel
              
     public void atualizardadosasset()
     {
+        jLabelUltimaAtualizacao.setText("Updated at " + new java.util.Date(System.currentTimeMillis()));
         //funcao para recarregar dados dos submodulos relacionados a este asset
         subgrafico.recarregardadossubmoduloofflinetrader(false);
         subtrader.recarregardadossubmoduloofflinetrader();
-        jLabelUltimaAtualizacao.setText("Updated at " + new java.util.Date(System.currentTimeMillis()));
     }
     // </editor-fold>
     

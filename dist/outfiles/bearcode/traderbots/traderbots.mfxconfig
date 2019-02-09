@@ -13,4 +13,10 @@
         <BearcodeFile>macdtrader.bearcode</BearcodeFile>
     </Traderbot>
 
+    <Traderbot>
+        <BCID>macdfulltrader</BCID>
+        <Name>MACD Full Trader</Name>
+        <BearcodeFile>macdfulltrader.bearcode</BearcodeFile>
+    </Traderbot>
+
 </OpenstockTraderbots>

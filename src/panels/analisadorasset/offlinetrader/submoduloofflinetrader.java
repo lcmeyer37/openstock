@@ -70,7 +70,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         otrader.recriarofflinetrader(aassetpai.assetsimbolo);
         
         //o usuario pode alterar os parametros do trader bot quando desativado
-        jTextFieldParametrosTraderbot.setEditable(false);
+        jTextFieldParametrosTraderbot.setEditable(true);
             
         //popular o trader bot pela primeira vez com primeiro script disponivel
         popularcomboboxtraderbotsdisponiveis();
@@ -479,8 +479,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
             //o usuario pode alterar os parametros do trader bot quando desativado
             jTextFieldParametrosTraderbot.setEditable(false);
             
-            //repopular o trader bot
-            popularcomboboxtraderbotsdisponiveis();
+            //pegar a opcao escolhida pelo usuario para o traderbot e iniciar o codigo
             String tbotselecionadostring = (String)jComboBoxScriptAtualTraderbot.getSelectedItem();
             String idbc = (tbotselecionadostring.split("\\[")[1]).split("\\]")[0];
             String parametrosbc = jTextFieldParametrosTraderbot.getText();
@@ -507,7 +506,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
             {
                 candlesrunanterior = candlesusar;
                 
-                mcbctradingbot.rodarscript
+                String statusrodarscript = mcbctradingbot.rodarscript
                     (
                         candlesrunanterior,
                         otrader.quantidademoedabase, 
@@ -520,59 +519,73 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                         null
                     );
 
-                String traderbot_move = (String)mcbctradingbot.respostatradermove_lastrun; 
-                double traderbot_supportamount = ((double[]) mcbctradingbot.respostaquantidadesuporte_lastrun)[0];
-                
-                if (traderbot_move.equals("hold"))
+                if (statusrodarscript.equals("ok") == true)
                 {
-                    //significa que nada deve ser feito
-                    jLabelTraderbot.setText("Trader Bot Controller (last decision: HOLD)");
-                }
-                else if (traderbot_move.equals("buyall"))
-                {
-                    //quer dizer que o bot deve comprar o maximo de moeda base que puder
-                    if(jCheckBoxAutoTrade.isSelected() == true)
-                        realizarcompratudo(false);
+                    String traderbot_move = "";
+                    double traderbot_supportamount = 0.0;
+                    try
+                    {
+                        traderbot_move = (String)mcbctradingbot.respostatradermove_lastrun; 
+                        traderbot_supportamount = ((double[]) mcbctradingbot.respostaquantidadesuporte_lastrun)[0];
+                    }
+                    catch(Exception ex){}
+
+                    if (traderbot_move.equals("hold"))
+                    {
+                        //significa que nada deve ser feito
+                        jLabelTraderbot.setText("Trader Bot Controller (last decision: HOLD)");
+                    }
+                    else if (traderbot_move.equals("buyall"))
+                    {
+                        //quer dizer que o bot deve comprar o maximo de moeda base que puder
+                        if(jCheckBoxAutoTrade.isSelected() == true)
+                            realizarcompratudo(false);
+
+                        jLabelTraderbot.setText("Trader Bot Controller (last decision: BUY ALL)");
+                    }
+                    else if (traderbot_move.equals("sellall"))
+                    {
+                        //quer dizer que o bot deve vender o maximo de moeda base que puder
+                        if(jCheckBoxAutoTrade.isSelected() == true)
+                            realizarvendatudo(false);
+
+                        jLabelTraderbot.setText("Trader Bot Controller (last decision: SELL ALL)");
+                    }
+                    else if (traderbot_move.equals("buyamount"))
+                    {
+                        //significa que o bot deve comprar uma quantidade especifica de moeda base
+                        if(jCheckBoxAutoTrade.isSelected() == true)
+                            realizarcompra(traderbot_supportamount,false);   
+
+                        jLabelTraderbot.setText("Trader Bot Controller (last decision: BUY AMOUNT " + traderbot_supportamount + ")");
+                    }
+                    else if (traderbot_move.equals("sellamount"))
+                    {
+                        //significa que o bot deve comprar uma quantidade especifica de moeda base
+                        if(jCheckBoxAutoTrade.isSelected() == true)
+                            realizarvenda(traderbot_supportamount,false); 
+
+                        jLabelTraderbot.setText("Trader Bot Controller (last decision: SELL AMOUNT " + traderbot_supportamount + ")");
+                    }
                     
-                    jLabelTraderbot.setText("Trader Bot Controller (last decision: BUY ALL)");
+                    //verificar envio de comunicacao via telegram
+                    //uma mensagem sera enviada via telegram caso a nova move seja diferente da move anterior
+                    if ((traderbot_moveanterior.equals(traderbot_move) == false) && (jCheckBoxSendTelegram.isSelected() == true))
+                    {
+                        String mensagemenviar = 
+                                aassetpai.iaassetpai.jLabelNomeAnalisadorAsset.getText() + " (" + aassetpai.assetsimbolo + "): " + "[" + traderbot_move.toUpperCase() + " " + traderbot_supportamount + "]" +
+                                " Current Base: " + String.valueOf(otrader.quantidademoedabase) + 
+                                " Current Quote: " + String.valueOf(otrader.quantidademoedacotacao) + " Total: " + String.valueOf(otrader.totalfundos_moedacotacao());
+
+                        aassetpai.iaassetpai.tprincipalpai.mstelegramcomms.enviarmensagemtelegramcombot(mensagemenviar);
+                    }
+                    traderbot_moveanterior = traderbot_move;
                 }
-                else if (traderbot_move.equals("sellall"))
+                else if (statusrodarscript.equals("ok") == false)
                 {
-                    //quer dizer que o bot deve vender o maximo de moeda base que puder
-                    if(jCheckBoxAutoTrade.isSelected() == true)
-                        realizarvendatudo(false);
-                    
-                    jLabelTraderbot.setText("Trader Bot Controller (last decision: SELL ALL)");
+                    jLabelTraderbot.setText("Trader Bot Controller (ERROR)");
                 }
-                else if (traderbot_move.equals("buyamount"))
-                {
-                    //significa que o bot deve comprar uma quantidade especifica de moeda base
-                    if(jCheckBoxAutoTrade.isSelected() == true)
-                        realizarcompra(traderbot_supportamount,false);   
-                    
-                    jLabelTraderbot.setText("Trader Bot Controller (last decision: BUY AMOUNT)");
-                }
-                else if (traderbot_move.equals("sellamount"))
-                {
-                    //significa que o bot deve comprar uma quantidade especifica de moeda base
-                    if(jCheckBoxAutoTrade.isSelected() == true)
-                        realizarvenda(traderbot_supportamount,false); 
-                    
-                    jLabelTraderbot.setText("Trader Bot Controller (last decision: SELL AMOUNT)");
-                }
-                
-                //verificar envio de comunicacao via telegram
-                //uma mensagem sera enviada via telegram caso a nova move seja diferente da move anterior
-                if ((traderbot_moveanterior.equals(traderbot_move) == false) && (jCheckBoxSendTelegram.isSelected() == true))
-                {
-                    String mensagemenviar = 
-                            aassetpai.iaassetpai.jLabelNomeAnalisadorAsset.getText() + " (" + aassetpai.assetsimbolo + "): " + "[" + traderbot_move.toUpperCase() + " " + traderbot_supportamount + "]" +
-                            " Current Base: " + String.valueOf(otrader.quantidademoedabase) + 
-                            " Current Quote: " + String.valueOf(otrader.quantidademoedacotacao) + " Total: " + String.valueOf(otrader.totalfundos_moedacotacao());
-                            
-                    aassetpai.iaassetpai.tprincipalpai.mstelegramcomms.enviarmensagemtelegramcombot(mensagemenviar);
-                }
-                traderbot_moveanterior = traderbot_move;
+
                 
             }
             
@@ -1148,7 +1161,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jLabelScriptAtualTraderbot1.setForeground(new java.awt.Color(255, 255, 255));
         jLabelScriptAtualTraderbot1.setText("Parameters:");
 
-        jTextFieldParametrosTraderbot.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jTextFieldParametrosTraderbot.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         jTextFieldParametrosTraderbot.addCaretListener(new javax.swing.event.CaretListener()
         {
             public void caretUpdate(javax.swing.event.CaretEvent evt)

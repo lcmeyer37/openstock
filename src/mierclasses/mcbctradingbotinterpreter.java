@@ -166,11 +166,11 @@ public class mcbctradingbotinterpreter
 
             try
             {
-                respostatradermove_lastrun = engine.get("tradermove");  
+                respostatradermove_lastrun = engine.get("tradermove");
             }
             catch (Exception e)
             {
-                //ignorar caso null etc
+                //
             }
             
             try
@@ -179,7 +179,7 @@ public class mcbctradingbotinterpreter
             }
             catch (Exception e)
             {
-                //ignorar caso null etc
+                //
             }
         }
         catch (Exception ex)
