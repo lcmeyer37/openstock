@@ -147,11 +147,33 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         if (candlessample == null)
         {
             jLabelCandlesDataStatus.setText("Current Data: (none)");
+            
+            jComboBoxMinInterval.removeAllItems();
+            jComboBoxMinInterval.addItem("(unavailable)");
+            jComboBoxMaxInterval.removeAllItems();
+            jComboBoxMaxInterval.addItem("(unavailable)");
+            jComboBoxMinInterval.setSelectedIndex(0);
+            jComboBoxMaxInterval.setSelectedIndex(0);
+            
         }
         else
         {
             jLabelCandlesDataStatus.setText("Current Data: " + sourcesimboloescolhido + " [size: " + candlessample.size() + "]");
-            jTextFieldSimulationInterval.setText(candlessample.size() + "-" + candlessample.size());
+            
+            jComboBoxMinInterval.removeAllItems();
+            jComboBoxMaxInterval.removeAllItems();
+            for (int i = 1; i < candlessample.size(); i++)
+            {
+                //i comeca de 1, porque eh necessario no minimo a candle em 0 para fazer o intervalo de 0 a 1
+                //o min tambem deve sempre ser um valor <= ao maximo
+                
+                mierclasses.mccandle candleatual = candlessample.get(i);
+                
+                jComboBoxMinInterval.addItem(candleatual.timestampdate.toString() + " (" + (i) + ")");
+                jComboBoxMaxInterval.addItem(candleatual.timestampdate.toString() + " (" + (i) + ")");
+            }
+            jComboBoxMinInterval.setSelectedIndex(jComboBoxMinInterval.getItemCount()-1);
+            jComboBoxMaxInterval.setSelectedIndex(jComboBoxMinInterval.getItemCount()-1);
         }
         
     }
@@ -201,8 +223,11 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         
         jTextAreaOutput.setText("");
 
-        Integer numerominimo_sim = Integer.valueOf(jTextFieldSimulationInterval.getText().split("-")[0]);
-        Integer numeromaximo_sim = Integer.valueOf(jTextFieldSimulationInterval.getText().split("-")[1]);
+        
+        String minescolhido = jComboBoxMinInterval.getSelectedItem().toString();
+        String maxescolhido = jComboBoxMaxInterval.getSelectedItem().toString();
+        Integer numerominimo_sim = Integer.valueOf(((minescolhido.split("\\(")[1]).split("\\)"))[0]);
+        Integer numeromaximo_sim = Integer.valueOf(((maxescolhido.split("\\(")[1]).split("\\)"))[0]);
 
         Integer numero_de_simulacoes = numeromaximo_sim - numerominimo_sim + 1;
 
@@ -570,8 +595,6 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         jLabelQuoteAmount = new javax.swing.JLabel();
         jTextFieldQuoteAmount = new javax.swing.JTextField();
         jButtonTestRunExportcsv = new javax.swing.JButton();
-        jLabelSimulationInterval = new javax.swing.JLabel();
-        jTextFieldSimulationInterval = new javax.swing.JTextField();
         jCheckBoxAutoTrade = new javax.swing.JCheckBox();
         jPanelChooseDataSimulator = new javax.swing.JPanel();
         jComboBoxPeriodoSimbolo = new javax.swing.JComboBox<>();
@@ -580,6 +603,9 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         jLabelNomeSimbolo = new javax.swing.JLabel();
         jLabelCandlesDataStatus = new javax.swing.JLabel();
         jButtonRecarregarCandlesData = new javax.swing.JButton();
+        jComboBoxMinInterval = new javax.swing.JComboBox<>();
+        jComboBoxMaxInterval = new javax.swing.JComboBox<>();
+        jLabelBuyFee1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Bot Editor and Simulator");
@@ -716,14 +742,6 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
             }
         });
 
-        jLabelSimulationInterval.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelSimulationInterval.setText("Simulation Interval:");
-
-        jTextFieldSimulationInterval.setBackground(new java.awt.Color(0, 0, 0));
-        jTextFieldSimulationInterval.setForeground(new java.awt.Color(255, 255, 255));
-        jTextFieldSimulationInterval.setText("1-1");
-        jTextFieldSimulationInterval.setCaretColor(new java.awt.Color(125, 125, 125));
-
         jCheckBoxAutoTrade.setBackground(new java.awt.Color(55, 55, 55));
         jCheckBoxAutoTrade.setForeground(new java.awt.Color(255, 255, 255));
         jCheckBoxAutoTrade.setSelected(true);
@@ -794,6 +812,13 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                 .addContainerGap(7, Short.MAX_VALUE))
         );
 
+        jComboBoxMinInterval.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "(unavailable)" }));
+
+        jComboBoxMaxInterval.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "(unavailable)" }));
+
+        jLabelBuyFee1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelBuyFee1.setText("Simulation Interval:");
+
         javax.swing.GroupLayout jPanelPaiLayout = new javax.swing.GroupLayout(jPanelPai);
         jPanelPai.setLayout(jPanelPaiLayout);
         jPanelPaiLayout.setHorizontalGroup(
@@ -822,19 +847,12 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                         .addComponent(jLabelParameters)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jTextFieldParameters))
+                    .addGroup(jPanelPaiLayout.createSequentialGroup()
+                        .addComponent(jLabelOutput)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
-                        .addGap(0, 128, Short.MAX_VALUE)
+                        .addGap(0, 34, Short.MAX_VALUE)
                         .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
-                                .addComponent(jLabelSimulationInterval)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextFieldSimulationInterval, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jCheckBoxAutoTrade)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButtonTestRun)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonTestRunExportcsv))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
                                 .addComponent(jLabelBuyFee)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -850,10 +868,19 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabelQuoteAmount)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextFieldQuoteAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanelPaiLayout.createSequentialGroup()
-                        .addComponent(jLabelOutput)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(jTextFieldQuoteAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
+                                .addComponent(jLabelBuyFee1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBoxMinInterval, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBoxMaxInterval, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jCheckBoxAutoTrade)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButtonTestRun)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonTestRunExportcsv)))))
                 .addContainerGap())
             .addComponent(jPanelChooseDataSimulator, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -890,10 +917,11 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonTestRun)
-                    .addComponent(jLabelSimulationInterval)
                     .addComponent(jButtonTestRunExportcsv)
-                    .addComponent(jTextFieldSimulationInterval, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBoxAutoTrade))
+                    .addComponent(jCheckBoxAutoTrade)
+                    .addComponent(jComboBoxMinInterval, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxMaxInterval, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelBuyFee1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelOutput)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1013,9 +1041,12 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
     private javax.swing.JButton jButtonTestRun;
     private javax.swing.JButton jButtonTestRunExportcsv;
     private javax.swing.JCheckBox jCheckBoxAutoTrade;
+    private javax.swing.JComboBox<String> jComboBoxMaxInterval;
+    private javax.swing.JComboBox<String> jComboBoxMinInterval;
     public javax.swing.JComboBox<String> jComboBoxPeriodoSimbolo;
     private javax.swing.JLabel jLabelBaseAmount;
     private javax.swing.JLabel jLabelBuyFee;
+    private javax.swing.JLabel jLabelBuyFee1;
     private javax.swing.JLabel jLabelCandlesDataStatus;
     private javax.swing.JLabel jLabelCaretPosition;
     private javax.swing.JLabel jLabelCurrentFile;
@@ -1026,7 +1057,6 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
     private javax.swing.JLabel jLabelQuoteAmount;
     private javax.swing.JLabel jLabelScript;
     private javax.swing.JLabel jLabelSellFee;
-    private javax.swing.JLabel jLabelSimulationInterval;
     private javax.swing.JLabel jLabelTestParameters3;
     private javax.swing.JPanel jPanelChooseDataSimulator;
     private javax.swing.JPanel jPanelPai;
@@ -1040,6 +1070,5 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
     private javax.swing.JTextField jTextFieldParameters;
     private javax.swing.JTextField jTextFieldQuoteAmount;
     private javax.swing.JTextField jTextFieldSellFee;
-    private javax.swing.JTextField jTextFieldSimulationInterval;
     // End of variables declaration//GEN-END:variables
 }
