@@ -88,14 +88,6 @@ public class mcbcindicatorinterpreter
 
             //adicionar candles do submodulo grafico ao script, e informacao de versao atual do bearcode
             candles_lastrun = candlesscript;
-            //reordenar a lista de candles por timestampdate
-            java.util.Collections.sort(candles_lastrun, new java.util.Comparator<mierclasses.mccandle>() 
-            {
-                public int compare(mierclasses.mccandle candleone, mierclasses.mccandle candletwo) 
-                {
-                    return candleone.timestampdate.compareTo(candletwo.timestampdate);
-                }
-            });
             engine.put("candles", candles_lastrun);
             String bcversion = "1.0a";
             engine.put("bearcodeversion", bcversion);

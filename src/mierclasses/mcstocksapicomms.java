@@ -158,6 +158,14 @@ public class mcstocksapicomms
             listacandlesretornar.add(candleatual);
         }
    
+        //reordernar lista de candles antes de retornar
+        java.util.Collections.sort(listacandlesretornar, new java.util.Comparator<mierclasses.mccandle>() 
+        {
+            public int compare(mierclasses.mccandle candleone, mierclasses.mccandle candletwo) 
+            {
+                return candleone.timestampdate.compareTo(candletwo.timestampdate);
+            }
+        });
         return listacandlesretornar;
     }
     
@@ -194,6 +202,14 @@ public class mcstocksapicomms
             listacandlesretornar.add(candleatual);
         }
    
+        //reordernar lista de candles antes de retornar
+        java.util.Collections.sort(listacandlesretornar, new java.util.Comparator<mierclasses.mccandle>() 
+        {
+            public int compare(mierclasses.mccandle candleone, mierclasses.mccandle candletwo) 
+            {
+                return candleone.timestampdate.compareTo(candletwo.timestampdate);
+            }
+        });
         return listacandlesretornar;
     }
     
@@ -230,6 +246,14 @@ public class mcstocksapicomms
             listacandlesretornar.add(candleatual);
         }
    
+        //reordernar lista de candles antes de retornar
+        java.util.Collections.sort(listacandlesretornar, new java.util.Comparator<mierclasses.mccandle>() 
+        {
+            public int compare(mierclasses.mccandle candleone, mierclasses.mccandle candletwo) 
+            {
+                return candleone.timestampdate.compareTo(candletwo.timestampdate);
+            }
+        });
         return listacandlesretornar;
     }
     
@@ -266,6 +290,14 @@ public class mcstocksapicomms
             listacandlesretornar.add(candleatual);
         }
    
+        //reordernar lista de candles antes de retornar
+        java.util.Collections.sort(listacandlesretornar, new java.util.Comparator<mierclasses.mccandle>() 
+        {
+            public int compare(mierclasses.mccandle candleone, mierclasses.mccandle candletwo) 
+            {
+                return candleone.timestampdate.compareTo(candletwo.timestampdate);
+            }
+        });
         return listacandlesretornar;
     }
     // </editor-fold>
@@ -431,6 +463,14 @@ public class mcstocksapicomms
             
         }
         
+        //reordernar lista de candles antes de retornar
+        java.util.Collections.sort(listacandlesretornar, new java.util.Comparator<mierclasses.mccandle>() 
+        {
+            public int compare(mierclasses.mccandle candleone, mierclasses.mccandle candletwo) 
+            {
+                return candleone.timestampdate.compareTo(candletwo.timestampdate);
+            }
+        });
         return listacandlesretornar;
         
     }
@@ -716,6 +756,14 @@ public class mcstocksapicomms
             
         }
         
+        //reordernar lista de candles antes de retornar
+        java.util.Collections.sort(listacandlesretornar, new java.util.Comparator<mierclasses.mccandle>() 
+        {
+            public int compare(mierclasses.mccandle candleone, mierclasses.mccandle candletwo) 
+            {
+                return candleone.timestampdate.compareTo(candletwo.timestampdate);
+            }
+        });
         return listacandlesretornar;
     }
     
@@ -822,7 +870,15 @@ public class mcstocksapicomms
             listacandlesretornar.add(candleadd);
             
         }
-        
+
+        //reordernar lista de candles antes de retornar
+        java.util.Collections.sort(listacandlesretornar, new java.util.Comparator<mierclasses.mccandle>() 
+        {
+            public int compare(mierclasses.mccandle candleone, mierclasses.mccandle candletwo) 
+            {
+                return candleone.timestampdate.compareTo(candletwo.timestampdate);
+            }
+        });        
         return listacandlesretornar;
     }
     
@@ -898,6 +954,14 @@ public class mcstocksapicomms
             
         }
         
+        //reordernar lista de candles antes de retornar
+        java.util.Collections.sort(listacandlesretornar, new java.util.Comparator<mierclasses.mccandle>() 
+        {
+            public int compare(mierclasses.mccandle candleone, mierclasses.mccandle candletwo) 
+            {
+                return candleone.timestampdate.compareTo(candletwo.timestampdate);
+            }
+        });
         return listacandlesretornar;
     }
     

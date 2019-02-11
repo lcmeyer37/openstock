@@ -169,8 +169,16 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                 
                 mierclasses.mccandle candleatual = candlessample.get(i);
                 
-                jComboBoxMinInterval.addItem(candleatual.timestampdate.toString() + " (" + (i) + ")");
-                jComboBoxMaxInterval.addItem(candleatual.timestampdate.toString() + " (" + (i) + ")");
+                String dataadicionar = 
+                        (candleatual.timestampdate.getMonth() + 1) + "/" +
+                        candleatual.timestampdate.getDate() + "/" +
+                        (candleatual.timestampdate.getYear() + 1900) + " " +
+                        candleatual.timestampdate.getHours()+ ":" +
+                        candleatual.timestampdate.getMinutes()+ ":" +
+                        candleatual.timestampdate.getSeconds();
+                        
+                jComboBoxMinInterval.addItem(dataadicionar + " (" + (i) + ")");
+                jComboBoxMaxInterval.addItem(dataadicionar + " (" + (i) + ")");
             }
             jComboBoxMinInterval.setSelectedIndex(jComboBoxMinInterval.getItemCount()-1);
             jComboBoxMaxInterval.setSelectedIndex(jComboBoxMinInterval.getItemCount()-1);
@@ -733,7 +741,7 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         jTextFieldQuoteAmount.setCaretColor(new java.awt.Color(125, 125, 125));
 
         jButtonTestRunExportcsv.setForeground(new java.awt.Color(0, 0, 255));
-        jButtonTestRunExportcsv.setText("Run and Export Results");
+        jButtonTestRunExportcsv.setText("Run and Export");
         jButtonTestRunExportcsv.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -809,7 +817,7 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                     .addComponent(jComboBoxPeriodoSimbolo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelCandlesDataStatus)
                     .addComponent(jButtonRecarregarCandlesData))
-                .addContainerGap(7, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jComboBoxMinInterval.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "(unavailable)" }));
@@ -817,7 +825,7 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         jComboBoxMaxInterval.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "(unavailable)" }));
 
         jLabelBuyFee1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelBuyFee1.setText("Simulation Interval:");
+        jLabelBuyFee1.setText("Interval:");
 
         javax.swing.GroupLayout jPanelPaiLayout = new javax.swing.GroupLayout(jPanelPai);
         jPanelPai.setLayout(jPanelPaiLayout);
@@ -851,7 +859,7 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                         .addComponent(jLabelOutput)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
-                        .addGap(0, 34, Short.MAX_VALUE)
+                        .addGap(0, 75, Short.MAX_VALUE)
                         .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
                                 .addComponent(jLabelBuyFee)
@@ -872,9 +880,9 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
                                 .addComponent(jLabelBuyFee1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBoxMinInterval, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jComboBoxMinInterval, 0, 194, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBoxMaxInterval, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jComboBoxMaxInterval, 0, 194, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jCheckBoxAutoTrade)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)

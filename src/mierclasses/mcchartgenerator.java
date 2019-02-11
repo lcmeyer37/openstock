@@ -724,6 +724,7 @@ public class mcchartgenerator
         chartpanelatual = chartpanel;
         //</editor-fold>
         //</editor-fold>
+    
     }
     
     public org.jfree.chart.ChartPanel retornarcpanelohlc()

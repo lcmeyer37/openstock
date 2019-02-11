@@ -160,7 +160,7 @@ public class analisadorasset extends javax.swing.JPanel
     {
         jLabelUltimaAtualizacao.setText("Updated at " + new java.util.Date(System.currentTimeMillis()));
         //funcao para recarregar dados dos submodulos relacionados a este asset
-        subgrafico.recarregardadossubmoduloofflinetrader(false);
+        subgrafico.recarregardadossubmodulografico(false);
         subtrader.recarregardadossubmoduloofflinetrader();
     }
     // </editor-fold>
@@ -411,7 +411,7 @@ public class analisadorasset extends javax.swing.JPanel
                 }
                 subgrafico.alternartipoescala(escalachart);
                 //se faz necessario criar novamente o submodulo grafico ao carregar
-                subgrafico.recarregardadossubmoduloofflinetrader(true);
+                subgrafico.recarregardadossubmodulografico(true);
                 // </editor-fold>
                 
                 // <editor-fold defaultstate="collapsed" desc="recarregar indicadores">

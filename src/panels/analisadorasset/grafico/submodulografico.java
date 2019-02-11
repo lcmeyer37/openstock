@@ -72,14 +72,14 @@ public class submodulografico extends javax.swing.JPanel
         
         //comecar mostrando dataset de teste e criar pela primeira vez o grafico
         jTextFieldNomeSimbolo.setText(aassetpai.assetsimbolo);
-        recarregardadossubmoduloofflinetrader(true);
+        recarregardadossubmodulografico(true);
         
         this.validate();
         this.repaint();
     }
     
     //funcao responsavel por criar o grafico com o simbolo e periodo desejado pela primeira vez
-    public void recarregardadossubmoduloofflinetrader(boolean resetaranotacoesindicadores)
+    public void recarregardadossubmodulografico(boolean resetaranotacoesindicadores)
     {
         //funcao para carregar submodulo grafico, pode ser necessario resetar anotacoes e indicadores
         
