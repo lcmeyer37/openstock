@@ -79,7 +79,7 @@ public class mcstocksapicomms
     }
     
     // <editor-fold defaultstate="collapsed" desc="Stock Time Series">
-    public java.util.List<mccandle> av_receberstockcandlesintraday(String simbolo, String intervalo)
+    public java.util.List<mccandle> av_receberstockcandlesintraday(String simbolo, String intervalo, String outputsize)
     {
                     /*
         {
@@ -107,7 +107,7 @@ public class mcstocksapicomms
         },
         */
         
-        String urlquery = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol="+simbolo+"&interval="+intervalo+"&outputsize=full&apikey=" + chavealphavantage;
+        String urlquery = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol="+simbolo+"&interval="+intervalo+"&outputsize="+outputsize+"&apikey=" + chavealphavantage;
         //mierclasses.mcfuncoeshelper.setarclipboard(urlquery);
         //mierclasses.mcfuncoeshelper.mostrarmensagem(urlquery);
         String jsonconteudo = mwcomms.receberconteudopagina(urlquery);
@@ -169,10 +169,13 @@ public class mcstocksapicomms
         return listacandlesretornar;
     }
     
-    public java.util.List<mccandle> av_receberstockcandlesdaily(String simbolo)
+    public java.util.List<mccandle> av_receberstockcandlesdaily(String simbolo, String outputsize)
     {
-        String jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="+simbolo+"&outputsize=full&apikey=" + chavealphavantage);
-
+        String urlquery = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="+simbolo+"&outputsize="+outputsize+"&apikey=" + chavealphavantage;
+        //mierclasses.mcfuncoeshelper.setarclipboard(urlquery);
+        //mierclasses.mcfuncoeshelper.mostrarmensagem(urlquery);
+        String jsonconteudo = mwcomms.receberconteudopagina(urlquery);
+        
         JSONObject obj = new JSONObject(jsonconteudo);
         
         String md_information = obj.getJSONObject("Meta Data").getString("1. Information");
@@ -216,8 +219,11 @@ public class mcstocksapicomms
     public java.util.List<mccandle> av_receberstockcandlesweekly(String simbolo)
     {
 
-        String jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol="+simbolo+"&outputsize=full&apikey=" + chavealphavantage);
-
+        String urlquery = "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol="+simbolo+"&apikey=" + chavealphavantage;
+        //mierclasses.mcfuncoeshelper.setarclipboard(urlquery);
+        //mierclasses.mcfuncoeshelper.mostrarmensagem(urlquery);
+        String jsonconteudo = mwcomms.receberconteudopagina(urlquery);
+        
         JSONObject obj = new JSONObject(jsonconteudo);
         
         String md_information = obj.getJSONObject("Meta Data").getString("1. Information");
@@ -260,7 +266,10 @@ public class mcstocksapicomms
     public java.util.List<mccandle> av_receberstockcandlesmonthly(String simbolo)
     {
 
-        String jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol="+simbolo+"&outputsize=full&apikey=" + chavealphavantage);
+        String urlquery = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol="+simbolo+"&apikey=" + chavealphavantage;
+        //mierclasses.mcfuncoeshelper.setarclipboard(urlquery);
+        //mierclasses.mcfuncoeshelper.mostrarmensagem(urlquery);
+        String jsonconteudo = mwcomms.receberconteudopagina(urlquery);
         
         JSONObject obj = new JSONObject(jsonconteudo);
         
@@ -303,7 +312,7 @@ public class mcstocksapicomms
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Forex Time Series">
-    public java.util.List<mccandle> av_receberforexcandlesintraday(String fromsimbolo, String tosimbolo, String intervalo)
+    public java.util.List<mccandle> av_receberforexcandlesintraday(String fromsimbolo, String tosimbolo, String intervalo, String outputsize)
     {
         /*
         {
@@ -335,7 +344,7 @@ public class mcstocksapicomms
                 },
         */
         
-        String urlquery = "https://www.alphavantage.co/query?function=FX_INTRADAY&from_symbol="+fromsimbolo+"&to_symbol="+tosimbolo+"&interval="+intervalo+"&outputsize=full&apikey=" + chavealphavantage;
+        String urlquery = "https://www.alphavantage.co/query?function=FX_INTRADAY&from_symbol="+fromsimbolo+"&to_symbol="+tosimbolo+"&interval="+intervalo+"&outputsize="+outputsize+"&apikey=" + chavealphavantage;
         //mierclasses.mcfuncoeshelper.setarclipboard(urlquery);
         //mierclasses.mcfuncoeshelper.mostrarmensagem(urlquery);
         String jsonconteudo = mwcomms.receberconteudopagina(urlquery);
@@ -397,10 +406,13 @@ public class mcstocksapicomms
         return listacandlesretornar;
     }
     
-    public java.util.List<mccandle> av_receberforexcandlesdaily(String fromsimbolo, String tosimbolo)
+    public java.util.List<mccandle> av_receberforexcandlesdaily(String fromsimbolo, String tosimbolo, String outputsize)
     {
-        String jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=FX_DAILY&from_symbol="+fromsimbolo+"&to_symbol="+tosimbolo+"&outputsize=full&apikey=" + chavealphavantage);
-
+        String urlquery = "https://www.alphavantage.co/query?function=FX_DAILY&from_symbol="+fromsimbolo+"&to_symbol="+tosimbolo+"&outputsize="+outputsize+"&apikey=" + chavealphavantage;
+        //mierclasses.mcfuncoeshelper.setarclipboard(urlquery);
+        //mierclasses.mcfuncoeshelper.mostrarmensagem(urlquery);
+        String jsonconteudo = mwcomms.receberconteudopagina(urlquery);
+        
         JSONObject obj = new JSONObject(jsonconteudo);
         
         String md_information = obj.getJSONObject("Meta Data").getString("1. Information");
@@ -442,8 +454,11 @@ public class mcstocksapicomms
     
     public java.util.List<mccandle> av_receberforexcandlesweekly(String fromsimbolo, String tosimbolo)
     {
-        String jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=FX_WEEKLY&from_symbol="+fromsimbolo+"&to_symbol="+tosimbolo+"&outputsize=full&apikey=" + chavealphavantage);
-
+        String urlquery = "https://www.alphavantage.co/query?function=FX_WEEKLY&from_symbol="+fromsimbolo+"&to_symbol="+tosimbolo+"&apikey=" + chavealphavantage;
+        //mierclasses.mcfuncoeshelper.setarclipboard(urlquery);
+        //mierclasses.mcfuncoeshelper.mostrarmensagem(urlquery);
+        String jsonconteudo = mwcomms.receberconteudopagina(urlquery);
+        
         JSONObject obj = new JSONObject(jsonconteudo);
         
         String md_information = obj.getJSONObject("Meta Data").getString("1. Information");
@@ -484,8 +499,11 @@ public class mcstocksapicomms
     
     public java.util.List<mccandle> av_receberforexcandlesmonthly(String fromsimbolo, String tosimbolo)
     {
-        String jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=FX_MONTHLY&from_symbol="+fromsimbolo+"&to_symbol="+tosimbolo+"&outputsize=full&apikey=" + chavealphavantage);
-
+        String urlquery = "https://www.alphavantage.co/query?function=FX_MONTHLY&from_symbol="+fromsimbolo+"&to_symbol="+tosimbolo+"&apikey=" + chavealphavantage;
+        //mierclasses.mcfuncoeshelper.setarclipboard(urlquery);
+        //mierclasses.mcfuncoeshelper.mostrarmensagem(urlquery);
+        String jsonconteudo = mwcomms.receberconteudopagina(urlquery);
+        
         JSONObject obj = new JSONObject(jsonconteudo);
         
         String md_information = obj.getJSONObject("Meta Data").getString("1. Information");

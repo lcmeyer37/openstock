@@ -107,18 +107,30 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
             } 
             else if (((sourcesimboloescolhido.split(":")[0]).toLowerCase()).equals("avs"))
             {
-                if (periodoescolhido.equals("1 minute"))
-                    candles = telappai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"1min");
-                else if (periodoescolhido.equals("5 minutes"))
-                    candles = telappai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"5min");
-                else if (periodoescolhido.equals("15 minutes"))
-                    candles = telappai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"15min");
-                else if (periodoescolhido.equals("30 minutes"))
-                    candles = telappai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"30min");
-                else if (periodoescolhido.equals("60 minutes"))
-                    candles = telappai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"60min");
-                else if (periodoescolhido.equals("Daily"))
-                    candles = telappai.msapicomms.av_receberstockcandlesdaily((sourcesimboloescolhido.split(":")[1]));
+                if (periodoescolhido.equals("1 minute (Compact)"))
+                    candles = telappai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"1min","compact");
+                else if (periodoescolhido.equals("1 minute (Full)"))
+                    candles = telappai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"1min","full");
+                else if (periodoescolhido.equals("5 minutes (Compact)"))
+                    candles = telappai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"5min","compact");
+                else if (periodoescolhido.equals("5 minutes (Full)"))
+                    candles = telappai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"5min","full");
+                else if (periodoescolhido.equals("15 minutes (Compact)"))
+                    candles = telappai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"15min","compact");
+                else if (periodoescolhido.equals("15 minutes (Full)"))
+                    candles = telappai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"15min","full");
+                else if (periodoescolhido.equals("30 minutes (Compact)"))
+                    candles = telappai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"30min","compact");
+                else if (periodoescolhido.equals("30 minutes (Full)"))
+                    candles = telappai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"30min","full");
+                else if (periodoescolhido.equals("60 minutes (Compact)"))
+                    candles = telappai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"60min","compact");
+                else if (periodoescolhido.equals("60 minutes (Full)"))
+                    candles = telappai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"60min","full");
+                else if (periodoescolhido.equals("Daily (Compact)"))
+                    candles = telappai.msapicomms.av_receberstockcandlesdaily((sourcesimboloescolhido.split(":")[1]),"compact");
+                 else if (periodoescolhido.equals("Daily (Full)"))
+                    candles = telappai.msapicomms.av_receberstockcandlesdaily((sourcesimboloescolhido.split(":")[1]),"full");
                 else if (periodoescolhido.equals("Weekly"))
                     candles = telappai.msapicomms.av_receberstockcandlesweekly((sourcesimboloescolhido.split(":")[1]));
                 else if (periodoescolhido.equals("Monthly"))
@@ -130,18 +142,30 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                 String fromsimbolo = (simbolo.split("\\.")[0]);
                 String tosimbolo = (simbolo.split("\\.")[1]);
 
-                if (periodoescolhido.equals("1 minute"))
-                    candles = telappai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"1min");
-                else if (periodoescolhido.equals("5 minutes"))
-                    candles = telappai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"5min");
-                else if (periodoescolhido.equals("15 minutes"))
-                    candles = telappai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"15min");
-                else if (periodoescolhido.equals("30 minutes"))
-                    candles = telappai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"30min");
-                else if (periodoescolhido.equals("60 minutes"))
-                    candles = telappai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"60min");
-                else if (periodoescolhido.equals("Daily"))
-                    candles = telappai.msapicomms.av_receberforexcandlesdaily(fromsimbolo,tosimbolo);
+                if (periodoescolhido.equals("1 minute (Compact)"))
+                    candles = telappai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"1min","compact");
+                else if (periodoescolhido.equals("1 minute (Full)"))
+                    candles = telappai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"1min","full");
+                else if (periodoescolhido.equals("5 minutes (Compact)"))
+                    candles = telappai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"5min","compact");
+                else if (periodoescolhido.equals("5 minutes (Full)"))
+                    candles = telappai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"5min","full");
+                else if (periodoescolhido.equals("15 minutes (Compact)"))
+                    candles = telappai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"15min","compact");
+                else if (periodoescolhido.equals("15 minutes (Full)"))
+                    candles = telappai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"15min","full");
+                else if (periodoescolhido.equals("30 minutes (Compact)"))
+                    candles = telappai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"30min","compact");
+                else if (periodoescolhido.equals("30 minutes (Full)"))
+                    candles = telappai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"30min","full");
+                else if (periodoescolhido.equals("60 minutes (Compact)"))
+                    candles = telappai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"60min","compact");
+                else if (periodoescolhido.equals("60 minutes (Full)"))
+                    candles = telappai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"60min","full");
+                else if (periodoescolhido.equals("Daily (Compact)"))
+                    candles = telappai.msapicomms.av_receberforexcandlesdaily(fromsimbolo,tosimbolo,"compact");
+                else if (periodoescolhido.equals("Daily (Full)"))
+                    candles = telappai.msapicomms.av_receberforexcandlesdaily(fromsimbolo,tosimbolo,"full");
                 else if (periodoescolhido.equals("Weekly"))
                     candles = telappai.msapicomms.av_receberforexcandlesweekly(fromsimbolo,tosimbolo);
                 else if (periodoescolhido.equals("Monthly"))
@@ -181,7 +205,7 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         }
         else
         {
-            jLabelCandlesDataStatus.setText("Current Data: " + sourcesimboloescolhido + " [size: " + candlessample.size() + "]");
+            jLabelCandlesDataStatus.setText("Current Data: " + sourcesimboloescolhido.toUpperCase() + " (size: " + candlessample.size() + ")");
             
             jComboBoxMinInterval.removeAllItems();
             jComboBoxMaxInterval.removeAllItems();
@@ -536,7 +560,8 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
             return "";
         }
     }
-        public void atualizaropcoescomboboxperiodo()
+    
+    public void atualizaropcoescomboboxperiodo()
     {
         //dependendo da source, iex, av, etc, o periodo muda na lista de periodos disponiveis
         String textoatualsimbolo = jTextFieldNomeSimbolo.getText();
@@ -563,23 +588,35 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
             }
             else if (((textoatualsimbolo.split(":")[0]).toLowerCase()).equals("avs"))
             {                
-                jComboBoxPeriodoSimbolo.addItem("1 minute");
-                jComboBoxPeriodoSimbolo.addItem("5 minutes");
-                jComboBoxPeriodoSimbolo.addItem("15 minutes");
-                jComboBoxPeriodoSimbolo.addItem("30 minutes");
-                jComboBoxPeriodoSimbolo.addItem("60 minutes");
-                jComboBoxPeriodoSimbolo.addItem("Daily");
+                 jComboBoxPeriodoSimbolo.addItem("1 minute (Compact)");
+                jComboBoxPeriodoSimbolo.addItem("1 minute (Full)");
+                jComboBoxPeriodoSimbolo.addItem("5 minutes (Compact)");
+                jComboBoxPeriodoSimbolo.addItem("5 minutes (Full)");
+                jComboBoxPeriodoSimbolo.addItem("15 minutes (Compact)");
+                jComboBoxPeriodoSimbolo.addItem("15 minutes (Full)");
+                jComboBoxPeriodoSimbolo.addItem("30 minutes (Compact)");
+                jComboBoxPeriodoSimbolo.addItem("30 minutes (Full)");
+                jComboBoxPeriodoSimbolo.addItem("60 minutes (Compact)");
+                jComboBoxPeriodoSimbolo.addItem("60 minutes (Full)");
+                jComboBoxPeriodoSimbolo.addItem("Daily (Compact)");
+                jComboBoxPeriodoSimbolo.addItem("Daily (Full)");
                 jComboBoxPeriodoSimbolo.addItem("Weekly");
                 jComboBoxPeriodoSimbolo.addItem("Monthly");
             }
             else if (((textoatualsimbolo.split(":")[0]).toLowerCase()).equals("avfx"))
             {                
-                jComboBoxPeriodoSimbolo.addItem("1 minute");
-                jComboBoxPeriodoSimbolo.addItem("5 minutes");
-                jComboBoxPeriodoSimbolo.addItem("15 minutes");
-                jComboBoxPeriodoSimbolo.addItem("30 minutes");
-                jComboBoxPeriodoSimbolo.addItem("60 minutes");
-                jComboBoxPeriodoSimbolo.addItem("Daily");
+                 jComboBoxPeriodoSimbolo.addItem("1 minute (Compact)");
+                jComboBoxPeriodoSimbolo.addItem("1 minute (Full)");
+                jComboBoxPeriodoSimbolo.addItem("5 minutes (Compact)");
+                jComboBoxPeriodoSimbolo.addItem("5 minutes (Full)");
+                jComboBoxPeriodoSimbolo.addItem("15 minutes (Compact)");
+                jComboBoxPeriodoSimbolo.addItem("15 minutes (Full)");
+                jComboBoxPeriodoSimbolo.addItem("30 minutes (Compact)");
+                jComboBoxPeriodoSimbolo.addItem("30 minutes (Full)");
+                jComboBoxPeriodoSimbolo.addItem("60 minutes (Compact)");
+                jComboBoxPeriodoSimbolo.addItem("60 minutes (Full)");
+                jComboBoxPeriodoSimbolo.addItem("Daily (Compact)");
+                jComboBoxPeriodoSimbolo.addItem("Daily (Full)");
                 jComboBoxPeriodoSimbolo.addItem("Weekly");
                 jComboBoxPeriodoSimbolo.addItem("Monthly");
             }
