@@ -65,12 +65,12 @@ public class mcstocksapicomms
             //mierclasses.mcfuncoeshelper.mostrarmensagem(bm_symbol + " - " + bm_name + " (" + bm_type + ")");
             if ((bm_symbol.toLowerCase()).contains(parametrobusca.toLowerCase()))
             {
-                String simboloadd = "AV:" + bm_symbol + " - " + bm_name + " (" + bm_type + ")";
+                String simboloadd = "AVS:" + bm_symbol + " - " + bm_name + " (" + bm_type + ")";
                 listasimbolosencontrada.add(simboloadd);
             }
             else if ((bm_name.toLowerCase()).contains(parametrobusca.toLowerCase()))
             {
-                String simboloadd = "AV:" + bm_symbol + " - " + bm_name + " (" + bm_type + ")";
+                String simboloadd = "AVS:" + bm_symbol + " - " + bm_name + " (" + bm_type + ")";
                 listasimbolosencontrada.add(simboloadd);
             }
         }
