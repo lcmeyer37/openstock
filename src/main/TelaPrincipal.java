@@ -80,7 +80,7 @@ public class TelaPrincipal extends javax.swing.JFrame
             try
             {
                 String alphavantagekey = document.getElementsByTagName("AVKEY").item(0).getTextContent();
-                msapicomms.alterarchaveav(alphavantagekey);
+                msapicomms.av_alterarchaveapi(alphavantagekey);
             }
             catch (Exception e) 
             {
@@ -90,7 +90,7 @@ public class TelaPrincipal extends javax.swing.JFrame
             try
             {
                 String cryptocomparekey = document.getElementsByTagName("CCKEY").item(0).getTextContent();
-                msapicomms.alterarchavecc(cryptocomparekey);
+                msapicomms.crycom_alterarchaveapi(cryptocomparekey);
             }
             catch (Exception e) 
             {

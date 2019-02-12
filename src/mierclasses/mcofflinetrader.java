@@ -68,7 +68,7 @@ public class mcofflinetrader
     {
         if (tipopai.equals("submoduloofflinetrader") == true)
         {
-            java.util.List<Double> bidask = submodulooftraderpai.aassetpai.iaassetpai.tprincipalpai.msapicomms.receberlastbidaskofflinetrading(submodulooftraderpai.aassetpai.subgrafico.mcg.candlesatual);
+            java.util.List<Double> bidask = submodulooftraderpai.aassetpai.iaassetpai.tprincipalpai.msapicomms.offline_simularbidaskcandles(submodulooftraderpai.aassetpai.subgrafico.mcg.candlesatual);
             double bid = bidask.get(0);
             double ask = bidask.get(1);
             
@@ -78,7 +78,7 @@ public class mcofflinetrader
         else if (tipopai.equals("editorbearcodetraderbot") == true)
         {
             
-            java.util.List<Double> bidask = editorbctraderbotpai.telappai.msapicomms.receberlastbidaskofflinetrading(editorbctraderbotpai.candlessimulacao);
+            java.util.List<Double> bidask = editorbctraderbotpai.telappai.msapicomms.offline_simularbidaskcandles(editorbctraderbotpai.candlessimulacao);
             double bid = bidask.get(0);
             double ask = bidask.get(1);
             

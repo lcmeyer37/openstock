@@ -27,18 +27,18 @@ public class mcstocksapicomms
     
     // <editor-fold defaultstate="collapsed" desc="Alpha Vantage API">
     String chavealphavantage = "";
-    public void alterarchaveav(String novachaveav)
+    public void av_alterarchaveapi(String novachaveav)
     {
         chavealphavantage = novachaveav;
     }
     
-    public void testecomunicacaoav()
+    public void av_testarcomms()
     {
         String conteudopagina = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=" + chavealphavantage);
         mierclasses.mcfuncoeshelper.mostrarmensagem(conteudopagina);
     }
     
-    public java.util.List<String> receberlistasimbolosavprocura(String parametrobusca)
+    public java.util.List<String> av_procurarsimbolo(String parametrobusca)
     {
         String jsonconteudo = "";
         jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords="+parametrobusca+"&apikey=" + chavealphavantage);
@@ -79,7 +79,7 @@ public class mcstocksapicomms
     }
     
     // <editor-fold defaultstate="collapsed" desc="Stock Time Series">
-    public java.util.List<mccandle> receberstockcandlesintraday(String simbolo, String intervalo)
+    public java.util.List<mccandle> av_receberstockcandlesintraday(String simbolo, String intervalo)
     {
                     /*
         {
@@ -169,7 +169,7 @@ public class mcstocksapicomms
         return listacandlesretornar;
     }
     
-    public java.util.List<mccandle> receberstockcandlesdaily(String simbolo)
+    public java.util.List<mccandle> av_receberstockcandlesdaily(String simbolo)
     {
         String jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="+simbolo+"&outputsize=full&apikey=" + chavealphavantage);
 
@@ -213,7 +213,7 @@ public class mcstocksapicomms
         return listacandlesretornar;
     }
     
-    public java.util.List<mccandle> receberstockcandlesweekly(String simbolo)
+    public java.util.List<mccandle> av_receberstockcandlesweekly(String simbolo)
     {
 
         String jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol="+simbolo+"&outputsize=full&apikey=" + chavealphavantage);
@@ -257,7 +257,7 @@ public class mcstocksapicomms
         return listacandlesretornar;
     }
     
-    public java.util.List<mccandle> receberstockcandlesmonthly(String simbolo)
+    public java.util.List<mccandle> av_receberstockcandlesmonthly(String simbolo)
     {
 
         String jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol="+simbolo+"&outputsize=full&apikey=" + chavealphavantage);
@@ -302,16 +302,240 @@ public class mcstocksapicomms
     }
     // </editor-fold>
     
+    // <editor-fold defaultstate="collapsed" desc="Forex Time Series">
+    public java.util.List<mccandle> av_receberforexcandlesintraday(String fromsimbolo, String tosimbolo, String intervalo)
+    {
+        /*
+        {
+            "Meta Data": 
+            {
+                "1. Information": "FX Intraday (5min) Time Series",
+                "2. From Symbol": "USD",
+                "3. To Symbol": "BRL",
+                "4. Last Refreshed": "2019-02-12 17:55:00",
+                "5. Interval": "5min",
+                "6. Output Size": "Compact",
+                "7. Time Zone": "UTC"
+            },
+            "Time Series FX (5min)": 
+            {
+                "2019-02-12 17:55:00": 
+                {
+                    "1. open": "3.7119",
+                    "2. high": "3.7128",
+                    "3. low": "3.7114",
+                    "4. close": "3.7124"
+                },
+                "2019-02-12 17:50:00": 
+                {
+                    "1. open": "3.7154",
+                    "2. high": "3.7161",
+                    "3. low": "3.7116",
+                    "4. close": "3.7125"
+                },
+        */
+        
+        String urlquery = "https://www.alphavantage.co/query?function=FX_INTRADAY&from_symbol="+fromsimbolo+"&to_symbol="+tosimbolo+"&interval="+intervalo+"&outputsize=full&apikey=" + chavealphavantage;
+        //mierclasses.mcfuncoeshelper.setarclipboard(urlquery);
+        //mierclasses.mcfuncoeshelper.mostrarmensagem(urlquery);
+        String jsonconteudo = mwcomms.receberconteudopagina(urlquery);
+        
+        JSONObject obj = new JSONObject(jsonconteudo);
+        
+        String md_information = obj.getJSONObject("Meta Data").getString("1. Information");
+        String md_fromsymbol = obj.getJSONObject("Meta Data").getString("2. From Symbol");
+        String md_tosymbol = obj.getJSONObject("Meta Data").getString("3. To Symbol");
+        String md_lastrefreshed = obj.getJSONObject("Meta Data").getString("4. Last Refreshed");
+        String md_interval = obj.getJSONObject("Meta Data").getString("5. Interval");
+        String md_outputsize = obj.getJSONObject("Meta Data").getString("6. Output Size");
+        String md_timezone = obj.getJSONObject("Meta Data").getString("7. Time Zone");
+
+
+        JSONObject candlesjson = obj.getJSONObject("Time Series FX (" +intervalo+ ")");
+        JSONArray candlesjsontimestamparray = candlesjson.names();
+        
+        
+        java.util.List<mccandle> listacandlesretornar = new java.util.ArrayList<>();
+        
+        for (int i = 0; i < candlesjsontimestamparray.length(); i++)
+        {
+            String timestampcandleoriginal = candlesjsontimestamparray.getString(i);
+            
+            //System.out.println(timestampcandle);
+            
+            String opencandle = candlesjson.getJSONObject(timestampcandleoriginal).getString("1. open");
+            //System.out.println(opencandle);
+            String highcandle = candlesjson.getJSONObject(timestampcandleoriginal).getString("2. high");
+            String lowcandle = candlesjson.getJSONObject(timestampcandleoriginal).getString("3. low");
+            String closecandle = candlesjson.getJSONObject(timestampcandleoriginal).getString("4. close");
+            
+            String data = timestampcandleoriginal.split(" ")[0];
+            String ano = data.split("-")[0];
+            String mes = data.split("-")[1];
+            String dia = data.split("-")[2];
+            
+            String horario = timestampcandleoriginal.split(" ")[1];
+            String hora = horario.split(":")[0];
+            String minuto = horario.split(":")[1];
+            String segundo = horario.split(":")[2];
+            
+            String timestampcandleparaclasse = ano + "-" + mes + "-" + dia + "-" + hora + "-" + minuto + "-" + segundo;
+            
+            // public mccandle(String tsstr, String ostr, String hstr, String cstr, String lstr, String vstr)
+            mccandle candleatual = new mccandle(timestampcandleparaclasse,opencandle,highcandle,closecandle,lowcandle,"0");
+            listacandlesretornar.add(candleatual);
+        }
+   
+        //reordernar lista de candles antes de retornar
+        java.util.Collections.sort(listacandlesretornar, new java.util.Comparator<mierclasses.mccandle>() 
+        {
+            public int compare(mierclasses.mccandle candleone, mierclasses.mccandle candletwo) 
+            {
+                return candleone.timestampdate.compareTo(candletwo.timestampdate);
+            }
+        });
+        return listacandlesretornar;
+    }
+    
+    public java.util.List<mccandle> av_receberforexcandlesdaily(String fromsimbolo, String tosimbolo)
+    {
+        String jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=FX_DAILY&from_symbol="+fromsimbolo+"&to_symbol="+tosimbolo+"&outputsize=full&apikey=" + chavealphavantage);
+
+        JSONObject obj = new JSONObject(jsonconteudo);
+        
+        String md_information = obj.getJSONObject("Meta Data").getString("1. Information");
+        String md_fromsymbol = obj.getJSONObject("Meta Data").getString("2. From Symbol");
+        String md_tosymbol = obj.getJSONObject("Meta Data").getString("3. To Symbol");
+        String md_outputsize = obj.getJSONObject("Meta Data").getString("4. Output Size");
+        String md_lastrefreshed = obj.getJSONObject("Meta Data").getString("5. Last Refreshed");
+        String md_timezone = obj.getJSONObject("Meta Data").getString("6. Time Zone");
+
+        JSONObject candlesjson = obj.getJSONObject("Time Series FX (Daily)");
+        JSONArray candlesjsontimestamparray = candlesjson.names();
+        
+        
+        java.util.List<mccandle> listacandlesretornar = new java.util.ArrayList<>();
+        
+        for (int i = 0; i < candlesjsontimestamparray.length(); i++)
+        {
+            String timestampcandle = candlesjsontimestamparray.getString(i);
+            
+            String opencandle = candlesjson.getJSONObject(timestampcandle).getString("1. open");
+            String highcandle = candlesjson.getJSONObject(timestampcandle).getString("2. high");
+            String lowcandle = candlesjson.getJSONObject(timestampcandle).getString("3. low");
+            String closecandle = candlesjson.getJSONObject(timestampcandle).getString("4. close");
+            
+            mccandle candleatual = new mccandle(timestampcandle,opencandle,highcandle,closecandle,lowcandle,"0");
+            listacandlesretornar.add(candleatual);
+        }
+   
+        //reordernar lista de candles antes de retornar
+        java.util.Collections.sort(listacandlesretornar, new java.util.Comparator<mierclasses.mccandle>() 
+        {
+            public int compare(mierclasses.mccandle candleone, mierclasses.mccandle candletwo) 
+            {
+                return candleone.timestampdate.compareTo(candletwo.timestampdate);
+            }
+        });
+        return listacandlesretornar;
+    }
+    
+    public java.util.List<mccandle> av_receberforexcandlesweekly(String fromsimbolo, String tosimbolo)
+    {
+        String jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=FX_WEEKLY&from_symbol="+fromsimbolo+"&to_symbol="+tosimbolo+"&outputsize=full&apikey=" + chavealphavantage);
+
+        JSONObject obj = new JSONObject(jsonconteudo);
+        
+        String md_information = obj.getJSONObject("Meta Data").getString("1. Information");
+        String md_fromsymbol = obj.getJSONObject("Meta Data").getString("2. From Symbol");
+        String md_tosymbol = obj.getJSONObject("Meta Data").getString("3. To Symbol");
+        String md_lastrefreshed = obj.getJSONObject("Meta Data").getString("4. Last Refreshed");
+        String md_timezone = obj.getJSONObject("Meta Data").getString("5. Time Zone");
+
+        JSONObject candlesjson = obj.getJSONObject("Time Series FX (Weekly)");
+        JSONArray candlesjsontimestamparray = candlesjson.names();
+        
+        
+        java.util.List<mccandle> listacandlesretornar = new java.util.ArrayList<>();
+        
+        for (int i = 0; i < candlesjsontimestamparray.length(); i++)
+        {
+            String timestampcandle = candlesjsontimestamparray.getString(i);
+            
+            String opencandle = candlesjson.getJSONObject(timestampcandle).getString("1. open");
+            String highcandle = candlesjson.getJSONObject(timestampcandle).getString("2. high");
+            String lowcandle = candlesjson.getJSONObject(timestampcandle).getString("3. low");
+            String closecandle = candlesjson.getJSONObject(timestampcandle).getString("4. close");
+            
+            mccandle candleatual = new mccandle(timestampcandle,opencandle,highcandle,closecandle,lowcandle,"0");
+            listacandlesretornar.add(candleatual);
+        }
+   
+        //reordernar lista de candles antes de retornar
+        java.util.Collections.sort(listacandlesretornar, new java.util.Comparator<mierclasses.mccandle>() 
+        {
+            public int compare(mierclasses.mccandle candleone, mierclasses.mccandle candletwo) 
+            {
+                return candleone.timestampdate.compareTo(candletwo.timestampdate);
+            }
+        });
+        return listacandlesretornar;
+    }
+    
+    public java.util.List<mccandle> av_receberforexcandlesmonthly(String fromsimbolo, String tosimbolo)
+    {
+        String jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=FX_MONTHLY&from_symbol="+fromsimbolo+"&to_symbol="+tosimbolo+"&outputsize=full&apikey=" + chavealphavantage);
+
+        JSONObject obj = new JSONObject(jsonconteudo);
+        
+        String md_information = obj.getJSONObject("Meta Data").getString("1. Information");
+        String md_fromsymbol = obj.getJSONObject("Meta Data").getString("2. From Symbol");
+        String md_tosymbol = obj.getJSONObject("Meta Data").getString("3. To Symbol");
+        String md_lastrefreshed = obj.getJSONObject("Meta Data").getString("4. Last Refreshed");
+        String md_timezone = obj.getJSONObject("Meta Data").getString("5. Time Zone");
+
+        JSONObject candlesjson = obj.getJSONObject("Time Series FX (Monthly)");
+        JSONArray candlesjsontimestamparray = candlesjson.names();
+        
+        
+        java.util.List<mccandle> listacandlesretornar = new java.util.ArrayList<>();
+        
+        for (int i = 0; i < candlesjsontimestamparray.length(); i++)
+        {
+            String timestampcandle = candlesjsontimestamparray.getString(i);
+            
+            String opencandle = candlesjson.getJSONObject(timestampcandle).getString("1. open");
+            String highcandle = candlesjson.getJSONObject(timestampcandle).getString("2. high");
+            String lowcandle = candlesjson.getJSONObject(timestampcandle).getString("3. low");
+            String closecandle = candlesjson.getJSONObject(timestampcandle).getString("4. close");
+            
+            mccandle candleatual = new mccandle(timestampcandle,opencandle,highcandle,closecandle,lowcandle,"0");
+            listacandlesretornar.add(candleatual);
+        }
+   
+        //reordernar lista de candles antes de retornar
+        java.util.Collections.sort(listacandlesretornar, new java.util.Comparator<mierclasses.mccandle>() 
+        {
+            public int compare(mierclasses.mccandle candleone, mierclasses.mccandle candletwo) 
+            {
+                return candleone.timestampdate.compareTo(candletwo.timestampdate);
+            }
+        });
+        return listacandlesretornar;
+    }
+    
+    // </editor-fold>
+    
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="CryptoCompare API">
     String chavecryptocompare = "";
-    public void alterarchavecc(String novachavecc)
+    public void crycom_alterarchaveapi(String novachavecc)
     {
         chavecryptocompare = novachavecc;
     }
     
-     public java.util.List<String> receberlistasimboloscryptocompareprocura(String parametrobusca)
+     public java.util.List<String> crycom_procurarsimbolo(String parametrobusca)
     {
         /*
         {
@@ -411,7 +635,7 @@ public class mcstocksapicomms
         return listasimbolosencontrada;
     }
     
-    public java.util.List<mccandle> recebercryptochartusd(String simbolo, String limite, String periodo)
+    public java.util.List<mccandle> crycom_recebercryptocandles(String simbolo, String limite, String periodo)
     {
         
         String caminhourl = "";
@@ -478,13 +702,13 @@ public class mcstocksapicomms
     
     // <editor-fold defaultstate="collapsed" desc="IEX API">
     
-    public void testecomunicacaoiex()
+    public void iex_testarcomms()
     {
         String conteudopagina = mwcomms.receberconteudopagina("https://api.iextrading.com/1.0/stock/aapl/chart/5y");
         mierclasses.mcfuncoeshelper.mostrarmensagem(conteudopagina);
     }
     
-    public java.util.List<String> receberlistasimbolosiexprocura(String parametrobusca)
+    public java.util.List<String> iex_procurarsimbolo(String parametrobusca)
     {
         //funcao para retornar uma lista de simbolos encontrados para o parametro de busca em questao
         
@@ -656,7 +880,7 @@ public class mcstocksapicomms
     
     // <editor-fold defaultstate="collapsed" desc="Stocks - Chart">
     
-    public java.util.List<mccandle> receberstockchartwithoutminutes(String simbolo, String periodo)
+    public java.util.List<mccandle> iex_receberstockcandleswithoutminutes(String simbolo, String periodo)
     {
         /*
         [
@@ -767,7 +991,7 @@ public class mcstocksapicomms
         return listacandlesretornar;
     }
     
-    public java.util.List<mccandle> receberstockchartwithminutes(String simbolo, String periodo)
+    public java.util.List<mccandle> iex_receberstockcandleswithminutes(String simbolo, String periodo)
     {
         /*
         [
@@ -883,44 +1107,13 @@ public class mcstocksapicomms
     }
     
     // </editor-fold>
-    
-    // <editor-fold defaultstate="collapsed" desc="Stocks - Quote">
-    public mcquote receberquote(String simbolo)
-    {
-        //funcao para receber informacoes de quote de um simbolo especifico
-        String jsonconteudo = mwcomms.receberconteudopagina("https://api.iextrading.com/1.0/stock/"+simbolo+"/quote");
 
-        
-        JSONObject quoteobject = new JSONObject(jsonconteudo);
-        String qjson_symbol = quoteobject.getString("symbol");
-        String qjson_cname = quoteobject.getString("companyName");
-        String qjson_open = String.valueOf(quoteobject.getDouble("open"));
-        String qjson_opentime = String.valueOf(quoteobject.getLong("openTime"));
-        String qjson_close = String.valueOf(quoteobject.getDouble("close"));
-        String qjson_closetime = String.valueOf(quoteobject.getLong("closeTime"));
-        String qjson_high = String.valueOf(quoteobject.getDouble("high"));
-        String qjson_low = String.valueOf(quoteobject.getDouble("low"));
-        String qjson_lvolume = String.valueOf(quoteobject.getLong("latestVolume"));
-        String qjon_pclose = String.valueOf(quoteobject.getDouble("previousClose"));
-        
-        mierclasses.mcquote mcquoteretornar = new mierclasses.mcquote
-            (
-                qjson_symbol, qjson_cname, qjson_open, 
-                qjson_opentime, qjson_close, qjson_closetime, 
-                qjson_high, qjson_low, qjson_lvolume, qjon_pclose
-            );
-        
-        
-        return mcquoteretornar;
-    }
-    //</editor-fold>
-    
     // </editor-fold> 
     
     // <editor-fold defaultstate="collapsed" desc="OFFLINE VALUES">
     
     //the values returned by these functions are not real and used for offline trading and testing only 
-    public java.util.List<mccandle> receberstockchartsample()
+    public java.util.List<mccandle> offline_receberstockcandlessample()
     {
         //funcao para entregar lista de cadles de exemplo
         String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
@@ -965,7 +1158,7 @@ public class mcstocksapicomms
         return listacandlesretornar;
     }
     
-    public java.util.List<Double> receberlastbidaskofflinetrading(java.util.List<mierclasses.mccandle> candlesatual)
+    public java.util.List<Double> offline_simularbidaskcandles(java.util.List<mierclasses.mccandle> candlesatual)
     {
         //funcao para estimar um valor de ask e bid para o simbolo atual, para testar o trader bot
         //mierclasses.mcquote quote = receberquote(simbolo);

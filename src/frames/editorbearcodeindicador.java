@@ -39,7 +39,7 @@ public class editorbearcodeindicador extends javax.swing.JFrame
         
         telappai = tppai;
         mcbcindicador = new mierclasses.mcbcindicatorinterpreter("testbcindicator", "Teste Indicator", "", "");
-        candlessample = tppai.msapicomms.receberstockchartsample();
+        candlessample = tppai.msapicomms.offline_receberstockcandlessample();
         mcjtah = new mierclasses.mcjtextareahandler(jTextAreaOutput);
         
         resetarscripteditor();
