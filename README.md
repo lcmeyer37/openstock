@@ -10,7 +10,7 @@ Open Stock is a project [licensed under GNU GPLv3](https://github.com/lcmeyer37/
 ![Offline Trader](exampleim2.png)
 ![Bot Editor and Simulator](exampleim3.png)
 
-- [x] Real-time data for multiple assets: stocks, dividends, indexes, cryptocurrency
+- [x] Real-time data for multiple assets: stocks, dividends, indexes, forex, cryptocurrency
 - [x] Possibility to analyze multiple charts at the same time
 - [x] Use of Annotations and Indicators for Technical Analysis
 - [x] Use of Robots to test automatic Algorithmic Trading 
