@@ -2,7 +2,7 @@
 
 First of all, thank you for reading this document and to consider contributing to Open Stock.
 
-Please take a look at the [issues page](https://github.com/lcmeyer37/openstock/issues) to check for new problems that you might find interesting to solve. And if you have a new idea, first discuss it in this same page, and check if your proposed changes are relevant to the other contributors and users of this repository. 
+Please take a look at the [issues page](https://github.com/lcmeyer37/openstock/issues) to check for new problems that you might find interesting to solve. And if you have a new idea, first discuss it in this page, and check if your proposed changes are relevant to the other contributors and users of this repository. 
 
 Please note we have a [Code of Conduct](CODE_OF_CONDUCT.md). Please follow this document as well as you interact with the project.
 
