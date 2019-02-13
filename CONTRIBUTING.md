@@ -8,9 +8,9 @@ Please note we have a [Code of Conduct](CODE_OF_CONDUCT.md). Please follow this 
 
 ## Pull Request Process
 
-1. Ensure any unhelpful or unnecessary files are removed from your local git clone before starting.
-2. Update the README.md with details of changes to the interface, this includes new environment variables, exposed ports, useful file locations and container parameters.
-3. You may merge the Pull Request in once you have the sign-off of the owner or other three contributors. In case you do not have permission to do this process, contact the owner.
+1. Ensure any unhelpful or unnecessary files are removed from your fork before starting.
+2. Update the README.md on your fork with details of changes to the interface, this includes new environment variables, exposed ports, useful file locations and container parameters.
+3. You may create a Pull Request for the master once you have finished commiting to your own fork. In case you have permission to merge or commit directly to master, you may do so only with the sign-off of the owner or three other contributors that also have this permission.
 
 Commands: 
 * git add [relevant_files]
