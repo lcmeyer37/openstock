@@ -1,4 +1,4 @@
-# About
+# Contributing
 
 First of all, thank you for reading this document and to consider contributing to Open Stock.
 
@@ -6,7 +6,7 @@ Please take a look at the [issues page](https://github.com/lcmeyer37/openstock/i
 
 Please note we have a [Code of Conduct](CODE_OF_CONDUCT.md). Please follow this document as well as you interact with the project.
 
-## Contribution Process
+## Contribution Process Steps
 
 1. Create a fork of the project.
 2. Make all the changes on the files of your fork that you find relevant.
