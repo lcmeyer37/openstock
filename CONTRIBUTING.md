@@ -1,4 +1,4 @@
-# Contributing
+# About
 
 First of all, thank you for reading this document and to consider contributing to Open Stock.
 
@@ -6,11 +6,13 @@ Please take a look at the [issues page](https://github.com/lcmeyer37/openstock/i
 
 Please note we have a [Code of Conduct](CODE_OF_CONDUCT.md). Please follow this document as well as you interact with the project.
 
-## Pull Request Process
+## Contribution Process
 
-1. Ensure any unhelpful or unnecessary files are removed from your fork before starting.
-2. Update the README.md on your fork with details of changes to the interface, this includes new environment variables, exposed ports, useful file locations and container parameters.
-3. You may create a Pull Request for the master once you have finished commiting to your own fork. In case you have permission to merge or commit directly to master, you may do so only with the sign-off of the owner or three other contributors that also have this permission.
+1. Create a fork of the project.
+2. Make all the changes on the files of your fork that you find relevant.
+3. Ensure any unhelpful or unnecessary files are removed from your fork.
+4. Update the README.md on your fork, adding or removing information from it in comparison to the current README.md from  the master branch, and new changes you made on the contents of your fork repository.
+5. Create a new Pull Request for the master branch. In case you have permission to merge or commit directly to master, you may do so only with the sign-off of the owner or three other contributors that also have these permissions.
 
 Commands: 
 * git add [relevant_files]
