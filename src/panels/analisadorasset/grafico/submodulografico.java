@@ -712,7 +712,7 @@ public class submodulografico extends javax.swing.JPanel
             String csvSave = "";
             
             //comecar escrevendo header do documento
-            csvSave = csvSave + "Timestamp (YYYY-MM-DD-HH-mm-ss);Open;High;Low;Close;Volume";
+            csvSave = csvSave + "Timestamp;Date;Hour;Open;High;Low;Close;Volume";
             for (int j = 0; j < jPanelIndicadores.getComponentCount(); j++)
             {
                 panels.analisadorasset.grafico.itemindicador indicadoratual = (panels.analisadorasset.grafico.itemindicador)jPanelIndicadores.getComponent(j);
@@ -729,12 +729,22 @@ public class submodulografico extends javax.swing.JPanel
                 mierclasses.mccandle candleatual = candles.get(i);
                 
                 java.util.Date timestampatual = candleatual.timestampdate;
-                String timestampstring = 
+                String timestamp =  
                         (timestampatual.getYear()+1900) + "-" + 
                         (timestampatual.getMonth()+1) + "-" + 
                         timestampatual.getDate() + "-" + 
                         timestampatual.getHours() + "-" +
                         timestampatual.getMinutes()+ "-" +
+                        timestampatual.getSeconds();
+                
+                String nomdate =  
+                        (timestampatual.getMonth()+1) + "/" + 
+                        timestampatual.getDate() + "/" + 
+                        (timestampatual.getYear()+1900);
+                        
+                String nomhour = 
+                        timestampatual.getHours() + ":" +
+                        timestampatual.getMinutes()+ ":" +
                         timestampatual.getSeconds();
                 
                 double openatual = candleatual.opend;
@@ -743,7 +753,7 @@ public class submodulografico extends javax.swing.JPanel
                 double closeatual = candleatual.closed;
                 double volumeatual = candleatual.volumed;
                 
-                csvSave = csvSave + timestampstring + ";" + String.valueOf(openatual)+ ";" + String.valueOf(highatual)+ ";" + String.valueOf(lowatual)+ ";" + String.valueOf(closeatual)+ ";" + String.valueOf(volumeatual);
+                csvSave = csvSave + timestamp + ";" + nomdate + ";" + nomhour + ";" + String.valueOf(openatual)+ ";" + String.valueOf(highatual)+ ";" + String.valueOf(lowatual)+ ";" + String.valueOf(closeatual)+ ";" + String.valueOf(volumeatual);
                 
                 for (int j = 0; j < jPanelIndicadores.getComponentCount(); j++)
                 {
@@ -1347,8 +1357,8 @@ public class submodulografico extends javax.swing.JPanel
 
     private void jButtonEscolherSimboloActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonEscolherSimboloActionPerformed
     {//GEN-HEADEREND:event_jButtonEscolherSimboloActionPerformed
-        frames.analisadorasset.grafico.adicionarsimbolo as = new frames.analisadorasset.grafico.adicionarsimbolo(this);
-        as.show();
+        frames.analisadorasset.grafico.adicionarsimbolo as = new frames.analisadorasset.grafico.adicionarsimbolo(this,jTextFieldNomeSimbolo.getText());
+        as.show();    
     }//GEN-LAST:event_jButtonEscolherSimboloActionPerformed
 
     private void jButtonSalvarConfiguracaoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonSalvarConfiguracaoActionPerformed

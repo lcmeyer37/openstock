@@ -14,9 +14,7 @@ public class adicionarsimbolo extends javax.swing.JFrame
 {
     public static panels.analisadorasset.grafico.submodulografico submodulograficopai;
     
-    /**
-     * Creates new form WindowAdicionarSimbolo
-     */
+    //construtor sem busca
     public adicionarsimbolo(panels.analisadorasset.grafico.submodulografico smodpai)
     {
         initComponents();
@@ -25,6 +23,19 @@ public class adicionarsimbolo extends javax.swing.JFrame
         
         modellistasimbolosencontrados = new javax.swing.DefaultListModel();
         jlistSimbolosEncontrados.setModel(modellistasimbolosencontrados);
+    }
+    
+    //construtor com busca
+    public adicionarsimbolo(panels.analisadorasset.grafico.submodulografico smodpai, String textobuscainicial)
+    {
+        initComponents();
+        
+        submodulograficopai = smodpai;
+        
+        modellistasimbolosencontrados = new javax.swing.DefaultListModel();
+        jlistSimbolosEncontrados.setModel(modellistasimbolosencontrados);
+        
+        jtfProcurarSimbolo.setText(textobuscainicial);
     }
 
     javax.swing.DefaultListModel modellistasimbolosencontrados;

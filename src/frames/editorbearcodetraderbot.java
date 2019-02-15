@@ -273,7 +273,7 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         
         //comecar criando o header do csv
         csvSave = csvSave + 
-                "First Timestamp (YYYY-MM-DD-HH-mm-ss);Last Timestamp (YYYY-MM-DD-HH-mm-ss);Last Close;Simulated Last Bid;Simulated Last Ask;Decision Now;Support Amount to Decision;Base Amount After Trade;Quote Amount After Trade;Total After Trade;Auto Trader Log (pt)";
+                "First Timestamp;Last Timestamp;Last Close;Simulated Last Bid;Simulated Last Ask;Decision Now;Support Amount to Decision;Base Amount After Trade;Quote Amount After Trade;Total After Trade;Auto Trader Log (pt)";
         
         
         jTextAreaOutput.setText("");
@@ -337,19 +337,20 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
                 mcjtah.print("\n======\n" + "Exception: " + result);
             }
 
-                  String primeiro_ts = retornartimestampcsv(candlessimulacao.get(0).timestampdate);
-        String ultimo_ts = retornartimestampcsv(candlessimulacao.get(candlessimulacao.size()-1).timestampdate);
-        String ultimo_close = String.valueOf(candlessimulacao.get(candlessimulacao.size()-1).closed);
-        String ultimo_bid = String.valueOf(otrader.melhorbid);
-        String ultimo_ask = String.valueOf(otrader.melhorask);
-        String traderbot_move = (String)mcbctraderbot.respostatradermove_lastrun; 
-        String traderbot_supportamount = String.valueOf(((double[]) mcbctraderbot.respostaquantidadesuporte_lastrun)[0]);
-        String postrade_baseamount = String.valueOf(otrader.quantidademoedabase);
-        String postrade_quoteamount = String.valueOf(otrader.quantidademoedacotacao);
-        String postrade_total = String.valueOf(otrader.totalfundos_moedacotacao());
-        csvSave = csvSave + "\n" +
-            primeiro_ts + ";" + ultimo_ts + ";" + ultimo_close + ";" + ultimo_bid + ";" + ultimo_ask + ";" + traderbot_move + ";" +
-                traderbot_supportamount + ";" + postrade_baseamount + ";" + postrade_quoteamount + ";" + postrade_total + ";" + ultimo_logtrade;    }
+            String primeiro_ts = retornartimestampcsv(candlessimulacao.get(0).timestampdate);
+            String ultimo_ts = retornartimestampcsv(candlessimulacao.get(candlessimulacao.size()-1).timestampdate);
+            String ultimo_close = String.valueOf(candlessimulacao.get(candlessimulacao.size()-1).closed);
+            String ultimo_bid = String.valueOf(otrader.melhorbid);
+            String ultimo_ask = String.valueOf(otrader.melhorask);
+            String traderbot_move = (String)mcbctraderbot.respostatradermove_lastrun; 
+            String traderbot_supportamount = String.valueOf(((double[]) mcbctraderbot.respostaquantidadesuporte_lastrun)[0]);
+            String postrade_baseamount = String.valueOf(otrader.quantidademoedabase);
+            String postrade_quoteamount = String.valueOf(otrader.quantidademoedacotacao);
+            String postrade_total = String.valueOf(otrader.totalfundos_moedacotacao());
+            csvSave = csvSave + "\n" +
+                primeiro_ts + ";" + ultimo_ts + ";" + ultimo_close + ";" + ultimo_bid + ";" + ultimo_ask + ";" + traderbot_move + ";" +
+                traderbot_supportamount + ";" + postrade_baseamount + ";" + postrade_quoteamount + ";" + postrade_total + ";" + ultimo_logtrade;    
+        }
 
         
         if (exportarcsv == true)
