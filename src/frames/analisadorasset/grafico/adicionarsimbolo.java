@@ -46,7 +46,7 @@ public class adicionarsimbolo extends javax.swing.JFrame
         if (jCheckBoxIEXSearch.isSelected() == true)
         {
             java.util.List<String> simbolosencontradosiex = 
-                submodulograficopai.aassetpai.iaassetpai.tprincipalpai.msapicomms.iex_procurarsimbolo(jtfProcurarSimbolo.getText());
+                submodulograficopai.submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.iex_procurarsimbolo(jtfProcurarSimbolo.getText());
             for (int i = 0; i < simbolosencontradosiex.size(); i++)
             {
                 modellistasimbolosencontrados.addElement(simbolosencontradosiex.get(i));
@@ -56,7 +56,7 @@ public class adicionarsimbolo extends javax.swing.JFrame
         if (jCheckBoxAlphaVantageSearch.isSelected() == true)
         {
             java.util.List<String> simbolosencontradosav = 
-                submodulograficopai.aassetpai.iaassetpai.tprincipalpai.msapicomms.av_procurarsimbolo(jtfProcurarSimbolo.getText());
+                submodulograficopai.submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_procurarsimbolo(jtfProcurarSimbolo.getText());
             for (int i = 0; i < simbolosencontradosav.size(); i++)
             {
                 modellistasimbolosencontrados.addElement(simbolosencontradosav.get(i));
@@ -66,7 +66,7 @@ public class adicionarsimbolo extends javax.swing.JFrame
         if (jCheckBoxCryptoCompareSearch.isSelected() == true)
         {
             java.util.List<String> simbolosencontradoscc = 
-                    submodulograficopai.aassetpai.iaassetpai.tprincipalpai.msapicomms.crycom_procurarsimbolo(jtfProcurarSimbolo.getText());
+                    submodulograficopai.submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.crycom_procurarsimbolo(jtfProcurarSimbolo.getText());
             for (int i = 0; i < simbolosencontradoscc.size(); i++)
             {
                 modellistasimbolosencontrados.addElement(simbolosencontradoscc.get(i));

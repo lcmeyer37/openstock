@@ -270,7 +270,7 @@ public class itemindicador extends javax.swing.JPanel
 
         jLabelEscolherGraficoParaBottom.setForeground(new java.awt.Color(125, 255, 255));
         jLabelEscolherGraficoParaBottom.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelEscolherGraficoParaBottom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/downgray.png"))); // NOI18N
+        jLabelEscolherGraficoParaBottom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/upgray.png"))); // NOI18N
         jLabelEscolherGraficoParaBottom.addMouseListener(new java.awt.event.MouseAdapter()
         {
             public void mouseClicked(java.awt.event.MouseEvent evt)

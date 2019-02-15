@@ -37,7 +37,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
     
     // <editor-fold defaultstate="collapsed" desc="Variáveis Públicas">
     //analisador de asset pai, contem modulos para analises do asset (ateh o momento grafico e trader)
-    public panels.analisadorasset.analisadorasset aassetpai; 
+    public panels.analisadorasset.submodulosholder submodulohpai; 
     //offline trader utilizado por este submodulo
     public mierclasses.mcofflinetrader otrader; 
     //classe interpretadora de bearcode (contem o codigo relacionado ao bot trader em uso)
@@ -45,11 +45,11 @@ public class submoduloofflinetrader extends javax.swing.JPanel
     //</editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="CONSTRUTOR">
-    public submoduloofflinetrader(panels.analisadorasset.analisadorasset aapai)
+    public submoduloofflinetrader(panels.analisadorasset.submodulosholder shpai)
     {
         initComponents();
         
-        aassetpai = aapai;
+        submodulohpai = shpai;
         otrader = new mierclasses.mcofflinetrader(this);
         
         //jPanelTraderbot.setVisible(false);
@@ -64,10 +64,10 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         jPanelLinhasTransacoes.setLayout(new java.awt.GridLayout(500,1));
         
         //ativar ou desativar checkbox do telegram se a funcionalidade estiver disponivel ou nao
-        jCheckBoxSendTelegram.setEnabled(aassetpai.iaassetpai.tprincipalpai.mstelegramcomms.ativo);
+        jCheckBoxSendTelegram.setEnabled(submodulohpai.assetpai.iaassetpai.tprincipalpai.mstelegramcomms.ativo);
 
         //associar o simbolo utilizado pelo trader
-        otrader.recriarofflinetrader(aassetpai.assetsimbolo);
+        otrader.recriarofflinetrader(submodulohpai.assetsimbolo);
         
         //o usuario pode alterar os parametros do trader bot quando desativado
         jTextFieldParametrosTraderbot.setEditable(true);
@@ -109,8 +109,8 @@ public class submoduloofflinetrader extends javax.swing.JPanel
     public void recarregardadossubmoduloofflinetrader()
     {
         //caso o simbolo tenha sido alterado, as informacoes do trader precisam ser resetadas
-        if (aassetpai.assetsimbolo.equals(otrader.simbolo) == false)
-            otrader.recriarofflinetrader(aassetpai.assetsimbolo);
+        if (submodulohpai.assetsimbolo.equals(otrader.simbolo) == false)
+            otrader.recriarofflinetrader(submodulohpai.assetsimbolo);
         
         //atualizar informacoes de bid ask atual
         otrader.atualizarbidask();
@@ -500,7 +500,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         
         if (botativado == true)
         {
-            java.util.List<mierclasses.mccandle> candlesusar = aassetpai.subgrafico.mcg.candlesatual;
+            java.util.List<mierclasses.mccandle> candlesusar = submodulohpai.subgrafico.mcg.candlesatual;
             
             if (candlesusar != candlesrunanterior)
             {
@@ -573,11 +573,11 @@ public class submoduloofflinetrader extends javax.swing.JPanel
                     if ((traderbot_moveanterior.equals(traderbot_move) == false) && (jCheckBoxSendTelegram.isSelected() == true))
                     {
                         String mensagemenviar = 
-                                aassetpai.iaassetpai.jLabelNomeAnalisadorAsset.getText() + " (" + aassetpai.assetsimbolo + "): " + "[" + traderbot_move.toUpperCase() + " " + traderbot_supportamount + "]" +
+                                submodulohpai.assetpai.iaassetpai.jLabelNomeAnalisadorAsset.getText() + " (" + submodulohpai.assetsimbolo + "): " + "[" + traderbot_move.toUpperCase() + " " + traderbot_supportamount + "]" +
                                 " Current Base: " + String.valueOf(otrader.quantidademoedabase) + 
                                 " Current Quote: " + String.valueOf(otrader.quantidademoedacotacao) + " Total: " + String.valueOf(otrader.totalfundos_moedacotacao());
 
-                        aassetpai.iaassetpai.tprincipalpai.mstelegramcomms.enviarmensagemtelegramcombot(mensagemenviar);
+                        submodulohpai.assetpai.iaassetpai.tprincipalpai.mstelegramcomms.enviarmensagemtelegramcombot(mensagemenviar);
                     }
                     traderbot_moveanterior = traderbot_move;
                 }

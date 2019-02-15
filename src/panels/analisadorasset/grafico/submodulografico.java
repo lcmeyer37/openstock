@@ -29,17 +29,17 @@ public class submodulografico extends javax.swing.JPanel
 
     // <editor-fold defaultstate="collapsed" desc="Variáveis Públicas">
     //analisador de asset pai, contem modulos para analises do asset (ateh o momento grafico e trader)
-    public panels.analisadorasset.analisadorasset aassetpai; 
+    public panels.analisadorasset.submodulosholder submodulohpai; 
     //classe utilizada para desenhar graficos
     public mierclasses.mcchartgenerator mcg; 
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="CONSTRUTOR">
-    public submodulografico(panels.analisadorasset.analisadorasset aapai)
+    public submodulografico(panels.analisadorasset.submodulosholder shpai)
     {
         initComponents();
         
-        aassetpai = aapai;
+        submodulohpai = shpai;
         
         inicializarsubmodulografico();
     }
@@ -69,7 +69,7 @@ public class submodulografico extends javax.swing.JPanel
         timer_chartrangeinfoupdater.scheduleAtFixedRate(chartrangeinfoupdater, delay, period);
         
         //comecar mostrando dataset de teste e criar pela primeira vez o grafico
-        jTextFieldNomeSimbolo.setText(aassetpai.assetsimbolo);
+        jTextFieldNomeSimbolo.setText(submodulohpai.assetsimbolo);
         recarregardadossubmodulografico(true);
         
         //comecar mostrando painel inferior
@@ -85,8 +85,8 @@ public class submodulografico extends javax.swing.JPanel
         //funcao para carregar submodulo grafico, pode ser necessario resetar anotacoes e indicadores
         
         //<editor-fold defaultstate="collapsed" desc="Receber Candles do Asset Desejado">
-        aassetpai.assetsimbolo = jTextFieldNomeSimbolo.getText();
-        String sourcesimboloescolhido = aassetpai.assetsimbolo;
+        submodulohpai.assetsimbolo = jTextFieldNomeSimbolo.getText();
+        String sourcesimboloescolhido = submodulohpai.assetsimbolo;
         String periodoescolhido = jComboBoxPeriodoSimbolo.getSelectedItem().toString();
         String escalagrafico = escalagraficoescolhido;
         
@@ -96,59 +96,59 @@ public class submodulografico extends javax.swing.JPanel
         if ((sourcesimboloescolhido.equals("testdata")) == true)
         {
             //codigo para criar um dataset offline para teste
-            candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.offline_receberstockcandlessample();
+            candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.offline_receberstockcandlessample();
         }
         else if ((sourcesimboloescolhido.equals("testdata")) == false)
         {
             if (((sourcesimboloescolhido.split(":")[0]).toLowerCase()).equals("iex"))
             {
                 if (periodoescolhido.equals("1 Day"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.iex_receberstockcandleswithminutes((sourcesimboloescolhido.split(":")[1]), "1d");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.iex_receberstockcandleswithminutes((sourcesimboloescolhido.split(":")[1]), "1d");
                 else if (periodoescolhido.equals("1 Month"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.iex_receberstockcandleswithoutminutes((sourcesimboloescolhido.split(":")[1]), "1m");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.iex_receberstockcandleswithoutminutes((sourcesimboloescolhido.split(":")[1]), "1m");
                 else if (periodoescolhido.equals("3 Months"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.iex_receberstockcandleswithoutminutes((sourcesimboloescolhido.split(":")[1]), "3m");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.iex_receberstockcandleswithoutminutes((sourcesimboloescolhido.split(":")[1]), "3m");
                 else if (periodoescolhido.equals("6 Months"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.iex_receberstockcandleswithoutminutes((sourcesimboloescolhido.split(":")[1]), "6m");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.iex_receberstockcandleswithoutminutes((sourcesimboloescolhido.split(":")[1]), "6m");
                 else if (periodoescolhido.equals("Year-to-date"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.iex_receberstockcandleswithoutminutes((sourcesimboloescolhido.split(":")[1]), "ytd");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.iex_receberstockcandleswithoutminutes((sourcesimboloescolhido.split(":")[1]), "ytd");
                 else if (periodoescolhido.equals("1 Year"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.iex_receberstockcandleswithoutminutes((sourcesimboloescolhido.split(":")[1]), "1y");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.iex_receberstockcandleswithoutminutes((sourcesimboloescolhido.split(":")[1]), "1y");
                 else if (periodoescolhido.equals("2 Years"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.iex_receberstockcandleswithoutminutes((sourcesimboloescolhido.split(":")[1]), "2y");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.iex_receberstockcandleswithoutminutes((sourcesimboloescolhido.split(":")[1]), "2y");
                 else if (periodoescolhido.equals("5 Years"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.iex_receberstockcandleswithoutminutes((sourcesimboloescolhido.split(":")[1]), "5y");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.iex_receberstockcandleswithoutminutes((sourcesimboloescolhido.split(":")[1]), "5y");
             } 
             else if (((sourcesimboloescolhido.split(":")[0]).toLowerCase()).equals("avs"))
             {
                 if (periodoescolhido.equals("1 minute (Compact)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"1min","compact");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"1min","compact");
                 else if (periodoescolhido.equals("1 minute (Full)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"1min","full");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"1min","full");
                 else if (periodoescolhido.equals("5 minutes (Compact)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"5min","compact");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"5min","compact");
                 else if (periodoescolhido.equals("5 minutes (Full)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"5min","full");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"5min","full");
                 else if (periodoescolhido.equals("15 minutes (Compact)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"15min","compact");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"15min","compact");
                 else if (periodoescolhido.equals("15 minutes (Full)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"15min","full");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"15min","full");
                 else if (periodoescolhido.equals("30 minutes (Compact)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"30min","compact");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"30min","compact");
                 else if (periodoescolhido.equals("30 minutes (Full)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"30min","full");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"30min","full");
                 else if (periodoescolhido.equals("60 minutes (Compact)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"60min","compact");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"60min","compact");
                 else if (periodoescolhido.equals("60 minutes (Full)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"60min","full");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesintraday((sourcesimboloescolhido.split(":")[1]),"60min","full");
                 else if (periodoescolhido.equals("Daily (Compact)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesdaily((sourcesimboloescolhido.split(":")[1]),"compact");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesdaily((sourcesimboloescolhido.split(":")[1]),"compact");
                  else if (periodoescolhido.equals("Daily (Full)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesdaily((sourcesimboloescolhido.split(":")[1]),"full");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesdaily((sourcesimboloescolhido.split(":")[1]),"full");
                 else if (periodoescolhido.equals("Weekly"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesweekly((sourcesimboloescolhido.split(":")[1]));
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesweekly((sourcesimboloescolhido.split(":")[1]));
                 else if (periodoescolhido.equals("Monthly"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesmonthly((sourcesimboloescolhido.split(":")[1]));
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberstockcandlesmonthly((sourcesimboloescolhido.split(":")[1]));
             } 
             else if (((sourcesimboloescolhido.split(":")[0]).toLowerCase()).equals("avfx"))
             {
@@ -157,48 +157,48 @@ public class submodulografico extends javax.swing.JPanel
                 String tosimbolo = (simbolo.split("\\.")[1]);
                 
                 if (periodoescolhido.equals("1 minute (Compact)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"1min","compact");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"1min","compact");
                 else if (periodoescolhido.equals("1 minute (Full)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"1min","full");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"1min","full");
                 else if (periodoescolhido.equals("5 minutes (Compact)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"5min","compact");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"5min","compact");
                 else if (periodoescolhido.equals("5 minutes (Full)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"5min","full");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"5min","full");
                 else if (periodoescolhido.equals("15 minutes (Compact)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"15min","compact");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"15min","compact");
                 else if (periodoescolhido.equals("15 minutes (Full)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"15min","full");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"15min","full");
                 else if (periodoescolhido.equals("30 minutes (Compact)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"30min","compact");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"30min","compact");
                 else if (periodoescolhido.equals("30 minutes (Full)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"30min","full");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"30min","full");
                 else if (periodoescolhido.equals("60 minutes (Compact)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"60min","compact");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"60min","compact");
                 else if (periodoescolhido.equals("60 minutes (Full)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"60min","full");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesintraday(fromsimbolo,tosimbolo,"60min","full");
                 else if (periodoescolhido.equals("Daily (Compact)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesdaily(fromsimbolo,tosimbolo,"compact");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesdaily(fromsimbolo,tosimbolo,"compact");
                 else if (periodoescolhido.equals("Daily (Full)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesdaily(fromsimbolo,tosimbolo,"full");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesdaily(fromsimbolo,tosimbolo,"full");
                 else if (periodoescolhido.equals("Weekly"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesweekly(fromsimbolo,tosimbolo);
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesweekly(fromsimbolo,tosimbolo);
                 else if (periodoescolhido.equals("Monthly"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesmonthly(fromsimbolo,tosimbolo);
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.av_receberforexcandlesmonthly(fromsimbolo,tosimbolo);
             } 
             else if (((sourcesimboloescolhido.split(":")[0]).toLowerCase()).equals("crycom"))
             {
                 if (periodoescolhido.equals("Minute (200)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.crycom_recebercryptocandles((sourcesimboloescolhido.split(":")[1]), "200", "Minute");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.crycom_recebercryptocandles((sourcesimboloescolhido.split(":")[1]), "200", "Minute");
                 else if (periodoescolhido.equals("Minute (1500)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.crycom_recebercryptocandles((sourcesimboloescolhido.split(":")[1]), "1500", "Minute");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.crycom_recebercryptocandles((sourcesimboloescolhido.split(":")[1]), "1500", "Minute");
                 if (periodoescolhido.equals("Hourly (200)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.crycom_recebercryptocandles((sourcesimboloescolhido.split(":")[1]), "200", "Hourly");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.crycom_recebercryptocandles((sourcesimboloescolhido.split(":")[1]), "200", "Hourly");
                 else if (periodoescolhido.equals("Hourly (1500)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.crycom_recebercryptocandles((sourcesimboloescolhido.split(":")[1]), "1500", "Hourly");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.crycom_recebercryptocandles((sourcesimboloescolhido.split(":")[1]), "1500", "Hourly");
                 if (periodoescolhido.equals("Daily (200)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.crycom_recebercryptocandles((sourcesimboloescolhido.split(":")[1]), "200", "Daily");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.crycom_recebercryptocandles((sourcesimboloescolhido.split(":")[1]), "200", "Daily");
                 else if (periodoescolhido.equals("Daily (1500)"))
-                    candles = aassetpai.iaassetpai.tprincipalpai.msapicomms.crycom_recebercryptocandles((sourcesimboloescolhido.split(":")[1]), "1500", "Daily");
+                    candles = submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.crycom_recebercryptocandles((sourcesimboloescolhido.split(":")[1]), "1500", "Daily");
             } 
         }
         //</editor-fold>
@@ -246,7 +246,7 @@ public class submodulografico extends javax.swing.JPanel
         for (int i = 0; i < jPanelIndicadores.getComponentCount(); i++)
         {
             
-            panels.analisadorasset.grafico.itemindicador novoindicador = (panels.analisadorasset.grafico.itemindicador)jPanelIndicadores.getComponent(i);
+                panels.analisadorasset.grafico.itemindicador novoindicador = (panels.analisadorasset.grafico.itemindicador)jPanelIndicadores.getComponent(i);
             String statusrunindicador = novoindicador.rodarscriptindicador();
             if (statusrunindicador.equals("ok"))
             {
@@ -280,7 +280,7 @@ public class submodulografico extends javax.swing.JPanel
         //tambem recarregar grafico secundario
         for (int i = 0; i < jPanelIndicadores.getComponentCount(); i++)
         {
-            panels.analisadorasset.grafico.itemindicador miia = (panels.analisadorasset.grafico.itemindicador)jPanelIndicadores.getComponent(i);
+                panels.analisadorasset.grafico.itemindicador miia = (panels.analisadorasset.grafico.itemindicador)jPanelIndicadores.getComponent(i);
             if (miia.chartseparadoembottom == true)
             {
                 //encontrado o indicador cujo grafico esta como secundario, tambem atualiza-lo
@@ -297,7 +297,7 @@ public class submodulografico extends javax.swing.JPanel
         
         for (int i = 0; i < jPanelAnotacoes.getComponentCount(); i++)
         {
-            panels.analisadorasset.grafico.itemanotacao novoanotacao = (panels.analisadorasset.grafico.itemanotacao)jPanelAnotacoes.getComponent(i);
+                panels.analisadorasset.grafico.itemanotacao novoanotacao = (panels.analisadorasset.grafico.itemanotacao)jPanelAnotacoes.getComponent(i);
             mcg.adicionarplotohlc_subannotationsobjectbase64type(novoanotacao.subannotationsanotacao);
         }
         // </editor-fold>
@@ -526,7 +526,7 @@ public class submodulografico extends javax.swing.JPanel
         {
             panels.analisadorasset.grafico.itemindicador miia = (panels.analisadorasset.grafico.itemindicador)jPanelIndicadores.getComponent(i);
             String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
-            String caminhoimagem = rootjar + "/outfiles/assets/downgray.png";
+            String caminhoimagem = rootjar + "/outfiles/assets/upgray.png";
             miia.jLabelEscolherGraficoParaBottom.setIcon(new javax.swing.ImageIcon(caminhoimagem));
             miia.chartseparadoembottom = false;
         }
@@ -547,7 +547,7 @@ public class submodulografico extends javax.swing.JPanel
              )       
         );
         String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
-        String caminhoimagem = rootjar + "/outfiles/assets/downblue.png";
+        String caminhoimagem = rootjar + "/outfiles/assets/downgray.png";
         mpiidestacarabaixo.jLabelEscolherGraficoParaBottom.setIcon(new javax.swing.ImageIcon(caminhoimagem));
         mpiidestacarabaixo.chartseparadoembottom = true;
 
@@ -565,7 +565,7 @@ public class submodulografico extends javax.swing.JPanel
         {
             panels.analisadorasset.grafico.itemindicador miia = (panels.analisadorasset.grafico.itemindicador)jPanelIndicadores.getComponent(i);
             String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
-            String caminhoimagem = rootjar + "/outfiles/assets/downgray.png";
+            String caminhoimagem = rootjar + "/outfiles/assets/upgray.png";
             miia.jLabelEscolherGraficoParaBottom.setIcon(new javax.swing.ImageIcon(caminhoimagem));
             miia.chartseparadoembottom = false;
         }
@@ -795,10 +795,10 @@ public class submodulografico extends javax.swing.JPanel
     
     // <editor-fold defaultstate="collapsed" desc="Tools and OHLC Section">
     boolean painelinferioraparecendo = false;
-    void mostrarPainelInferior()
+    public void mostrarPainelInferior()
     {
         String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
-        String caminhoimagem = rootjar + "/outfiles/assets/downblue.png";
+        String caminhoimagem = rootjar + "/outfiles/assets/downgray.png";
         jLabelPainelInferior.setIcon(new javax.swing.ImageIcon(caminhoimagem));
         jPanelInferior.setVisible(true);
         painelinferioraparecendo = true;
@@ -806,10 +806,10 @@ public class submodulografico extends javax.swing.JPanel
         
     }
     
-    void esconderPainelInferior()
+    public void esconderPainelInferior()
     {
         String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
-        String caminhoimagem = rootjar + "/outfiles/assets/downgray.png";
+        String caminhoimagem = rootjar + "/outfiles/assets/upgray.png";
         jLabelPainelInferior.setIcon(new javax.swing.ImageIcon(caminhoimagem));
         jPanelInferior.setVisible(false);
         painelinferioraparecendo = false;
@@ -1352,7 +1352,7 @@ public class submodulografico extends javax.swing.JPanel
 
     private void jButtonAtualizarDadosGraficoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAtualizarDadosGraficoActionPerformed
     {//GEN-HEADEREND:event_jButtonAtualizarDadosGraficoActionPerformed
-        aassetpai.atualizardadosasset();
+        submodulohpai.atualizardadosasset();
     }//GEN-LAST:event_jButtonAtualizarDadosGraficoActionPerformed
 
     private void jButtonEscolherSimboloActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonEscolherSimboloActionPerformed
@@ -1363,12 +1363,12 @@ public class submodulografico extends javax.swing.JPanel
 
     private void jButtonSalvarConfiguracaoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonSalvarConfiguracaoActionPerformed
     {//GEN-HEADEREND:event_jButtonSalvarConfiguracaoActionPerformed
-        aassetpai.salvardadosasset();
+        submodulohpai.salvardadosasset();
     }//GEN-LAST:event_jButtonSalvarConfiguracaoActionPerformed
 
     private void jButtonCarregarConfiguracaoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonCarregarConfiguracaoActionPerformed
     {//GEN-HEADEREND:event_jButtonCarregarConfiguracaoActionPerformed
-        aassetpai.carregardadosasset();
+        submodulohpai.carregardadosasset();
     }//GEN-LAST:event_jButtonCarregarConfiguracaoActionPerformed
 
     private void jLabelLinearSwitchMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabelLinearSwitchMouseClicked

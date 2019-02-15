@@ -68,7 +68,7 @@ public class mcofflinetrader
     {
         if (tipopai.equals("submoduloofflinetrader") == true)
         {
-            java.util.List<Double> bidask = submodulooftraderpai.aassetpai.iaassetpai.tprincipalpai.msapicomms.offline_simularbidaskcandles(submodulooftraderpai.aassetpai.subgrafico.mcg.candlesatual);
+            java.util.List<Double> bidask = submodulooftraderpai.submodulohpai.assetpai.iaassetpai.tprincipalpai.msapicomms.offline_simularbidaskcandles(submodulooftraderpai.submodulohpai.subgrafico.mcg.candlesatual);
             double bid = bidask.get(0);
             double ask = bidask.get(1);
             

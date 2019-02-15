@@ -5,8 +5,6 @@
  */
 package panels.analisadorasset.offlinetrader;
 
-import panels.analisadorasset.grafico.*;
-
 /**
  *
  * @author lucasmeyer
