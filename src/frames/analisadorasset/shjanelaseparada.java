@@ -61,7 +61,6 @@ public class shjanelaseparada extends javax.swing.JFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Asset Separate Window");
-        setType(java.awt.Window.Type.UTILITY);
 
         jPanelHolderAnalisadorAsset.setBackground(new java.awt.Color(25, 25, 25));
 
