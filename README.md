@@ -4,27 +4,27 @@ Open Source Technical Analysis and Offline Trading Software
 ![Bear Logo](sblogo.png)
 
 ## About
-Open Stock is a project [licensed under GNU GPLv3](https://github.com/lcmeyer37/openstock/blob/master/LICENSE), being created making use of NetBeans and Java. Some of its features include:
+Open Stock is a project [licensed under GNU GPLv3](https://github.com/lcmeyer37/openstock/blob/master/LICENSE), being created making use of NetBeans and Java. This repository is welcome to anyone interested to [contribute](CONTRIBUTING.md) with it. 
+
 
 ![Chart](example1.png)
 ![Separate Windows](example2.png)
 ![Offline Trader](example3.png)
 ![Bot Editor and Simulator](example4.png)
 
-- [x] Real-time data for multiple assets: stocks, dividends, indexes, forex, cryptocurrency
-- [x] Possibility to analyze multiple charts at the same time
-- [x] Use of Annotations and Indicators for Technical Analysis
-- [x] Use of Robots to test automatic Algorithmic Trading 
-- [x] To create your own Indicators to use with the software (Bearcode Scripts)
-- [x] To create your own Trader Bots algorithms to use with the software (Bearcode Scripts)
-- [x] To test the efficacy of algorithms with the Bots Editor and History Trading Simulator
-- [x] Save/Load Charts and Offline Transactions
-- [x] Export .csv files for spreadsheets tracking
-- [x] OHLC and Separate Indicator charts
-- [x] Offline Trading
-- [x] Telegram Bots for private notifications
-
-This project has a similar counterpart made in C# .NET. Connected to the HitBTC Exchange, this other project presents Tickers, Orderbooks, Buy and Sell panels, simulation panels for Offline training trading and also a section to work with multiple trader bots configuring specific TA events and rules. The idea is also to use this project as reference to add new features. And this project also invites anyone interested to [contribute](CONTRIBUTING.md) with it.
+Features:
+* Real-time data for multiple assets: stocks, dividends, indexes, forex, cryptocurrency
+* Possibility to analyze multiple charts at the same time
+* Use of Annotations and Indicators for Technical Analysis
+* Use of Robots to test automatic Algorithmic Trading 
+* To create your own Indicators to use with the software (Bearcode Scripts)
+* To create your own Trader Bots algorithms to use with the software (Bearcode Scripts)
+* To test the efficacy of algorithms with the Bots Editor and History Trading Simulator
+* Save/Load Charts and Offline Transactions
+* Export .csv files for spreadsheets tracking
+* OHLC and Separate Indicator charts
+* Offline Trading
+* Telegram Bots for private notifications
 
 Data and functionality provided for free by:
 * [IEX](https://iextrading.com/api-exhibit-a/)
