@@ -24,6 +24,9 @@ public class TelaPrincipal extends javax.swing.JFrame
     //classe utilizada para comunicacao com Bot do Telegram
     public mierclasses.mctelegramcomms mstelegramcomms;
     
+    //classe noassetsmensagem, jpanel que aparece quando nao tem nenhum asset em analise
+    panels.analisadorasset.noassetsmensagem nam;
+    
     
     /**
      * Creates new form TelaPrincipal
@@ -40,10 +43,12 @@ public class TelaPrincipal extends javax.swing.JFrame
     void inicializarTelaPrincipal()
     {
         //funcao inicial do programa, roda ao ligar
-        //limitando para no maximo 20 graficos ao mesmo tempo
-        jPanelItensAnalisadorAsset.setLayout(new java.awt.GridLayout(20,1));
-        //holder do grafico eh um grid com um unico item
+        //holder de itens de asset
+        jPanelItensAnalisadorAsset.setLayout(new java.awt.GridLayout(50,1));
+        //holder do analisador de asset do item de asset
         jPanelHolderAnalisadorAsset.setLayout(new java.awt.GridLayout(1,1));
+        //comecar mostrando a janela de sem assets
+        jPanelHolderAnalisadorAsset.add(new panels.analisadorasset.noassetsmensagem());
 
         //popular msapicomms, utilizando para comunicar com diferentes APIs de stock
         popularapis();
@@ -62,6 +67,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         //telegram api
         msapicomms = new mierclasses.mcstocksapicomms();
         mstelegramcomms = new mierclasses.mctelegramcomms();
+        nam = new panels.analisadorasset.noassetsmensagem();
         
         // <editor-fold defaultstate="collapsed" desc="carregar general.mfxconfig para associar chaves de Stocks APIs e do Telegram">
         try
@@ -129,25 +135,15 @@ public class TelaPrincipal extends javax.swing.JFrame
     
     void adicionarNovoAnalisadorAsset()
     {
-        //existe um limite de 20 graficos por programa
-        int numerograficos = jPanelItensAnalisadorAsset.getComponentCount();
-        
-        if (numerograficos < 20)
-        {
-            //funcao para adicionar novo itemanalisadorasset no programa, e este itemanalisadorasset tem um submodulografico associado a ele.
-            panels.analisadorasset.itemanalisadorasset novompig = new panels.analisadorasset.itemanalisadorasset(this);
-        
-            //adicionar itemanalisadorasset ao jPanelItensGrafico
-            jPanelItensAnalisadorAsset.add(novompig);
+        //funcao para adicionar novo itemanalisadorasset no programa, e este itemanalisadorasset tem um submodulografico associado a ele.
+        panels.analisadorasset.itemanalisadorasset novompig = new panels.analisadorasset.itemanalisadorasset(this);
 
-            //selecionar automaticamente ultimo componente adicionado
-            int novonumeroassets = jPanelItensAnalisadorAsset.getComponentCount();
-            selecionarItemAnalisadorAsset((panels.analisadorasset.itemanalisadorasset)jPanelItensAnalisadorAsset.getComponent(novonumeroassets-1));
-        }
-        else if (numerograficos >= 20)
-        {
-            mierclasses.mcfuncoeshelper.mostrarmensagem("Limite de 20 assets atingido");
-        }
+        //adicionar itemanalisadorasset ao jPanelItensGrafico
+        jPanelItensAnalisadorAsset.add(novompig);
+
+        //selecionar automaticamente ultimo componente adicionado
+        int novonumeroassets = jPanelItensAnalisadorAsset.getComponentCount();
+        selecionarItemAnalisadorAsset((panels.analisadorasset.itemanalisadorasset)jPanelItensAnalisadorAsset.getComponent(novonumeroassets-1));      
         
         //revalidar componentes apos alteracoes graficas e criacoes
         this.validate();
@@ -157,28 +153,26 @@ public class TelaPrincipal extends javax.swing.JFrame
     public void removerAnalisadorAsset(panels.analisadorasset.itemanalisadorasset mpiadeletar)
     {
         jPanelItensAnalisadorAsset.remove(mpiadeletar);
+        jPanelHolderAnalisadorAsset.removeAll();
         
-        int numerograficos = jPanelItensAnalisadorAsset.getComponentCount();
-        if (numerograficos > 0)
-        {
-            selecionarItemAnalisadorAsset((panels.analisadorasset.itemanalisadorasset)jPanelItensAnalisadorAsset.getComponent(numerograficos-1));
-        }
+        int numeroassetsatual = jPanelItensAnalisadorAsset.getComponentCount();
+        if (numeroassetsatual > 0)
+            selecionarItemAnalisadorAsset((panels.analisadorasset.itemanalisadorasset)jPanelItensAnalisadorAsset.getComponent(numeroassetsatual-1));
         else
-        {
-            jPanelHolderAnalisadorAsset.removeAll();
-        }
+            jPanelHolderAnalisadorAsset.add(nam);
+      
         
         this.validate();
         this.repaint();
     }
-    
+
     public void selecionarItemAnalisadorAsset(panels.analisadorasset.itemanalisadorasset mpigselecionar)
     {
         //funcao para selecionar item grafico
         
         //pintar todos os itens graficos com a cor padrao e esconder os seus submodulos
-        int numerograficos = jPanelItensAnalisadorAsset.getComponentCount();
-        for (int i = 0; i < numerograficos; i++)
+        int numeroassetsatual = jPanelItensAnalisadorAsset.getComponentCount();
+        for (int i = 0; i < numeroassetsatual; i++)
         {
             panels.analisadorasset.itemanalisadorasset mpigatual = (panels.analisadorasset.itemanalisadorasset) jPanelItensAnalisadorAsset.getComponent(i);
             mpigatual.jPanelSub.setBackground(new java.awt.Color(55, 55, 55));

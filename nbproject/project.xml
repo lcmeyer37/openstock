@@ -13,7 +13,7 @@
             </extension>
         </buildExtensions>
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
-            <name>mierstockfx</name>
+            <name>openstock</name>
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>

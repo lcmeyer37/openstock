@@ -17,15 +17,22 @@ import javafx.stage.Stage;
  *
  * @author lucasmeyer
  */
-public class Mierstockfx extends Application
+public class OpenStock extends Application
 {
     
     @Override
     public void start(Stage primaryStage)
     {
-
-        TelaPrincipal tprincipal = new TelaPrincipal();
-        tprincipal.show();
+        try
+        {
+            java.util.concurrent.TimeUnit.MILLISECONDS.sleep(2000);
+            TelaPrincipal tprincipal = new TelaPrincipal();
+            tprincipal.show();
+        }
+        catch (Exception ex)
+        {
+            mierclasses.mcfuncoeshelper.mostrarmensagem("A problem has occurred when initializing Open Stock. Exception: " + ex.getLocalizedMessage());
+        }
 
     }
 
