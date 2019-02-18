@@ -8,6 +8,12 @@
     </Traderbot>-->
 
     <Traderbot>
+        <BCID>rsitrader</BCID>
+        <Name>RSI Trader</Name>
+        <BearcodeFile>rsitrader.bearcode</BearcodeFile>
+    </Traderbot>
+
+    <Traderbot>
         <BCID>macdtrader</BCID>
         <Name>MACD Trader</Name>
         <BearcodeFile>macdtrader.bearcode</BearcodeFile>
