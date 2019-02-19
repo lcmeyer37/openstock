@@ -273,7 +273,7 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
         
         //comecar criando o header do csv
         csvSave = csvSave + 
-                "First Timestamp;Last Timestamp;Last Close;Simulated Last Bid;Simulated Last Ask;Decision Now;Support Amount to Decision;Base Amount After Trade;Quote Amount After Trade;Total After Trade;Auto Trader Log (pt)";
+                "First Timestamp;Last Timestamp;Last Close;Simulated Last Bid;Simulated Last Ask;Decision Now;Support Amount to Decision;Base Amount After Trade;Quote Amount After Trade;Total After Trade;Auto Trader Log (pt);Debug Export";
         
         
         jTextAreaOutput.setText("");
@@ -298,7 +298,8 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
 
 
             //atualizar o subset de candles utilizado pela simulacao (neste caso o subset eh igual a todas as candles)
-            candlessimulacao = candlessample.subList(0, subsetmax_indice);
+            //subList eh inclusive 0 e exclusive subsetmax_indice + 1
+            candlessimulacao = candlessample.subList(0, subsetmax_indice + 1);
 
             //atualizar bid ask antes de rodar script
             otrader.atualizarbidask();
@@ -327,9 +328,9 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
 
                 if (jCheckBoxAutoTrade.isSelected() == true)
                 {
-                String traderbot_move = (String)mcbctraderbot.respostatradermove_lastrun; 
-                String traderbot_supportamount = String.valueOf(((double[]) mcbctraderbot.respostaquantidadesuporte_lastrun)[0]);
-                ultimo_logtrade = rodarautotrade(traderbot_move,traderbot_supportamount);
+                    String traderbot_move = (String)mcbctraderbot.respostatradermove_lastrun; 
+                    String traderbot_supportamount = String.valueOf(((double[]) mcbctraderbot.respostaquantidadesuporte_lastrun)[0]);
+                    ultimo_logtrade = rodarautotrade(traderbot_move,traderbot_supportamount);
                 }
             }
             else
@@ -344,12 +345,13 @@ public class editorbearcodetraderbot extends javax.swing.JFrame
             String ultimo_ask = String.valueOf(otrader.melhorask);
             String traderbot_move = (String)mcbctraderbot.respostatradermove_lastrun; 
             String traderbot_supportamount = String.valueOf(((double[]) mcbctraderbot.respostaquantidadesuporte_lastrun)[0]);
+            String traderbot_debugexport = (String)mcbctraderbot.debugexport_lastrun; //variavel de suporte para print custom de interesse de script
             String postrade_baseamount = String.valueOf(otrader.quantidademoedabase);
             String postrade_quoteamount = String.valueOf(otrader.quantidademoedacotacao);
             String postrade_total = String.valueOf(otrader.totalfundos_moedacotacao());
             csvSave = csvSave + "\n" +
                 primeiro_ts + ";" + ultimo_ts + ";" + ultimo_close + ";" + ultimo_bid + ";" + ultimo_ask + ";" + traderbot_move + ";" +
-                traderbot_supportamount + ";" + postrade_baseamount + ";" + postrade_quoteamount + ";" + postrade_total + ";" + ultimo_logtrade;    
+                traderbot_supportamount + ";" + postrade_baseamount + ";" + postrade_quoteamount + ";" + postrade_total + ";" + ultimo_logtrade + ";" + traderbot_debugexport;    
         }
 
         

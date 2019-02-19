@@ -68,6 +68,8 @@ public class mcbctradingbotinterpreter
     //variavel que recebe um valor de suporte para compra ou venda
     //exemplos: +30 ou -30 pode ser moeda base ou cotacao
     public Object respostaquantidadesuporte_lastrun;
+    //outra variavel que o usuario pode colocar uma string para ser printada em exports de simulacao
+    public Object debugexport_lastrun;
 
     
     
@@ -172,6 +174,15 @@ public class mcbctradingbotinterpreter
             catch (Exception e)
             {
                 //
+            }
+            
+            try
+            {
+                debugexport_lastrun = engine.get("debugexport");
+            }
+            catch (Exception e)
+            {
+                debugexport_lastrun = "";
             }
         }
         catch (Exception ex)
