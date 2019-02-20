@@ -50,4 +50,14 @@ public class mctelegramcomms
     {
         String conteudopagina = mwcomms.receberconteudopagina("https://api.telegram.org/bot"+bottoken+"/sendMessage?chat_id="+userid+"&text="+mensagem);
     }
+    
+    public String retornarbottoken()
+    {
+        return bottoken;
+    }
+    
+    public String retornaruserid()
+    {
+        return userid;
+    }
 }

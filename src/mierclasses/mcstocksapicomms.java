@@ -26,22 +26,27 @@ public class mcstocksapicomms
     }
     
     // <editor-fold defaultstate="collapsed" desc="Alpha Vantage API">
-    String chavealphavantage = "";
+    String av_chave = "";
     public void av_alterarchaveapi(String novachaveav)
     {
-        chavealphavantage = novachaveav;
+        av_chave = novachaveav;
+    }
+    
+    public String av_retornarchaveapi()
+    {
+        return av_chave;
     }
     
     public void av_testarcomms()
     {
-        String conteudopagina = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=" + chavealphavantage);
+        String conteudopagina = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=" + av_chave);
         mierclasses.mcfuncoeshelper.mostrarmensagem(conteudopagina);
     }
     
     public java.util.List<String> av_procurarsimbolo(String parametrobusca)
     {
         String jsonconteudo = "";
-        jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords="+parametrobusca+"&apikey=" + chavealphavantage);
+        jsonconteudo = mwcomms.receberconteudopagina("https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords="+parametrobusca+"&apikey=" + av_chave);
         //mierclasses.mcfuncoeshelper.mostrarmensagem(jsonconteudo);
         //mierclasses.mcfuncoeshelper.setarclipboard(jsonconteudo);
         
@@ -107,7 +112,7 @@ public class mcstocksapicomms
         },
         */
         
-        String urlquery = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol="+simbolo+"&interval="+intervalo+"&outputsize="+outputsize+"&apikey=" + chavealphavantage;
+        String urlquery = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol="+simbolo+"&interval="+intervalo+"&outputsize="+outputsize+"&apikey=" + av_chave;
         //mierclasses.mcfuncoeshelper.setarclipboard(urlquery);
         //mierclasses.mcfuncoeshelper.mostrarmensagem(urlquery);
         String jsonconteudo = mwcomms.receberconteudopagina(urlquery);
@@ -166,12 +171,15 @@ public class mcstocksapicomms
                 return candleone.timestampdate.compareTo(candletwo.timestampdate);
             }
         });
+        if (math_tirarzeros == true)
+            listacandlesretornar = math_retirarzeroscandles(listacandlesretornar);
+
         return listacandlesretornar;
     }
     
     public java.util.List<mccandle> av_receberstockcandlesdaily(String simbolo, String outputsize)
     {
-        String urlquery = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="+simbolo+"&outputsize="+outputsize+"&apikey=" + chavealphavantage;
+        String urlquery = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="+simbolo+"&outputsize="+outputsize+"&apikey=" + av_chave;
         //mierclasses.mcfuncoeshelper.setarclipboard(urlquery);
         //mierclasses.mcfuncoeshelper.mostrarmensagem(urlquery);
         String jsonconteudo = mwcomms.receberconteudopagina(urlquery);
@@ -213,13 +221,16 @@ public class mcstocksapicomms
                 return candleone.timestampdate.compareTo(candletwo.timestampdate);
             }
         });
+        if (math_tirarzeros == true)
+            listacandlesretornar = math_retirarzeroscandles(listacandlesretornar);
+        
         return listacandlesretornar;
     }
     
     public java.util.List<mccandle> av_receberstockcandlesweekly(String simbolo)
     {
 
-        String urlquery = "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol="+simbolo+"&apikey=" + chavealphavantage;
+        String urlquery = "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol="+simbolo+"&apikey=" + av_chave;
         //mierclasses.mcfuncoeshelper.setarclipboard(urlquery);
         //mierclasses.mcfuncoeshelper.mostrarmensagem(urlquery);
         String jsonconteudo = mwcomms.receberconteudopagina(urlquery);
@@ -260,13 +271,16 @@ public class mcstocksapicomms
                 return candleone.timestampdate.compareTo(candletwo.timestampdate);
             }
         });
+        if (math_tirarzeros == true)
+            listacandlesretornar = math_retirarzeroscandles(listacandlesretornar);
+        
         return listacandlesretornar;
     }
     
     public java.util.List<mccandle> av_receberstockcandlesmonthly(String simbolo)
     {
 
-        String urlquery = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol="+simbolo+"&apikey=" + chavealphavantage;
+        String urlquery = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol="+simbolo+"&apikey=" + av_chave;
         //mierclasses.mcfuncoeshelper.setarclipboard(urlquery);
         //mierclasses.mcfuncoeshelper.mostrarmensagem(urlquery);
         String jsonconteudo = mwcomms.receberconteudopagina(urlquery);
@@ -307,6 +321,9 @@ public class mcstocksapicomms
                 return candleone.timestampdate.compareTo(candletwo.timestampdate);
             }
         });
+        if (math_tirarzeros == true)
+            listacandlesretornar = math_retirarzeroscandles(listacandlesretornar);
+        
         return listacandlesretornar;
     }
     // </editor-fold>
@@ -344,7 +361,7 @@ public class mcstocksapicomms
                 },
         */
         
-        String urlquery = "https://www.alphavantage.co/query?function=FX_INTRADAY&from_symbol="+fromsimbolo+"&to_symbol="+tosimbolo+"&interval="+intervalo+"&outputsize="+outputsize+"&apikey=" + chavealphavantage;
+        String urlquery = "https://www.alphavantage.co/query?function=FX_INTRADAY&from_symbol="+fromsimbolo+"&to_symbol="+tosimbolo+"&interval="+intervalo+"&outputsize="+outputsize+"&apikey=" + av_chave;
         //mierclasses.mcfuncoeshelper.setarclipboard(urlquery);
         //mierclasses.mcfuncoeshelper.mostrarmensagem(urlquery);
         String jsonconteudo = mwcomms.receberconteudopagina(urlquery);
@@ -403,12 +420,15 @@ public class mcstocksapicomms
                 return candleone.timestampdate.compareTo(candletwo.timestampdate);
             }
         });
+        if (math_tirarzeros == true)
+            listacandlesretornar = math_retirarzeroscandles(listacandlesretornar);
+        
         return listacandlesretornar;
     }
     
     public java.util.List<mccandle> av_receberforexcandlesdaily(String fromsimbolo, String tosimbolo, String outputsize)
     {
-        String urlquery = "https://www.alphavantage.co/query?function=FX_DAILY&from_symbol="+fromsimbolo+"&to_symbol="+tosimbolo+"&outputsize="+outputsize+"&apikey=" + chavealphavantage;
+        String urlquery = "https://www.alphavantage.co/query?function=FX_DAILY&from_symbol="+fromsimbolo+"&to_symbol="+tosimbolo+"&outputsize="+outputsize+"&apikey=" + av_chave;
         //mierclasses.mcfuncoeshelper.setarclipboard(urlquery);
         //mierclasses.mcfuncoeshelper.mostrarmensagem(urlquery);
         String jsonconteudo = mwcomms.receberconteudopagina(urlquery);
@@ -449,12 +469,15 @@ public class mcstocksapicomms
                 return candleone.timestampdate.compareTo(candletwo.timestampdate);
             }
         });
+        if (math_tirarzeros == true)
+            listacandlesretornar = math_retirarzeroscandles(listacandlesretornar);
+        
         return listacandlesretornar;
     }
     
     public java.util.List<mccandle> av_receberforexcandlesweekly(String fromsimbolo, String tosimbolo)
     {
-        String urlquery = "https://www.alphavantage.co/query?function=FX_WEEKLY&from_symbol="+fromsimbolo+"&to_symbol="+tosimbolo+"&apikey=" + chavealphavantage;
+        String urlquery = "https://www.alphavantage.co/query?function=FX_WEEKLY&from_symbol="+fromsimbolo+"&to_symbol="+tosimbolo+"&apikey=" + av_chave;
         //mierclasses.mcfuncoeshelper.setarclipboard(urlquery);
         //mierclasses.mcfuncoeshelper.mostrarmensagem(urlquery);
         String jsonconteudo = mwcomms.receberconteudopagina(urlquery);
@@ -494,12 +517,15 @@ public class mcstocksapicomms
                 return candleone.timestampdate.compareTo(candletwo.timestampdate);
             }
         });
+        if (math_tirarzeros == true)
+            listacandlesretornar = math_retirarzeroscandles(listacandlesretornar);
+        
         return listacandlesretornar;
     }
     
     public java.util.List<mccandle> av_receberforexcandlesmonthly(String fromsimbolo, String tosimbolo)
     {
-        String urlquery = "https://www.alphavantage.co/query?function=FX_MONTHLY&from_symbol="+fromsimbolo+"&to_symbol="+tosimbolo+"&apikey=" + chavealphavantage;
+        String urlquery = "https://www.alphavantage.co/query?function=FX_MONTHLY&from_symbol="+fromsimbolo+"&to_symbol="+tosimbolo+"&apikey=" + av_chave;
         //mierclasses.mcfuncoeshelper.setarclipboard(urlquery);
         //mierclasses.mcfuncoeshelper.mostrarmensagem(urlquery);
         String jsonconteudo = mwcomms.receberconteudopagina(urlquery);
@@ -539,6 +565,9 @@ public class mcstocksapicomms
                 return candleone.timestampdate.compareTo(candletwo.timestampdate);
             }
         });
+        if (math_tirarzeros == true)
+            listacandlesretornar = math_retirarzeroscandles(listacandlesretornar);
+        
         return listacandlesretornar;
     }
     
@@ -547,10 +576,14 @@ public class mcstocksapicomms
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="CryptoCompare API">
-    String chavecryptocompare = "";
+    String crycom_chave = "";
     public void crycom_alterarchaveapi(String novachavecc)
     {
-        chavecryptocompare = novachavecc;
+        crycom_chave = novachavecc;
+    }
+    public String crycom_retornarchaveapi()
+    {
+        return crycom_chave;
     }
     
      public java.util.List<String> crycom_procurarsimbolo(String parametrobusca)
@@ -658,11 +691,11 @@ public class mcstocksapicomms
         
         String caminhourl = "";
         if (periodo.equals("Daily"))
-            caminhourl = "https://min-api.cryptocompare.com/data/histoday?fsym="+simbolo.toUpperCase()+"&tsym=USD&limit=" + limite + "&api_key=" + chavecryptocompare;
+            caminhourl = "https://min-api.cryptocompare.com/data/histoday?fsym="+simbolo.toUpperCase()+"&tsym=USD&limit=" + limite + "&api_key=" + crycom_chave;
         else if (periodo.equals("Hourly"))
-            caminhourl = "https://min-api.cryptocompare.com/data/histohour?fsym="+simbolo.toUpperCase()+"&tsym=USD&limit=" + limite + "&api_key=" + chavecryptocompare;
+            caminhourl = "https://min-api.cryptocompare.com/data/histohour?fsym="+simbolo.toUpperCase()+"&tsym=USD&limit=" + limite + "&api_key=" + crycom_chave;
         else if (periodo.equals("Minute"))
-            caminhourl = "https://min-api.cryptocompare.com/data/histominute?fsym="+simbolo.toUpperCase()+"&tsym=USD&limit=" + limite + "&api_key=" + chavecryptocompare;
+            caminhourl = "https://min-api.cryptocompare.com/data/histominute?fsym="+simbolo.toUpperCase()+"&tsym=USD&limit=" + limite + "&api_key=" + crycom_chave;
         
         //mierclasses.mcfuncoeshelper.setarclipboard(caminhourl);
         //mierclasses.mcfuncoeshelper.mostrarmensagem(caminhourl);
@@ -713,6 +746,9 @@ public class mcstocksapicomms
                 return candleone.timestampdate.compareTo(candletwo.timestampdate);
             }
         });
+        if (math_tirarzeros == true)
+            listacandlesretornar = math_retirarzeroscandles(listacandlesretornar);
+        
         return listacandlesretornar;
         
     }
@@ -1006,6 +1042,9 @@ public class mcstocksapicomms
                 return candleone.timestampdate.compareTo(candletwo.timestampdate);
             }
         });
+        if (math_tirarzeros == true)
+            listacandlesretornar = math_retirarzeroscandles(listacandlesretornar);
+        
         return listacandlesretornar;
     }
     
@@ -1120,7 +1159,10 @@ public class mcstocksapicomms
             {
                 return candleone.timestampdate.compareTo(candletwo.timestampdate);
             }
-        });        
+        });     
+        if (math_tirarzeros == true)
+            listacandlesretornar = math_retirarzeroscandles(listacandlesretornar);
+        
         return listacandlesretornar;
     }
     
@@ -1173,6 +1215,9 @@ public class mcstocksapicomms
                 return candleone.timestampdate.compareTo(candletwo.timestampdate);
             }
         });
+        if (math_tirarzeros == true)
+            listacandlesretornar = math_retirarzeroscandles(listacandlesretornar);
+        
         return listacandlesretornar;
     }
     
@@ -1199,4 +1244,34 @@ public class mcstocksapicomms
         return retorno;
     }
     // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="MATH SUPPORT FUNCTIONS">
+    public boolean math_tirarzeros = false; //variavel para dizer se devem ser retirados zeros das candles
+
+    public java.util.List<mccandle> math_retirarzeroscandles(java.util.List<mccandle> candles)
+    {
+        java.util.List<mccandle> candlessemzeros = new java.util.ArrayList<>();
+        
+        //funcao para retirar candles que possuem valor 0, seja em open, high, low ou close
+        for (int i = 0; i < candles.size(); i++)
+        {
+            mccandle candleatual = candles.get(i);
+            
+            boolean adicionarsemzeros = true;
+            if (candleatual.opend == 0.0)
+                adicionarsemzeros = false;
+            else if (candleatual.highd == 0.0)
+                adicionarsemzeros = false;
+            else if (candleatual.lowd == 0.0)
+                adicionarsemzeros = false;
+            else if (candleatual.closed == 0.0)
+                adicionarsemzeros = false;
+            
+            if (adicionarsemzeros == true)
+                candlessemzeros.add(candleatual);
+        }
+        
+        return candlessemzeros;
+    }
+    //</editor-fold>
 }

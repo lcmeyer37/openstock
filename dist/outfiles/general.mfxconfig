@@ -7,4 +7,7 @@
 		<TelegramBotToken>BOTTOKENMISSING</TelegramBotToken>
 		<TelegramUserID>USERIDMISSING</TelegramUserID>
 	</TelegramComms>
+	<CandlesProcessing>
+		<RemoveZeros>true</RemoveZeros>
+	</CandlesProcessing>
 </OpenstockConfiguration>

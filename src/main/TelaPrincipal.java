@@ -27,7 +27,6 @@ public class TelaPrincipal extends javax.swing.JFrame
     //classe noassetsmensagem, jpanel que aparece quando nao tem nenhum asset em analise
     panels.analisadorasset.noassetsmensagem nam;
     
-    
     /**
      * Creates new form TelaPrincipal
      */
@@ -48,7 +47,8 @@ public class TelaPrincipal extends javax.swing.JFrame
         //holder do analisador de asset do item de asset
         jPanelHolderAnalisadorAsset.setLayout(new java.awt.GridLayout(1,1));
         //comecar mostrando a janela de sem assets
-        jPanelHolderAnalisadorAsset.add(new panels.analisadorasset.noassetsmensagem());
+        nam = new panels.analisadorasset.noassetsmensagem();
+        jPanelHolderAnalisadorAsset.add(nam);
 
         //popular msapicomms, utilizando para comunicar com diferentes APIs de stock
         popularapis();
@@ -67,7 +67,6 @@ public class TelaPrincipal extends javax.swing.JFrame
         //telegram api
         msapicomms = new mierclasses.mcstocksapicomms();
         mstelegramcomms = new mierclasses.mctelegramcomms();
-        nam = new panels.analisadorasset.noassetsmensagem();
         
         // <editor-fold defaultstate="collapsed" desc="carregar general.mfxconfig para associar chaves de Stocks APIs e do Telegram">
         try
@@ -122,6 +121,24 @@ public class TelaPrincipal extends javax.swing.JFrame
             catch (Exception e) 
             {
                 mierclasses.mcfuncoeshelper.mostrarmensagem("Telegram parameters missing. Please find the relevant information from https://telegram.org/.");
+            }
+            
+            try
+            {
+                String retirarzerosstring = document.getElementsByTagName("RemoveZeros").item(0).getTextContent();
+                
+                if (retirarzerosstring.equals("true") == true)
+                {
+                    msapicomms.math_tirarzeros = true;
+                }
+                else
+                {
+                    msapicomms.math_tirarzeros = false;
+                }
+            }
+            catch (Exception e) 
+            {
+                mierclasses.mcfuncoeshelper.mostrarmensagem("Candles processing parameters missing. Please aqcuire one for use at https://www.cryptocompare.com/.");
             }
         }
         catch (Exception e) 
