@@ -51,20 +51,25 @@ public class TelaPrincipal extends javax.swing.JFrame
         jPanelHolderAnalisadorAsset.add(nam);
 
         //popular msapicomms, utilizando para comunicar com diferentes APIs de stock
-        popularapis();
+        interpretarconfiggerais();
         
         //revalidar componentes apos alteracoes graficas e criacoes
         this.validate();
         this.repaint();
     }
     
-    void popularapis()
+    void interpretarconfiggerais()
     {
         //funcao para popular api utilizadas pelo programa
         //iex
         //alpha vantage
         //crypto compare
         //telegram api
+        
+        //e setar outros parametros das configuracoes gerais
+        //habilitar remocao de zeros
+        //alterar fuso-horario do environment Java
+        
         msapicomms = new mierclasses.mcstocksapicomms();
         mstelegramcomms = new mierclasses.mctelegramcomms();
         
@@ -79,9 +84,9 @@ public class TelaPrincipal extends javax.swing.JFrame
             DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
         
             DocumentBuilder dbuilder = dbfactory.newDocumentBuilder();
-        
-            
             Document document = dbuilder.parse(xmlArquivo);
+            
+            //change key alpha vantage
             try
             {
                 String alphavantagekey = document.getElementsByTagName("AVKEY").item(0).getTextContent();
@@ -92,6 +97,7 @@ public class TelaPrincipal extends javax.swing.JFrame
                 mierclasses.mcfuncoeshelper.mostrarmensagem("Alpha Vantage API key missing. Please aqcuire one for use at https://www.alphavantage.co/.");
             }
 
+            //change key cryptocompare
             try
             {
                 String cryptocomparekey = document.getElementsByTagName("CCKEY").item(0).getTextContent();
@@ -102,6 +108,7 @@ public class TelaPrincipal extends javax.swing.JFrame
                 mierclasses.mcfuncoeshelper.mostrarmensagem("CryptoCompare API key missing. Please aqcuire one for use at https://www.cryptocompare.com/.");
             }
 
+            //change parameters telegram
             try
             {
                 String telegramativar = document.getElementsByTagName("TelegramActivate").item(0).getTextContent();
@@ -110,35 +117,43 @@ public class TelaPrincipal extends javax.swing.JFrame
                 mstelegramcomms.setarboteusuario(telegrambottoken, telegramuserid);
                 
                 if (telegramativar.equals("true") == true)
-                {
                     mstelegramcomms.ativo = true;
-                }
                 else
-                {
                     mstelegramcomms.ativo = false;
-                }
             }
             catch (Exception e) 
             {
                 mierclasses.mcfuncoeshelper.mostrarmensagem("Telegram parameters missing. Please find the relevant information from https://telegram.org/.");
             }
             
+            //toggle remove OHLC candles with zeroes
             try
             {
-                String retirarzerosstring = document.getElementsByTagName("RemoveZeros").item(0).getTextContent();
+                String retirarzerosstring = document.getElementsByTagName("CandleRemoveZeros").item(0).getTextContent();
                 
                 if (retirarzerosstring.equals("true") == true)
-                {
                     msapicomms.math_tirarzeros = true;
-                }
                 else
-                {
                     msapicomms.math_tirarzeros = false;
+            }
+            catch (Exception e) 
+            {
+                mierclasses.mcfuncoeshelper.mostrarmensagem("Candles processing parameters missing.");
+            }
+            
+            //change application timezone if necessary
+            try
+            {
+                String apptzstring = document.getElementsByTagName("AppTimezone").item(0).getTextContent();
+               
+                if (apptzstring.equals("Original") == false)
+                {
+                    java.util.TimeZone.setDefault(java.util.TimeZone.getTimeZone(apptzstring));
                 }
             }
             catch (Exception e) 
             {
-                mierclasses.mcfuncoeshelper.mostrarmensagem("Candles processing parameters missing. Please aqcuire one for use at https://www.cryptocompare.com/.");
+                mierclasses.mcfuncoeshelper.mostrarmensagem("TimeZone processing parameter is missing.");
             }
         }
         catch (Exception e) 

@@ -1,13 +1,16 @@
 <?xml version="1.0"?>
 <OpenstockConfiguration>
-	<AVKEY>AVKEYMISSING</AVKEY>
-	<CCKEY>CCKEYMISSING</CCKEY>
-	<TelegramComms>
+	<StocksAPI>
+		<AVKEY>AVKEYMISSING</AVKEY>
+		<CCKEY>CCKEYMISSING</CCKEY>
+	</StocksAPI>
+	<TelegramAPI>
 		<TelegramActivate>false</TelegramActivate>
 		<TelegramBotToken>BOTTOKENMISSING</TelegramBotToken>
 		<TelegramUserID>USERIDMISSING</TelegramUserID>
-	</TelegramComms>
-	<CandlesProcessing>
-		<RemoveZeros>true</RemoveZeros>
-	</CandlesProcessing>
+	</TelegramAPI>
+	<Other>
+		<CandleRemoveZeros>true</CandleRemoveZeros>
+		<AppTimezone>UTC</AppTimezone> <!--examples: "Original", "UTC", "America/New_York", "America/Sao_Paulo"-->
+	</Other>
 </OpenstockConfiguration>

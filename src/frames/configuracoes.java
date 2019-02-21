@@ -55,6 +55,10 @@ public static main.TelaPrincipal telappai;
         {
             jLabelRemoverCandles.setText("Remove Candles with zero OHLC values: no");
         }
+        
+        java.util.Calendar c = java.util.Calendar.getInstance();
+        java.util.TimeZone tz = c.getTimeZone();
+        jLabelAppTimezone.setText("Application Time Zone: " + tz.getDisplayName());
     }
     
     void enviarmensagemtestetelegram()
@@ -95,6 +99,7 @@ public static main.TelaPrincipal telappai;
         jLabelTelegramCommsStatus = new javax.swing.JLabel();
         jButtonTestarTelegramComms = new javax.swing.JButton();
         jLabelRemoverCandles = new javax.swing.JLabel();
+        jLabelAppTimezone = new javax.swing.JLabel();
         jPanelAbout = new javax.swing.JPanel();
         jLabelOpenStock = new javax.swing.JLabel();
         jLabelLastBuild = new javax.swing.JLabel();
@@ -161,7 +166,7 @@ public static main.TelaPrincipal telappai;
             jPanelOIHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelOIHeaderLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelOITitle, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
+                .addComponent(jLabelOITitle, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanelOIHeaderLayout.setVerticalGroup(
@@ -199,6 +204,9 @@ public static main.TelaPrincipal telappai;
         jLabelRemoverCandles.setForeground(new java.awt.Color(255, 255, 255));
         jLabelRemoverCandles.setText("Remove Candles with zero OHLC values: ");
 
+        jLabelAppTimezone.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelAppTimezone.setText("Application Time Zone:");
+
         javax.swing.GroupLayout jPanelOutrasInformacoesLayout = new javax.swing.GroupLayout(jPanelOutrasInformacoes);
         jPanelOutrasInformacoes.setLayout(jPanelOutrasInformacoesLayout);
         jPanelOutrasInformacoesLayout.setHorizontalGroup(
@@ -210,16 +218,16 @@ public static main.TelaPrincipal telappai;
                     .addGroup(jPanelOutrasInformacoesLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addGroup(jPanelOutrasInformacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelAppTimezone, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabelRemoverCandles, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabelTelegramBotToken, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabelCCKey, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabelAVKey, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabelTelegramUserId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanelOutrasInformacoesLayout.createSequentialGroup()
-                                .addComponent(jLabelTelegramCommsStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButtonTestarTelegramComms)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addComponent(jLabelTelegramCommsStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonTestarTelegramComms)))))
                 .addContainerGap())
         );
         jPanelOutrasInformacoesLayout.setVerticalGroup(
@@ -241,6 +249,8 @@ public static main.TelaPrincipal telappai;
                     .addComponent(jButtonTestarTelegramComms))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelRemoverCandles, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelAppTimezone, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -276,13 +286,13 @@ public static main.TelaPrincipal telappai;
         jLabelOpenStock.setText("Open Stock");
 
         jLabelLastBuild.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelLastBuild.setText("(Lucas Meyer build - February 2019)");
+        jLabelLastBuild.setText("Lucas Meyer build of February 2019");
 
         jLabelBear.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelBear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/bear70.png"))); // NOI18N
 
         jLabelVersion.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelVersion.setText("Version: 1.034");
+        jLabelVersion.setText("(v1.034)");
 
         jLabelAPIAttribution.setForeground(new java.awt.Color(255, 255, 255));
         jLabelAPIAttribution.setText("API Attributions:");
@@ -403,7 +413,7 @@ public static main.TelaPrincipal telappai;
                         .addGroup(jPanelAboutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabelOpenStock)
                             .addComponent(jLabelVersion))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabelLastBuild)))
                 .addGap(18, 18, 18)
                 .addComponent(jLabelAPIAttribution)
@@ -423,7 +433,7 @@ public static main.TelaPrincipal telappai;
                 .addGroup(jPanelAboutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelAPITelegram)
                     .addComponent(jButtonTelegram))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
                 .addGroup(jPanelAboutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonGithub)
                     .addComponent(jButtonLicense))
@@ -438,13 +448,15 @@ public static main.TelaPrincipal telappai;
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -599,6 +611,7 @@ public static main.TelaPrincipal telappai;
     private javax.swing.JLabel jLabelAPIAttributionIEX;
     private javax.swing.JLabel jLabelAPITelegram;
     private javax.swing.JLabel jLabelAVKey;
+    private javax.swing.JLabel jLabelAppTimezone;
     private javax.swing.JLabel jLabelBear;
     private javax.swing.JLabel jLabelCCKey;
     private javax.swing.JLabel jLabelLastBuild;
