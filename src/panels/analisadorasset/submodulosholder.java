@@ -113,7 +113,7 @@ public class submodulosholder extends javax.swing.JPanel
             long period = mes; //vai ser setado
             if (tempotimer.equals("1 minute") == true)
                 period = 1*minuto;
-            else if (tempotimer.equals("5 minute") == true)
+            else if (tempotimer.equals("5 minutes") == true)
                 period = 5*minuto;
             else if (tempotimer.equals("15 minutes") == true)
                 period = 15*minuto;
