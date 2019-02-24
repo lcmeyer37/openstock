@@ -32,7 +32,7 @@ Data and functionality provided for free by:
 * [CryptoCompare](https://www.cryptocompare.com/api-licence-agreement/)
 * [Telegram API](https://core.telegram.org/api/terms)
 
-## Installation and Usage
+## Installation and Use
 
 Steps:
 1. Make sure you have Java 8 installed on your computer. It is preferable that you set it as your default Java Runtime Environment. ([Download Java](https://www.java.com/en/download/))
