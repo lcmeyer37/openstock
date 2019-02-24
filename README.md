@@ -1,16 +1,16 @@
 # Open Stock
 Open Source Technical Analysis and Offline Trading Software
 
-![Bear Logo](sblogo.png)
+![Bear Logo](/supportfiles/sblogo.png)
 
 ## About
-Open Stock is a project [licensed under GNU GPLv3](https://github.com/lcmeyer37/openstock/blob/master/LICENSE), being created making use of NetBeans and Java. This repository is welcome to anyone interested to [contribute](CONTRIBUTING.md) with it. 
+Open Stock is a project [licensed under GNU GPLv3](/LICENSE), being created making use of NetBeans and Java. This repository is welcome to anyone interested to [contribute](CONTRIBUTING.md) with it. 
 
 
-![Chart](example1.png)
-![Separate Windows](example2.png)
-![Offline Trader](example3.png)
-![Bot Editor and Simulator](example4.png)
+![Chart](/supportfiles/achart.png)
+![Separate Windows](/supportfiles/mcharts.png)
+![Offline Trader](/supportfiles/aot.png)
+![Bot Editor and Simulator](/supportfiles/atsim.png)
 
 Features:
 * Real-time data for multiple assets: stocks, dividends, indexes, forex, cryptocurrency
