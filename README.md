@@ -35,7 +35,7 @@ Data and functionality provided for free by:
 ## Installation and Usage
 
 Steps:
-1. Make sure you have Java 8 installed on your computer. [Download Java](https://www.java.com/en/download/)!
+1. Make sure you have Java 8 installed on your computer. It is preferable that you set it as your default JRE. [Download Java](https://www.java.com/en/download/)
 2. Download the [Current Release ZIP file](https://github.com/lcmeyer37/openstock/releases) and extract it to your computer or download the contents of the [dist folder](https://github.com/lcmeyer37/openstock/tree/master/dist).
 3. Run the openstock.jar file and you are good to go!
 
