@@ -35,9 +35,9 @@ Data and functionality provided for free by:
 ## Installation and Usage
 
 Steps:
-1. Make sure you have Java 8 installed on your computer. [Download Java](https://www.java.com/en/download/)
-2. Download the [Current Release ZIP file](https://github.com/lcmeyer37/openstock/releases) or the latest contents of https://github.com/lcmeyer37/openstock/tree/master/dist
-3. Run the openstock.jar file and you're good to go!
+1. Make sure you have Java 8 installed on your computer. [Download Java](https://www.java.com/en/download/)!
+2. Download the [Current Release ZIP file](https://github.com/lcmeyer37/openstock/releases) and extract it to your computer or download the contents of the [dist folder](https://github.com/lcmeyer37/openstock/tree/master/dist).
+3. Run the openstock.jar file and you are good to go!
 
 
 [Contribute with crypto](https://commerce.coinbase.com/checkout/4f5a0777-1d17-4a96-90e6-9a2d6046a08b)
