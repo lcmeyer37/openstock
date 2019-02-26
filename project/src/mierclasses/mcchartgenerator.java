@@ -36,7 +36,7 @@ public class mcchartgenerator
     public org.jfree.chart.ChartPanel chartpanelatual; //chartpanel atual
     public java.util.List<mierclasses.mccandle> candlesatual; //lista de candles atual utilizadas por este mcg
     public java.util.List<String> idindicadoresatual; //lista com ids dos indicadores atuais presentes no chart ohlc (nao serve para indicadores que nao estao desenhados no chart)
-    public java.util.List<String> idferramentassubannotationsatual; //lista com ids das ferramentas atuais presentes no chart ohlc
+    public java.util.List<String> idanotacoesatual; //lista com ids das anotacoes atuais presentes no chart ohlc
 
     //informacoes sobre a ultima posicao do mouse no chart
     public double valormouseatualgraficox; //contem o ultimo valor em x que o mouse tocou
@@ -61,7 +61,7 @@ public class mcchartgenerator
     void inicializarmcchartgenerator()
     {
         idindicadoresatual = new java.util.ArrayList<>();
-        idferramentassubannotationsatual = new java.util.ArrayList<>();
+        idanotacoesatual = new java.util.ArrayList<>();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Funcoes para funcionamento de Ferramentas no chart OHLC">
@@ -547,28 +547,28 @@ public class mcchartgenerator
     //</editor-fold>
     
     //funcao para adicionar ids referentes a subannotations de uma ferramenta na lista de controle
-    public void adicionarplotohlc_ferramentaid(String idadicionar, int numerosubannotations)
+    public void adicionarplotohlc_anotacaoid(String idadicionar, int numerosubannotations)
     {
         //esta funcao eh necessaria para adicionar o novo id a lista de anotacoes atuais
         //essa adicao deve ser feita manualmente pela logica do core de ferramentas, que funcionam com o mouse
 
         for (int i = 0; i < numerosubannotations; i++)
         {
-            idferramentassubannotationsatual.add(idadicionar);
+            idanotacoesatual.add(idadicionar);
         }
     }
 
     //funcao para remover id da lista de ids de ferramentas
-    public void removerplotohlc_ferramentaid(String idremover, int numerosubannotations)
+    public void removerplotohlc_anotacaoid(String idremover, int numerosubannotations)
     {
         for (int i = 0; i < numerosubannotations; i++)
         {
-            idferramentassubannotationsatual.remove(idremover);
+            idanotacoesatual.remove(idremover);
         }
     }
 
     //funcao para adicionar subannotations de uma ferramenta (utilizado ao realizar load de um asset)
-    public void adicionarplotohlc_subannotationsobjectbase64type(java.util.List<org.jfree.chart.annotations.XYAnnotation> subannotationsanotacao)
+    public void adicionarplotohlc_anotacaocomlistadesubannotations64(java.util.List<org.jfree.chart.annotations.XYAnnotation> subannotationsanotacao)
     {
         //funcao especial para carregamento de objetos de annotation
         org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getXYPlot();
@@ -673,7 +673,7 @@ public class mcchartgenerator
         if (resetaranotacoesindicadores == true)
         {
             idindicadoresatual = new java.util.ArrayList<>();
-            idferramentassubannotationsatual = new java.util.ArrayList<>();
+            idanotacoesatual = new java.util.ArrayList<>();
         }
         
         // <editor-fold defaultstate="collapsed" desc="Carregar OHLC e Setar chartpanelatual">
@@ -789,9 +789,9 @@ public class mcchartgenerator
     public void printlistaidsanotacao()
     {
         String listaids = "";
-        for (int i = 0; i < idferramentassubannotationsatual.size(); i++)
+        for (int i = 0; i < idanotacoesatual.size(); i++)
         {
-            listaids = listaids + idferramentassubannotationsatual.get(i) + "\n";
+            listaids = listaids + idanotacoesatual.get(i) + "\n";
         }
         //mierclasses.mcfuncoeshelper.mostrarmensagem(listaids);
     }

@@ -250,68 +250,70 @@ public class submodulografico extends javax.swing.JPanel
         {
             // <editor-fold defaultstate="collapsed" desc="Recarregar Dados e Plots dos Indicadores">
         
-        //comecar limpando graficamente os timeseries dos indicadores
-        mcg.removerplotohlc_indicadores();
-        
-        //atualizar dados de todos os indicadores e adiciona-los novamente (os seus ids ja existem)
-        for (int i = 0; i < jPanelIndicadores.getComponentCount(); i++)
-        {
-            
-                panels.analisadorasset.grafico.itemindicador novoindicador = (panels.analisadorasset.grafico.itemindicador)jPanelIndicadores.getComponent(i);
-            String statusrunindicador = novoindicador.rodarscriptindicador();
-            if (statusrunindicador.equals("ok"))
-            {
-                if (novoindicador.mcbcindicador.tipoplot_lastrun.equals("drawoncandles"))
-                {
-                    //considerando que o indicador rodou com sucesso, e que ele deve ser desenhado no ohlc,
-                    //adicionar dados do indicador no grafico
-                    mcg.adicionarplotohlc_indicador
-                    (
-                        novoindicador.mcbcindicador.pontosx_lastrun,
-                        novoindicador.mcbcindicador.pontosy_lastrun,
-                        novoindicador.mcbcindicador.tituloscript_lastrun
-                    );
+            //comecar limpando graficamente os timeseries dos indicadores
+            mcg.removerplotohlc_indicadores();
 
-                    //recarregar grafico separado do indicador
-                    novoindicador.recarregargraficoseparadoindicador();
+            //atualizar dados de todos os indicadores e adiciona-los novamente (os seus ids ja existem)
+            for (int i = 0; i < jPanelIndicadores.getComponentCount(); i++)
+            {
+                panels.analisadorasset.grafico.itemindicador novoindicador = (panels.analisadorasset.grafico.itemindicador)jPanelIndicadores.getComponent(i);
+                String statusrunindicador = novoindicador.rodarscriptindicador();
+                if (statusrunindicador.equals("ok"))
+                {
+                    if (novoindicador.mcbcindicador.tipoplot_lastrun.equals("drawoncandles"))
+                    {
+                        //considerando que o indicador rodou com sucesso, e que ele deve ser desenhado no ohlc,
+                        //adicionar dados do indicador no grafico
+                        mcg.adicionarplotohlc_indicador
+                        (
+                            novoindicador.mcbcindicador.pontosx_lastrun,
+                            novoindicador.mcbcindicador.pontosy_lastrun,
+                            novoindicador.mcbcindicador.tituloscript_lastrun
+                        );
+
+                        //recarregar grafico separado do indicador
+                        novoindicador.recarregargraficoseparadoindicador();
+                    }
+                    else
+                    {
+                        //recarregar grafico separado do indicador
+                        novoindicador.recarregargraficoseparadoindicador();
+                    }
                 }
                 else
                 {
-                    //recarregar grafico separado do indicador
-                    novoindicador.recarregargraficoseparadoindicador();
+                    mierclasses.mcfuncoeshelper.mostrarmensagem("Algum problema ocorreu e o indicador não pôde ser utilizado:\n\n" + statusrunindicador);
+                }
+
+            }
+
+            //tambem recarregar grafico secundario
+            for (int i = 0; i < jPanelIndicadores.getComponentCount(); i++)
+            {
+                    panels.analisadorasset.grafico.itemindicador miia = (panels.analisadorasset.grafico.itemindicador)jPanelIndicadores.getComponent(i);
+                if (miia.chartseparadoembottom == true)
+                {
+                    //encontrado o indicador cujo grafico esta como secundario, tambem atualiza-lo
+                    setarGraficoIndicadorSecundario(miia);
+                    break;
                 }
             }
-            else
-            {
-                mierclasses.mcfuncoeshelper.mostrarmensagem("Algum problema ocorreu e o indicador não pôde ser utilizado:\n\n" + statusrunindicador);
-            }
-            
-        }
-        
-        //tambem recarregar grafico secundario
-        for (int i = 0; i < jPanelIndicadores.getComponentCount(); i++)
-        {
-                panels.analisadorasset.grafico.itemindicador miia = (panels.analisadorasset.grafico.itemindicador)jPanelIndicadores.getComponent(i);
-            if (miia.chartseparadoembottom == true)
-            {
-                //encontrado o indicador cujo grafico esta como secundario, tambem atualiza-lo
-                setarGraficoIndicadorSecundario(miia);
-                break;
-            }
-        }
-        
-        //</editor-fold>
+
+            //</editor-fold>
         
             // <editor-fold defaultstate="collapsed" desc="Recarregar Dados e Plots das Anotacoes">
-        //remover todos subannotations
-        mcg.removerplotohlc_todossubannotations();
-        
-        for (int i = 0; i < jPanelAnotacoes.getComponentCount(); i++)
-        {
+            
+            //remover todos subannotations do OHLC
+            mcg.removerplotohlc_todossubannotations();
+
+            //recarregar as subannotations dos itemsanotacao para o OHLC
+            for (int i = 0; i < jPanelAnotacoes.getComponentCount(); i++)
+            {
                 panels.analisadorasset.grafico.itemanotacao novoanotacao = (panels.analisadorasset.grafico.itemanotacao)jPanelAnotacoes.getComponent(i);
-            mcg.adicionarplotohlc_subannotationsobjectbase64type(novoanotacao.subannotationsanotacao);
-        }
-        // </editor-fold>
+                mcg.adicionarplotohlc_anotacaocomlistadesubannotations64(novoanotacao.subannotationsanotacao);
+            }
+            
+            // </editor-fold>
         }
         //</editor-fold>
         
@@ -599,7 +601,7 @@ public class submodulografico extends javax.swing.JPanel
         
         java.util.List<org.jfree.chart.annotations.XYAnnotation> listasubanotacoesgraficas = mcg.retornartodassubanotacoes();
         int tamanhoanotacoesgraficas = listasubanotacoesgraficas.size();
-        int quantidadeidssubmoduloatual = mcg.idferramentassubannotationsatual.size();
+        int quantidadeidssubmoduloatual = mcg.idanotacoesatual.size();
         
         int diferencasubannotationsgraficoeidssubannotations = tamanhoanotacoesgraficas - quantidadeidssubmoduloatual;
         
@@ -610,7 +612,7 @@ public class submodulografico extends javax.swing.JPanel
             panels.analisadorasset.grafico.itemanotacao novompia = new panels.analisadorasset.grafico.itemanotacao(this,mcg.ferramentaatualgrafico,mcg.ultimalistasubanotacoesanotacao);
             
             //adicionar esta nova anotacao a lista de controle do chartgenerator atual
-             mcg.adicionarplotohlc_ferramentaid(novompia.id, novompia.subannotationsanotacao.size());
+             mcg.adicionarplotohlc_anotacaoid(novompia.id, novompia.subannotationsanotacao.size());
             
             //adicionar item de anotacao grafica deste submodulo
             jPanelAnotacoes.add(novompia);    
@@ -627,9 +629,9 @@ public class submodulografico extends javax.swing.JPanel
         //criar novo item de anotacao
         panels.analisadorasset.grafico.itemanotacao novompia = new panels.analisadorasset.grafico.itemanotacao(this, nome, id, tipo, subanotacoesanotacaoobjeto);
         //adicionar subannotations referentes a esta anotacao no grafico
-        mcg.adicionarplotohlc_subannotationsobjectbase64type(subanotacoesanotacaoobjeto);
-        //adicionar esta anotacao a lista de controle do chartgenerator atual
-        mcg.adicionarplotohlc_ferramentaid(novompia.id, subanotacoesanotacaoobjeto.size());
+        mcg.adicionarplotohlc_anotacaocomlistadesubannotations64(subanotacoesanotacaoobjeto);
+        //adicionar esta anotacao a lista de ids para controle do chartgenerator atual
+        mcg.adicionarplotohlc_anotacaoid(novompia.id, subanotacoesanotacaoobjeto.size());
         //adicionar item de anotacao grafica deste submodulo
         jPanelAnotacoes.add(novompia);
         
@@ -641,8 +643,8 @@ public class submodulografico extends javax.swing.JPanel
     {
         //remover subanotacoes graficas desta anotacao do grafico
         mcg.removerplotohlc_subannotations(mpiaremover.subannotationsanotacao);
-        //remover os id referente a esta anotacao da lista de controle
-        mcg.removerplotohlc_ferramentaid(mpiaremover.id, mpiaremover.subannotationsanotacao.size());
+        //remover todos os ids referentes a esta anotacao da lista de controle
+        mcg.removerplotohlc_anotacaoid(mpiaremover.id, mpiaremover.subannotationsanotacao.size());
         //remover item de anotacao grafica deste submodulo
         jPanelAnotacoes.remove(mpiaremover);
         
