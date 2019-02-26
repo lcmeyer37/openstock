@@ -6,19 +6,32 @@
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/frames/analisadorasset/renomearitemanalisadorasset.java</file>
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/frames/configuracoes.java</file>
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/frames/analisadorasset/grafico/renomearitemanotacao.java</file>
-            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/frames/analisadorasset/grafico/adicionarsimbolo.java</file>
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/main/TelaPrincipal.java</file>
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/frames/editorbearcodeindicador.java</file>
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/panels/analisadorasset/analisadorasset.java</file>
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/mierclasses/mcchartgenerator.java</file>
-            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/panels/analisadorasset/grafico/submodulografico.java</file>
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/frames/analisadorasset/shjanelaseparada.java</file>
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/frames/analisadorasset/grafico/adicionarindicador.java</file>
-            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/panels/analisadorasset/itemanalisadorasset.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/mierclasses/mcofflinetrader.java</file>
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/mierclasses/mcfuncoeshelper.java</file>
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/main/OpenStock.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/mierclasses/mcbctradingbotinterpreter.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/mierclasses/mcstocksapicomms.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/mierclasses/mccandle.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/panels/analisadorasset/shjanelamensagem.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/frames/analisadorasset/grafico/adicionarsimbolo.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/panels/analisadorasset/grafico/itemindicador.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/mierclasses/mcjtextareahandler.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/panels/analisadorasset/grafico/submodulografico.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/panels/analisadorasset/noassetsmensagem.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/panels/analisadorasset/itemanalisadorasset.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/panels/analisadorasset/submodulosholder.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/panels/analisadorasset/offlinetrader/submoduloofflinetrader.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/mierclasses/mcbcindicatorinterpreter.java</file>
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/frames/analisadorasset/grafico/renomearitemindicador.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/panels/analisadorasset/grafico/itemanotacao.java</file>
             <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/frames/analisadorasset/grafico/chartseparado.java</file>
+            <file>file:/M:/ESPN_Lucas/Projetos/Github/openstock/project/src/frames/editorbearcodetraderbot.java</file>
         </group>
     </open-files>
 </project-private>

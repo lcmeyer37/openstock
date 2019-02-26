@@ -1241,7 +1241,7 @@ public class mcstocksapicomms
         java.util.List<mierclasses.mccandle> candlessample = candlesatual;
         mierclasses.mccandle ultimacandlesample = candlessample.get(candlessample.size()-1);
         double ultimoclose = ultimacandlesample.closed;
-        double rangebidaskestimado = 0.0025;
+        double rangebidaskestimado = 0.0000025;
         
         double variacao = ultimoclose*rangebidaskestimado;
         double bidestimado = ultimoclose - variacao;
