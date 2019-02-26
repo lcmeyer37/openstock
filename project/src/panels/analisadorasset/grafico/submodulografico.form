@@ -25,10 +25,6 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jPanelChartHolders" alignment="1" max="32767" attributes="0"/>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="jLabelInfo" min="-2" max="-2" attributes="0"/>
-                  </Group>
                   <Component id="jPanelFerramentasInfo" alignment="0" max="32767" attributes="0"/>
                   <Component id="jPanelInferior" alignment="0" max="32767" attributes="0"/>
               </Group>
@@ -39,8 +35,6 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jLabelInfo" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanelChartHolders" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -76,7 +70,7 @@
                   <Component id="jButtonAtivarFibonacci" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButtonExportarCsv" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="789" max="32767" attributes="0"/>
+                  <EmptySpace pref="796" max="32767" attributes="0"/>
                   <Component id="jLabelPainelInferior" min="-2" pref="20" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -186,7 +180,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jSplitPaneChartpanels" alignment="0" pref="382" max="32767" attributes="0"/>
+              <Component id="jSplitPaneChartpanels" alignment="0" pref="421" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -211,7 +205,7 @@
                   <Color blue="0" green="0" red="0" type="rgb"/>
                 </Property>
                 <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                  <Color id="Default Cursor"/>
+                  <Color id="Cursor Padr&#xe3;o"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -237,6 +231,9 @@
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="2d" green="2d" red="2d" type="rgb"/>
+                </Property>
+                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+                  <Color id="Cursor em Forma de Cruz"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -664,13 +661,5 @@
         </Container>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JLabel" name="jLabelInfo">
-      <Properties>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="-"/>
-      </Properties>
-    </Component>
   </SubComponents>
 </Form>

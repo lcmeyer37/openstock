@@ -45,9 +45,11 @@ public class chartseparado extends javax.swing.JFrame
         this.validate();
     }
 
+    
+    org.jfree.chart.ChartPanel chartpanelseparado = null;
     public org.jfree.chart.ChartPanel retornarnovoplot_indicador(Object xvalues, Object yvalues, String tituloscript, String desenhografico)
     {
-        org.jfree.chart.ChartPanel chartpanel = null;
+
         
         if (desenhografico.equals("drawoncandles"))
         {
@@ -90,17 +92,15 @@ public class chartseparado extends javax.swing.JFrame
             org.jfree.chart.JFreeChart chart = new org.jfree.chart.JFreeChart(tituloscript.toUpperCase(), null,plot,false);
 
             //criar chartpanel
-            chartpanel = new org.jfree.chart.ChartPanel(chart);
-            chartpanel.addChartMouseListener(new org.jfree.chart.ChartMouseListener()
+            chartpanelseparado = new org.jfree.chart.ChartPanel(chart);
+            chartpanelseparado.addChartMouseListener(new org.jfree.chart.ChartMouseListener()
             {
                 public void chartMouseClicked(org.jfree.chart.ChartMouseEvent e)
                 {
-                    //interpretarferramenta_mclick(e);
                 }
 
                 public void chartMouseMoved(org.jfree.chart.ChartMouseEvent e)
                 {
-                    //interpretarferramenta_mmove(e);
                 }
             });
 
@@ -146,17 +146,15 @@ public class chartseparado extends javax.swing.JFrame
             org.jfree.chart.JFreeChart chart = new org.jfree.chart.JFreeChart(tituloscript.toUpperCase(), null,plot,false);
 
             //criar chartpanel
-            chartpanel = new org.jfree.chart.ChartPanel(chart);
-            chartpanel.addChartMouseListener(new org.jfree.chart.ChartMouseListener()
+            chartpanelseparado = new org.jfree.chart.ChartPanel(chart);
+            chartpanelseparado.addChartMouseListener(new org.jfree.chart.ChartMouseListener()
             {
                 public void chartMouseClicked(org.jfree.chart.ChartMouseEvent e)
                 {
-                    //interpretarferramenta_mclick(e);
                 }
 
                 public void chartMouseMoved(org.jfree.chart.ChartMouseEvent e)
                 {
-                    //interpretarferramenta_mmove(e);
                 }
             });
             
@@ -202,24 +200,21 @@ public class chartseparado extends javax.swing.JFrame
             org.jfree.chart.JFreeChart chartseparado = new org.jfree.chart.JFreeChart(tituloscript.toUpperCase(), null,plot,false);
 
             //criar chartpanel
-            chartpanel = new org.jfree.chart.ChartPanel(chartseparado);
-            chartpanel.addChartMouseListener(new org.jfree.chart.ChartMouseListener()
+            chartpanelseparado = new org.jfree.chart.ChartPanel(chartseparado);
+            chartpanelseparado.addChartMouseListener(new org.jfree.chart.ChartMouseListener()
             {
                 public void chartMouseClicked(org.jfree.chart.ChartMouseEvent e)
                 {
-                    //interpretarferramenta_mclick(e);
                 }
 
                 public void chartMouseMoved(org.jfree.chart.ChartMouseEvent e)
                 {
-                    //interpretarferramenta_mmove(e);
                 }
             });
         }
         
-        return chartpanel;
+        return chartpanelseparado;
     }
-
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -237,7 +232,7 @@ public class chartseparado extends javax.swing.JFrame
         setTitle("Indicator");
 
         jPanelChartpanelholder.setBackground(new java.awt.Color(0, 0, 0));
-        jPanelChartpanelholder.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jPanelChartpanelholder.setCursor(new java.awt.Cursor(java.awt.Cursor.CROSSHAIR_CURSOR));
 
         javax.swing.GroupLayout jPanelChartpanelholderLayout = new javax.swing.GroupLayout(jPanelChartpanelholder);
         jPanelChartpanelholder.setLayout(jPanelChartpanelholderLayout);

@@ -73,7 +73,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <Name>Volume Values</Name>
         <BearcodeFile>volume.bearcode</BearcodeFile>
     </Indicator>
-    
+
     <Indicator>
         <BCID>smaclose</BCID>
         <Name>Simple Moving Average (SMA)</Name>

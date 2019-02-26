@@ -70,7 +70,6 @@ public class submodulografico extends javax.swing.JPanel
         {
             public void run() 
             {
-                atualizarinformacoesposicaoatualgrafico();
                 atualizarrangegraficosecundario(); 
             }
         };
@@ -234,6 +233,11 @@ public class submodulografico extends javax.swing.JPanel
         jPanelOHLCChartpanel.removeAll();
         jPanelOHLCChartpanel.setLayout(new java.awt.BorderLayout());
         jPanelOHLCChartpanel.add(chartpanel);
+        //tirar cursor do OHLC (sera utilizado crosshair)
+        java.awt.Toolkit tk = java.awt.Toolkit.getDefaultToolkit();
+        byte bogus[] = { (byte) 0 };
+        java.awt.Cursor blankCursor = tk.createCustomCursor( tk.createImage( bogus ), new java.awt.Point(0, 0), "" );
+        jPanelOHLCChartpanel.setCursor(blankCursor);
         //</editor-fold>
         
         //<editor-fold defaultstate="collapsed" desc="Remover Todas Anotações e Indicadores para o OHLC Novo - CASO RESET">
@@ -563,7 +567,7 @@ public class submodulografico extends javax.swing.JPanel
         String caminhoimagem = rootjar + "/outfiles/assets/downgray.png";
         mpiidestacarabaixo.jLabelEscolherGraficoParaBottom.setIcon(new javax.swing.ImageIcon(caminhoimagem));
         mpiidestacarabaixo.chartseparadoembottom = true;
-
+        
         jPanelSecondaryChartPanel.setVisible(true);
         jSplitPaneChartpanels.setDividerLocation(350);
         this.validate();
@@ -606,7 +610,7 @@ public class submodulografico extends javax.swing.JPanel
         if (quantidade_xyannotations_ohlc > quantidadeids_listacontroleanotacao)
         {
             //criar novo item anotacao
-            panels.analisadorasset.grafico.itemanotacao novompia = new panels.analisadorasset.grafico.itemanotacao(this,mcg.ferramentaatualgrafico,mcg.anotacao_emhold);
+            panels.analisadorasset.grafico.itemanotacao novompia = new panels.analisadorasset.grafico.itemanotacao(this,mcg.anotacaoselecionada,mcg.anotacao_emhold);
             //associar item anotacao a lista de ids de anotacao de controle
             mcg.adicionarplotohlc_anotacaoid(novompia.id, novompia.anotacao);
             //adicionar item anotacao ao jpanel
@@ -670,15 +674,6 @@ public class submodulografico extends javax.swing.JPanel
         jButtonAtivarReta.setForeground(Color.black);
         jButtonAtivarFibonacci.setForeground(Color.black);
         jButtonAtivarTexto.setForeground(Color.black);
-    }
-        
-    void atualizarinformacoesposicaoatualgrafico()
-    {
-        String valoryatualohlc = String.format("%.4f", mcg.mcg_posmousey);
-        java.util.Date dataatualohlc = new java.util.Date((long)mcg.mcg_posmousex);
-        //String valoratualrangex = String.format( "%.4f", mcg.rangex.getLength());
-        //String valoratualrangey = String.format( "%.4f", mcg.rangey.getLength());
-        jLabelInfo.setText("Price: " + valoryatualohlc + " Date: " + dataatualohlc.toString());   
     }
     
     void atualizarrangegraficosecundario()
@@ -872,7 +867,6 @@ public class submodulografico extends javax.swing.JPanel
         jScrollPane2 = new javax.swing.JScrollPane();
         jPanelAnotacoes = new javax.swing.JPanel();
         jLabelAnotacoes = new javax.swing.JLabel();
-        jLabelInfo = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(55, 55, 55));
 
@@ -961,7 +955,7 @@ public class submodulografico extends javax.swing.JPanel
                 .addComponent(jButtonAtivarFibonacci)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonExportarCsv)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 789, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 796, Short.MAX_VALUE)
                 .addComponent(jLabelPainelInferior, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -1011,6 +1005,7 @@ public class submodulografico extends javax.swing.JPanel
         jSplitPaneChartpanels.setTopComponent(jPanelOHLCChartpanel);
 
         jPanelSecondaryChartPanel.setBackground(new java.awt.Color(45, 45, 45));
+        jPanelSecondaryChartPanel.setCursor(new java.awt.Cursor(java.awt.Cursor.CROSSHAIR_CURSOR));
 
         javax.swing.GroupLayout jPanelSecondaryChartPanelLayout = new javax.swing.GroupLayout(jPanelSecondaryChartPanel);
         jPanelSecondaryChartPanel.setLayout(jPanelSecondaryChartPanelLayout);
@@ -1033,7 +1028,7 @@ public class submodulografico extends javax.swing.JPanel
         );
         jPanelChartHoldersLayout.setVerticalGroup(
             jPanelChartHoldersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPaneChartpanels, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
+            .addComponent(jSplitPaneChartpanels, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
         );
 
         jPanelInferior.setBackground(new java.awt.Color(55, 55, 55));
@@ -1305,9 +1300,6 @@ public class submodulografico extends javax.swing.JPanel
                 .addContainerGap())
         );
 
-        jLabelInfo.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelInfo.setText("-");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -1316,9 +1308,6 @@ public class submodulografico extends javax.swing.JPanel
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanelChartHolders, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabelInfo))
                     .addComponent(jPanelFerramentasInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanelInferior, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -1327,8 +1316,6 @@ public class submodulografico extends javax.swing.JPanel
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelInfo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelChartHolders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelFerramentasInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1340,14 +1327,14 @@ public class submodulografico extends javax.swing.JPanel
 
     private void jButtonAtivarRetaActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAtivarRetaActionPerformed
     {//GEN-HEADEREND:event_jButtonAtivarRetaActionPerformed
-        mcg.trocarferramentaparareta();
+        mcg.selecionaranotacao_line();
         resetarcorbotoesferramentas();
         jButtonAtivarReta.setForeground(Color.red);
     }//GEN-LAST:event_jButtonAtivarRetaActionPerformed
 
     private void jButtonAtivarSelecaoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAtivarSelecaoActionPerformed
     {//GEN-HEADEREND:event_jButtonAtivarSelecaoActionPerformed
-        mcg.trocarferramentaparaselecao();
+        mcg.selecionaranotacao_selection();
         resetarcorbotoesferramentas();
         jButtonAtivarSelecao.setForeground(Color.red);
     }//GEN-LAST:event_jButtonAtivarSelecaoActionPerformed
@@ -1397,14 +1384,14 @@ public class submodulografico extends javax.swing.JPanel
 
     private void jButtonAtivarReguaActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAtivarReguaActionPerformed
     {//GEN-HEADEREND:event_jButtonAtivarReguaActionPerformed
-        mcg.trocarferramentapararegua();
+        mcg.selecionaranotacao_ruler();
         resetarcorbotoesferramentas();
         jButtonAtivarRegua.setForeground(Color.red);
     }//GEN-LAST:event_jButtonAtivarReguaActionPerformed
 
     private void jButtonAtivarTextoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAtivarTextoActionPerformed
     {//GEN-HEADEREND:event_jButtonAtivarTextoActionPerformed
-        mcg.trocarferramentaparatexto();
+        mcg.selecionaranotacao_text();
         resetarcorbotoesferramentas();
         jButtonAtivarTexto.setForeground(Color.red);
     }//GEN-LAST:event_jButtonAtivarTextoActionPerformed
@@ -1419,7 +1406,7 @@ public class submodulografico extends javax.swing.JPanel
 
     private void jButtonAtivarFibonacciActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAtivarFibonacciActionPerformed
     {//GEN-HEADEREND:event_jButtonAtivarFibonacciActionPerformed
-        mcg.trocarferramentaparafibonacci();
+        mcg.selecionaranotacao_fibonacci();
         resetarcorbotoesferramentas();
         jButtonAtivarFibonacci.setForeground(Color.red);
     }//GEN-LAST:event_jButtonAtivarFibonacciActionPerformed
@@ -1457,7 +1444,6 @@ public class submodulografico extends javax.swing.JPanel
     public javax.swing.JComboBox<String> jComboBoxPeriodoSimbolo;
     private javax.swing.JLabel jLabelAnotacoes;
     private javax.swing.JLabel jLabelIndicadores;
-    private javax.swing.JLabel jLabelInfo;
     private javax.swing.JLabel jLabelLinearSwitch;
     private javax.swing.JLabel jLabelLogaritmicaSwitch;
     private javax.swing.JLabel jLabelMain;
