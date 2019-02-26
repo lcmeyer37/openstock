@@ -31,40 +31,40 @@ import org.jfree.ui.TextAnchor;
 public class mcchartgenerator
 {
 
-    // <editor-fold defaultstate="collapsed" desc="Variaveis Publicas">
-    public org.jfree.chart.JFreeChart chartatual; //chart atual
-    public org.jfree.chart.ChartPanel chartpanelatual; //chartpanel atual
-    public java.util.List<mierclasses.mccandle> candlesatual; //lista de candles atual utilizadas por este mcg
-    public java.util.List<String> idindicadoresatual; //lista com ids dos indicadores atuais presentes no chart ohlc (nao serve para indicadores que nao estao desenhados no chart)
-    public java.util.List<String> idanotacoesatual; //lista com ids das anotacoes atuais presentes no chart ohlc
+    // <editor-fold defaultstate="collapsed" desc="Variaveis MCG">
+    
+    //chartpanel do OHLC
+    public org.jfree.chart.ChartPanel mcg_chartpanel; 
+    //candles do OHLC
+    public java.util.List<mierclasses.mccandle> mcg_candles; 
+    //lista para controle, com IDs dos indicadores presentes no OHLC
+    public java.util.List<String> mcg_indicadoresIDS; 
+    //lista para controle, com IDs das anotacoes, presentes no OHLC
+    public java.util.List<String> mcg_anotacoesIDS;
+    //anotacao em hold, esta variavel contem a ultima anotacao adicionada pelo usuario, que nao esta na lista de IDs
+    public java.util.List<org.jfree.chart.annotations.XYAnnotation> anotacao_emhold;
+    //valor OHLC do ultimo toque do mouse em x
+    public double mcg_posmousex;
+    //valor OHLC do ultimo toque do mouse em y
+    public double mcg_posmousey;
+    //rangex do OHLC
+    public org.jfree.data.Range mcg_rangex;
+    //rangey do OHLC
+    public org.jfree.data.Range mcg_rangey;
 
-    //informacoes sobre a ultima posicao do mouse no chart
-    public double valormouseatualgraficox; //contem o ultimo valor em x que o mouse tocou
-    public double valormouseatualgraficoy; //contem o ultimo valor em y que o mouse tocou
-    public org.jfree.data.Range rangex; //contem o range atual de x
-    public org.jfree.data.Range rangey; //contem o range atual de y
-    public org.jfree.chart.entity.ChartEntity entityatualgrafico; //contem a ultima entidade que o mouse tocou
-
-    //ultima anotacao (lista de subanotacoes pertencentes a esta anotacao)
-    public java.util.List<org.jfree.chart.annotations.XYAnnotation> ultimalistasubanotacoesanotacao;
-
-    //dataset utilizado para indicadores no grafico de ohlc
-    org.jfree.data.time.TimeSeriesCollection datasetindicadoresohlc;
+    //jfreechart do OHLC
+    org.jfree.chart.JFreeChart mcg_chart; 
+    //dataset com timeseries dos indicadores do OHLC
+    org.jfree.data.time.TimeSeriesCollection timeseriesindicadoresohlc;
+    
     // </editor-fold >
 
     //classe que se comunica com jfreecharts para criar graficos de interesse para o programa
     public mcchartgenerator()
     {
-        inicializarmcchartgenerator();
     }
 
-    void inicializarmcchartgenerator()
-    {
-        idindicadoresatual = new java.util.ArrayList<>();
-        idanotacoesatual = new java.util.ArrayList<>();
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="Funcoes para funcionamento de Ferramentas no chart OHLC">
+    // <editor-fold defaultstate="collapsed" desc="Funcoes para funcionamento de Anotacoes">
     //as ferramentas sao desenhos graficos que podem ser adicionados no grafico. 
     //esses desenhos sao criados com uma ou mais Annotations - exemplo: Line = 1 lineannotation, Fibonacci = 6 linesannotations + 6 textsannotations
     // <editor-fold defaultstate="collapsed" desc="Troca de Ferramentas">
@@ -103,14 +103,13 @@ public class mcchartgenerator
     {
         //sempre atualizar informacoes sobre a posicao atual do mouse no grafico
         //atualizar o ultimo ponto x e y, ranges e a entity selecionada pelo mouse
-        java.awt.geom.Point2D p = chartpanelatual.translateScreenToJava2D(cmevent.getTrigger().getPoint());
-        java.awt.geom.Rectangle2D plotArea = chartpanelatual.getChartRenderingInfo().getPlotInfo().getDataArea();
-        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getPlot(); // your plot
-        valormouseatualgraficox = plot.getDomainAxis().java2DToValue(p.getX(), plotArea, plot.getDomainAxisEdge());
-        valormouseatualgraficoy = plot.getRangeAxis().java2DToValue(p.getY(), plotArea, plot.getRangeAxisEdge());
-        rangex = plot.getDomainAxis().getRange();
-        rangey = plot.getRangeAxis().getRange();
-        entityatualgrafico = cmevent.getEntity();
+        java.awt.geom.Point2D p = mcg_chartpanel.translateScreenToJava2D(cmevent.getTrigger().getPoint());
+        java.awt.geom.Rectangle2D plotArea = mcg_chartpanel.getChartRenderingInfo().getPlotInfo().getDataArea();
+        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) mcg_chart.getPlot(); // your plot
+        mcg_posmousex = plot.getDomainAxis().java2DToValue(p.getX(), plotArea, plot.getDomainAxisEdge());
+        mcg_posmousey = plot.getRangeAxis().java2DToValue(p.getY(), plotArea, plot.getRangeAxisEdge());
+        mcg_rangex = plot.getDomainAxis().getRange();
+        mcg_rangey = plot.getRangeAxis().getRange();
 
         //mierclasses.mcfuncoeshelper.mostrarmensagem("click test");
         
@@ -143,14 +142,13 @@ public class mcchartgenerator
     {
         //sempre atualizar informacoes sobre a posicao atual do mouse no grafico
         //atualizar o ultimo ponto x e y, ranges e a entity selecionada pelo mouse
-        java.awt.geom.Point2D p = chartpanelatual.translateScreenToJava2D(cmevent.getTrigger().getPoint());
-        java.awt.geom.Rectangle2D plotArea = chartpanelatual.getChartRenderingInfo().getPlotInfo().getDataArea();
-        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getPlot(); // your plot
-        valormouseatualgraficox = plot.getDomainAxis().java2DToValue(p.getX(), plotArea, plot.getDomainAxisEdge());
-        valormouseatualgraficoy = plot.getRangeAxis().java2DToValue(p.getY(), plotArea, plot.getRangeAxisEdge());
-        rangex = plot.getDomainAxis().getRange();
-        rangey = plot.getRangeAxis().getRange();
-        entityatualgrafico = cmevent.getEntity();
+        java.awt.geom.Point2D p = mcg_chartpanel.translateScreenToJava2D(cmevent.getTrigger().getPoint());
+        java.awt.geom.Rectangle2D plotArea = mcg_chartpanel.getChartRenderingInfo().getPlotInfo().getDataArea();
+        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) mcg_chart.getPlot(); // your plot
+        mcg_posmousex = plot.getDomainAxis().java2DToValue(p.getX(), plotArea, plot.getDomainAxisEdge());
+        mcg_posmousey = plot.getRangeAxis().java2DToValue(p.getY(), plotArea, plot.getRangeAxisEdge());
+        mcg_rangex = plot.getDomainAxis().getRange();
+        mcg_rangey = plot.getRangeAxis().getRange();
         
         //mierclasses.mcfuncoeshelper.mostrarmensagem("move test");
 
@@ -188,9 +186,9 @@ public class mcchartgenerator
     // <editor-fold defaultstate="collapsed" desc="Funcionamento Core - Texto">
     void ferramentatexto_mclick(org.jfree.chart.ChartMouseEvent cmevent)
     {
-        double reta_pontox = valormouseatualgraficox;
-        double reta_pontoy = valormouseatualgraficoy;
-        ultimalistasubanotacoesanotacao = adicionarplotohlc_annotationtexto(reta_pontox, reta_pontoy);
+        double reta_pontox = mcg_posmousex;
+        double reta_pontoy = mcg_posmousey;
+        anotacao_emhold = adicionarplotohlc_annotationtexto(reta_pontox, reta_pontoy);
     }
 
     void ferramentatexto_mmove(org.jfree.chart.ChartMouseEvent cmevent)
@@ -209,12 +207,12 @@ public class mcchartgenerator
     {
         if (reta_jatemponto1 == false)
         {
-            reta_pontox1 = valormouseatualgraficox;
-            reta_pontoy1 = valormouseatualgraficoy;
+            reta_pontox1 = mcg_posmousex;
+            reta_pontoy1 = mcg_posmousey;
             reta_jatemponto1 = true;
         } else if (reta_jatemponto1 == true)
         {
-            ultimalistasubanotacoesanotacao = reta_preview;
+            anotacao_emhold = reta_preview;
             reta_jatemponto1 = false;
             reta_preview = null;
             reta_pontox1 = 0;
@@ -234,7 +232,7 @@ public class mcchartgenerator
             //remover annotation
             try
             {
-                org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot) chartatual.getPlot();
+                org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot) mcg_chart.getPlot();
 
                 for (int i = 0; i < reta_preview.size(); i++)
                 {
@@ -245,8 +243,8 @@ public class mcchartgenerator
             }
 
             //ja tendo o o primeiro ponto, pode desenhar o preview
-            double reta_pontox2 = valormouseatualgraficox;
-            double reta_pontoy2 = valormouseatualgraficoy;
+            double reta_pontox2 = mcg_posmousex;
+            double reta_pontoy2 = mcg_posmousey;
 
             //adicionar annotation line preview nova
             reta_preview = adicionarplotohlc_annotationreta(reta_pontox1, reta_pontoy1, reta_pontox2, reta_pontoy2);
@@ -265,8 +263,8 @@ public class mcchartgenerator
     {
         if (regua_jatemponto1 == false)
         {
-            regua_pontox1 = valormouseatualgraficox;
-            regua_pontoy1 = valormouseatualgraficoy;
+            regua_pontox1 = mcg_posmousex;
+            regua_pontoy1 = mcg_posmousey;
             regua_jatemponto1 = true;
         } else if (regua_jatemponto1 == true)
         {
@@ -275,7 +273,7 @@ public class mcchartgenerator
             //a regua eh temporaria, soh aparece enquanto o mouse esta movendo
             try
             {
-                org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot) chartatual.getPlot();
+                org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot) mcg_chart.getPlot();
 
                 for (int i = 0; i < regua_preview.size(); i++)
                 {
@@ -301,7 +299,7 @@ public class mcchartgenerator
             //remover annotation
             try
             {
-                org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot) chartatual.getPlot();
+                org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot) mcg_chart.getPlot();
 
                 for (int i = 0; i < regua_preview.size(); i++)
                 {
@@ -312,8 +310,8 @@ public class mcchartgenerator
             }
 
             //ja tendo o o primeiro ponto, pode desenhar o preview
-            double regua_pontox2 = valormouseatualgraficox;
-            double regua_pontoy2 = valormouseatualgraficoy;
+            double regua_pontox2 = mcg_posmousex;
+            double regua_pontoy2 = mcg_posmousey;
 
             //adicionar annotation line preview nova
             regua_preview = adicionarplotohlc_annotationregua(regua_pontox1, regua_pontoy1, regua_pontox2, regua_pontoy2);
@@ -331,12 +329,12 @@ public class mcchartgenerator
     {
         if (fib_jatemponto1 == false)
         {
-            fib_pontox1 = valormouseatualgraficox;
-            fib_pontoy1 = valormouseatualgraficoy;
+            fib_pontox1 = mcg_posmousex;
+            fib_pontoy1 = mcg_posmousey;
             fib_jatemponto1 = true;
         } else if (fib_jatemponto1 == true)
         {
-            ultimalistasubanotacoesanotacao = fib_preview;
+            anotacao_emhold = fib_preview;
             fib_jatemponto1 = false;
             fib_preview = null;
             fib_pontox1 = 0;
@@ -354,7 +352,7 @@ public class mcchartgenerator
             //remover annotation
             try
             {
-                org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot) chartatual.getPlot();
+                org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot) mcg_chart.getPlot();
 
                 for (int i = 0; i < fib_preview.size(); i++)
                 {
@@ -365,8 +363,8 @@ public class mcchartgenerator
             }
 
             //ja tendo o o primeiro ponto, pode desenhar o preview
-            double fib_pontox2 = valormouseatualgraficox;
-            double fib_pontoy2 = valormouseatualgraficoy;
+            double fib_pontox2 = mcg_posmousex;
+            double fib_pontoy2 = mcg_posmousey;
 
             //adicionar annotation line preview nova
             fib_preview = adicionarplotohlc_annotationfib(fib_pontox1, fib_pontoy1, fib_pontox2, fib_pontoy2);
@@ -378,7 +376,7 @@ public class mcchartgenerator
     // <editor-fold defaultstate="collapsed" desc="Funcoes que adicionam Subannotations no Grafico dado Ferramenta Em Uso">
     public java.util.List<org.jfree.chart.annotations.XYAnnotation> adicionarplotohlc_annotationtexto(double x, double y)
     {
-        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getXYPlot();
+        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) mcg_chart.getXYPlot();
         org.jfree.chart.annotations.XYTextAnnotation tatexto = new org.jfree.chart.annotations.XYTextAnnotation("New Annotation", x, y);
         tatexto.setTextAnchor(TextAnchor.CENTER_LEFT);
         plot.addAnnotation(tatexto);
@@ -391,7 +389,7 @@ public class mcchartgenerator
 
     public java.util.List<org.jfree.chart.annotations.XYAnnotation> adicionarplotohlc_annotationreta(double x1, double y1, double x2, double y2)
     {
-        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getXYPlot();
+        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) mcg_chart.getXYPlot();
         org.jfree.chart.annotations.XYLineAnnotation xylineannotation = new org.jfree.chart.annotations.XYLineAnnotation(x1, y1, x2, y2, new BasicStroke(1.0f), Color.red);
 
         plot.addAnnotation(xylineannotation);
@@ -410,7 +408,7 @@ public class mcchartgenerator
         //deve ser desenhado linhas paralelas seguindo a sequencia de fibonacci
         //o usuario comeca com o ponto (x1,y1) que se refere a altura 0% do retracement e "x" de largura
         //as outras porcentagens cujas linhas devem ser desenhadas sao 23.6%, 38.2%, 50.0%, 61.8% e 100%
-        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getXYPlot();
+        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) mcg_chart.getXYPlot();
 
         //linha paralela ao eixo x da altura 0%
         double x1_0 = x1;
@@ -507,7 +505,7 @@ public class mcchartgenerator
         //     B
         //  textofinal
 
-        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getXYPlot();
+        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) mcg_chart.getXYPlot();
 
         //linha diagonal
         double x1_diagonal = x1;
@@ -547,14 +545,14 @@ public class mcchartgenerator
     //</editor-fold>
     
     //funcao para adicionar ids referentes a subannotations de uma ferramenta na lista de controle
-    public void adicionarplotohlc_anotacaoid(String idadicionar, int numerosubannotations)
+    public void adicionarplotohlc_anotacaoid(String idadicionar, java.util.List<org.jfree.chart.annotations.XYAnnotation> anotacao)
     {
         //esta funcao eh necessaria para adicionar o novo id a lista de anotacoes atuais
         //essa adicao deve ser feita manualmente pela logica do core de ferramentas, que funcionam com o mouse
 
-        for (int i = 0; i < numerosubannotations; i++)
+        for (int i = 0; i < anotacao.size(); i++)
         {
-            idanotacoesatual.add(idadicionar);
+            mcg_anotacoesIDS.add(idadicionar);
         }
     }
 
@@ -563,18 +561,18 @@ public class mcchartgenerator
     {
         for (int i = 0; i < numerosubannotations; i++)
         {
-            idanotacoesatual.remove(idremover);
+            mcg_anotacoesIDS.remove(idremover);
         }
     }
 
     //funcao para adicionar subannotations de uma ferramenta (utilizado ao realizar load de um asset)
-    public void adicionarplotohlc_anotacaocomlistadesubannotations64(java.util.List<org.jfree.chart.annotations.XYAnnotation> subannotationsanotacao)
+    public void adicionarplotohlc_anotacao(java.util.List<org.jfree.chart.annotations.XYAnnotation> anotacao)
     {
         //funcao especial para carregamento de objetos de annotation
-        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getXYPlot();
+        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) mcg_chart.getXYPlot();
 
-        java.util.List<org.jfree.chart.annotations.XYAnnotation> anotacoesadicionar = (java.util.List<org.jfree.chart.annotations.XYAnnotation>) subannotationsanotacao;
-        org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot) chartatual.getPlot();
+        java.util.List<org.jfree.chart.annotations.XYAnnotation> anotacoesadicionar = (java.util.List<org.jfree.chart.annotations.XYAnnotation>) anotacao;
+        org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot) mcg_chart.getPlot();
         for (int i = 0; i < anotacoesadicionar.size(); i++)
         {
             plot.addAnnotation(anotacoesadicionar.get(i));
@@ -582,20 +580,20 @@ public class mcchartgenerator
     }
 
     //funcao para remover subannotations do grafico ohlc
-    public void removerplotohlc_subannotations(java.util.List<org.jfree.chart.annotations.XYAnnotation> subanotacoesanotacao)
+    public void removerplotohlc_anotacao(java.util.List<org.jfree.chart.annotations.XYAnnotation> anotacao)
     {
         //remover as subanotacoes graficas do chart
-        org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot) chartatual.getPlot();
-        for (int i = 0; i < subanotacoesanotacao.size(); i++)
+        org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot) mcg_chart.getPlot();
+        for (int i = 0; i < anotacao.size(); i++)
         {
-            plotatual.removeAnnotation(subanotacoesanotacao.get(i));
+            plotatual.removeAnnotation(anotacao.get(i));
             //mierclasses.mcfuncoeshelper.mostrarmensagem("anotacao grafica removida");
         }
     }
     
-    public void removerplotohlc_todossubannotations()
+    public void removerplotohlc_todasanotacoes()
     {
-        org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot) chartatual.getPlot();
+        org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot) mcg_chart.getPlot();
         java.util.List<org.jfree.chart.plot.XYPlot> todassubannotations = plotatual.getAnnotations();
         for (int i = 0; i < todassubannotations.size(); i++)
         {
@@ -627,25 +625,25 @@ public class mcchartgenerator
             seriesadd.add(millisegundoatual, valoratual);
         }
         //adicionar series no dataset
-        datasetindicadoresohlc.addSeries(seriesadd);
+        timeseriesindicadoresohlc.addSeries(seriesadd);
 
     }
 
     public void adicionarplotohlc_indicadorid(String idindicador)
     {
-        idindicadoresatual.add(idindicador);
+        mcg_indicadoresIDS.add(idindicador);
     }
 
     public void removerplotohlc_indicador(String idindicador)
     {
         //encontra o dataset com o id do indicador para remove-lo do grafico
-        for (int i = 0; i < idindicadoresatual.size(); i++)
+        for (int i = 0; i < mcg_indicadoresIDS.size(); i++)
         {
-            String idindicadoratual = (String) idindicadoresatual.get(i);
+            String idindicadoratual = (String) mcg_indicadoresIDS.get(i);
 
             if (idindicador.equals(idindicadoratual))
             {
-                datasetindicadoresohlc.removeSeries(i);
+                timeseriesindicadoresohlc.removeSeries(i);
             }
         }
     }
@@ -653,13 +651,13 @@ public class mcchartgenerator
     public void removerplotohlc_indicadorid(String idindicador)
     {
         //remove o idindicador da lista de controle
-        idindicadoresatual.remove(idindicador);
+        mcg_indicadoresIDS.remove(idindicador);
     }
 
     public void removerplotohlc_indicadores()
     {
         //remover todos os indicadores do grafico
-        datasetindicadoresohlc.removeAllSeries();
+        timeseriesindicadoresohlc.removeAllSeries();
     }
     //</editor-fold>
     
@@ -667,24 +665,25 @@ public class mcchartgenerator
     
     public void carregarohlc(java.util.List<mierclasses.mccandle> catual, String tituloohlc, String tipoescala, boolean resetaranotacoesindicadores)
     {
-        //funcao utilizada para carregar grafico ohlc e setar chartpanelatual
+        //funcao utilizada para recarregar o ohlc mcg_chart e mcg_chartpanel
         //esta funcao pode querer resetar os indicadores e anotacoes do grafico, ou nao
         
         if (resetaranotacoesindicadores == true)
         {
-            idindicadoresatual = new java.util.ArrayList<>();
-            idanotacoesatual = new java.util.ArrayList<>();
+            mcg_indicadoresIDS = new java.util.ArrayList<>();
+            mcg_anotacoesIDS = new java.util.ArrayList<>();
         }
+
+        // <editor-fold defaultstate="collapsed" desc="associar miercandles novas a este MCG">
+        mcg_candles = catual;
+        //</editor-fold>
+
+        // <editor-fold defaultstate="collapsed" desc="criar ohlcdataset com miercandles">
+        org.jfree.data.xy.OHLCDataset olhcdataset = criarohlcdataset(mcg_candles, tituloohlc);
+        //</editor-fold>
         
-        // <editor-fold defaultstate="collapsed" desc="Carregar OHLC e Setar chartpanelatual">
-        //grafico ohlc
-        candlesatual = catual;
-
-        //recriar dataset com candles
-        org.jfree.data.xy.OHLCDataset olhcdataset = criarohlcdataset(candlesatual, tituloohlc);
-
-        //criar grafico novo
-        //adicionar dataset OHLC
+        // <editor-fold defaultstate="collapsed" desc="associar ohlcdataset a um novo jfreechart">
+        //caso grafico linear
         org.jfree.chart.axis.DateAxis domainAxis = new org.jfree.chart.axis.DateAxis("");
         if (tipoescala.equals("linear"))
         {
@@ -696,8 +695,9 @@ public class mcchartgenerator
             renderer.setDrawVolume(true);
             rangeAxis.setAutoRangeIncludesZero(false);
             org.jfree.chart.JFreeChart chart = new org.jfree.chart.JFreeChart(tituloohlc.toUpperCase(), null, mainPlot, false);
-            chartatual = chart;
+            mcg_chart = chart;
         } 
+        //caso grafico log
         else if (tipoescala.equals("logaritmica"))
         {
             org.jfree.chart.axis.LogAxis rangeAxis = new org.jfree.chart.axis.LogAxis("");
@@ -707,19 +707,22 @@ public class mcchartgenerator
             renderer.setSeriesPaint(0, Color.BLACK);
             renderer.setDrawVolume(true);
             org.jfree.chart.JFreeChart chart = new org.jfree.chart.JFreeChart(tituloohlc.toUpperCase(), null, mainPlot, false);
-            chartatual = chart;
+            mcg_chart = chart;
         }
-        //adicionar dataset vazio para indicadores
+        //</editor-fold>
+        
+        // <editor-fold defaultstate="collapsed" desc="criar um timeseriescollection, para receber timeseries de novos indicadores para este MCG">
         org.jfree.chart.renderer.xy.XYLineAndShapeRenderer rendereradd = new org.jfree.chart.renderer.xy.DefaultXYItemRenderer();
         rendereradd.setBaseShapesVisible(false);
         rendereradd.setBaseStroke(new BasicStroke(2.0f));
-        org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot) chartatual.getPlot();
-        datasetindicadoresohlc = new org.jfree.data.time.TimeSeriesCollection();
-        plotatual.setDataset(1, datasetindicadoresohlc);
+        org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot) mcg_chart.getPlot();
+        timeseriesindicadoresohlc = new org.jfree.data.time.TimeSeriesCollection();
+        plotatual.setDataset(1, timeseriesindicadoresohlc);
         plotatual.setRenderer(1, rendereradd);
+        //</editor-fold>
 
-        // Create Panel
-        org.jfree.chart.ChartPanel chartpanel = new org.jfree.chart.ChartPanel(chartatual);
+        // <editor-fold defaultstate="collapsed" desc="associar jfreechart a um novo chartpanel">
+        org.jfree.chart.ChartPanel chartpanel = new org.jfree.chart.ChartPanel(mcg_chart);
         chartpanel.addChartMouseListener(new org.jfree.chart.ChartMouseListener()
         {
             public void chartMouseClicked(org.jfree.chart.ChartMouseEvent e)
@@ -732,15 +735,12 @@ public class mcchartgenerator
                 interpretarferramenta_mmove(e);
             }
         });
-        chartpanelatual = chartpanel;
+        mcg_chartpanel = chartpanel;
         //</editor-fold>
+        
+        // <editor-fold defaultstate="collapsed" desc="adicionar crosshair overlay ao chartpanel">
+        
         //</editor-fold>
-    
-    }
-    
-    public org.jfree.chart.ChartPanel retornarcpanelohlc()
-    {
-        return chartpanelatual;
     }
 
     org.jfree.data.xy.OHLCDataset criarohlcdataset(java.util.List<mierclasses.mccandle> candles, String tituloohlc)
@@ -778,32 +778,11 @@ public class mcchartgenerator
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Funcoes Helper">
-    public java.util.List<org.jfree.chart.annotations.XYAnnotation> retornartodassubanotacoes()
+    public java.util.List<org.jfree.chart.annotations.XYAnnotation> retornar_xyannotations_das_anotacoes()
     {
-        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartatual.getXYPlot();
+        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) mcg_chart.getXYPlot();
         java.util.List<org.jfree.chart.annotations.XYAnnotation> listasubannotations = plot.getAnnotations();
         return listasubannotations;
-    }
-
-    //funcao de teste
-    public void printlistaidsanotacao()
-    {
-        String listaids = "";
-        for (int i = 0; i < idanotacoesatual.size(); i++)
-        {
-            listaids = listaids + idanotacoesatual.get(i) + "\n";
-        }
-        //mierclasses.mcfuncoeshelper.mostrarmensagem(listaids);
-    }
-
-    public void printlistaidsindicador()
-    {
-        String listaids = "";
-        for (int i = 0; i < idindicadoresatual.size(); i++)
-        {
-            listaids = listaids + idindicadoresatual.get(i) + "\n";
-        }
-        //mierclasses.mcfuncoeshelper.mostrarmensagem(listaids);
     }
     //</editor-fold>
 }

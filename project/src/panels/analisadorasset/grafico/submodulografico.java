@@ -217,7 +217,7 @@ public class submodulografico extends javax.swing.JPanel
         //<editor-fold defaultstate="collapsed" desc="Utilizar Candles para Recarregar OHLC">
         
         mcg.carregarohlc(candles,sourcesimboloescolhido + " (" + periodoescolhido + ")",escalagrafico,resetaranotacoesindicadores);
-        org.jfree.chart.ChartPanel chartpanel = mcg.retornarcpanelohlc();
+        org.jfree.chart.ChartPanel chartpanel = mcg.mcg_chartpanel;
         chartpanel.addChartMouseListener(new org.jfree.chart.ChartMouseListener()
         {
             public void chartMouseClicked(org.jfree.chart.ChartMouseEvent e)
@@ -304,13 +304,13 @@ public class submodulografico extends javax.swing.JPanel
             // <editor-fold defaultstate="collapsed" desc="Recarregar Dados e Plots das Anotacoes">
             
             //remover todos subannotations do OHLC
-            mcg.removerplotohlc_todossubannotations();
+            mcg.removerplotohlc_todasanotacoes();
 
             //recarregar as subannotations dos itemsanotacao para o OHLC
             for (int i = 0; i < jPanelAnotacoes.getComponentCount(); i++)
             {
                 panels.analisadorasset.grafico.itemanotacao novoanotacao = (panels.analisadorasset.grafico.itemanotacao)jPanelAnotacoes.getComponent(i);
-                mcg.adicionarplotohlc_anotacaocomlistadesubannotations64(novoanotacao.subannotationsanotacao);
+                mcg.adicionarplotohlc_anotacao(novoanotacao.anotacao);
             }
             
             // </editor-fold>
@@ -595,26 +595,21 @@ public class submodulografico extends javax.swing.JPanel
     
     void adicionarAnotacaoNovo()
     {
-        //funcao especial que roda sempre com o mouse click dentro do chart panel, eh necessario calcular a diferenca 
-        //entre subannotations presentes no grafico com o numero atual de ids de subannotations do chartgenerator atual,
-        //para saber se um novo item de anotacao deve ser adicionado no submodulo
+        java.util.List<org.jfree.chart.annotations.XYAnnotation> lista_xyannotations = mcg.retornar_xyannotations_das_anotacoes();
+        //quantidade de xyannotations presentes no grafico OHLC do MCG
+        int quantidade_xyannotations_ohlc = lista_xyannotations.size();
+        //quantidade de ids de anotacao na lista de controle do MCG
+        int quantidadeids_listacontroleanotacao = mcg.mcg_anotacoesIDS.size();
         
-        java.util.List<org.jfree.chart.annotations.XYAnnotation> listasubanotacoesgraficas = mcg.retornartodassubanotacoes();
-        int tamanhoanotacoesgraficas = listasubanotacoesgraficas.size();
-        int quantidadeidssubmoduloatual = mcg.idanotacoesatual.size();
-        
-        int diferencasubannotationsgraficoeidssubannotations = tamanhoanotacoesgraficas - quantidadeidssubmoduloatual;
-        
-        if (diferencasubannotationsgraficoeidssubannotations > 0)
+        //caso a quantidade de quantidade_xyannotations_ohlc seja maior que quantidadeids_listacontroleanotacao
+        //quer dizer que existem mais xyannotations no grafico OHLC, do que ids de controle, ou seja, existe uma anotacao nova, que contem uma nova lista de xyannotations
+        if (quantidade_xyannotations_ohlc > quantidadeids_listacontroleanotacao)
         {
-            //considerando que existem mais subannotations graficos que ids na lista, quer dizer que acabou de ser adicionado uma nova anotacao
-            //e ela deve ser registrada neste submodulo com um novo item anotacao e seu id adicionado na lista de controle do chart generator
-            panels.analisadorasset.grafico.itemanotacao novompia = new panels.analisadorasset.grafico.itemanotacao(this,mcg.ferramentaatualgrafico,mcg.ultimalistasubanotacoesanotacao);
-            
-            //adicionar esta nova anotacao a lista de controle do chartgenerator atual
-             mcg.adicionarplotohlc_anotacaoid(novompia.id, novompia.subannotationsanotacao.size());
-            
-            //adicionar item de anotacao grafica deste submodulo
+            //criar novo item anotacao
+            panels.analisadorasset.grafico.itemanotacao novompia = new panels.analisadorasset.grafico.itemanotacao(this,mcg.ferramentaatualgrafico,mcg.anotacao_emhold);
+            //associar item anotacao a lista de ids de anotacao de controle
+            mcg.adicionarplotohlc_anotacaoid(novompia.id, novompia.anotacao);
+            //adicionar item anotacao ao jpanel
             jPanelAnotacoes.add(novompia);    
         }
         
@@ -622,16 +617,16 @@ public class submodulografico extends javax.swing.JPanel
         this.repaint();
     }
     
-    public void adicionarAnotacaoLoad(String nome, String id, String tipo, java.util.List<org.jfree.chart.annotations.XYAnnotation> subanotacoesanotacaoobjeto)
+    public void adicionarAnotacaoLoad(String nome, String id, String tipo, java.util.List<org.jfree.chart.annotations.XYAnnotation> anotacao)
     {
         //funcao para adicionar nova anotacao em modo de carregamento
         
         //criar novo item de anotacao
-        panels.analisadorasset.grafico.itemanotacao novompia = new panels.analisadorasset.grafico.itemanotacao(this, nome, id, tipo, subanotacoesanotacaoobjeto);
-        //adicionar subannotations referentes a esta anotacao no grafico
-        mcg.adicionarplotohlc_anotacaocomlistadesubannotations64(subanotacoesanotacaoobjeto);
+        panels.analisadorasset.grafico.itemanotacao novompia = new panels.analisadorasset.grafico.itemanotacao(this, nome, id, tipo, anotacao);
+        //adicionar anotacao (xyannotations list) no grafico
+        mcg.adicionarplotohlc_anotacao(anotacao);
         //adicionar esta anotacao a lista de ids para controle do chartgenerator atual
-        mcg.adicionarplotohlc_anotacaoid(novompia.id, subanotacoesanotacaoobjeto.size());
+        mcg.adicionarplotohlc_anotacaoid(novompia.id, novompia.anotacao);
         //adicionar item de anotacao grafica deste submodulo
         jPanelAnotacoes.add(novompia);
         
@@ -642,9 +637,9 @@ public class submodulografico extends javax.swing.JPanel
     public void removerAnotacao(panels.analisadorasset.grafico.itemanotacao mpiaremover)
     {
         //remover subanotacoes graficas desta anotacao do grafico
-        mcg.removerplotohlc_subannotations(mpiaremover.subannotationsanotacao);
+        mcg.removerplotohlc_anotacao(mpiaremover.anotacao);
         //remover todos os ids referentes a esta anotacao da lista de controle
-        mcg.removerplotohlc_anotacaoid(mpiaremover.id, mpiaremover.subannotationsanotacao.size());
+        mcg.removerplotohlc_anotacaoid(mpiaremover.id, mpiaremover.anotacao.size());
         //remover item de anotacao grafica deste submodulo
         jPanelAnotacoes.remove(mpiaremover);
         
@@ -679,8 +674,8 @@ public class submodulografico extends javax.swing.JPanel
         
     void atualizarinformacoesposicaoatualgrafico()
     {
-        String valoryatualohlc = String.format( "%.4f", mcg.valormouseatualgraficoy);
-        java.util.Date dataatualohlc = new java.util.Date((long)mcg.valormouseatualgraficox);
+        String valoryatualohlc = String.format("%.4f", mcg.mcg_posmousey);
+        java.util.Date dataatualohlc = new java.util.Date((long)mcg.mcg_posmousex);
         //String valoratualrangex = String.format( "%.4f", mcg.rangex.getLength());
         //String valoratualrangey = String.format( "%.4f", mcg.rangey.getLength());
         jLabelInfo.setText("Price: " + valoryatualohlc + " Date: " + dataatualohlc.toString());   
@@ -704,9 +699,9 @@ public class submodulografico extends javax.swing.JPanel
             
             //plotsecundario.getDomainAxis().setRange(plotohlc.getDomainAxis().getRange());
             
-            if (mcg.rangex != rangexsecundario)
+            if (mcg.mcg_rangex != rangexsecundario)
             {
-               plotsecundario.getDomainAxis().setRange(mcg.rangex); 
+               plotsecundario.getDomainAxis().setRange(mcg.mcg_rangex); 
             }
         }
   
@@ -736,7 +731,7 @@ public class submodulografico extends javax.swing.JPanel
             csvSave = csvSave + "\n";
             
             //escrever valores do documento
-            java.util.List<mierclasses.mccandle> candles = mcg.candlesatual;
+            java.util.List<mierclasses.mccandle> candles = mcg.mcg_candles;
             for (int i = 0; i < candles.size(); i++)
             {
                 mierclasses.mccandle candleatual = candles.get(i);

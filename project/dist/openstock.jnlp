@@ -9,19 +9,19 @@
   </information>
   <resources>
     <j2se version="1.6+" java-vm-args="-splash:src/assets/sc.png "  href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="lib/hamcrest-core-1.3.jar" size="45024" download="eager" />
-    <jar href="lib/jcommon-1.0.23.jar" size="330246" download="eager" />
-    <jar href="lib/jfreechart-1.0.19-experimental.jar" size="13796" download="eager" />
-    <jar href="lib/jfreechart-1.0.19-swt.jar" size="79793" download="eager" />
-    <jar href="lib/jfreechart-1.0.19.jar" size="1570157" download="eager" />
-    <jar href="lib/jfreesvg-2.0.jar" size="50769" download="eager" />
-    <jar href="lib/json-20180813.jar" size="64597" download="eager" />
-    <jar href="lib/junit-4.11.jar" size="245039" download="eager" />
-    <jar href="lib/orsoncharts-1.4-eval-nofx.jar" size="445025" download="eager" />
-    <jar href="lib/orsonpdf-1.6-eval.jar" size="72444" download="eager" />
-    <jar href="lib/servlet.jar" size="80054" download="eager" />
-    <jar href="lib/swtgraphics2d.jar" size="17492" download="eager" />
-    <jar href="openstock.jar" size="1769479" download="eager" />
+    <jar href="lib\hamcrest-core-1.3.jar" size="45024" download="eager" />
+    <jar href="lib\jcommon-1.0.23.jar" size="330246" download="eager" />
+    <jar href="lib\jfreechart-1.0.19-experimental.jar" size="13796" download="eager" />
+    <jar href="lib\jfreechart-1.0.19-swt.jar" size="79793" download="eager" />
+    <jar href="lib\jfreechart-1.0.19.jar" size="1570157" download="eager" />
+    <jar href="lib\jfreesvg-2.0.jar" size="50769" download="eager" />
+    <jar href="lib\json-20180813.jar" size="64597" download="eager" />
+    <jar href="lib\junit-4.11.jar" size="245039" download="eager" />
+    <jar href="lib\orsoncharts-1.4-eval-nofx.jar" size="445025" download="eager" />
+    <jar href="lib\orsonpdf-1.6-eval.jar" size="72444" download="eager" />
+    <jar href="lib\servlet.jar" size="80054" download="eager" />
+    <jar href="lib\swtgraphics2d.jar" size="17492" download="eager" />
+    <jar href="openstock.jar" size="1771563" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="openstock" >
     <param name="requiredFXVersion" value="8.0+"/>

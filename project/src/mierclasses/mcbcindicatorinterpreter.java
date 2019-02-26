@@ -97,25 +97,33 @@ public class mcbcindicatorinterpreter
                } 
             }
 
-            //adicionar candles do submodulo grafico ao script, e informacao de versao atual do bearcode
+            //<editor-fold defaultstate="collapsed" desc="Associar inputs do Engine para o Script">
+            
+            //candles
             candles_lastrun = candlesscript;
             engine.put("candles", candles_lastrun);
+            
+            //versao bearcode
             String bcversion = "1.0a";
             engine.put("bearcodeversion", bcversion);
-
-            //debugoutput e utilizado para output no system.out e debug em dev
+            
+            //debugoutput (utilizado para output no system.out e debug em dev)
             engine.put("debugoutput",System.out);
 
-            //run output eh utilizado dentro do bearcode editor para print no jTextAreaOutput
+            //runoutput (utilizado dentro do bearcode editor para prints de teste)
             if (adicionarouthandler == true)
             {
                 engine.put("runoutput", runoutput);
             }
+            
+            //</editor-fold>
 
             //rodar script
-            //mierclasses.mcfuncoeshelper.mostrarmensagem("codigo para rodar: " + codigobcodejs)
             engine.eval(codigobcodejs);
 
+            //<editor-fold defaultstate="collapsed" desc="Associar outputs do Script para o Engine">
+            
+            //pontos x para plotar o indicador
             try
             {
                 pontosx_lastrun = engine.get("xvalues");  
@@ -125,6 +133,7 @@ public class mcbcindicatorinterpreter
                 //ignorar caso null etc
             }
 
+            //pontos y para plotar o indicador
             try
             {
                 pontosy_lastrun = engine.get("yvalues");
@@ -134,6 +143,7 @@ public class mcbcindicatorinterpreter
                 //ignorar caso null etc
             }
 
+            //descricao do script de indicador (contem nome do script, e informacao de como plotar a curva do indicador)
             try
             {
                 descricaoscript_lastrun = engine.get("scriptdescription");
@@ -143,18 +153,10 @@ public class mcbcindicatorinterpreter
                 //ignorar caso null etc
             }
 
-            //o usuario pode devolver no momento soh um xarray e yarray para print
-            //ele pode escolher se ele quer printar esse dataset no chart ohlc
-            //neste caso ele deve escolher a opcao drawoncandles, e essa opcao ira
-            //criar um grafico separado e um grafico no ohlc, em linha obrigatoriamente
-            //outros casos existentes sao printar somente separado, sem aparecer no ohlc,
-            //mas neste caso o grafico pode ser em linha, area ou em barra.
-            //(a trabalhar para adicionar multiplas linhas para xarray12345... e yarray
-            //tambem soh eh possivel printar para timestamps como eixo y
-            
-            
             tituloscript_lastrun = ((String)descricaoscript_lastrun).split(";")[0];
             tipoplot_lastrun = ((String)descricaoscript_lastrun).split(";")[1];
+            
+            //</editor-fold>
         }
         catch (Exception ex)
         {

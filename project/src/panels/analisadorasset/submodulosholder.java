@@ -235,7 +235,7 @@ public class submodulosholder extends javax.swing.JPanel
             {
                 java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
                 java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(baos);
-                oos.writeObject(miaa.subannotationsanotacao);
+                oos.writeObject(miaa.anotacao);
                 oos.close();
                 anotacaoserializada = java.util.Base64.getEncoder().encodeToString(baos.toByteArray()); 
             }

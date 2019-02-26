@@ -30,9 +30,8 @@ public class itemanotacao extends javax.swing.JPanel
     //variavel que diz que tipo de anotacao eh esta, ex: linha, fibonacci, etc.
     public String tipoanotacao;
     
-    //lista de subanotacoes desta anotacao para carregamento futuro
-    //(public java.list.util.List<org.jfree.chart.annotations.XYAnnotation>)
-    public java.util.List<org.jfree.chart.annotations.XYAnnotation> subannotationsanotacao;
+    //jfree xyannotation list, pertencente a este item anotacao
+    public java.util.List<org.jfree.chart.annotations.XYAnnotation> anotacao;
     
     //id desta anotacao (utilizado para delecao)
     public String id;
@@ -46,7 +45,7 @@ public class itemanotacao extends javax.swing.JPanel
         
         submodulografico = smg;
         tipoanotacao = tipo;
-        subannotationsanotacao = subans;
+        anotacao = subans;
     }
     
     //construtor recarregar anotacao
@@ -60,7 +59,7 @@ public class itemanotacao extends javax.swing.JPanel
         
         submodulografico = smg;
         tipoanotacao = tipo;
-        subannotationsanotacao = subans;
+        anotacao = subans;
     }
    
     
@@ -69,7 +68,7 @@ public class itemanotacao extends javax.swing.JPanel
         if (tipoanotacao.equals("text"))
         {
             //caso seja anotacao, tambem renomear a anotacao no grafico em si
-            org.jfree.chart.annotations.XYTextAnnotation antexto = (org.jfree.chart.annotations.XYTextAnnotation)subannotationsanotacao.get(0);
+            org.jfree.chart.annotations.XYTextAnnotation antexto = (org.jfree.chart.annotations.XYTextAnnotation)anotacao.get(0);
             antexto.setText(novonome);
         }
         jLabelNomeItemAnotacao.setText(novonome);

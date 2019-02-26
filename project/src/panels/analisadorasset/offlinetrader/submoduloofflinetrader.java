@@ -500,7 +500,7 @@ public class submoduloofflinetrader extends javax.swing.JPanel
         
         if (botativado == true)
         {
-            java.util.List<mierclasses.mccandle> candlesusar = submodulohpai.subgrafico.mcg.candlesatual;
+            java.util.List<mierclasses.mccandle> candlesusar = submodulohpai.subgrafico.mcg.mcg_candles;
             
             if (candlesusar != candlesrunanterior)
             {

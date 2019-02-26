@@ -85,7 +85,7 @@ public class itemindicador extends javax.swing.JPanel
     public String rodarscriptindicador()
     {
         //funcao para rodar script relacionado a este item indicador
-        String statusrun = mcbcindicador.rodarscript(submodulografico.mcg.candlesatual,false,null);
+        String statusrun = mcbcindicador.rodarscript(submodulografico.mcg.mcg_candles,false,null);
         
         return statusrun;
     }

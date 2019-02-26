@@ -132,43 +132,57 @@ public class mcbctradingbotinterpreter
                } 
             }
 
-            //adicionar candles do submodulo grafico ao script, e informacao de versao atual do bearcode
+            //<editor-fold defaultstate="collapsed" desc="Associar inputs do Engine para o Script">
+            
+            //candles
             candles_lastrun = candlesscript;
             engine.put("candles", candles_lastrun);
+            
+            //versao bearcode
             String bcversion = "1.0a";
             engine.put("bearcodeversion", bcversion);
             
-            //adicionar quantidades de moeda disponivel ate o momento
+            //quantidade moeda base
             quantidadebase_lastrun = qmbasescript;
             engine.put("basefunds", quantidadebase_lastrun);
+            
+            //quantidade moeda cotacao
             quantidadecotacao_lastrun = qmcotacaoscript;
             engine.put("quotefunds", quantidadecotacao_lastrun);
             
-            //adicionar ultimo bid e ask disponivel
+            //ultimo bid
             bid_lastrun = bidscript;
             engine.put("lastbid", bid_lastrun);
+            
+            //ultimo ask
             ask_lastrun = askscript;
             engine.put("lastask", ask_lastrun);
             
-            //adicionar fees de compra e venda
+            //fee compra
             feecompra_lastrun = feecomprascript;
             engine.put("buyfee", feecompra_lastrun);
+            
+            //fee venda
             feevenda_lastrun = feevendascript;
             engine.put("sellfee", feevenda_lastrun);
 
-            //debugoutput e utilizado para output no system.out e debug em dev
+            //debugoutput (utilizado para output no system.out e debug em dev)
             engine.put("debugoutput",System.out);
 
-            //run output eh utilizado dentro do bearcode editor para print no jTextAreaOutput
+            //runoutput (utilizado dentro do bearcode editor para prints de teste)
             if (adicionarouthandler == true)
             {
                 engine.put("runoutput", runoutput);
             }
+            
+            //</editor-fold>
 
             //rodar script
-            //mierclasses.mcfuncoeshelper.mostrarmensagem("codigo para rodar: " + codigobcodejs)
             engine.eval(codigobcodejs);
 
+            //<editor-fold defaultstate="collapsed" desc="Associar outputs do Script para o Engine">
+            
+            //decisao do trader
             try
             {
                 respostatradermove_lastrun = engine.get("tradermove");
@@ -178,6 +192,7 @@ public class mcbctradingbotinterpreter
                 //
             }
             
+            //montante de suporte para a decisao
             try
             {
                 respostaquantidadesuporte_lastrun = engine.get("supportamount");  
@@ -187,6 +202,7 @@ public class mcbctradingbotinterpreter
                 //
             }
             
+            //debugexport (utilizado para customizar output em coluna exportada pelo csv)
             try
             {
                 debugexport_lastrun = engine.get("debugexport");
@@ -195,6 +211,8 @@ public class mcbctradingbotinterpreter
             {
                 debugexport_lastrun = "";
             }
+            
+            //</editor-fold>
         }
         catch (Exception ex)
         {
