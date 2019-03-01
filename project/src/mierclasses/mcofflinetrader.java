@@ -23,8 +23,8 @@ package mierclasses;
 public class mcofflinetrader
 {
     //classe utilizada pelo submoduloofflinetrader ou editor bearcode para realizar transacoes
-    panels.analisadorasset.offlinetrader.submoduloofflinetrader submodulooftraderpai;
-    frames.editorbearcodetraderbot editorbctraderbotpai;
+    analisadorasset.submoduloofflinetrader.panel_submoduloofflinetrader submodulooftraderpai;
+    outrasopcoes.editorbearcodetraderbot.frame_editorbearcodetraderbot editorbctraderbotpai;
     String tipopai = ""; //diz se o tipo de pai deste offline trader eh o subm ou o editor
     
     public String simbolo; //simbolo relacionado a este trader
@@ -42,13 +42,13 @@ public class mcofflinetrader
     
     //construtores
     //quando associado a um submoduloofflinetrader
-    public mcofflinetrader(panels.analisadorasset.offlinetrader.submoduloofflinetrader sopai)
+    public mcofflinetrader(analisadorasset.submoduloofflinetrader.panel_submoduloofflinetrader sopai)
     {
         submodulooftraderpai = sopai;
         tipopai = "submoduloofflinetrader";
     }
     //quando associado a um editor
-    public mcofflinetrader(frames.editorbearcodetraderbot epai)
+    public mcofflinetrader(outrasopcoes.editorbearcodetraderbot.frame_editorbearcodetraderbot epai)
     {
         editorbctraderbotpai = epai;
         tipopai = "editorbearcodetraderbot";

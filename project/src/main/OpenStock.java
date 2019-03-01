@@ -37,7 +37,7 @@ public class OpenStock extends Application
         try
         {
             java.util.concurrent.TimeUnit.MILLISECONDS.sleep(2000);
-            TelaPrincipal tprincipal = new TelaPrincipal();
+            frame_telaprincipal tprincipal = new frame_telaprincipal();
             tprincipal.show();
         }
         catch (Exception ex)
