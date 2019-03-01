@@ -271,7 +271,7 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
     }
 
     
-    void rodarsimulacao(boolean exportarcsv)
+    void rodarsimulacao()
     {
         //esta funcao pega as informacoes inputadas pelo usuario, e roda de acordo com o intervalo de simulacao
         //once|all -> rodar o script uma unica vez com todas as candles
@@ -365,8 +365,12 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
                 traderbot_supportamount + ";" + postrade_baseamount + ";" + postrade_quoteamount + ";" + postrade_total + ";" + ultimo_logtrade + ";" + traderbot_debugexport;    
         }
 
+        //apos rodar a simulacao, abrir frame_resultadosbearcodetraderbot para mostrar resultados da simulacao do editor em tabela,
+        //mostrar uma opcao para exportar dados do csv, e mostrar um grafico de closes e decisao do robo
+        frame_resultadosbearcodetraderbot frbctb = new frame_resultadosbearcodetraderbot(csvSave);
+        frbctb.show();
         
-        if (exportarcsv == true)
+        /*if (exportarcsv == true)
         {
             try
             {
@@ -389,7 +393,7 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
             {
                 mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred when exporting. Exception: " + ex.getMessage());
             }   
-        }
+        }*/
 
 
     }
@@ -670,7 +674,6 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextAreaOutput = new javax.swing.JTextArea();
         jLabelOutput = new javax.swing.JLabel();
-        jButtonTestRun = new javax.swing.JButton();
         jButtonSaveFile = new javax.swing.JButton();
         jButtonLoadFile = new javax.swing.JButton();
         jLabelCurrentFile = new javax.swing.JLabel();
@@ -687,7 +690,7 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
         jLabelBaseAmount = new javax.swing.JLabel();
         jLabelQuoteAmount = new javax.swing.JLabel();
         jTextFieldQuoteAmount = new javax.swing.JTextField();
-        jButtonTestRunExportcsv = new javax.swing.JButton();
+        jButtonRun = new javax.swing.JButton();
         jCheckBoxAutoTrade = new javax.swing.JCheckBox();
         jPanelChooseDataSimulator = new javax.swing.JPanel();
         jComboBoxPeriodoSimbolo = new javax.swing.JComboBox<>();
@@ -732,16 +735,6 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
 
         jLabelOutput.setForeground(new java.awt.Color(255, 255, 255));
         jLabelOutput.setText("Output");
-
-        jButtonTestRun.setForeground(new java.awt.Color(0, 0, 255));
-        jButtonTestRun.setText("Run");
-        jButtonTestRun.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                jButtonTestRunActionPerformed(evt);
-            }
-        });
 
         jButtonSaveFile.setText("Save File");
         jButtonSaveFile.addActionListener(new java.awt.event.ActionListener()
@@ -825,13 +818,13 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
         jTextFieldQuoteAmount.setText("100000");
         jTextFieldQuoteAmount.setCaretColor(new java.awt.Color(125, 125, 125));
 
-        jButtonTestRunExportcsv.setForeground(new java.awt.Color(0, 0, 255));
-        jButtonTestRunExportcsv.setText("Run and Export");
-        jButtonTestRunExportcsv.addActionListener(new java.awt.event.ActionListener()
+        jButtonRun.setForeground(new java.awt.Color(0, 0, 255));
+        jButtonRun.setText("Run");
+        jButtonRun.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jButtonTestRunExportcsvActionPerformed(evt);
+                jButtonRunActionPerformed(evt);
             }
         });
 
@@ -944,8 +937,18 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
                         .addComponent(jLabelOutput)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
-                        .addGap(0, 75, Short.MAX_VALUE)
+                        .addGap(0, 89, Short.MAX_VALUE)
                         .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
+                                .addComponent(jLabelBuyFee1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBoxMinInterval, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBoxMaxInterval, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jCheckBoxAutoTrade)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButtonRun))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
                                 .addComponent(jLabelBuyFee)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -961,19 +964,7 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabelQuoteAmount)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextFieldQuoteAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
-                                .addComponent(jLabelBuyFee1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBoxMinInterval, 0, 194, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBoxMaxInterval, 0, 194, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jCheckBoxAutoTrade)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButtonTestRun)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonTestRunExportcsv)))))
+                                .addComponent(jTextFieldQuoteAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
             .addComponent(jPanelChooseDataSimulator, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -1009,8 +1000,7 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
                     .addComponent(jLabelQuoteAmount))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonTestRun)
-                    .addComponent(jButtonTestRunExportcsv)
+                    .addComponent(jButtonRun)
                     .addComponent(jCheckBoxAutoTrade)
                     .addComponent(jComboBoxMinInterval, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBoxMaxInterval, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1058,21 +1048,10 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
         salvararquivobcodeedicao();
     }//GEN-LAST:event_jButtonSaveFileActionPerformed
 
-    private void jButtonTestRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTestRunActionPerformed
-        rodarsimulacao(false);
-        atualizarinformacoes_offlinetrader_para_editor();
-    }//GEN-LAST:event_jButtonTestRunActionPerformed
-
     private void jTextFieldBuyFeeActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jTextFieldBuyFeeActionPerformed
     {//GEN-HEADEREND:event_jTextFieldBuyFeeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldBuyFeeActionPerformed
-
-    private void jButtonTestRunExportcsvActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonTestRunExportcsvActionPerformed
-    {//GEN-HEADEREND:event_jButtonTestRunExportcsvActionPerformed
-        rodarsimulacao(true);
-        atualizarinformacoes_offlinetrader_para_editor();
-    }//GEN-LAST:event_jButtonTestRunExportcsvActionPerformed
 
     private void jTextFieldNomeSimboloCaretUpdate(javax.swing.event.CaretEvent evt)//GEN-FIRST:event_jTextFieldNomeSimboloCaretUpdate
     {//GEN-HEADEREND:event_jTextFieldNomeSimboloCaretUpdate
@@ -1083,6 +1062,12 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
     {//GEN-HEADEREND:event_jButtonRecarregarCandlesDataActionPerformed
         atualizardadoscandlessimulador();
     }//GEN-LAST:event_jButtonRecarregarCandlesDataActionPerformed
+
+    private void jButtonRunActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonRunActionPerformed
+    {//GEN-HEADEREND:event_jButtonRunActionPerformed
+        rodarsimulacao();
+        atualizarinformacoes_offlinetrader_para_editor();
+    }//GEN-LAST:event_jButtonRunActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1138,9 +1123,8 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
     private javax.swing.JButton jButtonLoadFile;
     private javax.swing.JButton jButtonRecarregarCandlesData;
     private javax.swing.JButton jButtonResetEditor;
+    private javax.swing.JButton jButtonRun;
     private javax.swing.JButton jButtonSaveFile;
-    private javax.swing.JButton jButtonTestRun;
-    private javax.swing.JButton jButtonTestRunExportcsv;
     private javax.swing.JCheckBox jCheckBoxAutoTrade;
     private javax.swing.JComboBox<String> jComboBoxMaxInterval;
     private javax.swing.JComboBox<String> jComboBoxMinInterval;
