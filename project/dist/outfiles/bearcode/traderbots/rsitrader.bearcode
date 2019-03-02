@@ -62,12 +62,15 @@ var rsis_timestamps = retornarrsis(rss_timestamps[0],rss_timestamps[1]);
 //trader answer
 var rsivalores = rsis_timestamps[0];
 var rsihist_tm1 = rsivalores[rsivalores.length-1];
+var rsihist_tm2 = rsivalores[rsivalores.length-2];
 //runoutput.print("\nrsihist_tm1: " + rsihist_tm1);
 
 var tradermove = "hold";
-if (rsihist_tm1 < 35)
+var minrsi = 35.0;
+var maxrsi = 70.0;
+if ((rsihist_tm1 > minrsi) && (rsihist_tm2 < minrsi))
     tradermove = "buyall";
-else if (rsihist_tm1 > 70)
+else if ((rsihist_tm1 < maxrsi) && (rsihist_tm2 > maxrsi))
     tradermove = "sellall";
 
 var amountbase = [0];
