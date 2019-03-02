@@ -11,6 +11,7 @@ Open Stock is a project [licensed under GNU GPLv3](/LICENSE), being created maki
 ![Separate Windows](/supportfiles/mcharts.png)
 ![Offline Trader](/supportfiles/aot.png)
 ![Bot Editor and Simulator](/supportfiles/atsim.png)
+![Bot Editor and Simulator Results](/supportfiles/botresults.png)
 
 Features:
 * Real-time data for multiple assets: stocks, dividends, indexes, forex, cryptocurrency
