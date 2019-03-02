@@ -16,6 +16,9 @@
  */
 package outrasopcoes.editorbearcodetraderbot;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+
 /**
  *
  * @author meyerlu
@@ -40,12 +43,249 @@ public class frame_resultadosbearcodetraderbot extends javax.swing.JFrame
     void inicializar()
     {
         //criar tabela para mostrar resultados
+        criartabelacomcsv();
+        
         //criar grafico para mostrar closes e decisoes de compra e venda
+        criargraficocomcsv("Close Values and Bot Decisions",2,1,5,10);
+        jPanelChartResults.removeAll();
+        jPanelChartResults.setLayout(new java.awt.BorderLayout());
+        jPanelChartResults.add(chartpanelseparado);
+        this.validate();
+    }
+    
+    org.jfree.chart.ChartPanel chartpanelseparado = null;
+    void criargraficocomcsv(String tituloscript, int indexcolunay, int indexcolunax, int indexcolunabotdecision, int indexautotraderlog)
+    {
+        String[] linhascsv = dadoscsvresultado.split("\n");
+        Integer numerolinhas = linhascsv.length; //numero total de linhas
+        
+        //<editor-fold defaultstate="collapsed" desc="popular yvalues_double, xvalues_date e botdecisions_string">
+        java.util.List<Double> yv_list = new java.util.ArrayList<Double>();
+        java.util.List<java.util.Date> xv_list = new java.util.ArrayList<java.util.Date>();
+        java.util.List<String> bt_list = new java.util.ArrayList<String>();
+        java.util.List<String> log_list = new java.util.ArrayList<String>();
+        for (int i = 1; i < numerolinhas; i++)
+        {
+            String[] dadoslinha_atual = linhascsv[i].split(";");
+            double yvalue_double_atual = Double.valueOf(dadoslinha_atual[indexcolunay]);
+            //mierclasses.mcfuncoeshelper.mostrarmensagem(String.valueOf(yvalue_double_atual));
+            yv_list.add(yvalue_double_atual);
+            
+            String xvalue_string_atual = String.valueOf(dadoslinha_atual[indexcolunax]);
+            String[] dataitems = xvalue_string_atual.split("-"); //YYYY-MM-DD-HH-mm-ss
+            java.util.Date xvalue_date_atual =
+                new java.util.Date
+                (
+                    Integer.valueOf(dataitems[0]) - 1900, 
+                    Integer.valueOf(dataitems[1]) - 1, 
+                    Integer.valueOf(dataitems[2]), 
+                    Integer.valueOf(dataitems[3]), 
+                    Integer.valueOf(dataitems[4]), 
+                    Integer.valueOf(dataitems[5])
+                );
+            //mierclasses.mcfuncoeshelper.mostrarmensagem(String.valueOf(xvalue_date_atual));
+            xv_list.add(xvalue_date_atual);
+            
+            String botdecision_string_atual = String.valueOf(dadoslinha_atual[indexcolunabotdecision]);
+            //mierclasses.mcfuncoeshelper.mostrarmensagem(String.valueOf(botdecision_string_atual));
+            bt_list.add(botdecision_string_atual);
+            
+            String autotraderlog_string_atual = String.valueOf(dadoslinha_atual[indexautotraderlog]);
+            //mierclasses.mcfuncoeshelper.mostrarmensagem(String.valueOf(botdecision_string_atual));
+            log_list.add(autotraderlog_string_atual);
+        }
+        
+        double[] yvalues_double = new double[yv_list.size()];
+        for (int i = 0; i < yvalues_double.length; i++)
+        {
+            yvalues_double[i] = yv_list.get(i);
+        }
+        java.util.Date[] xvalues_date = new java.util.Date[xv_list.size()];
+        for (int i = 0; i < xvalues_date.length; i++)
+        {
+            xvalues_date[i] = xv_list.get(i);
+        }
+        String[] botdecisions_string = new String[bt_list.size()];
+        for (int i = 0; i < botdecisions_string.length; i++)
+        {
+            botdecisions_string[i] = bt_list.get(i);
+        }
+        String[] autotraderlogs_string = new String[bt_list.size()];
+        for (int i = 0; i < autotraderlogs_string.length; i++)
+        {
+            autotraderlogs_string[i] = log_list.get(i);
+        }
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="criar timeseries com yvalues_double e xvalues_date">
+        org.jfree.data.time.TimeSeries seriesadd = new org.jfree.data.time.TimeSeries(tituloscript);
+        for (int i = 0; i < yvalues_double.length; i++)
+        {
+
+            org.jfree.data.time.Millisecond millisegundoatual
+                    = new org.jfree.data.time.Millisecond(xvalues_date[i]);
+
+            double valoratual = yvalues_double[i];
+
+            seriesadd.add(millisegundoatual, valoratual);
+        }
+
+        //criar dataset e associar timeseries ao dataset
+        org.jfree.data.time.TimeSeriesCollection datasettimeseries = new org.jfree.data.time.TimeSeriesCollection();
+        datasettimeseries.addSeries(seriesadd);
+
+        //criar renderer
+        org.jfree.chart.renderer.xy.XYLineAndShapeRenderer renderer = new org.jfree.chart.renderer.xy.DefaultXYItemRenderer();
+        renderer.setBaseShapesVisible(false);
+        renderer.setBaseStroke(new BasicStroke(2.0f));
+
+        //criar ranges
+        org.jfree.chart.axis.DateAxis domainAxis = new org.jfree.chart.axis.DateAxis("");
+        org.jfree.chart.axis.NumberAxis rangeAxis = new org.jfree.chart.axis.NumberAxis("");
+
+        //criar xyplot e associar dataset e renderer ao xyplot
+        org.jfree.chart.plot.XYPlot plot = new org.jfree.chart.plot.XYPlot(datasettimeseries,domainAxis,rangeAxis,renderer);
+        plot.setDataset(datasettimeseries);
+        plot.setRenderer(renderer);
+
+        //criar chart
+        org.jfree.chart.JFreeChart chart = new org.jfree.chart.JFreeChart(tituloscript.toUpperCase(), null,plot,false);
+
+        //criar chartpanel
+        chartpanelseparado = new org.jfree.chart.ChartPanel(chart);
+        chartpanelseparado.addChartMouseListener(new org.jfree.chart.ChartMouseListener()
+        {
+            public void chartMouseClicked(org.jfree.chart.ChartMouseEvent e)
+            {
+            }
+
+            public void chartMouseMoved(org.jfree.chart.ChartMouseEvent e)
+            {
+            }
+        });
+        //</editor-fold>
+        
+        //<editor-fold defaultstate="collapsed" desc="adicionar anotacoes de compra e venda com botdecisions_string">
+        org.jfree.data.Range rangex = plot.getDomainAxis().getRange();
+        org.jfree.data.Range rangey = plot.getRangeAxis().getRange();
+        
+        for (int i = 0; i < yvalues_double.length; i++)
+        {
+            double valorx_double = xvalues_date[i].getTime();
+            double valory_double = yvalues_double[i];
+            String decisaoatual = botdecisions_string[i];
+            String logatual = autotraderlogs_string[i];
+   
+            //criando linha vertical de compra e venda
+            double lv_p1_x = valorx_double;
+            double lv_p1_y = rangey.getUpperBound();
+            double lv_p2_x = valorx_double;
+            double lv_p2_y = rangey.getUpperBound() - (rangey.getUpperBound() - rangey.getLowerBound())*0.90;
+            if (decisaoatual.equals("buyall") || decisaoatual.equals("buyamount"))
+            {
+                //mierclasses.mcfuncoeshelper.mostrarmensagem("ADICIONANDO BUY LINE");
+                org.jfree.chart.annotations.XYLineAnnotation xylv = new org.jfree.chart.annotations.XYLineAnnotation(lv_p1_x, lv_p1_y, lv_p2_x, lv_p2_y, new BasicStroke(0.4f), Color.GREEN);
+                plot.addAnnotation(xylv);
+            }
+            else if (decisaoatual.equals("sellall") || decisaoatual.equals("sellamount"))
+            {
+                //mierclasses.mcfuncoeshelper.mostrarmensagem("ADICIONANDO SELL LINE");
+                org.jfree.chart.annotations.XYLineAnnotation xylv = new org.jfree.chart.annotations.XYLineAnnotation(lv_p1_x, lv_p1_y, lv_p2_x, lv_p2_y, new BasicStroke(0.4f), Color.RED);
+                plot.addAnnotation(xylv);
+            }  
+            
+            //criando linha vertical de log
+            double ll_p1_x = valorx_double;
+            double ll_p1_y = rangey.getUpperBound() - (rangey.getUpperBound() - rangey.getLowerBound())*0.90;
+            double ll_p2_x = valorx_double;
+            double ll_p2_y = rangey.getLowerBound();
+            if (logatual.equals("ok"))
+            { 
+                if (decisaoatual.equals("buyall") || decisaoatual.equals("buyamount"))
+                {
+                    //mierclasses.mcfuncoeshelper.mostrarmensagem("ADICIONANDO BUY LINE");
+                    org.jfree.chart.annotations.XYLineAnnotation xylv = new org.jfree.chart.annotations.XYLineAnnotation(ll_p1_x, ll_p1_y, ll_p2_x, ll_p2_y, new BasicStroke(0.4f), Color.GREEN);
+                    plot.addAnnotation(xylv);
+                }
+                else if (decisaoatual.equals("sellall") || decisaoatual.equals("sellamount"))
+                {
+                    //mierclasses.mcfuncoeshelper.mostrarmensagem("ADICIONANDO SELL LINE");
+                    org.jfree.chart.annotations.XYLineAnnotation xylv = new org.jfree.chart.annotations.XYLineAnnotation(ll_p1_x, ll_p1_y, ll_p2_x, ll_p2_y, new BasicStroke(0.4f), Color.RED);
+                    plot.addAnnotation(xylv);
+                } 
+            }
+            else
+            {
+                //mierclasses.mcfuncoeshelper.mostrarmensagem("ADICIONANDO SELL LINE");
+                org.jfree.chart.annotations.XYLineAnnotation xylv = new org.jfree.chart.annotations.XYLineAnnotation(ll_p1_x, ll_p1_y, ll_p2_x, ll_p2_y, new BasicStroke(0.4f), Color.BLACK);
+                plot.addAnnotation(xylv);
+            }
+           
+        }
+        //</editor-fold>
     }
     
     void criartabelacomcsv()
     {
+        String[] linhascsv = dadoscsvresultado.split("\n");
+        String[] nomescolunas = linhascsv[0].split(";");
         
+        Integer numerolinhas = linhascsv.length; //numero total de linhas
+        Integer numerocolunas = nomescolunas.length; //numero total de colunas
+        
+        //mierclasses.mcfuncoeshelper.mostrarmensagem(String.valueOf(numerolinhas));
+        //mierclasses.mcfuncoeshelper.mostrarmensagem(String.valueOf(numerocolunas));
+        //mierclasses.mcfuncoeshelper.mostrarmensagem(String.valueOf(linhascsv[0]));
+        //mierclasses.mcfuncoeshelper.mostrarmensagem(String.valueOf(linhascsv[1]));
+        
+        Object[][] dados = new Object[numerolinhas][numerocolunas];
+        for (int i = 1; i < numerolinhas; i++)
+        {
+            String[] dadoslinha_atual = linhascsv[i].split(";");
+            
+            for (int j = 0; j < numerocolunas; j++)
+            {
+                //i-1 porque i comeca em 1. ja que i = 0 eh o nome das colunas
+                dados[i-1][j] = dadoslinha_atual[j];
+            }
+        }
+        
+        jTableResults.setModel
+        (
+            new javax.swing.table.DefaultTableModel
+            (
+                dados,nomescolunas
+            )
+        );
+        jScrollPane1.setViewportView(jTableResults);
+    }
+    
+    void exportardadoscsv()
+    {
+        try
+        {
+
+            //abrir dialog para criar arquivo de save
+            javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+            fileChooser.setDialogTitle("Please choose a location to export the simulation results .csv file");
+
+            int userSelection = fileChooser.showSaveDialog(this);
+
+            if (userSelection == javax.swing.JFileChooser.APPROVE_OPTION) 
+            {
+                java.io.File fileToSave = fileChooser.getSelectedFile();
+
+                java.io.PrintWriter writer = new java.io.PrintWriter(fileToSave + ".csv", "UTF-8");
+                writer.println(dadoscsvresultado);
+                writer.close();
+                mierclasses.mcfuncoeshelper.mostrarmensagem(".csv simulation results exported.");
+            }
+            
+        }
+        catch (Exception ex)
+        {
+            mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred when exporting. Exception: " + ex.getMessage());
+        }
     }
 
     /**
@@ -77,27 +317,28 @@ public class frame_resultadosbearcodetraderbot extends javax.swing.JFrame
         jTableResults.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][]
             {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {"1", "1", "4", "4"},
+                {"2", "2", "3", "3"},
+                {"3", "3", "2", "2"},
+                {"4", "4", "1", "1"}
             },
             new String []
             {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTableResults.setEnabled(false);
         jScrollPane1.setViewportView(jTableResults);
 
         javax.swing.GroupLayout jPanelTableLayout = new javax.swing.GroupLayout(jPanelTable);
         jPanelTable.setLayout(jPanelTableLayout);
         jPanelTableLayout.setHorizontalGroup(
             jPanelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 810, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 650, Short.MAX_VALUE)
         );
         jPanelTableLayout.setVerticalGroup(
             jPanelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 504, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Table", jPanelTable);
@@ -108,11 +349,11 @@ public class frame_resultadosbearcodetraderbot extends javax.swing.JFrame
         jPanelChartResults.setLayout(jPanelChartResultsLayout);
         jPanelChartResultsLayout.setHorizontalGroup(
             jPanelChartResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 810, Short.MAX_VALUE)
+            .addGap(0, 650, Short.MAX_VALUE)
         );
         jPanelChartResultsLayout.setVerticalGroup(
             jPanelChartResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 504, Short.MAX_VALUE)
+            .addGap(0, 434, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanelChartLayout = new javax.swing.GroupLayout(jPanelChart);
@@ -177,7 +418,7 @@ public class frame_resultadosbearcodetraderbot extends javax.swing.JFrame
 
     private void jButtonExportCsvActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonExportCsvActionPerformed
     {//GEN-HEADEREND:event_jButtonExportCsvActionPerformed
-
+            exportardadoscsv();
     }//GEN-LAST:event_jButtonExportCsvActionPerformed
 
     /**

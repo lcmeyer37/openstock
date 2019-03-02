@@ -613,7 +613,7 @@ public class mcchartgenerator
         xytextopreco.setTextAnchor(TextAnchor.TOP_LEFT);
         
         //texto data
-        String datacrosshair = new java.util.Date((long) centrocrosshair_x).toString();
+        String datacrosshair = new java.util.Date((long) mcg_posmousex).toString();
         String textodata = datacrosshair;
         org.jfree.chart.annotations.XYTextAnnotation xytextodata = new org.jfree.chart.annotations.XYTextAnnotation(textodata, centrocrosshair_x, lv_p2_y);
         xytextodata.setTextAnchor(TextAnchor.BOTTOM_LEFT);

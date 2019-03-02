@@ -284,7 +284,7 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
         
         //comecar criando o header do csv
         csvSave = csvSave + 
-                "First Timestamp;Last Timestamp;Last Close;Simulated Last Bid;Simulated Last Ask;Decision Now;Support Amount to Decision;Base Amount After Trade;Quote Amount After Trade;Total After Trade;Auto Trader Log (pt);Debug Export";
+                "First Timestamp (YYYY-MM-DD-HH-mm-ss);Last Timestamp (YYYY-MM-DD-HH-mm-ss);Last Close;Simulated Last Bid;Simulated Last Ask;Decision Now;Support Amount to Decision;Base Amount After Trade;Quote Amount After Trade;Total After Trade;Auto Trader Log;Debug Export";
         
         
         jTextAreaOutput.setText("");
@@ -370,31 +370,6 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
         frame_resultadosbearcodetraderbot frbctb = new frame_resultadosbearcodetraderbot(csvSave);
         frbctb.show();
         
-        /*if (exportarcsv == true)
-        {
-            try
-            {
-                javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
-                fileChooser.setDialogTitle("Please choose a location to export the .csv file");
-
-                int userSelection = fileChooser.showSaveDialog(this);
-
-                if (userSelection == javax.swing.JFileChooser.APPROVE_OPTION) 
-                {
-                    java.io.File fileToSave = fileChooser.getSelectedFile();
-
-                    java.io.PrintWriter writer = new java.io.PrintWriter(fileToSave + ".csv", "UTF-8");
-                    writer.println(csvSave);
-                    writer.close();
-                    mierclasses.mcfuncoeshelper.mostrarmensagem(".csv file exported.");
-                }
-            }
-            catch (Exception ex)
-            {
-                mierclasses.mcfuncoeshelper.mostrarmensagem("A problem occurred when exporting. Exception: " + ex.getMessage());
-            }   
-        }*/
-
 
     }
 

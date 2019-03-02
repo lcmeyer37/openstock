@@ -100,9 +100,7 @@ public static main.frame_telaprincipal telappai;
         jPanelMore = new javax.swing.JPanel();
         jButtonOpenBearcodeIndicatorEditor = new javax.swing.JButton();
         jButtonOpenBearcodeBotEditor = new javax.swing.JButton();
-        jPanelOutrasInformacoes = new javax.swing.JPanel();
-        jPanelOIHeader = new javax.swing.JPanel();
-        jLabelOITitle = new javax.swing.JLabel();
+        jPanelConfiguration = new javax.swing.JPanel();
         jLabelAVKey = new javax.swing.JLabel();
         jLabelCCKey = new javax.swing.JLabel();
         jLabelTelegramBotToken = new javax.swing.JLabel();
@@ -162,31 +160,30 @@ public static main.frame_telaprincipal telappai;
             }
         });
 
-        jPanelOutrasInformacoes.setBackground(new java.awt.Color(35, 35, 35));
-
-        jPanelOIHeader.setBackground(new java.awt.Color(55, 55, 55));
-
-        jLabelOITitle.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabelOITitle.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelOITitle.setText("General Configuration");
-        jLabelOITitle.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        javax.swing.GroupLayout jPanelOIHeaderLayout = new javax.swing.GroupLayout(jPanelOIHeader);
-        jPanelOIHeader.setLayout(jPanelOIHeaderLayout);
-        jPanelOIHeaderLayout.setHorizontalGroup(
-            jPanelOIHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelOIHeaderLayout.createSequentialGroup()
+        javax.swing.GroupLayout jPanelMoreLayout = new javax.swing.GroupLayout(jPanelMore);
+        jPanelMore.setLayout(jPanelMoreLayout);
+        jPanelMoreLayout.setHorizontalGroup(
+            jPanelMoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelMoreLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelOITitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelMoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonOpenBearcodeIndicatorEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonOpenBearcodeBotEditor, javax.swing.GroupLayout.DEFAULT_SIZE, 584, Short.MAX_VALUE))
                 .addContainerGap())
         );
-        jPanelOIHeaderLayout.setVerticalGroup(
-            jPanelOIHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelOIHeaderLayout.createSequentialGroup()
+        jPanelMoreLayout.setVerticalGroup(
+            jPanelMoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMoreLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelOITitle, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jButtonOpenBearcodeIndicatorEditor)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonOpenBearcodeBotEditor)
+                .addContainerGap(253, Short.MAX_VALUE))
         );
+
+        jTabbedPane1.addTab("More", jPanelMore);
+
+        jPanelConfiguration.setBackground(new java.awt.Color(55, 55, 55));
 
         jLabelAVKey.setForeground(new java.awt.Color(255, 255, 255));
         jLabelAVKey.setText("Alpha Vantage API Key:");
@@ -218,78 +215,48 @@ public static main.frame_telaprincipal telappai;
         jLabelAppTimezone.setForeground(new java.awt.Color(255, 255, 255));
         jLabelAppTimezone.setText("Application Time Zone:");
 
-        javax.swing.GroupLayout jPanelOutrasInformacoesLayout = new javax.swing.GroupLayout(jPanelOutrasInformacoes);
-        jPanelOutrasInformacoes.setLayout(jPanelOutrasInformacoesLayout);
-        jPanelOutrasInformacoesLayout.setHorizontalGroup(
-            jPanelOutrasInformacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelOutrasInformacoesLayout.createSequentialGroup()
+        javax.swing.GroupLayout jPanelConfigurationLayout = new javax.swing.GroupLayout(jPanelConfiguration);
+        jPanelConfiguration.setLayout(jPanelConfigurationLayout);
+        jPanelConfigurationLayout.setHorizontalGroup(
+            jPanelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelConfigurationLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelOutrasInformacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanelOIHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanelOutrasInformacoesLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(jPanelOutrasInformacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelAppTimezone, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelRemoverCandles, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelTelegramBotToken, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelCCKey, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelAVKey, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelTelegramUserId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanelOutrasInformacoesLayout.createSequentialGroup()
-                                .addComponent(jLabelTelegramCommsStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonTestarTelegramComms)))))
+                .addGroup(jPanelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelCCKey, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelRemoverCandles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelAppTimezone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelTelegramBotToken, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelAVKey, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelTelegramUserId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanelConfigurationLayout.createSequentialGroup()
+                        .addComponent(jLabelTelegramCommsStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonTestarTelegramComms)))
                 .addContainerGap())
         );
-        jPanelOutrasInformacoesLayout.setVerticalGroup(
-            jPanelOutrasInformacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelOutrasInformacoesLayout.createSequentialGroup()
+        jPanelConfigurationLayout.setVerticalGroup(
+            jPanelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelConfigurationLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanelOIHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addComponent(jLabelAVKey, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabelCCKey, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelTelegramBotToken, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelTelegramUserId, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanelOutrasInformacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelTelegramCommsStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonTestarTelegramComms))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelCCKey, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelRemoverCandles, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelAppTimezone, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(132, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanelMoreLayout = new javax.swing.GroupLayout(jPanelMore);
-        jPanelMore.setLayout(jPanelMoreLayout);
-        jPanelMoreLayout.setHorizontalGroup(
-            jPanelMoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelMoreLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanelMoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonOpenBearcodeIndicatorEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanelOutrasInformacoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonOpenBearcodeBotEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        jPanelMoreLayout.setVerticalGroup(
-            jPanelMoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMoreLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButtonOpenBearcodeIndicatorEditor)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonOpenBearcodeBotEditor)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanelOutrasInformacoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        jTabbedPane1.addTab("More", jPanelMore);
+        jTabbedPane1.addTab("Configuration", jPanelConfiguration);
 
         jPanelAbout.setBackground(new java.awt.Color(55, 55, 55));
 
@@ -297,7 +264,7 @@ public static main.frame_telaprincipal telappai;
         jLabelOpenStock.setText("Open Stock");
 
         jLabelLastBuild.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelLastBuild.setText("Lucas Meyer build of February 2019");
+        jLabelLastBuild.setText("Lucas Meyer build of March 2019");
 
         jLabelBear.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelBear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/bear70.png"))); // NOI18N
@@ -746,7 +713,6 @@ public static main.frame_telaprincipal telappai;
     private javax.swing.JLabel jLabelBear;
     private javax.swing.JLabel jLabelCCKey;
     private javax.swing.JLabel jLabelLastBuild;
-    private javax.swing.JLabel jLabelOITitle;
     private javax.swing.JLabel jLabelOpenStock;
     private javax.swing.JLabel jLabelRemoverCandles;
     private javax.swing.JLabel jLabelTelegramBotToken;
@@ -755,9 +721,8 @@ public static main.frame_telaprincipal telappai;
     private javax.swing.JLabel jLabelVersion;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanelAbout;
+    private javax.swing.JPanel jPanelConfiguration;
     private javax.swing.JPanel jPanelMore;
-    private javax.swing.JPanel jPanelOIHeader;
-    private javax.swing.JPanel jPanelOutrasInformacoes;
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
 }
