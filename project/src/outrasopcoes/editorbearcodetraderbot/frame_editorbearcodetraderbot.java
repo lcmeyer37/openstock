@@ -23,6 +23,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+
 /**
  *
  * @author meyerlu
@@ -49,6 +50,9 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
     
     //handler para o output do jtextareaoutput
     mierclasses.mcjtextareahandler mcjtah;
+    
+    //RSyntaxTextArea utilizado pelo editor
+    org.fife.ui.rsyntaxtextarea.RSyntaxTextArea rsTextArea;
     //</editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Construtor e Inicializar">
@@ -75,9 +79,24 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
         //associar um offlinetrader para este editor (para realizar trades de simulacao)
         otrader = new mierclasses.mcofflinetrader(this);
         
-        //resetar campos de edicao do editor com informacoes padrao
+        
+        //inicializar e resetar campos de edicao do editor com informacoes padrao
+        inicializarRSyntaxTextArea();
         resetarcamposeditor();
         
+    }
+    
+    void inicializarRSyntaxTextArea()
+    {
+        //classe text area com syntax parser para javascript
+        rsTextArea = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(20, 60);
+        rsTextArea.setSyntaxEditingStyle(org.fife.ui.rsyntaxtextarea.SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
+        rsTextArea.setCodeFoldingEnabled(true);
+        org.fife.ui.rtextarea.RTextScrollPane sp = new org.fife.ui.rtextarea.RTextScrollPane(rsTextArea);
+        jPanelEditorHolder.add(sp);
+        jPanelEditorHolder.setLayout(new java.awt.GridLayout(1,1));
+        this.validate();
+        this.repaint();
     }
     //</editor-fold>
     
@@ -316,7 +335,7 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
             otrader.atualizarbidask();
 
             //repopular parametros e codigo do script
-            mcbctraderbot.atualizarscriptparametros(jTextAreaScript.getText(), jTextFieldParameters.getText());
+            mcbctraderbot.atualizarscriptparametros(rsTextArea.getText(), jTextFieldParameters.getText());
             //rodar script
             String result = mcbctraderbot.rodarscript
             (
@@ -396,6 +415,11 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
         try
         {
             javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+            String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
+            String pastascriptsbot = rootjar + "/outfiles/bearcode/traderbots";
+            fileChooser.setCurrentDirectory(new java.io.File(pastascriptsbot));
+            javax.swing.filechooser.FileFilter filter = new mierclasses.mcextensionfilefilter("Bearcode File", new String[] { "bearcode" });
+            fileChooser.setFileFilter(filter);
             fileChooser.setDialogTitle("Please choose a location and name for the Open Stock save file");
 
             int userSelection = fileChooser.showSaveDialog(this);
@@ -405,10 +429,9 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
                 java.io.File fileToSave = fileChooser.getSelectedFile();
 
                 java.io.PrintWriter writer = new java.io.PrintWriter(fileToSave + ".bearcode", "UTF-8");
-                writer.println(jTextAreaScript.getText());
+                writer.println(rsTextArea.getText());
                 writer.close();
                 
-                jLabelCurrentFile.setText("Current File: " + fileToSave.getName() + ".bearcode");
                 mierclasses.mcfuncoeshelper.mostrarmensagem("Bearcode saved.");
             }
         }
@@ -424,6 +447,11 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
        {
             //abrir janela para selecionar arquivo de save para carregar
             javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+            String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
+            String pastascriptsbot = rootjar + "/outfiles/bearcode/traderbots";
+            fileChooser.setCurrentDirectory(new java.io.File(pastascriptsbot));
+            javax.swing.filechooser.FileFilter filter = new mierclasses.mcextensionfilefilter("Bearcode File", new String[] { "bearcode" });
+            fileChooser.setFileFilter(filter);
             fileChooser.setDialogTitle("Please choose an Open Stock file to load");
 
             int userSelection = fileChooser.showOpenDialog(this);
@@ -438,9 +466,8 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
                     fileToLoad = fileChooser.getSelectedFile();
                     String scripttexto = mierclasses.mcfuncoeshelper.retornarStringArquivo(fileToLoad.getAbsolutePath());
                     
-                    jTextAreaScript.setText(scripttexto);
+                    rsTextArea.setText(scripttexto);
                     jTextAreaOutput.setText("");
-                    jLabelCurrentFile.setText("Current File: " + fileToLoad.getName());
                 }
                 catch (Exception ex)
                 {
@@ -506,12 +533,11 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
                 "var amountbase = [60]; //60 is the amount to buy\n" +
                 "var supportamount = Java.to(amountbase,\"double[]\");";
                 
-        jTextAreaScript.setText(scriptdefault);
-        jTextAreaScript.setCaretPosition(0);
+        rsTextArea.setText(scriptdefault);
+        rsTextArea.setCaretPosition(0);
         jTextAreaOutput.setText("");
         jTextAreaOutput.setCaretPosition(0);
         jTextFieldParameters.setText("");
-        jLabelCurrentFile.setText("Current File: (new)");
         
         //atualizar informacoes relacionadas ao status atual do trader com a gui
         atualizarinformacoes_offlinetrader_para_editor();
@@ -542,10 +568,10 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
             int linenum = 1;
             int columnnum = 1;
 
-            int caretpos = jTextAreaScript.getCaretPosition();
-            linenum = jTextAreaScript.getLineOfOffset(caretpos);
+            int caretpos = rsTextArea.getCaretPosition();
+            linenum = rsTextArea.getLineOfOffset(caretpos);
 
-            columnnum = caretpos - jTextAreaScript.getLineStartOffset(linenum) + 1;
+            columnnum = caretpos - rsTextArea.getLineStartOffset(linenum) + 1;
 
             linenum += 1;
             
@@ -635,6 +661,7 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
     }
     //</editor-fold>
     
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -646,17 +673,13 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
     {
 
         jPanelPai = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextAreaScript = new javax.swing.JTextArea();
         jLabelScript = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextAreaOutput = new javax.swing.JTextArea();
         jLabelOutput = new javax.swing.JLabel();
         jButtonSaveFile = new javax.swing.JButton();
         jButtonLoadFile = new javax.swing.JButton();
-        jLabelCurrentFile = new javax.swing.JLabel();
         jButtonResetEditor = new javax.swing.JButton();
-        jLabelCaretPosition = new javax.swing.JLabel();
         jLabelBuyFee = new javax.swing.JLabel();
         jTextFieldBuyFee = new javax.swing.JTextField();
         jLabelParameters = new javax.swing.JLabel();
@@ -680,24 +703,12 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
         jComboBoxMinInterval = new javax.swing.JComboBox<>();
         jComboBoxMaxInterval = new javax.swing.JComboBox<>();
         jLabelBuyFee1 = new javax.swing.JLabel();
+        jPanelEditorHolder = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Bot Editor and Simulator");
 
         jPanelPai.setBackground(new java.awt.Color(55, 55, 55));
-
-        jTextAreaScript.setBackground(new java.awt.Color(235, 235, 235));
-        jTextAreaScript.setColumns(20);
-        jTextAreaScript.setFont(new java.awt.Font("Consolas", 0, 16)); // NOI18N
-        jTextAreaScript.setRows(5);
-        jTextAreaScript.addCaretListener(new javax.swing.event.CaretListener()
-        {
-            public void caretUpdate(javax.swing.event.CaretEvent evt)
-            {
-                jTextAreaScriptCaretUpdate(evt);
-            }
-        });
-        jScrollPane1.setViewportView(jTextAreaScript);
 
         jLabelScript.setForeground(new java.awt.Color(255, 255, 255));
         jLabelScript.setText("Script");
@@ -732,9 +743,6 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
             }
         });
 
-        jLabelCurrentFile.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelCurrentFile.setText("Current File: (new)");
-
         jButtonResetEditor.setForeground(new java.awt.Color(255, 0, 0));
         jButtonResetEditor.setText("Reset");
         jButtonResetEditor.addActionListener(new java.awt.event.ActionListener()
@@ -744,9 +752,6 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
                 jButtonResetEditorActionPerformed(evt);
             }
         });
-
-        jLabelCaretPosition.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelCaretPosition.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
 
         jLabelBuyFee.setForeground(new java.awt.Color(255, 255, 255));
         jLabelBuyFee.setText("Buy Fee:");
@@ -883,39 +888,38 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
         jLabelBuyFee1.setForeground(new java.awt.Color(255, 255, 255));
         jLabelBuyFee1.setText("Interval:");
 
+        javax.swing.GroupLayout jPanelEditorHolderLayout = new javax.swing.GroupLayout(jPanelEditorHolder);
+        jPanelEditorHolder.setLayout(jPanelEditorHolderLayout);
+        jPanelEditorHolderLayout.setHorizontalGroup(
+            jPanelEditorHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanelEditorHolderLayout.setVerticalGroup(
+            jPanelEditorHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanelPaiLayout = new javax.swing.GroupLayout(jPanelPai);
         jPanelPai.setLayout(jPanelPaiLayout);
         jPanelPaiLayout.setHorizontalGroup(
             jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanelChooseDataSimulator, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanelPaiLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
                         .addComponent(jButtonResetEditor)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelCurrentFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonLoadFile)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonSaveFile))
-                    .addGroup(jPanelPaiLayout.createSequentialGroup()
-                        .addComponent(jLabelScript)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelCaretPosition, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelTestParameters3))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
                         .addComponent(jLabelParameters)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jTextFieldParameters))
-                    .addGroup(jPanelPaiLayout.createSequentialGroup()
-                        .addComponent(jLabelOutput)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
-                        .addGap(0, 89, Short.MAX_VALUE)
+                        .addGap(0, 91, Short.MAX_VALUE)
                         .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
                                 .addComponent(jLabelBuyFee1)
@@ -942,26 +946,32 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabelQuoteAmount)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextFieldQuoteAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jTextFieldQuoteAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanelPaiLayout.createSequentialGroup()
+                        .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelScript)
+                            .addComponent(jLabelOutput))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
+                        .addComponent(jPanelEditorHolder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelTestParameters3)))
                 .addContainerGap())
-            .addComponent(jPanelChooseDataSimulator, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanelPaiLayout.setVerticalGroup(
             jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelPaiLayout.createSequentialGroup()
                 .addComponent(jPanelChooseDataSimulator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelScript)
-                    .addComponent(jLabelCaretPosition))
+                .addComponent(jLabelScript)
                 .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelPaiLayout.createSequentialGroup()
                         .addGap(195, 195, 195)
                         .addComponent(jLabelTestParameters3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE))
                     .addGroup(jPanelPaiLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1)
+                        .addComponent(jPanelEditorHolder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelParameters)
@@ -991,8 +1001,7 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
                 .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonSaveFile)
                     .addComponent(jButtonLoadFile)
-                    .addComponent(jButtonResetEditor)
-                    .addComponent(jLabelCurrentFile))
+                    .addComponent(jButtonResetEditor))
                 .addContainerGap())
         );
 
@@ -1009,10 +1018,6 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jTextAreaScriptCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_jTextAreaScriptCaretUpdate
-        jLabelCaretPosition.setText(retornarstringposicaocaret());
-    }//GEN-LAST:event_jTextAreaScriptCaretUpdate
 
     private void jButtonResetEditorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonResetEditorActionPerformed
         resetarcamposeditor();
@@ -1111,8 +1116,6 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
     private javax.swing.JLabel jLabelBuyFee;
     private javax.swing.JLabel jLabelBuyFee1;
     private javax.swing.JLabel jLabelCandlesDataStatus;
-    private javax.swing.JLabel jLabelCaretPosition;
-    private javax.swing.JLabel jLabelCurrentFile;
     private javax.swing.JLabel jLabelNomeSimbolo;
     private javax.swing.JLabel jLabelOutput;
     private javax.swing.JLabel jLabelParameters;
@@ -1122,11 +1125,10 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
     private javax.swing.JLabel jLabelSellFee;
     private javax.swing.JLabel jLabelTestParameters3;
     private javax.swing.JPanel jPanelChooseDataSimulator;
+    private javax.swing.JPanel jPanelEditorHolder;
     private javax.swing.JPanel jPanelPai;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextAreaOutput;
-    private javax.swing.JTextArea jTextAreaScript;
     private javax.swing.JTextField jTextFieldBaseAmount;
     private javax.swing.JTextField jTextFieldBuyFee;
     public javax.swing.JTextField jTextFieldNomeSimbolo;

@@ -270,7 +270,7 @@ public static main.frame_telaprincipal telappai;
         jLabelBear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/bear70.png"))); // NOI18N
 
         jLabelVersion.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelVersion.setText("(v1.034)");
+        jLabelVersion.setText("(v1.035)");
 
         jLabelAPIAttribution.setForeground(new java.awt.Color(255, 255, 255));
         jLabelAPIAttribution.setText("API Attributions:");
@@ -426,7 +426,7 @@ public static main.frame_telaprincipal telappai;
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1)
                 .addContainerGap())
         );
         layout.setVerticalGroup(

@@ -44,6 +44,9 @@ public class frame_editorbearcodeindicador extends javax.swing.JFrame
     //handler para o output do jtextareaoutput
     mierclasses.mcjtextareahandler mcjtah;
     
+    //RSyntaxTextArea utilizado pelo editor
+    org.fife.ui.rsyntaxtextarea.RSyntaxTextArea rsTextArea;
+    
     public frame_editorbearcodeindicador(main.frame_telaprincipal tppai) 
     {
         initComponents();
@@ -53,7 +56,21 @@ public class frame_editorbearcodeindicador extends javax.swing.JFrame
         candlessample = tppai.msapicomms.offline_receberstockcandlessample();
         mcjtah = new mierclasses.mcjtextareahandler(jTextAreaOutput);
         
+        inicializarRSyntaxTextArea();
         resetarscripteditor();
+    }
+    
+    void inicializarRSyntaxTextArea()
+    {
+        //classe text area com syntax parser para javascript
+        rsTextArea = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(20, 60);
+        rsTextArea.setSyntaxEditingStyle(org.fife.ui.rsyntaxtextarea.SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
+        rsTextArea.setCodeFoldingEnabled(true);
+        org.fife.ui.rtextarea.RTextScrollPane sp = new org.fife.ui.rtextarea.RTextScrollPane(rsTextArea);
+        jPanelEditorHolder.add(sp);
+        jPanelEditorHolder.setLayout(new java.awt.GridLayout(1,1));
+        this.validate();
+        this.repaint();
     }
     
     void resetarscripteditor()
@@ -93,12 +110,12 @@ public class frame_editorbearcodeindicador extends javax.swing.JFrame
                 "//mandatory return values for the script\n" +
                 "var yvalues = Java.to(yvalues_indicator,\"double[]\");\n" +
                 "var xvalues = Java.to(xvaluestimestamp_indicator,\"java.util.Date[]\");";
-                
-        jTextAreaScript.setText(scriptdefault);
-        jTextAreaScript.setCaretPosition(0);
+
+        
+        rsTextArea.setText(scriptdefault);
+        rsTextArea.setCaretPosition(0);
         jTextAreaOutput.setText("");
         jTextAreaOutput.setCaretPosition(0);
-        jLabelCurrentFile.setText("Current File: (new)");
     }
     
     String retornarstringposicaocaret()
@@ -108,10 +125,10 @@ public class frame_editorbearcodeindicador extends javax.swing.JFrame
             int linenum = 1;
             int columnnum = 1;
 
-            int caretpos = jTextAreaScript.getCaretPosition();
-            linenum = jTextAreaScript.getLineOfOffset(caretpos);
+            int caretpos = rsTextArea.getCaretPosition();
+            linenum = rsTextArea.getLineOfOffset(caretpos);
 
-            columnnum = caretpos - jTextAreaScript.getLineStartOffset(linenum) + 1;
+            columnnum = caretpos - rsTextArea.getLineStartOffset(linenum) + 1;
 
             linenum += 1;
             
@@ -129,7 +146,7 @@ public class frame_editorbearcodeindicador extends javax.swing.JFrame
         
         //funcao para repopular 
         //mbcodeinterpreter = new mierclasses.mcbcindicatorinterpreter(idbci, nomebci, conteudoscriptbci, parametrosbearcode,this);
-        mcbcindicador.atualizarscriptparametros(jTextAreaScript.getText(), jTextFieldParameters.getText());
+        mcbcindicador.atualizarscriptparametros(rsTextArea.getText(), jTextFieldParameters.getText());
         String result = mcbcindicador.rodarscript(candlessample,true,mcjtah);
         
         if (result.equals("ok"))
@@ -154,6 +171,11 @@ public class frame_editorbearcodeindicador extends javax.swing.JFrame
         try
         {
             javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+            String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
+            String pastascriptsind = rootjar + "/outfiles/bearcode/indicators";
+            fileChooser.setCurrentDirectory(new java.io.File(pastascriptsind));
+            javax.swing.filechooser.FileFilter filter = new mierclasses.mcextensionfilefilter("Bearcode File", new String[] { "bearcode" });
+            fileChooser.setFileFilter(filter);
             fileChooser.setDialogTitle("Please choose a location and name for the Open Stock save file");
 
             int userSelection = fileChooser.showSaveDialog(this);
@@ -163,10 +185,9 @@ public class frame_editorbearcodeindicador extends javax.swing.JFrame
                 java.io.File fileToSave = fileChooser.getSelectedFile();
 
                 java.io.PrintWriter writer = new java.io.PrintWriter(fileToSave + ".bearcode", "UTF-8");
-                writer.println(jTextAreaScript.getText());
+                writer.println(rsTextArea.getText());
                 writer.close();
                 
-                jLabelCurrentFile.setText("Current File: " + fileToSave.getName() + ".bearcode");
                 mierclasses.mcfuncoeshelper.mostrarmensagem("Bearcode saved.");
             }
         }
@@ -182,6 +203,11 @@ public class frame_editorbearcodeindicador extends javax.swing.JFrame
        {
             //abrir janela para selecionar arquivo de save para carregar
             javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+            String rootjar = mierclasses.mcfuncoeshelper.retornarpathbaseprograma();
+            String pastascriptsind = rootjar + "/outfiles/bearcode/indicators";
+            fileChooser.setCurrentDirectory(new java.io.File(pastascriptsind));
+            javax.swing.filechooser.FileFilter filter = new mierclasses.mcextensionfilefilter("Bearcode File", new String[] { "bearcode" });
+            fileChooser.setFileFilter(filter);
             fileChooser.setDialogTitle("Please choose an Open Stock file to load");
 
             int userSelection = fileChooser.showOpenDialog(this);
@@ -196,9 +222,8 @@ public class frame_editorbearcodeindicador extends javax.swing.JFrame
                     fileToLoad = fileChooser.getSelectedFile();
                     String scripttexto = mierclasses.mcfuncoeshelper.retornarStringArquivo(fileToLoad.getAbsolutePath());
                     
-                    jTextAreaScript.setText(scripttexto);
+                    rsTextArea.setText(scripttexto);
                     jTextAreaOutput.setText("");
-                    jLabelCurrentFile.setText("Current File: " + fileToLoad.getName());
                 }
                 catch (Exception ex)
                 {
@@ -223,8 +248,7 @@ public class frame_editorbearcodeindicador extends javax.swing.JFrame
     {
 
         jPanelPai = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextAreaScript = new javax.swing.JTextArea();
+        jPanelEditorHolder = new javax.swing.JPanel();
         jLabelScript = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextAreaOutput = new javax.swing.JTextArea();
@@ -232,9 +256,7 @@ public class frame_editorbearcodeindicador extends javax.swing.JFrame
         jButtonTestRun = new javax.swing.JButton();
         jButtonSaveFile = new javax.swing.JButton();
         jButtonLoadFile = new javax.swing.JButton();
-        jLabelCurrentFile = new javax.swing.JLabel();
         jButtonResetEditor = new javax.swing.JButton();
-        jLabelCaretPosition = new javax.swing.JLabel();
         jLabelTestParameters = new javax.swing.JLabel();
         jTextFieldParameters = new javax.swing.JTextField();
 
@@ -243,18 +265,16 @@ public class frame_editorbearcodeindicador extends javax.swing.JFrame
 
         jPanelPai.setBackground(new java.awt.Color(55, 55, 55));
 
-        jTextAreaScript.setBackground(new java.awt.Color(235, 235, 235));
-        jTextAreaScript.setColumns(20);
-        jTextAreaScript.setFont(new java.awt.Font("Consolas", 0, 16)); // NOI18N
-        jTextAreaScript.setRows(5);
-        jTextAreaScript.addCaretListener(new javax.swing.event.CaretListener()
-        {
-            public void caretUpdate(javax.swing.event.CaretEvent evt)
-            {
-                jTextAreaScriptCaretUpdate(evt);
-            }
-        });
-        jScrollPane1.setViewportView(jTextAreaScript);
+        javax.swing.GroupLayout jPanelEditorHolderLayout = new javax.swing.GroupLayout(jPanelEditorHolder);
+        jPanelEditorHolder.setLayout(jPanelEditorHolderLayout);
+        jPanelEditorHolderLayout.setHorizontalGroup(
+            jPanelEditorHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanelEditorHolderLayout.setVerticalGroup(
+            jPanelEditorHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 294, Short.MAX_VALUE)
+        );
 
         jLabelScript.setForeground(new java.awt.Color(255, 255, 255));
         jLabelScript.setText("Script");
@@ -299,9 +319,6 @@ public class frame_editorbearcodeindicador extends javax.swing.JFrame
             }
         });
 
-        jLabelCurrentFile.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelCurrentFile.setText("Current File: (new)");
-
         jButtonResetEditor.setForeground(new java.awt.Color(255, 0, 0));
         jButtonResetEditor.setText("Reset");
         jButtonResetEditor.addActionListener(new java.awt.event.ActionListener()
@@ -311,9 +328,6 @@ public class frame_editorbearcodeindicador extends javax.swing.JFrame
                 jButtonResetEditorActionPerformed(evt);
             }
         });
-
-        jLabelCaretPosition.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelCaretPosition.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
 
         jLabelTestParameters.setForeground(new java.awt.Color(255, 255, 255));
         jLabelTestParameters.setText("Test Parameters:");
@@ -329,40 +343,34 @@ public class frame_editorbearcodeindicador extends javax.swing.JFrame
             .addGroup(jPanelPaiLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanelEditorHolder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane2)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPaiLayout.createSequentialGroup()
                         .addComponent(jButtonResetEditor)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelCurrentFile, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 425, Short.MAX_VALUE)
                         .addComponent(jButtonLoadFile)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonSaveFile))
-                    .addGroup(jPanelPaiLayout.createSequentialGroup()
-                        .addComponent(jLabelScript)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelCaretPosition, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanelPaiLayout.createSequentialGroup()
-                        .addComponent(jLabelOutput)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanelPaiLayout.createSequentialGroup()
                         .addComponent(jLabelTestParameters)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextFieldParameters)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonTestRun, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButtonTestRun, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelPaiLayout.createSequentialGroup()
+                        .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelScript)
+                            .addComponent(jLabelOutput))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanelPaiLayout.setVerticalGroup(
             jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelPaiLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelScript)
-                    .addComponent(jLabelCaretPosition))
+                .addComponent(jLabelScript)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
+                .addComponent(jPanelEditorHolder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonTestRun)
@@ -376,8 +384,7 @@ public class frame_editorbearcodeindicador extends javax.swing.JFrame
                 .addGroup(jPanelPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonSaveFile)
                     .addComponent(jButtonLoadFile)
-                    .addComponent(jButtonResetEditor)
-                    .addComponent(jLabelCurrentFile))
+                    .addComponent(jButtonResetEditor))
                 .addContainerGap())
         );
 
@@ -394,10 +401,6 @@ public class frame_editorbearcodeindicador extends javax.swing.JFrame
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jTextAreaScriptCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_jTextAreaScriptCaretUpdate
-        jLabelCaretPosition.setText(retornarstringposicaocaret());
-    }//GEN-LAST:event_jTextAreaScriptCaretUpdate
 
     private void jButtonResetEditorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonResetEditorActionPerformed
         resetarscripteditor();
@@ -462,16 +465,13 @@ public class frame_editorbearcodeindicador extends javax.swing.JFrame
     private javax.swing.JButton jButtonResetEditor;
     private javax.swing.JButton jButtonSaveFile;
     private javax.swing.JButton jButtonTestRun;
-    private javax.swing.JLabel jLabelCaretPosition;
-    private javax.swing.JLabel jLabelCurrentFile;
     private javax.swing.JLabel jLabelOutput;
     private javax.swing.JLabel jLabelScript;
     private javax.swing.JLabel jLabelTestParameters;
+    private javax.swing.JPanel jPanelEditorHolder;
     private javax.swing.JPanel jPanelPai;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextAreaOutput;
-    private javax.swing.JTextArea jTextAreaScript;
     private javax.swing.JTextField jTextFieldParameters;
     // End of variables declaration//GEN-END:variables
 }
