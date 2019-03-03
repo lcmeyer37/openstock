@@ -57,7 +57,7 @@ public class panel_noassetsmensagem extends javax.swing.JPanel
 
         jLabelDistribution.setBackground(new java.awt.Color(230, 230, 230));
         jLabelDistribution.setForeground(new java.awt.Color(200, 200, 200));
-        jLabelDistribution.setText("Distribution: 1.034f");
+        jLabelDistribution.setText("Distribution: 1.034g");
 
         jTextAreaWelcome.setEditable(false);
         jTextAreaWelcome.setBackground(new java.awt.Color(25, 25, 25));
@@ -112,7 +112,7 @@ public class panel_noassetsmensagem extends javax.swing.JPanel
                         .addComponent(jButtonGithub))
                     .addGroup(jPanelEscolherSubmoduloLayout.createSequentialGroup()
                         .addComponent(jLabelDistribution)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 193, Short.MAX_VALUE)
                         .addComponent(jLabelToStart))
                     .addGroup(jPanelEscolherSubmoduloLayout.createSequentialGroup()
                         .addGroup(jPanelEscolherSubmoduloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

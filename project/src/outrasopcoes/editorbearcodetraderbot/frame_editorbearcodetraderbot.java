@@ -280,10 +280,10 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
         //atualizar informacoes do trader com os campos do editor antes de iniciar simulacao
         atualizarinformacoes_editor_para_offlinetrader();
         
-        String csvSave = ""; //arquivo que sera exportado
+        String csvResultado = ""; //arquivo que sera exportado
         
         //comecar criando o header do csv
-        csvSave = csvSave + 
+        csvResultado = csvResultado + 
                 "First Timestamp (YYYY-MM-DD-HH-mm-ss);Last Timestamp (YYYY-MM-DD-HH-mm-ss);Last Close;Simulated Last Bid;Simulated Last Ask;Decision Now;Support Amount to Decision;Base Amount After Trade;Quote Amount After Trade;Total After Trade;Auto Trader Log;Debug Export";
         
         
@@ -347,6 +347,9 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
             else
             {
                 mcjtah.print("\n======\n" + "Exception: " + result);
+                
+                //se algum dos processos apresentar excecao, sair da simulacao
+                return;
             }
 
             String primeiro_ts = retornartimestampcsv(candlessimulacao.get(0).timestampdate);
@@ -360,14 +363,14 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
             String postrade_baseamount = String.valueOf(otrader.quantidademoedabase);
             String postrade_quoteamount = String.valueOf(otrader.quantidademoedacotacao);
             String postrade_total = String.valueOf(otrader.totalfundos_moedacotacao());
-            csvSave = csvSave + "\n" +
+            csvResultado = csvResultado + "\n" +
                 primeiro_ts + ";" + ultimo_ts + ";" + ultimo_close + ";" + ultimo_bid + ";" + ultimo_ask + ";" + traderbot_move + ";" +
                 traderbot_supportamount + ";" + postrade_baseamount + ";" + postrade_quoteamount + ";" + postrade_total + ";" + ultimo_logtrade + ";" + traderbot_debugexport;    
         }
 
         //apos rodar a simulacao, abrir frame_resultadosbearcodetraderbot para mostrar resultados da simulacao do editor em tabela,
         //mostrar uma opcao para exportar dados do csv, e mostrar um grafico de closes e decisao do robo
-        frame_resultadosbearcodetraderbot frbctb = new frame_resultadosbearcodetraderbot(csvSave);
+        frame_resultadosbearcodetraderbot frbctb = new frame_resultadosbearcodetraderbot(csvResultado);
         frbctb.show();
         
 

@@ -123,7 +123,7 @@ public class frame_editorbearcodeindicador extends javax.swing.JFrame
         }
     }
     
-    void reconfigurarbearcodeinterpretererodar()
+    void testarscriptindicador()
     {
         jTextAreaOutput.setText("");
         
@@ -139,9 +139,16 @@ public class frame_editorbearcodeindicador extends javax.swing.JFrame
         else
         {
             mcjtah.print("\n======\n" + "Exception: " + result);
+            
+            //caso o teste de errado, cancelar funcao
+            return;
         }
+        
+        outrasopcoes.editorbearcodeindicador.frame_resultadosbearcodeindicador frbci = new outrasopcoes.editorbearcodeindicador.frame_resultadosbearcodeindicador(mcbcindicador);
+        frbci.show();
     }
     
+
     void salvararquivobcodeedicao()
     {
         try
@@ -405,7 +412,7 @@ public class frame_editorbearcodeindicador extends javax.swing.JFrame
     }//GEN-LAST:event_jButtonSaveFileActionPerformed
 
     private void jButtonTestRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTestRunActionPerformed
-        reconfigurarbearcodeinterpretererodar();
+        testarscriptindicador();
     }//GEN-LAST:event_jButtonTestRunActionPerformed
 
     /**
