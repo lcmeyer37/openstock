@@ -176,6 +176,28 @@ public class frame_resultadosbearcodetraderbot extends javax.swing.JFrame
             String decisaoatual = botdecisions_string[i];
             String logatual = autotraderlogs_string[i];
    
+            //codigo ignorando print de transacoes erradas
+            double lv_p1_x = valorx_double;
+            double lv_p1_y = rangey.getUpperBound();
+            double lv_p2_x = valorx_double;
+            double lv_p2_y = rangey.getLowerBound();
+            if (logatual.equals("ok"))
+            { 
+                if (decisaoatual.equals("buyall") || decisaoatual.equals("buyamount"))
+                {
+                    //mierclasses.mcfuncoeshelper.mostrarmensagem("ADICIONANDO BUY LINE");
+                    org.jfree.chart.annotations.XYLineAnnotation xylv = new org.jfree.chart.annotations.XYLineAnnotation(lv_p1_x, lv_p1_y, lv_p2_x, lv_p2_y, new BasicStroke(0.4f), Color.GREEN);
+                    plot.addAnnotation(xylv);
+                }
+                else if (decisaoatual.equals("sellall") || decisaoatual.equals("sellamount"))
+                {
+                    //mierclasses.mcfuncoeshelper.mostrarmensagem("ADICIONANDO SELL LINE");
+                    org.jfree.chart.annotations.XYLineAnnotation xylv = new org.jfree.chart.annotations.XYLineAnnotation(lv_p1_x, lv_p1_y, lv_p2_x, lv_p2_y, new BasicStroke(0.4f), Color.RED);
+                    plot.addAnnotation(xylv);
+                }  
+            }
+            
+            /* codigo printando transacaoes certas e erradas, com uma linha de log indicando transacao bem sucedida ou nao
             //criando linha vertical de compra e venda
             double lv_p1_x = valorx_double;
             double lv_p1_y = rangey.getUpperBound();
@@ -216,10 +238,9 @@ public class frame_resultadosbearcodetraderbot extends javax.swing.JFrame
             }
             else
             {
-                //mierclasses.mcfuncoeshelper.mostrarmensagem("ADICIONANDO SELL LINE");
                 org.jfree.chart.annotations.XYLineAnnotation xylv = new org.jfree.chart.annotations.XYLineAnnotation(ll_p1_x, ll_p1_y, ll_p2_x, ll_p2_y, new BasicStroke(0.4f), Color.BLACK);
                 plot.addAnnotation(xylv);
-            }
+            }*/
            
         }
         //</editor-fold>
