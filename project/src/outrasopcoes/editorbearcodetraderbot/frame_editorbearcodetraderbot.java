@@ -669,8 +669,7 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jPanelPai = new javax.swing.JPanel();
         jLabelScript = new javax.swing.JLabel();
@@ -726,29 +725,23 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
         jLabelOutput.setText("Output");
 
         jButtonSaveFile.setText("Save File");
-        jButtonSaveFile.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButtonSaveFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonSaveFileActionPerformed(evt);
             }
         });
 
         jButtonLoadFile.setText("Load File");
-        jButtonLoadFile.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButtonLoadFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonLoadFileActionPerformed(evt);
             }
         });
 
         jButtonResetEditor.setForeground(new java.awt.Color(255, 0, 0));
         jButtonResetEditor.setText("Reset");
-        jButtonResetEditor.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButtonResetEditor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonResetEditorActionPerformed(evt);
             }
         });
@@ -760,10 +753,8 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
         jTextFieldBuyFee.setForeground(new java.awt.Color(255, 255, 255));
         jTextFieldBuyFee.setText("0.001");
         jTextFieldBuyFee.setCaretColor(new java.awt.Color(125, 125, 125));
-        jTextFieldBuyFee.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jTextFieldBuyFee.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldBuyFeeActionPerformed(evt);
             }
         });
@@ -803,10 +794,8 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
 
         jButtonRun.setForeground(new java.awt.Color(0, 0, 255));
         jButtonRun.setText("Run");
-        jButtonRun.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButtonRun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonRunActionPerformed(evt);
             }
         });
@@ -825,10 +814,8 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
 
         jTextFieldNomeSimbolo.setBackground(new java.awt.Color(125, 125, 125));
         jTextFieldNomeSimbolo.setForeground(new java.awt.Color(255, 255, 255));
-        jTextFieldNomeSimbolo.addCaretListener(new javax.swing.event.CaretListener()
-        {
-            public void caretUpdate(javax.swing.event.CaretEvent evt)
-            {
+        jTextFieldNomeSimbolo.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 jTextFieldNomeSimboloCaretUpdate(evt);
             }
         });
@@ -840,10 +827,8 @@ public class frame_editorbearcodetraderbot extends javax.swing.JFrame
         jLabelCandlesDataStatus.setText("Current Data:");
 
         jButtonRecarregarCandlesData.setText("Load Data");
-        jButtonRecarregarCandlesData.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButtonRecarregarCandlesData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonRecarregarCandlesDataActionPerformed(evt);
             }
         });

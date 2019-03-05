@@ -52,9 +52,9 @@ public class panel_itemtransacao extends javax.swing.JPanel
         if (offlinetransactionassociada.preco_tradestr.equals("(NN)"))
             jLabelPrecoTransacao.setText("");
         else
-            jLabelPrecoTransacao.setText(offlinetransactionassociada.preco_tradestr);
+            jLabelPrecoTransacao.setText(String.format( "%.8f",offlinetransactionassociada.preco_traded));
         
-        jLabelQuantidadeTransacao.setText(offlinetransactionassociada.quantidadestr);
+        jLabelQuantidadeTransacao.setText(String.format( "%.8f",offlinetransactionassociada.quantidaded));
         
         jLabelTimestampTransacao.setText(offlinetransactionassociada.timestampdate.toGMTString());
     }

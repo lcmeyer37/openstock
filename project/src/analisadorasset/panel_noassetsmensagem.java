@@ -35,8 +35,7 @@ public class panel_noassetsmensagem extends javax.swing.JPanel
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jPanelEscolherSubmodulo = new javax.swing.JPanel();
         jLabelWelcome = new javax.swing.JLabel();
@@ -57,7 +56,7 @@ public class panel_noassetsmensagem extends javax.swing.JPanel
 
         jLabelDistribution.setBackground(new java.awt.Color(230, 230, 230));
         jLabelDistribution.setForeground(new java.awt.Color(200, 200, 200));
-        jLabelDistribution.setText("Distribution: 1.035a");
+        jLabelDistribution.setText("Distribution: 1.035b");
 
         jTextAreaWelcome.setEditable(false);
         jTextAreaWelcome.setBackground(new java.awt.Color(25, 25, 25));
@@ -76,19 +75,15 @@ public class panel_noassetsmensagem extends javax.swing.JPanel
         jLabelToStart.setText("To start, click on the \"Add\" button to analyze a new asset.");
 
         jButtonLicense.setText("Open Stock License");
-        jButtonLicense.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButtonLicense.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonLicenseActionPerformed(evt);
             }
         });
 
         jButtonGithub.setText("Open Stock's GitHub");
-        jButtonGithub.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButtonGithub.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonGithubActionPerformed(evt);
             }
         });

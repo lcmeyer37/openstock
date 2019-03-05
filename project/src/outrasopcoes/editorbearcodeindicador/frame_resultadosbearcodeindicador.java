@@ -19,6 +19,7 @@ package outrasopcoes.editorbearcodeindicador;
 import outrasopcoes.editorbearcodetraderbot.*;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import org.jfree.ui.TextAnchor;
 
 /**
  *
@@ -38,29 +39,29 @@ public class frame_resultadosbearcodeindicador extends javax.swing.JFrame
         initComponents();
 
         mcbciip = mcbcii;
-        chartpanelseparado = retornarnovoplot_indicador
+        
+        criargraficoindicador
         (
             mcbciip.pontosx_lastrun,
             mcbciip.pontosy_lastrun,
             mcbciip.tituloscript_lastrun,
             mcbciip.tipoplot_lastrun
         );
-        associarplotchartpaneljanela(chartpanelseparado);
-    }
-    
-    void associarplotchartpaneljanela(org.jfree.chart.ChartPanel chartpanel)
-    {
-        //adicionar chartpanel a jPanelChartpanelHolder
         jPanelChartResults.removeAll();
         jPanelChartResults.setLayout(new java.awt.BorderLayout());
-        jPanelChartResults.add(chartpanel);
-        //setVisible(true);
+        jPanelChartResults.add(chartpanelseparado);
+        //tirar cursor do chart
+        java.awt.Toolkit tk = java.awt.Toolkit.getDefaultToolkit();
+        byte bogus[] = { (byte) 0 };
+        java.awt.Cursor blankCursor = tk.createCustomCursor( tk.createImage( bogus ), new java.awt.Point(0, 0), "" );
+        jPanelChartResults.setCursor(blankCursor);
+        
         this.validate();
     }
 
     
     org.jfree.chart.ChartPanel chartpanelseparado = null;
-    org.jfree.chart.ChartPanel retornarnovoplot_indicador(Object xvalues, Object yvalues, String tituloscript, String desenhografico)
+    void criargraficoindicador(Object xvalues, Object yvalues, String tituloscript, String desenhografico)
     {
 
         
@@ -90,7 +91,8 @@ public class frame_resultadosbearcodeindicador extends javax.swing.JFrame
             //criar renderer
             org.jfree.chart.renderer.xy.XYLineAndShapeRenderer renderer = new org.jfree.chart.renderer.xy.DefaultXYItemRenderer();
             renderer.setBaseShapesVisible(false);
-            renderer.setBaseStroke(new BasicStroke(2.0f));
+            renderer.setSeriesStroke(0, new BasicStroke(0.75f));
+            renderer.setSeriesPaint(0, Color.BLACK);
 
             //criar ranges
             org.jfree.chart.axis.DateAxis domainAxis = new org.jfree.chart.axis.DateAxis("");
@@ -114,6 +116,7 @@ public class frame_resultadosbearcodeindicador extends javax.swing.JFrame
 
                 public void chartMouseMoved(org.jfree.chart.ChartMouseEvent e)
                 {
+                    executaranotacaofixa_crosshair_mmove(e);
                 }
             });
 
@@ -168,6 +171,7 @@ public class frame_resultadosbearcodeindicador extends javax.swing.JFrame
 
                 public void chartMouseMoved(org.jfree.chart.ChartMouseEvent e)
                 {
+                    executaranotacaofixa_crosshair_mmove(e);
                 }
             });
             
@@ -222,13 +226,91 @@ public class frame_resultadosbearcodeindicador extends javax.swing.JFrame
 
                 public void chartMouseMoved(org.jfree.chart.ChartMouseEvent e)
                 {
+                    executaranotacaofixa_crosshair_mmove(e);
                 }
             });
         }
-        
-        return chartpanelseparado;
     }
 
+        
+    // <editor-fold defaultstate="collapsed" desc="Adicionando Crosshair a este grafico">
+    java.util.List<org.jfree.chart.annotations.XYAnnotation> crosshair_preview;
+    void executaranotacaofixa_crosshair_mmove(org.jfree.chart.ChartMouseEvent cmevent)
+    {
+        try
+        {
+            org.jfree.chart.plot.XYPlot plotatual = (org.jfree.chart.plot.XYPlot) chartpanelseparado.getChart().getPlot();
+
+            for (int i = 0; i < crosshair_preview.size(); i++)
+            {
+                plotatual.removeAnnotation((org.jfree.chart.annotations.XYAnnotation) crosshair_preview.get(i));
+            }
+        } 
+        catch (Exception ex)
+        {
+        }
+
+        crosshair_preview = adicionarplotohlc_anotacaofixacrosshair(cmevent);
+    }
+    
+    public java.util.List<org.jfree.chart.annotations.XYAnnotation> adicionarplotohlc_anotacaofixacrosshair(org.jfree.chart.ChartMouseEvent cmevent)
+    {
+
+        //atualizar range e posicao atual do grafico
+        java.awt.geom.Point2D p = chartpanelseparado.translateScreenToJava2D(cmevent.getTrigger().getPoint());
+        java.awt.geom.Rectangle2D plotArea = chartpanelseparado.getChartRenderingInfo().getPlotInfo().getDataArea();
+        org.jfree.chart.plot.XYPlot plot = (org.jfree.chart.plot.XYPlot) chartpanelseparado.getChart().getPlot(); // your plot
+        double mcg_posmousex = plot.getDomainAxis().java2DToValue(p.getX(), plotArea, plot.getDomainAxisEdge());
+        double mcg_posmousey = plot.getRangeAxis().java2DToValue(p.getY(), plotArea, plot.getRangeAxisEdge());
+        org.jfree.data.Range mcg_rangex = plot.getDomainAxis().getRange();
+        org.jfree.data.Range mcg_rangey = plot.getRangeAxis().getRange();
+
+        //ponto central do crosshair
+        double centrocrosshair_x = mcg_posmousex;
+        double centrocrosshair_y = mcg_posmousey;
+        
+        //criando linha horizontal cinza
+        double lh_p1_x = mcg_rangex.getLowerBound();
+        double lh_p1_y = centrocrosshair_y;
+        double lh_p2_x = mcg_rangex.getUpperBound();
+        double lh_p2_y = centrocrosshair_y;
+        org.jfree.chart.annotations.XYLineAnnotation xylh = new org.jfree.chart.annotations.XYLineAnnotation(lh_p1_x, lh_p1_y, lh_p2_x, lh_p2_y, new BasicStroke(0.4f), Color.BLUE);
+
+        //criando linha vertical cinza
+        double lv_p1_x = centrocrosshair_x;
+        double lv_p1_y = mcg_rangey.getUpperBound();
+        double lv_p2_x = centrocrosshair_x;
+        double lv_p2_y = mcg_rangey.getLowerBound();
+        org.jfree.chart.annotations.XYLineAnnotation xylv = new org.jfree.chart.annotations.XYLineAnnotation(lv_p1_x, lv_p1_y, lv_p2_x, lv_p2_y, new BasicStroke(0.4f), Color.BLUE);
+        
+        //texto preco
+        String textopreco = String.format("%.4f", mcg_posmousey);
+        org.jfree.chart.annotations.XYTextAnnotation xytextopreco = new org.jfree.chart.annotations.XYTextAnnotation(textopreco, lh_p1_x,centrocrosshair_y);
+        xytextopreco.setTextAnchor(TextAnchor.TOP_LEFT);
+        
+        //texto data
+        String datacrosshair = new java.util.Date((long) mcg_posmousex).toString();
+        String textodata = datacrosshair;
+        org.jfree.chart.annotations.XYTextAnnotation xytextodata = new org.jfree.chart.annotations.XYTextAnnotation(textodata, centrocrosshair_x, lv_p2_y);
+        xytextodata.setTextAnchor(TextAnchor.BOTTOM_LEFT);
+        
+        plot.addAnnotation(xylh);
+        plot.addAnnotation(xylv);
+        plot.addAnnotation(xytextopreco);
+        plot.addAnnotation(xytextodata);
+
+        java.util.List<org.jfree.chart.annotations.XYAnnotation> subannotations = new java.util.ArrayList<>();
+        subannotations.add(xylh);
+        subannotations.add(xylv);
+        subannotations.add(xytextopreco);
+        subannotations.add(xytextodata);
+
+        return subannotations;
+    }
+
+    // </editor-fold>
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

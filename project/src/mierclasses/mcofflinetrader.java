@@ -16,8 +16,6 @@
  */
 package mierclasses;
 
-import java.math.RoundingMode;
-
 /**
  *
  * @author lucasmeyer
@@ -97,8 +95,9 @@ public class mcofflinetrader
         //funcao para adicionar fundos de moeda base
         if (valordeposito > 0)
         {
-            quantidademoedabase = quantidademoedabase + Math.round(valordeposito*1e8)/1e8;
-            //quantidademoedabase = quantidademoedabase + valordeposito;
+            valordeposito = corrigirprecisao(valordeposito);
+            quantidademoedabase = quantidademoedabase + valordeposito;
+            
             mierclasses.mcofflinetransaction novatransacao = new
                 mierclasses.mcofflinetransaction
                 (
@@ -119,8 +118,9 @@ public class mcofflinetrader
     {
         if (valordeposito > 0)
         {
-            quantidademoedacotacao = quantidademoedacotacao + Math.round(valordeposito*1e8)/1e8;
-            //quantidademoedacotacao = quantidademoedacotacao + valordeposito;
+            valordeposito = corrigirprecisao(valordeposito);
+            quantidademoedacotacao = quantidademoedacotacao + valordeposito;
+            
             mierclasses.mcofflinetransaction novatransacao = new
                 mierclasses.mcofflinetransaction
                 (
@@ -143,8 +143,9 @@ public class mcofflinetrader
         {
             if (valorsaque <= quantidademoedabase)
             {
-                quantidademoedabase = quantidademoedabase - Math.round(valorsaque*1e8)/1e8;
-                //quantidademoedabase = quantidademoedabase - valorsaque;
+                valorsaque = corrigirprecisao(valorsaque);
+                quantidademoedabase = quantidademoedabase - valorsaque;
+
                 mierclasses.mcofflinetransaction novatransacao = new
                 mierclasses.mcofflinetransaction
                 (
@@ -171,8 +172,8 @@ public class mcofflinetrader
         {
             if (valorsaque <= quantidademoedacotacao)
             {
-                quantidademoedacotacao = quantidademoedacotacao - Math.round(valorsaque*1e8)/1e8;
-                //quantidademoedacotacao = quantidademoedacotacao - valorsaque;
+                valorsaque = corrigirprecisao(valorsaque);
+                quantidademoedacotacao = quantidademoedacotacao - valorsaque;
                 
                 mierclasses.mcofflinetransaction novatransacao = new
                 mierclasses.mcofflinetransaction
@@ -202,10 +203,12 @@ public class mcofflinetrader
             double custocompra = custototalcompra_basecotacao(quantidadecomprabase);
             
             //mierclasses.mcfuncoeshelper.mostrarmensagem("custocompra: " + custocompra + "\n" + "quantidademoedacotacao: " + quantidademoedacotacao);
-            if (custocompra <= quantidademoedacotacao)
+            if (corrigirprecisao(custocompra) <= corrigirprecisao(quantidademoedacotacao))
             {
+                custocompra = corrigirprecisao(custocompra);
+                quantidadecomprabase = corrigirprecisao(quantidadecomprabase);
+                
                 quantidademoedacotacao = quantidademoedacotacao - custocompra;
-                quantidadecomprabase = Math.round(quantidadecomprabase*1e8)/1e8; //realizar compra de no maximo ateh 8 casa decimal
                 quantidademoedabase = quantidademoedabase + quantidadecomprabase;
                 
                 mierclasses.mcofflinetransaction novatransacao = new
@@ -234,9 +237,11 @@ public class mcofflinetrader
         {
             double ganhovenda = ganhototalvenda_basecotacao(quantidadevendabase);
             
-            if (quantidadevendabase <= quantidademoedabase)
+            if (corrigirprecisao(quantidadevendabase) <= corrigirprecisao(quantidademoedabase))
             {
-                quantidadevendabase = Math.round(quantidadevendabase*1e8)/1e8; //realizar compra de no maximo ateh 8 casa decimal
+                ganhovenda = corrigirprecisao(ganhovenda);
+                quantidadevendabase = corrigirprecisao(quantidadevendabase);
+                
                 quantidademoedabase = quantidademoedabase - quantidadevendabase;
                 quantidademoedacotacao = quantidademoedacotacao + ganhovenda;
 
@@ -305,9 +310,6 @@ public class mcofflinetrader
         double taxacompra = custosemtaxa*feecompra;
         double custototal = custosemtaxa + taxacompra;
         
-        //custo total eh truncado na 8 casa decimal
-        custototal = Math.round(custototal*1e8)/1e8;
-        
         return custototal;
     }
     
@@ -318,9 +320,7 @@ public class mcofflinetrader
         double ganhosemtaxa = quantidadebasevender*melhorbid;
         double taxavenda = ganhosemtaxa*feevenda;
         double ganhototal = ganhosemtaxa - taxavenda;
-        
-        ganhototal = Math.round(ganhototal*1e8)/1e8;
-        
+
         return ganhototal;
     }
     
@@ -328,6 +328,11 @@ public class mcofflinetrader
     {
         //funcao para retornar o total de fundos deste trader
         return (quantidademoedabase*melhorbid + quantidademoedacotacao);
+    }
+    
+    double corrigirprecisao(double valororiginal)
+    {
+        return Math.round(valororiginal*1e8)/1e8;
     }
     // </editor-fold>
 }

@@ -84,13 +84,13 @@ public class panel_submoduloofflinetrader extends javax.swing.JPanel
         //atualizar informacoes das janelas de buy/sell/funds
         jLabelComprar.setText("Buy " + otrader.simbolo.toUpperCase());
         jLabelVender.setText("Sell " + otrader.simbolo.toUpperCase());
-        jTextFieldMelhorAsk.setText(String.format( "%.6f",otrader.melhorask));
-        jTextFieldMelhorBid.setText(String.format( "%.6f",otrader.melhorbid));
-        jTextFieldMoedaBaseAtual.setText(String.format( "%.6f",otrader.quantidademoedabase));
-        jTextFieldMoedaCotacaoAtual.setText(String.format( "%.6f",otrader.quantidademoedacotacao));
-        jLabelTotalFundos.setText("Total (Quote Value): " + String.format( "%.6f",otrader.totalfundos_moedacotacao()));
-        jLabelFeeCompra.setText("Fee " + String.format( "%.2f",100*otrader.feecompra) + "%");
-        jLabelFeeVenda.setText("Fee " + String.format( "%.2f",100*otrader.feevenda) + "%");
+        jTextFieldMelhorAsk.setText(String.format( "%.8f",otrader.melhorask));
+        jTextFieldMelhorBid.setText(String.format( "%.8f",otrader.melhorbid));
+        jTextFieldMoedaBaseAtual.setText(String.format( "%.8f",otrader.quantidademoedabase));
+        jTextFieldMoedaCotacaoAtual.setText(String.format( "%.8f",otrader.quantidademoedacotacao));
+        jLabelTotalFundos.setText("Total (Quote Value): " + String.format( "%.8f",otrader.totalfundos_moedacotacao()));
+        jLabelFeeCompra.setText("Fee " + String.format( "%.4f",100*otrader.feecompra) + "%");
+        jLabelFeeVenda.setText("Fee " + String.format( "%.4f",100*otrader.feevenda) + "%");
         
         //rodar o trader (caso ativado)
         rodartraderbot();
@@ -117,13 +117,13 @@ public class panel_submoduloofflinetrader extends javax.swing.JPanel
         //atualizar informacoes das janelas de buy/sell/funds
         jLabelComprar.setText("Buy " + otrader.simbolo.toUpperCase());
         jLabelVender.setText("Sell " + otrader.simbolo.toUpperCase());
-        jTextFieldMelhorAsk.setText(String.format( "%.6f",otrader.melhorask));
-        jTextFieldMelhorBid.setText(String.format( "%.6f",otrader.melhorbid));
-        jTextFieldMoedaBaseAtual.setText(String.format( "%.6f",otrader.quantidademoedabase));
-        jTextFieldMoedaCotacaoAtual.setText(String.format( "%.6f",otrader.quantidademoedacotacao));
-        jLabelTotalFundos.setText("Total (Quote Value): " + String.format( "%.6f",otrader.totalfundos_moedacotacao()));
-        jLabelFeeCompra.setText("Fee " + String.format( "%.2f",100*otrader.feecompra) + "%");
-        jLabelFeeVenda.setText("Fee " + String.format( "%.2f",100*otrader.feevenda) + "%");
+        jTextFieldMelhorAsk.setText(String.format( "%.8f",otrader.melhorask));
+        jTextFieldMelhorBid.setText(String.format( "%.8f",otrader.melhorbid));
+        jTextFieldMoedaBaseAtual.setText(String.format( "%.8f",otrader.quantidademoedabase));
+        jTextFieldMoedaCotacaoAtual.setText(String.format( "%.8f",otrader.quantidademoedacotacao));
+        jLabelTotalFundos.setText("Total (Quote Value): " + String.format( "%.8f",otrader.totalfundos_moedacotacao()));
+        jLabelFeeCompra.setText("Fee " + String.format( "%.4f",100*otrader.feecompra) + "%");
+        jLabelFeeVenda.setText("Fee " + String.format( "%.4f",100*otrader.feevenda) + "%");
         
         //rodar o trader (caso ativado)
         rodartraderbot();
