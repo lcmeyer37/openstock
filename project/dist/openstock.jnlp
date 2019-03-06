@@ -22,7 +22,7 @@
     <jar href="lib\rsyntaxtextarea-2.0.5.1.jar" size="921132" download="eager" />
     <jar href="lib\servlet.jar" size="80054" download="eager" />
     <jar href="lib\swtgraphics2d.jar" size="17492" download="eager" />
-    <jar href="openstock.jar" size="1793486" download="eager" />
+    <jar href="openstock.jar" size="1793648" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="openstock" >
     <param name="requiredFXVersion" value="8.0+"/>

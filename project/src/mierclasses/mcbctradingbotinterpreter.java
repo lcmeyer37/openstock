@@ -82,7 +82,10 @@ public class mcbctradingbotinterpreter
     //outra variavel que o usuario pode colocar uma string para ser printada em exports de simulacao
     public Object debugexport_lastrun;
 
-    
+    //parametro utilizado como variavel externa ao script
+    //o usuario ao criar um script utiliza esta variavel para manter valor "entre runs"
+    //esta variavel eh uma string, e o usuario pode utiliza-la da forma que achar mais interessante
+    public Object externalvariable_lastrun;
     
     //construtor
     public mcbctradingbotinterpreter(String id, String nome, String codbcjs, String paramsbcjs)
@@ -175,6 +178,9 @@ public class mcbctradingbotinterpreter
                 engine.put("runoutput", runoutput);
             }
             
+            //extvar (utilizado como variavel, para conter valores entre runs)
+            engine.put("extvar",externalvariable_lastrun);
+            
             //</editor-fold>
 
             //rodar script
@@ -212,6 +218,15 @@ public class mcbctradingbotinterpreter
                 debugexport_lastrun = "";
             }
             
+            //extvar (utilizado como variavel, para conter valores entre runs)
+            try
+            {
+                externalvariable_lastrun = engine.get("extvar");
+            }
+            catch (Exception e)
+            {
+                externalvariable_lastrun = "";
+            }
             //</editor-fold>
         }
         catch (Exception ex)

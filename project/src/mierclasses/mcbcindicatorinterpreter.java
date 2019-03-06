@@ -60,6 +60,11 @@ public class mcbcindicatorinterpreter
     //tipo de print do plot
     public String tipoplot_lastrun; 
     
+    //parametro utilizado como variavel externa ao script
+    //o usuario ao criar um script utiliza esta variavel para manter valor "entre runs"
+    //esta variavel eh uma string, e o usuario pode utiliza-la da forma que achar mais interessante
+    public Object externalvariable_lastrun;
+    
     //construtor
     public mcbcindicatorinterpreter(String id, String nome, String codbcjs, String paramsbcjs)
     {
@@ -116,6 +121,9 @@ public class mcbcindicatorinterpreter
                 engine.put("runoutput", runoutput);
             }
             
+            //extvar (utilizado como variavel, para conter valores entre runs)
+            engine.put("extvar",externalvariable_lastrun);
+            
             //</editor-fold>
 
             //rodar script
@@ -143,6 +151,16 @@ public class mcbcindicatorinterpreter
                 //ignorar caso null etc
             }
 
+            //extvar (utilizado como variavel, para conter valores entre runs)
+            try
+            {
+                externalvariable_lastrun = engine.get("extvar");
+            }
+            catch (Exception e)
+            {
+                externalvariable_lastrun = "";
+            }
+            
             //descricao do script de indicador (contem nome do script, e informacao de como plotar a curva do indicador)
             try
             {
