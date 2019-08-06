@@ -1,0 +1,150 @@
+/*
+ * Copyright (C) 2019 Lucas Meyer
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+//EMA Trader Script Sample
+//calculate difference between close and emaclosediff = ema - close
+//buy all you can if ema_tm1 > close_tm1 and ema_tm2 < close_tm2
+//sell all you can if ema_tm1 < close_tm1 and ema_tm2 > close_tm2
+
+//inputs
+var candlesinput = candles;
+var baseamountinput = basefunds;
+//runoutput.print("baseamountinput: " + baseamountinput);
+var quoteamountinput = quotefunds;
+//runoutput.print("\nquoteamountinput: " + quoteamountinput);
+var bidinput = lastbid;
+//runoutput.print("\nbidinput: " + bidinput);
+var askinput = lastask;
+//runoutput.print("\naskinput: " + askinput);
+var buyfeeinput = buyfee;
+//runoutput.print("\nbuyfeeinput: " + buyfeeinput);
+var sellfeeinput = sellfee;
+//runoutput.print("\nsellfeeinput: " + sellfeeinput);
+
+//parameters
+var periodo = parseInt(period);
+
+//calculate ema for the period desired
+var closes_timestamps = retornarclosestimestamp();
+var closes = closes_timestamps[0];
+var timestamps = closes_timestamps[1];
+var emas_timestamps = calculate_ema(periodo,closes,timestamps);
+var emas = emas_timestamps[0];
+
+var ema_tm1 = emas[emas.length-1]
+var close_tm1 = closes[closes.length-1]
+var emadiffclose_tm1 = ema_tm1 - close_tm1
+var timestamp_tm1 = timestamps[timestamps.length-1]
+
+var ema_tm2 = emas[emas.length-2]
+var close_tm2 = closes[closes.length-2]
+var emadiffclose_tm2 = ema_tm2 - close_tm2
+var timestamp_tm2 = timestamps[timestamps.length-2]
+
+//trader answer
+//runoutput.print("\ntimestamp_tm1: " + timestamp_tm1);
+//runoutput.print("\ntimestamp_tm2: " + timestamp_tm2);
+
+//runoutput.print("\nema_tm1: " + ema_tm1);
+//runoutput.print("\nema_tm2: " + ema_tm2);
+
+//runoutput.print("\nclose_tm1: " + close_tm1);
+//runoutput.print("\nclose_tm2: " + close_tm2);
+
+//runoutput.print("\nemadiffclose_tm1: " + emadiffclose_tm1);
+//runoutput.print("\nemadiffclose_tm2: " + emadiffclose_tm2);
+
+var tradermove = "hold";
+if ((emadiffclose_tm1 > 0) && (emadiffclose_tm2 < 0))
+    tradermove = "sellall";
+else if ((emadiffclose_tm1 < 0) && (emadiffclose_tm2 > 0))
+    tradermove = "buyall";
+
+var amountbase = [0];
+
+runoutput.print("\ntradermove: " + tradermove);
+//runoutput.print("\nsupportamount: " + supportamount);
+
+var supportamount = Java.to(amountbase,"double[]");
+
+
+
+
+
+//SUPPORT EMA TRADER ALGORITHM FUNCTIONS
+function retornarclosestimestamp()
+{
+    var valoresclose = [];
+    var timestampsclose = [];
+
+    for (i = 0; i < candlesinput.length; i++)
+    {
+        valoresclose.push(candlesinput[i].closed);
+        //runoutput.print(candlesinput[i].closed);
+        timestampsclose.push(candlesinput[i].timestampdate);
+        //runoutput.print(candlesinput[i].timestampdate);
+    }
+
+    var retornoclose = [];
+    retornoclose.push(valoresclose);
+    retornoclose.push(timestampsclose);
+    //runoutput.print("retornoclose: " + retornoclose[1]);
+
+    return retornoclose;
+}
+
+function calculate_ema(periodo,valoresx,valorestimestamp)
+{
+    var valormultiplierema = (2.0/(periodo+1.0));
+
+    var valoresema = [];
+    var timestampsema = [];
+
+    for (i = periodo; i < valoresx.length; i++)
+    {
+        if (i == periodo)
+        {
+            var somaatual = 0;
+            for (j = 0; j < periodo; j++)
+            {
+                var indiceatual = i-periodo+j;
+                somaatual = somaatual + valoresx[indiceatual];
+            }
+            var emaatual = somaatual/periodo;
+            var timestampatual = valorestimestamp[i];
+            valoresema.push(emaatual);
+            timestampsema.push(timestampatual);
+        }
+        else if (i > periodo)
+        {
+            var emaanterior = valoresema[i-periodo-1];
+            var closingatual = valoresx[i];
+
+            var emaatual = (closingatual-emaanterior)*valormultiplierema + emaanterior;
+            var timestampatual = valorestimestamp[i];
+
+            valoresema.push(emaatual);
+            timestampsema.push(timestampatual);
+        }
+    }
+
+    var retornoema = [];
+    retornoema.push(valoresema);
+    retornoema.push(timestampsema);    
+    
+    return retornoema;
+}

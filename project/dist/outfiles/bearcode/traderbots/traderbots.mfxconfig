@@ -43,4 +43,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <BearcodeFile>macdfulltrader.bearcode</BearcodeFile>
     </Traderbot>
 
+    <Traderbot>
+        <BCID>ematrader</BCID>
+        <Name>EMA Trader</Name>
+        <BearcodeFile>ematrader.bearcode</BearcodeFile>
+    </Traderbot>
+
 </OpenstockTraderbots>
