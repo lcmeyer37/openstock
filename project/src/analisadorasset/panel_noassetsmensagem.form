@@ -54,7 +54,7 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabelDistribution" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="195" max="32767" attributes="0"/>
+                          <EmptySpace pref="194" max="32767" attributes="0"/>
                           <Component id="jLabelToStart" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
@@ -116,7 +116,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="c8" green="c8" red="c8" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Distribution: 1.035c"/>
+            <Property name="text" type="java.lang.String" value="Distribution: 1.035d"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -140,11 +140,10 @@
                   <Color blue="e6" green="e6" red="e6" type="rgb"/>
                 </Property>
                 <Property name="rows" type="int" value="5"/>
-                <Property name="text" type="java.lang.String" value="Latest Release: 1.035&#xa;&#xa;Open Stock Features:&#xa;&#xa;* Real-time data for multiple assets: stocks, dividends, indexes, forex, cryptocurrency&#xa;* Possibility to analyze multiple charts at the same time&#xa;* Use of Annotations and Indicators for Technical Analysis&#xa;* Use of Robots to test automatic Algorithmic Trading&#xa;* To create your own Indicators to use with the software (Bearcode Scripts)&#xa;* To create your own Trader Bots algorithms to use with the software (Bearcode Scripts)&#xa;* To test the efficacy of algorithms with the Bots Editor and History Trading Simulator&#xa;* Save/Load Charts and Offline Transactions&#xa;* Export .csv files for spreadsheets tracking&#xa;* OHLC and Separate Indicator charts&#xa;* Offline Trading&#xa;* Telegram Bots for private notifications&#xa;&#xa;Data and functionality provided for free by:&#xa;&#xa;* IEX&#xa;* Alpha Vantage&#xa;* CryptoCompare&#xa;* Telegram API&#xa;&#xa;&#xa;&#xa;&#xa;"/>
+                <Property name="text" type="java.lang.String" value="Latest Release: 1.035&#xa;&#xa;Open Stock Features:&#xa;&#xa;* Real-time data for multiple assets: stocks, dividends, indexes, forex, cryptocurrency&#xa;* Possibility to analyze multiple charts at the same time&#xa;* Use of Annotations and Indicators for Technical Analysis&#xa;* Use of Robots to test automatic Algorithmic Trading&#xa;* To create your own Indicators to use with the software (Bearcode Scripts)&#xa;* To create your own Trader Bots algorithms to use with the software (Bearcode Scripts)&#xa;* To test the efficacy of algorithms with the Bots Editor and History Trading Simulator&#xa;* Save/Load Charts and Offline Transactions&#xa;* Export .csv files for spreadsheets tracking&#xa;* OHLC and Separate Indicator charts&#xa;* Offline Trading&#xa;* Telegram Bots for private notifications&#xa;&#xa;Data and functionality provided for free by:&#xa;&#xa;* Alpha Vantage&#xa;* CryptoCompare&#xa;* Telegram API&#xa;&#xa;&#xa;&#xa;&#xa;"/>
                 <Property name="caretColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="caretPosition" type="int" value="0"/>
               </Properties>
             </Component>
           </SubComponents>

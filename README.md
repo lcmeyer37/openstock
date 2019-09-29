@@ -28,7 +28,6 @@ Features:
 * Telegram Bots for private notifications
 
 Data and functionality provided for free by:
-* [IEX](https://iextrading.com/api-exhibit-a/)
 * [Alpha Vantage](https://www.alphavantage.co/terms_of_service/)
 * [CryptoCompare](https://www.cryptocompare.com/api-licence-agreement/)
 * [Telegram API](https://core.telegram.org/api/terms)

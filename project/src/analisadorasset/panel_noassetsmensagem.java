@@ -57,7 +57,7 @@ public class panel_noassetsmensagem extends javax.swing.JPanel
 
         jLabelDistribution.setBackground(new java.awt.Color(230, 230, 230));
         jLabelDistribution.setForeground(new java.awt.Color(200, 200, 200));
-        jLabelDistribution.setText("Distribution: 1.035c");
+        jLabelDistribution.setText("Distribution: 1.035d");
 
         jTextAreaWelcome.setEditable(false);
         jTextAreaWelcome.setBackground(new java.awt.Color(25, 25, 25));
@@ -65,9 +65,8 @@ public class panel_noassetsmensagem extends javax.swing.JPanel
         jTextAreaWelcome.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         jTextAreaWelcome.setForeground(new java.awt.Color(230, 230, 230));
         jTextAreaWelcome.setRows(5);
-        jTextAreaWelcome.setText("Latest Release: 1.035\n\nOpen Stock Features:\n\n* Real-time data for multiple assets: stocks, dividends, indexes, forex, cryptocurrency\n* Possibility to analyze multiple charts at the same time\n* Use of Annotations and Indicators for Technical Analysis\n* Use of Robots to test automatic Algorithmic Trading\n* To create your own Indicators to use with the software (Bearcode Scripts)\n* To create your own Trader Bots algorithms to use with the software (Bearcode Scripts)\n* To test the efficacy of algorithms with the Bots Editor and History Trading Simulator\n* Save/Load Charts and Offline Transactions\n* Export .csv files for spreadsheets tracking\n* OHLC and Separate Indicator charts\n* Offline Trading\n* Telegram Bots for private notifications\n\nData and functionality provided for free by:\n\n* IEX\n* Alpha Vantage\n* CryptoCompare\n* Telegram API\n\n\n\n\n");
+        jTextAreaWelcome.setText("Latest Release: 1.035\n\nOpen Stock Features:\n\n* Real-time data for multiple assets: stocks, dividends, indexes, forex, cryptocurrency\n* Possibility to analyze multiple charts at the same time\n* Use of Annotations and Indicators for Technical Analysis\n* Use of Robots to test automatic Algorithmic Trading\n* To create your own Indicators to use with the software (Bearcode Scripts)\n* To create your own Trader Bots algorithms to use with the software (Bearcode Scripts)\n* To test the efficacy of algorithms with the Bots Editor and History Trading Simulator\n* Save/Load Charts and Offline Transactions\n* Export .csv files for spreadsheets tracking\n* OHLC and Separate Indicator charts\n* Offline Trading\n* Telegram Bots for private notifications\n\nData and functionality provided for free by:\n\n* Alpha Vantage\n* CryptoCompare\n* Telegram API\n\n\n\n\n");
         jTextAreaWelcome.setCaretColor(new java.awt.Color(255, 255, 255));
-        jTextAreaWelcome.setCaretPosition(0);
         jScrollPane1.setViewportView(jTextAreaWelcome);
 
         jLabelToStart.setBackground(new java.awt.Color(230, 230, 230));
@@ -112,7 +111,7 @@ public class panel_noassetsmensagem extends javax.swing.JPanel
                         .addComponent(jButtonGithub))
                     .addGroup(jPanelEscolherSubmoduloLayout.createSequentialGroup()
                         .addComponent(jLabelDistribution)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 194, Short.MAX_VALUE)
                         .addComponent(jLabelToStart))
                     .addGroup(jPanelEscolherSubmoduloLayout.createSequentialGroup()
                         .addGroup(jPanelEscolherSubmoduloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

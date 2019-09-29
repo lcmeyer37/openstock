@@ -765,7 +765,7 @@ public class mcstocksapicomms
     }
     //</editor-fold>
     
-    // <editor-fold defaultstate="collapsed" desc="IEX API">
+    // <editor-fold defaultstate="collapsed" desc="IEX API (Obsolete)">
     
     public void iex_testarcomms()
     {
@@ -1180,6 +1180,9 @@ public class mcstocksapicomms
     // </editor-fold>
 
     // </editor-fold> 
+    
+    // <editor-fold defaultstate="collapsed" desc="IEX Cloud (to implement)">
+    //</editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="OFFLINE VALUES">
     
